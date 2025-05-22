@@ -47,10 +47,10 @@
 
 ---
 
-## 📁 폴더 구조 (예시)
+## 📁 폴더 구조
 
 ```bash
-where-gnyang/
+Meowhere/
 ├── app/                 # App Router 전용 폴더
 │   ├── layout.tsx
 │   └── page.tsx
