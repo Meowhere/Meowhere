@@ -52,6 +52,7 @@
 ```bash
 Meowhere/
 ├── app/                 # App Router 전용 폴더
+│   ├── api/             # api route
 │   ├── layout.tsx
 │   └── page.tsx
 ├── components/          # 공통 UI 컴포넌트
