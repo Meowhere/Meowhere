@@ -1,36 +1,27 @@
 name: Create Jira issue
+
 on:
   issues:
     types:
       - opened
+
 jobs:
   create-issue:
     name: Create Jira issue
     runs-on: ubuntu-latest
+
     steps:
-      - name: Login
+      - name: Login to Jira
         uses: atlassian/gajira-login@v3
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
 
-      - name: Checkout main code
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
-
-      - name: Issue Parser
-        uses: stefanbuck/github-issue-praser@v3
-        id: issue-parser
-        with:
-          template-path: .github/ISSUE_TEMPLATE/issue-feature-update.yml
-
-      - name: Log Issue Parser
-        run: |
-          echo '${{ steps.issue-parser.outputs.issueparser_parentKey }}'
-          echo '${{ steps.issue-parser.outputs.__ticket_number }}'
-          echo '${{ steps.issue-parser.outputs.jsonString }}'
 
       - name: Convert markdown to Jira Syntax
         uses: peter-evans/jira2md@v1
@@ -43,43 +34,96 @@ jobs:
             ${{ github.event.issue.body }}
           mode: md2jira
 
-      - name: Create Issue
-        id: create
+      - name: Extract parentKey and branch from issue body
+        id: extract
+        run: |
+          BODY="${{ github.event.issue.body }}"
+          
+          # Debug: Print the entire body
+          echo "=== Full Issue Body ==="
+          echo "$BODY"
+          echo "======================="
+          
+          # Extract parent key - look for content between the ticket number header and next header
+          PARENT_KEY=$(echo "$BODY" | sed -n '/### 🎟️ 상위 작업 (Ticket Number)/,/### /p' | sed '1d;$d' | grep -v '^$' | head -n1 | xargs)
+          
+          # Extract branch name - look for content between branch header and next header  
+          BRANCH_NAME=$(echo "$BODY" | sed -n '/### 🌳 브랜치명 (Branch)/,/### /p' | sed '1d;$d' | grep -v '^$' | head -n1 | xargs)
+          
+          # Alternative extraction method using awk (more reliable)
+          PARENT_KEY_ALT=$(echo "$BODY" | awk '/### 🎟️ 상위 작업 \(Ticket Number\)/{getline; while(getline && !/^###/){if(NF>0){print $0; exit}}}' | xargs)
+          BRANCH_NAME_ALT=$(echo "$BODY" | awk '/### 🌳 브랜치명 \(Branch\)/{getline; while(getline && !/^###/){if(NF>0){print $0; exit}}}' | xargs)
+          
+          # Use alternative method if primary fails
+          if [ -z "$PARENT_KEY" ] && [ -n "$PARENT_KEY_ALT" ]; then
+            PARENT_KEY="$PARENT_KEY_ALT"
+          fi
+          
+          if [ -z "$BRANCH_NAME" ] && [ -n "$BRANCH_NAME_ALT" ]; then
+            BRANCH_NAME="$BRANCH_NAME_ALT"
+          fi
+          
+          echo "parentKey=$PARENT_KEY" >> $GITHUB_OUTPUT
+          echo "branchName=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Debug extracted values
+        run: |
+          echo "Extracted parentKey: '${{ steps.extract.outputs.parentKey }}'"
+          echo "Extracted branch name: '${{ steps.extract.outputs.branchName }}'"
+          echo "ParentKey length: ${#parentKey}"
+          echo "BranchName length: ${#branchName}"
+        env:
+          parentKey: ${{ steps.extract.outputs.parentKey }}
+          branchName: ${{ steps.extract.outputs.branchName }}
+
+      - name: Create Jira issue (with parent)
+        id: create-with-parent
+        if: ${{ steps.extract.outputs.parentKey != '' && steps.extract.outputs.parentKey != null }}
         uses: atlassian/gajira-create@v3
         with:
-          project: SKP
+          project: MEOW
           issuetype: Task
           summary: '${{ github.event.issue.title }}'
           description: '${{ steps.md2jira.outputs.output-text }}'
           fields: |
             {
               "parent": {
-                "key": "${{ steps.issue-parser.outputs.issueparser_parentKey }}"
+                "key": "${{ steps.extract.outputs.parentKey }}"
               }
             }
 
-      - name: Log created issue
-        run: echo "Jira Issue ${{ steps.issue-parser.outputs.parentKey }}/${{ steps.create.outputs.issue }} was created"
+      - name: Create Jira issue (no parent)
+        id: create-no-parent
+        if: ${{ steps.extract.outputs.parentKey == '' || steps.extract.outputs.parentKey == null }}
+        uses: atlassian/gajira-create@v3
+        with:
+          project: MEOW
+          issuetype: Task
+          summary: '${{ github.event.issue.title }}'
+          description: '${{ steps.md2jira.outputs.output-text }}'
 
-      - name: Checkout develop code
+      - name: Log created issue
+        run: |
+          echo "Created Jira issue: ${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }}"
+
+      - name: Checkout develop branch
         uses: actions/checkout@v4
         with:
           ref: develop
 
-      - name: Create branch with Ticket number
+      - name: Create branch with ticket number
         run: |
-          ISSUE_NUMBER="${{ steps.create.outputs.issue }}"
-          ISSUE_TITLE="${{ steps.issue-parser.outputs.issueparser_branch}}"
-          BRANCH_NAME="${ISSUE_NUMBER}-$(echo ${ISSUE_TITLE} | sed 's/ /-/g')"
-          git checkout -b "${BRANCH_NAME}"
-          git push origin "${BRANCH_NAME}"
+          ISSUE_NUMBER="${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }}"
+          BRANCH_NAME="${ISSUE_NUMBER}-$(echo '${{ steps.extract.outputs.branchName }}' | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]')"
+          git checkout -b "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
 
       - name: Update issue title
         uses: actions-cool/issues-helper@v3
         with:
           actions: 'update-issue'
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: '[${{ steps.create.outputs.issue }}] ${{ github.event.issue.title }}'
+          title: '[${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }}] ${{ github.event.issue.title }}'
 
       - name: Add comment with Jira issue link
         uses: actions-cool/issues-helper@v3
@@ -87,5 +131,4 @@ jobs:
           actions: 'create-comment'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
-          body: 'Jira Issue Created: [${{ steps.create.outputs.issue }}](${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.create.outputs.issue }})'
-      
+          body: 'Jira Issue Created: [${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }}](${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }})'
