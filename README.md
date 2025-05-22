@@ -35,14 +35,15 @@
 
 ---
 
-## 🛠️ 기술 스택
+## 🛠️ 기술 스택 (Tech Stack)
 
-| 구분 | 기술 |
-|------|------|
-| **언어/프레임워크** | [Next.js (App Router)](https://nextjs.org/docs/app/building-your-application/routing) + TypeScript |
-| **스타일링** | [Tailwind CSS](https://tailwindcss.com/) |
-| **상태 관리** | [React Query](https://tanstack.com/query/latest) + [Zustand](https://github.com/pmndrs/zustand) |
-| **라우팅** | Next.js 내장 App Router + [next-route](https://github.com/jeremyben/next-route) |
+| 🧩 구분 | 🚀 기술 |
+|--------|--------|
+| **언어 / 프레임워크** | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white) + ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) |
+| **스타일링** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white) |
+| **상태 관리** | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white) + ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=Zustand&logoColor=white) |
+| **라우팅** | Next.js App Router (기본 내장) + [next-route](https://github.com/jeremyben/next-route) |
+
 
 ---
 
