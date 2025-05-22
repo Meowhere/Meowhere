@@ -8,7 +8,7 @@
 
 | 강희정 | 고서영 | 김승민 | 김영호 | 김희성 | 차경훈 |
 |--------|--------|--------|--------|--------|--------|
-| [@tansxx](https://github.com/tansxx) | [@K0seoyoung](https://github.com/K0seoyoung) | [@KingsMinn](https://github.com/KingsMinn) | [@numi8462](https://github.com/numi8462) | [@huiseong29](https://github.com/huiseong29) | [@yujeongchoi](https://github.com/yujeongchoi) |
+| [@tansxx](https://github.com/tansxx) | [@K0seoyoung](https://github.com/K0seoyoung) | [@KingsMinn](https://github.com/KingsMinn) | [@numi8462](https://github.com/numi8462) | [@huiseong29](https://github.com/huiseong29) | [@](https://github.com/) |
 | <img src="https://avatars.githubusercontent.com/u/159680008?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134926158?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134246428?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/135202559?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/000000000?v=4" width="100"/> |
 
 
