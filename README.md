@@ -147,7 +147,6 @@ MEOWHERE/
 ├── tailwind.config.js
 ├── tsconfig.json
 └── README.md
-
 ```
 
 ---
@@ -204,7 +203,7 @@ MEOWHERE/
 ### 예시
 
 ```bash
-✨ Feat: 위키 카드 컴포넌트 생성
+✨ Feat: 버튼 컴포넌트 생성
 ```
 
 ---

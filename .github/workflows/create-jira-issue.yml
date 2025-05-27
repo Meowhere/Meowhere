@@ -1,0 +1,134 @@
+name: Create Jira issue
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  create-issue:
+    name: Create Jira issue
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to Jira
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Convert markdown to Jira Syntax
+        uses: peter-evans/jira2md@v1
+        id: md2jira
+        with:
+          input-text: |
+            ### Github Issue Link
+            - ${{ github.event.issue.html_url }}
+
+            ${{ github.event.issue.body }}
+          mode: md2jira
+
+      - name: Extract parentKey and branch from issue body
+        id: extract
+        run: |
+          BODY="${{ github.event.issue.body }}"
+          
+          # Debug: Print the entire body
+          echo "=== Full Issue Body ==="
+          echo "$BODY"
+          echo "======================="
+          
+          # Extract parent key - look for content between the ticket number header and next header
+          PARENT_KEY=$(echo "$BODY" | sed -n '/### 🎟️ 상위 작업 (Ticket Number)/,/### /p' | sed '1d;$d' | grep -v '^$' | head -n1 | xargs)
+          
+          # Extract branch name - look for content between branch header and next header  
+          BRANCH_NAME=$(echo "$BODY" | sed -n '/### 🌳 브랜치명 (Branch)/,/### /p' | sed '1d;$d' | grep -v '^$' | head -n1 | xargs)
+          
+          # Alternative extraction method using awk (more reliable)
+          PARENT_KEY_ALT=$(echo "$BODY" | awk '/### 🎟️ 상위 작업 \(Ticket Number\)/{getline; while(getline && !/^###/){if(NF>0){print $0; exit}}}' | xargs)
+          BRANCH_NAME_ALT=$(echo "$BODY" | awk '/### 🌳 브랜치명 \(Branch\)/{getline; while(getline && !/^###/){if(NF>0){print $0; exit}}}' | xargs)
+          
+          # Use alternative method if primary fails
+          if [ -z "$PARENT_KEY" ] && [ -n "$PARENT_KEY_ALT" ]; then
+            PARENT_KEY="$PARENT_KEY_ALT"
+          fi
+          
+          if [ -z "$BRANCH_NAME" ] && [ -n "$BRANCH_NAME_ALT" ]; then
+            BRANCH_NAME="$BRANCH_NAME_ALT"
+          fi
+          
+          echo "parentKey=$PARENT_KEY" >> $GITHUB_OUTPUT
+          echo "branchName=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Debug extracted values
+        run: |
+          echo "Extracted parentKey: '${{ steps.extract.outputs.parentKey }}'"
+          echo "Extracted branch name: '${{ steps.extract.outputs.branchName }}'"
+          echo "ParentKey length: ${#parentKey}"
+          echo "BranchName length: ${#branchName}"
+        env:
+          parentKey: ${{ steps.extract.outputs.parentKey }}
+          branchName: ${{ steps.extract.outputs.branchName }}
+
+      - name: Create Jira issue (with parent)
+        id: create-with-parent
+        if: ${{ steps.extract.outputs.parentKey != '' && steps.extract.outputs.parentKey != null }}
+        uses: atlassian/gajira-create@v3
+        with:
+          project: MEOW
+          issuetype: Task
+          summary: '${{ github.event.issue.title }}'
+          description: '${{ steps.md2jira.outputs.output-text }}'
+          fields: |
+            {
+              "parent": {
+                "key": "${{ steps.extract.outputs.parentKey }}"
+              }
+            }
+
+      - name: Create Jira issue (no parent)
+        id: create-no-parent
+        if: ${{ steps.extract.outputs.parentKey == '' || steps.extract.outputs.parentKey == null }}
+        uses: atlassian/gajira-create@v3
+        with:
+          project: MEOW
+          issuetype: Task
+          summary: '${{ github.event.issue.title }}'
+          description: '${{ steps.md2jira.outputs.output-text }}'
+
+      - name: Log created issue
+        run: |
+          echo "Created Jira issue: ${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }}"
+
+      - name: Checkout develop branch
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - name: Create branch with ticket number
+        run: |
+          ISSUE_NUMBER="${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }}"
+          BRANCH_NAME="${ISSUE_NUMBER}-$(echo '${{ steps.extract.outputs.branchName }}' | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]')"
+          git checkout -b "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
+
+      - name: Update issue title
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'update-issue'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: '[${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }}] ${{ github.event.issue.title }}'
+
+      - name: Add comment with Jira issue link
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: 'Jira Issue Created: [${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }}](${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.create-with-parent.outputs.issue || steps.create-no-parent.outputs.issue }})'
