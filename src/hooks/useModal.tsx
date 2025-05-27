@@ -5,38 +5,43 @@ import { ModalProps } from '../types/modal.types';
 export const useModal = () => {
   const { openModal, closeModal, isOpen } = useModalStore();
 
-  const confirm = (options: {
+  const review = (options: {
     title?: string;
-    message: string;
+    content: string;
     confirmText?: string;
     cancelText?: string;
     onConfirm?: () => void;
     onCancel?: () => void;
   }) => {
     openModal({
-      size: 'desktop',
+      title: '후기 작성',
       preventBackdropClose: true,
       children: (
-        <div className="space-y-4">
-          <p className="text-sm">{options.message}</p>
-          <div className="flex justify-end space-x-2">
+        <div className="flex flex-col space-y-4">
+          <p className="text-sm text-center">{options.content}</p>
+          <p className="text-sm text-center">{options.content}</p>
+          <p className="text-sm text-center">{options.content}</p>
+          <p className="text-sm text-center">{options.content}</p>
+          <p className="text-sm text-center">{options.content}</p>
+          <p className="text-sm text-center">{options.content}</p>
+          <div className="flex justify-center space-x-2">
             <button
               onClick={() => {
                 options.onCancel?.();
                 closeModal();
               }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
-              {options.cancelText || '취소'}
+              {options.cancelText || '아니요'}
             </button>
             <button
               onClick={() => {
                 options.onConfirm?.();
                 closeModal();
               }}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 text-sm font-medium text-white bg-primary-300 rounded-md hover:bg-primary-200"
             >
-              {options.confirmText || '확인'}
+              {options.confirmText || '취소하기'}
             </button>
           </div>
         </div>
@@ -44,27 +49,37 @@ export const useModal = () => {
     });
   };
 
-  const alert = (options: {
-    title?: string;
+  const confirm = (options: {
     message: string;
     confirmText?: string;
+    cancelText?: string;
     onConfirm?: () => void;
+    onCancel?: () => void;
   }) => {
     openModal({
-      size: 'desktop',
+      type: 'alert',
       preventBackdropClose: true,
       children: (
-        <div className="space-y-4">
-          <p className="text-sm">{options.message}</p>
-          <div className="flex justify-end">
+        <div className="flex flex-col space-y-4 gap-8">
+          <p className="text-sm text-center">{options.message}</p>
+          <div className="flex justify-center space-x-2">
+            <button
+              onClick={() => {
+                options.onCancel?.();
+                closeModal();
+              }}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            >
+              {options.cancelText || '아니요'}
+            </button>
             <button
               onClick={() => {
                 options.onConfirm?.();
                 closeModal();
               }}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 text-sm font-medium text-white bg-primary-300 rounded-md hover:bg-primary-200 focus:outline-none focus:ring-2"
             >
-              {options.confirmText || '확인'}
+              {options.confirmText || '취소하기'}
             </button>
           </div>
         </div>
@@ -84,7 +99,7 @@ export const useModal = () => {
     closeModal,
     isOpen,
     confirm,
-    alert,
+    review,
     openBottomSheet,
   };
 };

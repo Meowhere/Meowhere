@@ -1,10 +1,9 @@
 export interface ModalProps {
+  title?: string;
   children: React.ReactNode;
-  size?: 'desktop' | 'tablet' | 'mobile';
-  showCloseButton?: boolean;
   onClose?: () => void;
   preventBackdropClose?: boolean;
-  type?: 'modal' | 'bottomSheet';
+  type?: 'modal' | 'bottomSheet' | 'alert';
   height?: 'auto' | 'half' | 'full';
 }
 

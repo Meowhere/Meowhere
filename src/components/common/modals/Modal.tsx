@@ -3,6 +3,8 @@
 import { useModalStore } from '@/src/store/modalStore';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import CloseIcon from '@/public/icons/close-icon.svg';
+import Image from 'next/image';
 
 const Modal = () => {
   const { isOpen, modalProps, closeModal } = useModalStore();
@@ -23,6 +25,7 @@ const Modal = () => {
     };
   }, [isOpen]);
 
+  // 모달 닫기
   const handleClose = () => {
     if (modalProps?.onClose) {
       modalProps.onClose();
@@ -30,21 +33,14 @@ const Modal = () => {
     closeModal();
   };
 
+  // 백그라운드 클릭시 모달 닫기
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget && !modalProps?.preventBackdropClose) {
       handleClose();
     }
   };
 
-  const getSizeClasses = (size: string = 'desktop') => {
-    const sizeMap = {
-      desktop: 'max-w-[28rem]',
-      tablet: 'max-w-[28rem]',
-      mobile: 'max-w-[24rem]',
-    };
-    return sizeMap[size as keyof typeof sizeMap] || sizeMap.desktop;
-  };
-
+  // 바텀 시트 높이 조절
   const getHeightClasses = (height: string = 'auto') => {
     const heightMap = {
       auto: 'max-h-[90vh]',
@@ -140,9 +136,12 @@ const Modal = () => {
   if (!isOpen || !modalProps) return null;
 
   const isBottomSheet = modalProps.type === 'bottomSheet';
+  const isAlert = modalProps.type === 'alert';
+
+  console.log(modalProps.type);
 
   // 일반 모달 렌더링
-  if (!isBottomSheet) {
+  if (!isBottomSheet && !isAlert) {
     return createPortal(
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
@@ -150,29 +149,46 @@ const Modal = () => {
       >
         <div
           className={`
-            relative mx-4 w-full ${getSizeClasses(modalProps.size)}
-            animate-in fade-in-0 zoom-in-95 duration-200
-            rounded-lg bg-white p-6 shadow-lg
-            dark:bg-gray-900
+            relative w-full h-full mt-12 md:max-w-md md:h-auto md:rounded-[1.5rem] md:mt-0 animate-in fade-in-0 zoom-in-95 duration-200 rounded-t-[1.5rem] bg-white p-6 shadow-lg
           `}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          {modalProps.showCloseButton !== false && (
-            <div className="mb-4 flex items-center justify-between">
+          {modalProps.title && (
+            <div className="relative mb-4 flex items-center justify-center">
+              <h2 className="font-medium text-gray-800">{modalProps.title}</h2>
               <button
                 onClick={handleClose}
-                className="rounded-sm p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-500 dark:hover:text-gray-300"
+                className="absolute right-0 rounded-sm p-1"
               >
-                X
+                <Image src={CloseIcon} alt="close" width={24} height={24} />
               </button>
             </div>
           )}
 
           {/* Content */}
-          <div className="text-gray-700 dark:text-gray-300">
-            {modalProps.children}
-          </div>
+          <div className="text-gray-700">{modalProps.children}</div>
+        </div>
+      </div>,
+      document.body
+    );
+  }
+
+  // 경고 모달 렌더링
+  if (isAlert) {
+    return createPortal(
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+        onClick={handleBackdropClick}
+      >
+        <div
+          className={`
+            relative mx-4 w-[28rem] animate-in fade-in-0 zoom-in-95 duration-200 rounded-[1.5rem] bg-white p-6 shadow-lg
+          `}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Content */}
+          <div className="text-gray-700">{modalProps.children}</div>
         </div>
       </div>,
       document.body
@@ -191,7 +207,6 @@ const Modal = () => {
           fixed bottom-0 left-0 right-0 w-full
           animate-in slide-in-from-bottom duration-300
           rounded-t-xl bg-white shadow-lg
-          dark:bg-gray-900
           ${getHeightClasses(modalProps.height)}
           ${isDragging ? 'transition-none' : 'transition-transform'}
         `}
@@ -206,31 +221,24 @@ const Modal = () => {
           onTouchStart={handleDragHandleTouchStart}
           onMouseDown={handleDragHandleMouseDown}
         >
-          <div className="h-1 w-12 rounded-full bg-gray-300 dark:bg-gray-600" />
+          <div className="h-1 w-12 rounded-full bg-gray-300" />
         </div>
 
         {/* Header */}
-        {(modalProps.title || modalProps.showCloseButton !== false) && (
-          <div className="flex items-center justify-between px-6 pb-4">
-            {modalProps.title && (
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {modalProps.title}
-              </h2>
-            )}
-            {modalProps.showCloseButton !== false && (
-              <button
-                onClick={handleClose}
-                className="rounded-sm p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-gray-500 dark:hover:text-gray-300"
-              >
-                X
-              </button>
-            )}
+        {modalProps.title && (
+          <div className="flex items-center justify-end px-6 pb-4">
+            <button
+              onClick={handleClose}
+              className="rounded-sm p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <Image src={CloseIcon} alt="close" width={24} height={24} />
+            </button>
           </div>
         )}
 
         {/* Content */}
         <div
-          className="px-6 pb-6 text-gray-700 dark:text-gray-300 overflow-y-auto"
+          className="px-6 pb-6 text-gray-700 overflow-y-auto"
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
