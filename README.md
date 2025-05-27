@@ -96,7 +96,7 @@ MEOWHERE/
 │   │   │       ├── page.tsx
 │   │   │       └── components/
 │
-│   ├── components/                     # ✅ 공통 컴포넌트
+│   ├── components/                     # 공통 컴포넌트
 │   │   ├── layout/
 │   │   │   ├── navbar/
 │   │   │   │   ├── Navbar.tsx
