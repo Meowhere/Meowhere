@@ -1,5 +1,3 @@
 export default function Home() {
-  return (
-    <div>meowhere</div>
-  );
+  return <div className="text-primary-300">meowhere</div>;
 }
