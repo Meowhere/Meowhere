@@ -1,21 +1,19 @@
 # 🐾🐱 어디가냥
 
-> **“어디가냥은 쉼이 필요한 모두를 위한 체험 예약 플랫폼입니다.”**  
+> **“어디가냥은 쉼이 필요한 모두를 위한 체험 예약 플랫폼입니다.”**
 
 ---
 
 ## 👩‍💻 팀 소개
 
-| 강희정 | 고서영 | 김승민 | 김영호 | 김희성 | 차경훈 |
-|--------|--------|--------|--------|--------|--------|
-| [@tansxx](https://github.com/tansxx) | [@K0seoyoung](https://github.com/K0seoyoung) | [@KingsMinn](https://github.com/KingsMinn) | [@numi8462](https://github.com/numi8462) | [@huiseong29](https://github.com/huiseong29) | [@](https://github.com/) |
-| <img src="https://avatars.githubusercontent.com/u/159680008?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134926158?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134246428?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/135202559?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/000000000?v=4" width="100"/> |
-
+| 강희정                                                                         | 고서영                                                                         | 김승민                                                                         | 김영호                                                                         | 김희성                                                                         |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| [@tansxx](https://github.com/tansxx)                                           | [@K0seoyoung](https://github.com/K0seoyoung)                                   | [@KingsMinn](https://github.com/KingsMinn)                                     | [@numi8462](https://github.com/numi8462)                                       | [@huiseong29](https://github.com/huiseong29)                                   |
+| <img src="https://avatars.githubusercontent.com/u/159680008?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134926158?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134246428?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/135202559?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"/> |
 
 ---
 
 ## 🔗 배포 주소
-
 
 ---
 
@@ -29,85 +27,204 @@
 
 - 🗺️ 위치 기반 체험 지도 탐색
 - 📅 캘린더 뷰를 통한 예약일 선택
-- 👥 판매자/체험자 겸용 플랫폼 구조
-- 🐣 병아리 테마의 감성 UI
 - 💬 체험 후기, 등록, 관리 기능 포함
 
 ---
 
 ## 🛠️ 기술 스택 (Tech Stack)
 
-| 🧩 구분 | 🚀 기술 |
-|--------|--------|
-| **언어 / 프레임워크** | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white) + ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) |
-| **스타일링** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white) |
-| **상태 관리** | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white) + ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=Zustand&logoColor=white) |
-| **라우팅** | Next.js App Router (기본 내장) + [next-route](https://github.com/jeremyben/next-route) |
-
+| 🧩 구분               | 🚀 기술                                                                                                                                                                                                                     |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **언어 / 프레임워크** | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white) + ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)    |
+| **스타일링**          | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)                                                                                                       |
+| **상태 관리**         | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white) + ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=Zustand&logoColor=white) |
+| **라우팅**            | Next.js App Router (기본 내장) + [next-route](https://github.com/jeremyben/next-route)                                                                                                                                      |
 
 ---
 
 ## 📁 폴더 구조
 
 ```bash
-Meowhere/
-├── app/                 # App Router 전용 폴더
-│   ├── api/             # api route
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/          # 공통 UI 컴포넌트
-├── features/            # 도메인 단위 기능
-├── hooks/               # 커스텀 훅
-├── libs/                # Zustand, API 클라이언트 등
-├── public/              # 정적 리소스
-├── styles/              # Tailwind config, global styles
-└── utils/               # 유틸 함수 모음
+MEOWHERE/
+├── .github/
+├── node_modules/
+├── public/
+│   └── fonts/
+│       └── PretendardVariable.woff2
+│
+├── src/
+│   ├── app/                            # App Router 구조
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── not-found.tsx
+│   │   ├── api/                        # API Routes
+│   │   │   ├── auth/
+│   │   │   ├── experiences/
+│   │   │   ├── reservations/
+│   │   │   ├── reviews/
+│   │   │   ├── notifications/
+│   │   │   ├── users/
+│   │   │   └── upload/
+│   │   │
+│   │   ├── main/                       # 메인 페이지
+│   │   │   ├── page.tsx
+│   │   │   └── components/
+│   │   │
+│   │   ├── account/
+│   │   │   └── page.tsx
+│   │   │
+│   │   ├── experiences/
+│   │   │   └── [id]/
+│   │   │       ├── page.tsx
+│   │   │       └── components/
+│   │   │
+│   │   ├── my-page/
+│   │   │   ├── page.tsx
+│   │   │   ├── components/
+│   │   │   ├── reservations/
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── edit/
+│   │   │   │   │   └── [id]/page.tsx
+│   │   │   │   └── components/
+│   │   │   ├── my-experiences/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── components/
+│   │   │   ├── favorites/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── components/
+│   │   │   └── notifications/
+│   │   │       ├── page.tsx
+│   │   │       └── components/
+│
+│   ├── components/                     # ✅ 공통 컴포넌트
+│   │   ├── layout/
+│   │   │   ├── navbar/
+│   │   │   │   ├── Navbar.tsx
+│   │   │   │   └── UserMenu.tsx
+│   │   │   └── Footer.tsx
+│   │   │
+│   │   ├── auth/
+│   │   │   └── AuthModal.tsx
+│   │   │
+│   │   └── common/
+│   │       ├── buttons/
+│   │       ├── inputs/
+│   │       ├── dropdowns/
+│   │       ├── chips/
+│   │       ├── filters/
+│   │       ├── pagination/
+│   │       └── modals/
+│
+│   ├── constants/                      # 라우트 상수 등
+│   │   └── routes.ts
+│
+│   ├── lib/                            # 유틸 및 라이브러리
+│   │   └── react-query/
+│   │       ├── queryClient.ts
+│   │       └── ReactQueryProvider.tsx
+│
+│   ├── services/                       # API 호출 함수
+│
+│   ├── store/                          # Zustand 상태 관리
+│   │   └── uiStore.ts
+│
+│   ├── hooks/                          # 커스텀 훅들
+│
+│   ├── styles/                         # 전역 스타일
+│
+│   ├── types/                          # 전역 타입 정의
+│   │   └── next-route.d.ts
+│
+│
+├── .vscode/
+│   └── settings.json                  # Prettier 설정 (optional)
+├── .gitignore
+├── .prettierrc
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js
+├── tsconfig.json
+└── README.md
+
 ```
 
 ---
 
 ## 🌱 브랜치 네이밍 규칙
 
-| 브랜치 종류 | 네이밍 규칙 예시 |
-|-------------|------------------|
+| 브랜치 종류 | 네이밍 규칙 예시                             |
+| ----------- | -------------------------------------------- |
 | 기능 개발   | `feature/{기능-설명}` → `feature/map-filter` |
 | 버그 수정   | `fix/{버그-설명}` → `fix/reservation-button` |
-| 문서 작업   | `docs/{문서-내용}` → `docs/readme-update` |
-| 핫픽스       | `hotfix/{이슈-설명}` → `hotfix/deploy-error` |
+| 문서 작업   | `docs/{문서-내용}` → `docs/readme-update`    |
+| 핫픽스      | `hotfix/{이슈-설명}` → `hotfix/deploy-error` |
 
 ---
 
-## 📝 커밋 컨벤션
+## 🧾 네이밍 규칙
+
+| 항목      | 방식             | 예시                |
+| --------- | ---------------- | ------------------- |
+| 폴더명    | kebab-case       | user-profile        |
+| 컴포넌트  | PascalCase       | MeowCard.tsx        |
+| 이미지    | kebab-case       | logo-icon.png       |
+| 변수/함수 | camelCase        | fetchMeowData       |
+| 환경변수  | UPPER_SNAKE_CASE | NEXT_PUBLIC_API_URL |
+
+---
+
+---
+
+## 🌿 Git Branch 전략
+
+| 브랜치명    | 목적                  |
+| ----------- | --------------------- |
+| `main`      | 배포 전용 브랜치      |
+| `develop`   | 통합 개발 브랜치      |
+| `feature/*` | 기능 개발 단위 브랜치 |
+| `fix/*`     | 버그 수정 브랜치      |
+| `docs/*`    | 문서 관련 브랜치      |
+
+---
+
+## 💬 커밋 메시지 컨벤션
+
+| 태그     | 의미              |
+| -------- | ----------------- |
+| Feat     | ✨ 기능 추가      |
+| Fix      | 🐛 버그 수정      |
+| Style    | 💄 스타일 변경    |
+| Docs     | 📝 문서 변경      |
+| Refactor | 🔨 리팩토링       |
+| Test     | ✅ 테스트 코드    |
+| Chore    | 🔧 기타 설정 변경 |
+
+### 예시
 
 ```bash
-[타입] 명확한 제목
-
-상세 설명 (필요 시)
-
-이슈 연결: #번호
+✨ Feat: 위키 카드 컴포넌트 생성
 ```
 
-| 타입 | 설명 |
-|------|------|
-| ✨ Feat | 새로운 기능 추가 |
-| 🐛 Fix | 버그 수정 |
-| 💄 Style | UI 및 포맷 수정 |
-| 🔨 Refactor | 리팩토링 |
-| 📚 Docs | 문서 작업 |
-| ✅ Test | 테스트 코드 |
-| 🔧 Chore | 설정 변경 등 기타 |
-
 ---
 
-## 🔃 PR & Issue 작성 규칙
+### 🌈 이모지 가이드
 
-| 항목 | 내용 |
-|------|------|
-| Summary | 변경 요약 |
-| Changes | 주요 변경 내용 |
-| Checklist | 테스트, 설명, 브랜치 확인 등 |
-| Screenshots | UI 변경 시 캡처 필수 |
-| References | 관련 이슈 or 링크 |
-
----
-
+| 이모지 | 의미                |
+| ------ | ------------------- |
+| 🎨     | 코드 형식/구조 개선 |
+| 📰     | 새 파일 추가        |
+| ✨     | 새로운 기능         |
+| 📝     | 사소한 변경         |
+| 💄     | UI / 스타일 수정    |
+| 🐎     | 성능 개선           |
+| 📚     | 문서 수정           |
+| 🐛     | 버그 수정           |
+| 🚑     | 핫픽스              |
+| 🔥     | 코드 삭제           |
+| 🚜     | 구조 변경           |
+| 🔨     | 리팩토링            |
+| 💎     | 새 릴리즈           |
+| 🔖     | 버전 태그           |
+| 🚀     | 배포                |
