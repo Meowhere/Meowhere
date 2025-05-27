@@ -11,7 +11,6 @@
 | [@tansxx](https://github.com/tansxx)                                           | [@K0seoyoung](https://github.com/K0seoyoung)                                   | [@KingsMinn](https://github.com/KingsMinn)                                     | [@numi8462](https://github.com/numi8462)                                       | [@huiseong29](https://github.com/huiseong29)                                   |
 | <img src="https://avatars.githubusercontent.com/u/159680008?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134926158?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134246428?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/135202559?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"/> |
 
-
 ---
 
 ## 🔗 배포 주소
@@ -46,19 +45,108 @@
 ## 📁 폴더 구조
 
 ```bash
-Meowhere/
-├── app/                 # App Router 전용 폴더
-│   ├── api/             # api route
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/          # 공통 UI 컴포넌트
-├── features/            # 도메인 단위 기능
-├── hooks/               # 커스텀 훅
-├── libs/                # Zustand, API 클라이언트 등
-├── public/              # 정적 리소스
-├── styles/              # Tailwind config, global styles
-├── services/            # API 호출
-└── utils/               # 유틸 함수 모음
+MEOWHERE/
+├── .github/
+├── node_modules/
+├── public/
+│   └── fonts/
+│       └── PretendardVariable.woff2
+│
+├── src/
+│   ├── app/                            # App Router 구조
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── not-found.tsx
+│   │   ├── api/                        # API Routes
+│   │   │   ├── auth/
+│   │   │   ├── experiences/
+│   │   │   ├── reservations/
+│   │   │   ├── reviews/
+│   │   │   ├── notifications/
+│   │   │   ├── users/
+│   │   │   └── upload/
+│   │   │
+│   │   ├── main/                       # 메인 페이지
+│   │   │   ├── page.tsx
+│   │   │   └── components/
+│   │   │
+│   │   ├── account/
+│   │   │   └── page.tsx
+│   │   │
+│   │   ├── experiences/
+│   │   │   └── [id]/
+│   │   │       ├── page.tsx
+│   │   │       └── components/
+│   │   │
+│   │   ├── my-page/
+│   │   │   ├── page.tsx
+│   │   │   ├── components/
+│   │   │   ├── reservations/
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── edit/
+│   │   │   │   │   └── [id]/page.tsx
+│   │   │   │   └── components/
+│   │   │   ├── my-experiences/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── components/
+│   │   │   ├── favorites/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── components/
+│   │   │   └── notifications/
+│   │   │       ├── page.tsx
+│   │   │       └── components/
+│
+│   ├── components/                     # 공통 컴포넌트
+│   │   ├── layout/
+│   │   │   ├── navbar/
+│   │   │   │   ├── Navbar.tsx
+│   │   │   │   └── UserMenu.tsx
+│   │   │   └── Footer.tsx
+│   │   │
+│   │   ├── auth/
+│   │   │   └── AuthModal.tsx
+│   │   │
+│   │   └── common/
+│   │       ├── buttons/
+│   │       ├── inputs/
+│   │       ├── dropdowns/
+│   │       ├── chips/
+│   │       ├── filters/
+│   │       ├── pagination/
+│   │       └── modals/
+│
+│   ├── constants/                      # 라우트 상수 등
+│   │   └── routes.ts
+│
+│   ├── lib/                            # 유틸 및 라이브러리
+│   │   └── react-query/
+│   │       ├── queryClient.ts
+│   │       └── ReactQueryProvider.tsx
+│
+│   ├── services/                       # API 호출 함수
+│
+│   ├── store/                          # Zustand 상태 관리
+│   │   └── uiStore.ts
+│
+│   ├── hooks/                          # 커스텀 훅들
+│
+│   ├── styles/                         # 전역 스타일
+│
+│   ├── types/                          # 전역 타입 정의
+│   │   └── next-route.d.ts
+│
+│
+├── .vscode/
+│   └── settings.json                  # Prettier 설정 (optional)
+├── .gitignore
+├── .prettierrc
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js
+├── tsconfig.json
+└── README.md
 ```
 
 ---
@@ -115,7 +203,7 @@ Meowhere/
 ### 예시
 
 ```bash
-✨ Feat: 위키 카드 컴포넌트 생성
+✨ Feat: 버튼 컴포넌트 생성
 ```
 
 ---
