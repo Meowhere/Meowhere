@@ -2,17 +2,17 @@ import { useModalStore } from '@/src/store/modalStore';
 import { ReviewModalProps } from '@/src/types/modal.types';
 
 type Props = {
-  data: ReviewModalProps;
+  props: ReviewModalProps;
 };
 
-export default function ReviewModal({ data }: Props) {
+export default function ReviewModal({ props }: Props) {
   const { closeModal } = useModalStore();
 
   return (
     <div className="flex flex-col flex-grow gap-2">
       {/*임시 데이터*/}
       <div className="flex-grow justify-center">
-        <p className="text-sm text-center">{data.title}</p>
+        <p className="text-sm text-center">{props.title}</p>
       </div>
       <div className="flex justify-center items-end space-x-2">
         <button
@@ -25,7 +25,7 @@ export default function ReviewModal({ data }: Props) {
         </button>
         <button
           onClick={() => {
-            data.onConfirm?.();
+            props.onConfirm?.();
             closeModal();
           }}
           className="px-4 py-2 text-sm font-medium text-white bg-primary-300 rounded-md hover:bg-primary-200"
