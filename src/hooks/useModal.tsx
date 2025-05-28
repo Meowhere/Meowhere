@@ -6,10 +6,10 @@ import ReviewModal from '../components/common/modals/ReviewModal';
 export const useModal = () => {
   const { openModal, closeModal, isOpen } = useModalStore();
 
-  const review = (options: ReviewModalProps) => {
+  const review = (data: ReviewModalProps) => {
     openModal({
-      title: '후기 작성',
-      children: <ReviewModal options={options} />,
+      header: '후기 작성',
+      children: <ReviewModal data={data} />,
     });
   };
 

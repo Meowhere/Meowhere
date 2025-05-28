@@ -150,9 +150,9 @@ const Modal = () => {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          {modalProps.title && (
+          {modalProps.header && (
             <div className="relative mb-4 flex items-center justify-center">
-              <h2 className="font-medium text-gray-800">{modalProps.title}</h2>
+              <h2 className="font-medium text-gray-800">{modalProps.header}</h2>
               <button
                 onClick={handleClose}
                 className="absolute right-0 rounded-sm p-1"
@@ -223,7 +223,7 @@ const Modal = () => {
         </div>
 
         {/* Header */}
-        {modalProps.title && (
+        {modalProps.header && (
           <div className="flex items-center justify-end px-6 pb-4">
             <button
               onClick={handleClose}

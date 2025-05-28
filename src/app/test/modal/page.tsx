@@ -7,7 +7,10 @@ export default function ModalTest() {
   // 후기 모달 예시
   const handleReview = () => {
     review({
-      content: '함께 배우면 즐거운 스트릿 댄스',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      schedules: null,
+      headCount: 12,
+      price: 100000,
       onConfirm: () => {
         console.log('취소됨');
         closeModal();

@@ -1,5 +1,7 @@
+import { Schedule } from './activity.types';
+
 export interface ModalProps {
-  title?: string;
+  header?: string;
   children: React.ReactNode;
   onClose?: () => void;
   type?: 'modal' | 'bottomSheet' | 'alert'; // 모달 타입
@@ -14,9 +16,11 @@ export interface ModalState {
 }
 
 export interface ReviewModalProps {
-  title?: string;
-  content: string;
-  cancelText?: string;
+  header?: string;
+  title: string;
+  schedules: Schedule | null;
+  headCount: number;
+  price: number;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
