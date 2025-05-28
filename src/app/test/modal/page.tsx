@@ -2,48 +2,21 @@
 import { useModal } from '@/src/hooks/useModal';
 
 export default function ModalTest() {
-  const { openModal, review, confirm, openBottomSheet, closeModal } =
-    useModal();
+  const { review, confirm, openBottomSheet, closeModal } = useModal();
 
-  const handleCustomModal = () => {
-    openModal({
-      onClose: () => {
-        closeModal;
+  // 후기 모달 예시
+  const handleReview = () => {
+    review({
+      title: '후기 작성',
+      content: '함께 배우면 즐거운 스트릿 댄스',
+      onConfirm: () => {
+        console.log('취소됨');
+        closeModal();
       },
-      children: (
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">이름</label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="이름을 입력하세요"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">이메일</label>
-            <input
-              type="email"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="이메일을 입력하세요"
-            />
-          </div>
-          <div className="flex justify-end space-x-2 pt-4">
-            <button
-              onClick={closeModal}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800"
-            >
-              취소
-            </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-              저장
-            </button>
-          </div>
-        </div>
-      ),
     });
   };
 
+  // 바텀 시트 예시
   const handleBottomSheet = () => {
     openBottomSheet({
       height: 'auto',
@@ -67,6 +40,7 @@ export default function ModalTest() {
     });
   };
 
+  // 확인 모달 예시
   const handleConfirm = () => {
     confirm({
       message: '예약을 취소하시겠어요?',
@@ -76,22 +50,8 @@ export default function ModalTest() {
     });
   };
 
-  const handleReview = () => {
-    review({
-      title: '후기 작성',
-      content: '함께 배우면 즐거운 스트릿 댄스',
-      onConfirm: () => {
-        console.log('취소됨');
-      },
-      onClose: () => closeModal,
-    });
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center gap-10">
-      <button className="p-[1rem] border-2" onClick={handleCustomModal}>
-        일반 모달
-      </button>
       <button className="p-[1rem] border-2" onClick={handleReview}>
         후기 모달
       </button>

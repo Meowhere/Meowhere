@@ -138,17 +138,15 @@ const Modal = () => {
   const isBottomSheet = modalProps.type === 'bottomSheet';
   const isAlert = modalProps.type === 'alert';
 
-  // 일반 모달 렌더링
+  // 일반 모달 렌더링 레이아웃
   if (!isBottomSheet && !isAlert) {
     return createPortal(
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-24 md:pt-0"
         onClick={handleBackdropClick}
       >
         <div
-          className={`
-            relative w-full h-full mt-12 md:max-w-md md:h-auto md:rounded-[1.5rem] md:mt-0 animate-in fade-in-0 zoom-in-95 duration-200 rounded-t-[1.5rem] bg-white p-6 shadow-lg
-          `}
+          className="relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem] animate-in fade-in-0 zoom-in-95 duration-200 rounded-t-[1.5rem] bg-white p-6 shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -165,14 +163,16 @@ const Modal = () => {
           )}
 
           {/* Content */}
-          <div className="text-gray-700">{modalProps.children}</div>
+          <div className="flex flex-col text-gray-700 flex-grow overflow-auto">
+            {modalProps.children}
+          </div>
         </div>
       </div>,
       document.body
     );
   }
 
-  // 경고 모달 렌더링
+  // 경고 모달 렌더링 레이아웃
   if (isAlert) {
     return createPortal(
       <div
@@ -193,7 +193,7 @@ const Modal = () => {
     );
   }
 
-  // 바텀 시트 렌더링
+  // 바텀 시트 렌더링 레이아웃
   return createPortal(
     <div
       className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"

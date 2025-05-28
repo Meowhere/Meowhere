@@ -10,9 +10,7 @@ export const useModal = () => {
     openModal({
       title: '후기 작성',
       preventBackdropClose: true,
-      children: (
-        <ReviewModal options={options}  />
-      ),
+      children: <ReviewModal options={options} />,
     });
   };
 
@@ -27,7 +25,7 @@ export const useModal = () => {
       type: 'alert',
       preventBackdropClose: true,
       children: (
-        <div className="flex flex-col space-y-4 gap-8">
+        <div className="flex flex-col space-y-4">
           <p className="text-sm text-center">{options.message}</p>
           <div className="flex justify-center space-x-2">
             <button
