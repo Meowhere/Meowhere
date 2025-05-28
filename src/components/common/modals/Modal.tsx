@@ -11,6 +11,7 @@ const Modal = () => {
   const [dragStart, setDragStart] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,29 +53,32 @@ const Modal = () => {
 
   // 바텀 시트 드래그 핸들러 (드래그 핸들 영역에서만)
   const handleDragHandleTouchStart = (e: React.TouchEvent) => {
-    if (modalProps?.type !== 'bottomSheet') return;
+    if (modalProps?.type === 'alert') return;
+    if (modalProps?.type !== 'bottomSheet' && window.innerWidth >= 768) return;
     e.stopPropagation();
     setDragStart(e.touches[0].clientY);
     setIsDragging(true);
   };
 
   const handleDragHandleMouseDown = (e: React.MouseEvent) => {
-    if (modalProps?.type !== 'bottomSheet') return;
+    if (modalProps?.type === 'alert') return;
+    if (modalProps?.type !== 'bottomSheet' && window.innerWidth >= 768) return;
     e.stopPropagation();
     setDragStart(e.clientY);
     setIsDragging(true);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (modalProps?.type !== 'bottomSheet' || !isDragging) return;
+    if (modalProps?.type === 'alert' || !isDragging) return;
+    if (modalProps?.type !== 'bottomSheet' && window.innerWidth >= 768) return;
     const currentY = e.touches[0].clientY;
     const offset = Math.max(0, currentY - dragStart);
     setDragOffset(offset);
   };
 
   const handleTouchEnd = () => {
-    if (modalProps?.type !== 'bottomSheet' || !isDragging) return;
-
+    if (modalProps?.type === 'alert' || !isDragging) return;
+    if (modalProps?.type !== 'bottomSheet' && window.innerWidth >= 768) return;
     const threshold = 100; // 100px 이상 드래그하면 닫기
     if (dragOffset > threshold) {
       handleClose();
@@ -86,7 +90,7 @@ const Modal = () => {
   };
 
   useEffect(() => {
-    if (isDragging && modalProps?.type === 'bottomSheet') {
+    if (isDragging && modalProps?.type !== 'alert') {
       const handleGlobalTouchMove = (e: TouchEvent) => {
         const offset = Math.max(0, e.touches[0].clientY - dragStart);
         setDragOffset(offset);
@@ -146,12 +150,20 @@ const Modal = () => {
         onClick={handleBackdropClick}
       >
         <div
-          className="relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem] animate-in fade-in-0 zoom-in-95 duration-200 rounded-t-[1.5rem] bg-white p-6 shadow-lg"
+          className={`relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem] animate-in max-md:slide-in-from-bottom duration-300 md:fade-in-0 md:zoom-in-95 rounded-t-[1.5rem] bg-white p-6 shadow-lg ${isDragging ? 'transition-none' : 'transition-transform'}`}
           onClick={(e) => e.stopPropagation()}
+          ref={modalRef}
+          style={{
+            transform: `translateY(${dragOffset}px)`,
+          }}
         >
           {/* Header */}
           {modalProps.header && (
-            <div className="relative mb-4 flex items-center justify-center">
+            <div
+              className="relative mb-4 flex items-center justify-center max-md:cursor-grab max-md:active:cursor-grabbing"
+              onTouchStart={handleDragHandleTouchStart}
+              onMouseDown={handleDragHandleMouseDown}
+            >
               <h2 className="font-medium text-gray-800">{modalProps.header}</h2>
               <button
                 onClick={handleClose}
@@ -163,7 +175,11 @@ const Modal = () => {
           )}
 
           {/* Content */}
-          <div className="flex flex-col text-gray-700 flex-grow overflow-auto">
+          <div
+            className="flex flex-col text-gray-700 flex-grow overflow-auto"
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {modalProps.children}
           </div>
         </div>
@@ -195,16 +211,13 @@ const Modal = () => {
 
   // 바텀 시트 렌더링 레이아웃
   return createPortal(
-    <div
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-      onClick={handleBackdropClick}
-    >
+    <div className="fixed inset-0 z-50" onClick={handleBackdropClick}>
       <div
         ref={bottomSheetRef}
         className={`
           fixed bottom-0 left-0 right-0 w-full
           animate-in slide-in-from-bottom duration-300
-          rounded-t-xl bg-white shadow-lg
+          rounded-t-xl bg-white/70 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl
           ${getHeightClasses(modalProps.height)}
           ${isDragging ? 'transition-none' : 'transition-transform'}
         `}
@@ -219,7 +232,7 @@ const Modal = () => {
           onTouchStart={handleDragHandleTouchStart}
           onMouseDown={handleDragHandleMouseDown}
         >
-          <div className="h-1 w-12 rounded-full bg-gray-300" />
+          <div className="h-1 w-24 rounded-full bg-white" />
         </div>
 
         {/* Header */}

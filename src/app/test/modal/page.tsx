@@ -53,7 +53,7 @@ export default function ModalTest() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center gap-10">
+    <div className="min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300">
       <button className="p-[1rem] border-2" onClick={handleReview}>
         후기 모달
       </button>
