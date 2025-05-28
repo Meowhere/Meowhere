@@ -83,6 +83,7 @@ export default function ModalTest() {
       onConfirm: () => {
         console.log('취소됨');
       },
+      onClose: () => closeModal,
     });
   };
 

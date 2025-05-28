@@ -138,8 +138,6 @@ const Modal = () => {
   const isBottomSheet = modalProps.type === 'bottomSheet';
   const isAlert = modalProps.type === 'alert';
 
-  console.log(modalProps.type);
-
   // 일반 모달 렌더링
   if (!isBottomSheet && !isAlert) {
     return createPortal(

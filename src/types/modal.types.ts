@@ -13,3 +13,12 @@ export interface ModalState {
   openModal: (props: ModalProps) => void;
   closeModal: () => void;
 }
+
+export interface ReviewModalProps {
+  title?: string;
+  content: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm?: () => void;
+  onClose?: () => void;
+}
