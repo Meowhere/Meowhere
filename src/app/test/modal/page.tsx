@@ -7,7 +7,6 @@ export default function ModalTest() {
   // 후기 모달 예시
   const handleReview = () => {
     review({
-      title: '후기 작성',
       content: '함께 배우면 즐거운 스트릿 댄스',
       onConfirm: () => {
         console.log('취소됨');

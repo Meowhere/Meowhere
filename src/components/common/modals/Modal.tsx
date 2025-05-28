@@ -35,7 +35,7 @@ const Modal = () => {
 
   // 백그라운드 클릭시 모달 닫기
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && !modalProps?.preventBackdropClose) {
+    if (e.target === e.currentTarget) {
       handleClose();
     }
   };

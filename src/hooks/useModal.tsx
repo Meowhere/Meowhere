@@ -9,7 +9,6 @@ export const useModal = () => {
   const review = (options: ReviewModalProps) => {
     openModal({
       title: '후기 작성',
-      preventBackdropClose: true,
       children: <ReviewModal options={options} />,
     });
   };
@@ -23,7 +22,6 @@ export const useModal = () => {
   }) => {
     openModal({
       type: 'alert',
-      preventBackdropClose: true,
       children: (
         <div className="flex flex-col space-y-4">
           <p className="text-sm text-center">{options.message}</p>
