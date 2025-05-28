@@ -9,7 +9,7 @@ export default function ReviewModal({ options }: Props) {
   const { closeModal } = useModalStore();
 
   return (
-    <div className="flex flex-col flex-grow">
+    <div className="flex flex-col flex-grow gap-2">
       {/*임시 데이터*/}
       <div className="flex-grow justify-center">
         <p className="text-sm text-center">{options.content}</p>

@@ -3,7 +3,7 @@
 import { useModalStore } from '@/src/store/modalStore';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import CloseIcon from '@/public/icons/close-icon.svg';
+import CloseIcon from '@/public/assets/icons/delete/ico-delete.svg';
 import Image from 'next/image';
 
 const Modal = () => {
