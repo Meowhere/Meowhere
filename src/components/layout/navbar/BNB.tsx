@@ -1,3 +1,3 @@
 export default function BNB() {
-  return <div>BNB</div>;
+  return <div className="fixed bottom-0 left-0">BNB</div>;
 }
