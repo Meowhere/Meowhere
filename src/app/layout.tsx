@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import "./globals.css";
+import "@/src/styles/globals.css";
 import localFont from "next/font/local";
 import ClientLayout from "./client-layout";
 

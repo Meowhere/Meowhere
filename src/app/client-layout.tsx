@@ -13,7 +13,7 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { isMobile, isTablet, isDesktop, width } = useBreakpoint();
+  const { isDesktop } = useBreakpoint();
 
   const showFooter = isDesktop || !pathname.startsWith("/my-page");
   const showBNB = !isDesktop && !pathname.startsWith("/activities");
