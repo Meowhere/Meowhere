@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import CloseIcon from '@/public/assets/icons/delete/ico-delete.svg';
 import Image from 'next/image';
+import clsx from 'clsx';
 
 const Modal = () => {
   const { isOpen, modalProps, closeModal } = useModalStore();
@@ -172,16 +173,21 @@ const Modal = () => {
   if (!isBottomSheet && !isAlert) {
     return createPortal(
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-24 md:pt-0"
+        className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-24 md:pt-0'
         onClick={handleBackdropClick}
-        role="presentation"
+        role='presentation'
       >
         <div
-          className={`relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem] animate-in max-md:slide-in-from-bottom duration-300 md:fade-in-0 md:zoom-in-95 rounded-t-[1.5rem] bg-white p-6 shadow-lg ${isDragging ? 'transition-none' : 'transition-transform'}`}
+          className={clsx(
+            'relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem]',
+            'animate-in max-md:slide-in-from-bottom duration-300 md:fade-in-0 md:zoom-in-95',
+            'rounded-t-[1.5rem] bg-white p-6 shadow-lg',
+            isDragging ? 'transition-none' : 'transition-transform'
+          )}
           onClick={(e) => e.stopPropagation()}
           ref={modalRef}
-          role="dialog"
-          aria-modal="true"
+          role='dialog'
+          aria-modal='true'
           aria-labelledby={modalProps.header ? modalTitleId : undefined}
           aria-describedby={modalId}
           tabIndex={-1}
@@ -192,20 +198,20 @@ const Modal = () => {
           {/* Header */}
           {modalProps.header && (
             <div
-              className="relative mb-4 flex items-center justify-center max-md:cursor-grab max-md:active:cursor-grabbing"
+              className='relative mb-4 flex items-center justify-center max-md:cursor-grab max-md:active:cursor-grabbing'
               onTouchStart={handleDragHandleTouchStart}
               onMouseDown={handleDragHandleMouseDown}
             >
-              <h2 id={modalTitleId} className="font-medium text-gray-800">
+              <h2 id={modalTitleId} className='font-medium text-gray-800'>
                 {modalProps.header}
               </h2>
               <button
                 onClick={handleClose}
-                className="absolute right-0 rounded-sm p-1"
-                aria-label="모달 닫기"
-                type="button"
+                className='absolute right-0 rounded-sm p-1'
+                aria-label='모달 닫기'
+                type='button'
               >
-                <Image src={CloseIcon} alt="" width={24} height={24} />
+                <Image src={CloseIcon} alt='' width={24} height={24} />
               </button>
             </div>
           )}
@@ -213,7 +219,7 @@ const Modal = () => {
           {/* Content */}
           <div
             id={modalId}
-            className="flex flex-col text-gray-700 flex-grow overflow-auto"
+            className='flex flex-col text-gray-700 flex-grow overflow-auto'
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
@@ -229,30 +235,30 @@ const Modal = () => {
   if (isAlert) {
     return createPortal(
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+        className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm'
         onClick={handleBackdropClick}
-        role="presentation"
+        role='presentation'
       >
         <div
           className={`
             relative mx-4 w-[28rem] animate-in fade-in-0 zoom-in-95 duration-200 rounded-[1.5rem] bg-white p-6 shadow-lg
           `}
           onClick={(e) => e.stopPropagation()}
-          role="alertdialog"
-          aria-modal="true"
+          role='alertdialog'
+          aria-modal='true'
           aria-labelledby={modalProps.header ? modalTitleId : undefined}
           aria-describedby={modalId}
           tabIndex={-1}
         >
           {/* Header (Alert의 경우 숨겨진 제목) */}
           {modalProps.header && (
-            <h2 id={modalTitleId} className="sr-only">
+            <h2 id={modalTitleId} className='sr-only'>
               {modalProps.header}
             </h2>
           )}
 
           {/* Content */}
-          <div id={modalId} className="text-gray-700">
+          <div id={modalId} className='text-gray-700'>
             {modalProps.children}
           </div>
         </div>
@@ -264,54 +270,54 @@ const Modal = () => {
   // 바텀 시트 렌더링 레이아웃
   return createPortal(
     <div
-      className="fixed inset-0 z-50"
+      className='fixed inset-0 z-50'
       onClick={handleBackdropClick}
-      role="presentation"
+      role='presentation'
     >
       <div
         ref={bottomSheetRef}
-        className={`
-          fixed bottom-0 left-0 right-0 w-full
-          animate-in slide-in-from-bottom duration-300
-          rounded-t-xl bg-white/70 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl
-          ${getHeightClasses(modalProps.height)}
-          ${isDragging ? 'transition-none' : 'transition-transform'}
-        `}
+        className={clsx(
+          'fixed bottom-0 left-0 right-0 w-full',
+          'animate-in slide-in-from-bottom duration-300',
+          'rounded-t-xl bg-white/70 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl',
+          getHeightClasses(modalProps.height),
+          isDragging ? 'transition-none' : 'transition-transform'
+        )}
         style={{
           transform: `translateY(${dragOffset}px)`,
         }}
         onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
+        role='dialog'
+        aria-modal='true'
         aria-labelledby={modalProps.header ? modalTitleId : undefined}
         aria-describedby={modalId}
         tabIndex={-1}
       >
         {/* Drag Handle - 드래그 가능한 영역 */}
         <div
-          className="flex justify-center py-3 cursor-grab active:cursor-grabbing"
+          className='flex justify-center py-3 cursor-grab active:cursor-grabbing'
           onTouchStart={handleDragHandleTouchStart}
           onMouseDown={handleDragHandleMouseDown}
-          aria-label="드래그하여 시트 이동"
-          role="button"
+          aria-label='드래그하여 시트 이동'
+          role='button'
           tabIndex={0}
         >
-          <div className="h-1 w-24 rounded-full bg-white" />
+          <div className='h-1 w-24 rounded-full bg-white' />
         </div>
 
         {/* Header */}
         {modalProps.header && (
-          <div className="flex items-center justify-end px-6 pb-4">
-            <h2 id={modalTitleId} className="sr-only">
+          <div className='flex items-center justify-end px-6 pb-4'>
+            <h2 id={modalTitleId} className='sr-only'>
               {modalProps.header}
             </h2>
             <button
               onClick={handleClose}
-              className="rounded-sm p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="시트 닫기"
-              type="button"
+              className='rounded-sm p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              aria-label='시트 닫기'
+              type='button'
             >
-              <Image src={CloseIcon} alt="" width={24} height={24} />
+              <Image src={CloseIcon} alt='' width={24} height={24} />
             </button>
           </div>
         )}
@@ -319,7 +325,7 @@ const Modal = () => {
         {/* Content */}
         <div
           id={modalId}
-          className="px-6 pb-6 text-gray-700 overflow-y-auto"
+          className='px-6 pb-6 text-gray-700 overflow-y-auto'
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >

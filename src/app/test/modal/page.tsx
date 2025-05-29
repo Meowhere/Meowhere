@@ -23,18 +23,18 @@ export default function ModalTest() {
     openBottomSheet({
       height: 'auto',
       children: (
-        <div className="space-y-2">
-          <button className="w-full text-left p-3 hover:bg-gray-100 rounded-md transition-colors">
+        <div className='space-y-2'>
+          <button className='w-full text-left p-3 hover:bg-gray-100 rounded-md transition-colors'>
             📷 사진 촬영
           </button>
-          <button className="w-full text-left p-3 hover:bg-gray-100 rounded-md transition-colors">
+          <button className='w-full text-left p-3 hover:bg-gray-100 rounded-md transition-colors'>
             🖼️ 갤러리에서 선택
           </button>
-          <button className="w-full text-left p-3 hover:bg-gray-100 rounded-md transition-colors">
+          <button className='w-full text-left p-3 hover:bg-gray-100 rounded-md transition-colors'>
             📁 파일에서 선택
           </button>
-          <hr className="my-2" />
-          <button className="w-full text-left p-3 hover:bg-gray-100 rounded-md transition-colors text-red-600">
+          <hr className='my-2' />
+          <button className='w-full text-left p-3 hover:bg-gray-100 rounded-md transition-colors text-red-600'>
             🗑️ 삭제
           </button>
         </div>
@@ -53,14 +53,14 @@ export default function ModalTest() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300">
-      <button className="p-[1rem] border-2" onClick={handleReview}>
+    <div className='min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300'>
+      <button className='p-[1rem] border-2' onClick={handleReview}>
         후기 모달
       </button>
-      <button className="p-[1rem] border-2" onClick={handleBottomSheet}>
+      <button className='p-[1rem] border-2' onClick={handleBottomSheet}>
         바텀 시트
       </button>
-      <button className="p-[1rem] border-2" onClick={handleConfirm}>
+      <button className='p-[1rem] border-2' onClick={handleConfirm}>
         확인 모달
       </button>
     </div>
