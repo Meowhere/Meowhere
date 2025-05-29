@@ -5,7 +5,7 @@ type KebabButtonProps = {
   className?: string;
 };
 
-export default function MeatballButton({
+export default function KebabButton({
   onToggle,
   className = '',
 }: KebabButtonProps) {
