@@ -11,8 +11,13 @@ export interface ModalProps {
 export interface ModalState {
   isOpen: boolean;
   modalProps: ModalProps | null;
+  isClosing: boolean;
+  closeHandler: (() => void) | null;
   openModal: (props: ModalProps) => void;
   closeModal: () => void;
+  resetModal: () => void;
+  setCloseHandler: (handler: () => void) => void;
+  setIsClosing: (closing: boolean) => void;
 }
 
 export interface ReviewModalProps {

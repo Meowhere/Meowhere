@@ -8,10 +8,17 @@ import Image from 'next/image';
 import clsx from 'clsx';
 
 const Modal = () => {
-  const { isOpen, modalProps, closeModal } = useModalStore();
+  const {
+    isOpen,
+    modalProps,
+    resetModal,
+    setCloseHandler,
+    isClosing,
+    setIsClosing,
+  } = useModalStore();
   const [dragStart, setDragStart] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const [isDragging, setIsDragging] = useState(false); // 드래그 애니메이션
   const modalRef = useRef<HTMLDivElement>(null);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
 
@@ -21,14 +28,17 @@ const Modal = () => {
 
   useEffect(() => {
     if (isOpen) {
+      setIsClosing(false);
       document.body.style.overflow = 'hidden';
       // 포커스 트랩을 위해 모달에 포커스 설정
       const modalElement = modalRef.current || bottomSheetRef.current;
       if (modalElement) {
         modalElement.focus();
       }
+      setCloseHandler(handleClose);
     } else {
       document.body.style.overflow = 'unset';
+      setIsClosing(false);
     }
 
     return () => {
@@ -55,10 +65,19 @@ const Modal = () => {
 
   // 모달 닫기
   const handleClose = () => {
+    if (isClosing) return;
+
     if (modalProps?.onClose) {
       modalProps.onClose();
     }
-    closeModal();
+
+    // 닫기 애니메이션 시작
+    setIsClosing(true);
+
+    // 애니메이션 완료 후 실제 모달 닫기
+    setTimeout(() => {
+      resetModal();
+    }, 300);
   };
 
   // 백그라운드 클릭시 모달 닫기
@@ -164,7 +183,7 @@ const Modal = () => {
     }
   }, [isDragging, dragStart, handleClose, modalProps?.type]);
 
-  if (!isOpen || !modalProps) return null;
+  if ((!isOpen && !isClosing) || !modalProps) return null;
 
   const isBottomSheet = modalProps.type === 'bottomSheet';
   const isAlert = modalProps.type === 'alert';
@@ -173,16 +192,23 @@ const Modal = () => {
   if (!isBottomSheet && !isAlert) {
     return createPortal(
       <div
-        className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-24 md:pt-0'
+        className={clsx(
+          'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-24 md:pt-0',
+          isClosing
+            ? 'animate-out fade-out-0 duration-300'
+            : 'animate-in fade-in-0 duration-300'
+        )}
         onClick={handleBackdropClick}
         role='presentation'
       >
         <div
           className={clsx(
-            'relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem]',
-            'animate-in max-md:slide-in-from-bottom duration-300 md:fade-in-0 md:zoom-in-95',
+            'relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem] focus:outline-none',
             'rounded-t-[1.5rem] bg-white p-6 shadow-lg',
-            isDragging ? 'transition-none' : 'transition-transform'
+            isDragging ? 'transition-none' : 'transition-transform',
+            isClosing
+              ? 'animate-out max-md:slide-out-to-bottom duration-300 md:fade-out-0 md:zoom-out-95'
+              : 'animate-in max-md:slide-in-from-bottom duration-300 md:fade-in-0 md:zoom-in-95'
           )}
           onClick={(e) => e.stopPropagation()}
           ref={modalRef}
@@ -235,14 +261,22 @@ const Modal = () => {
   if (isAlert) {
     return createPortal(
       <div
-        className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm'
+        className={clsx(
+          'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm',
+          isClosing
+            ? 'animate-out fade-out-0 duration-300'
+            : 'animate-in fade-in-0 duration-300'
+        )}
         onClick={handleBackdropClick}
         role='presentation'
       >
         <div
-          className={`
-            relative mx-4 w-[28rem] animate-in fade-in-0 zoom-in-95 duration-200 rounded-[1.5rem] bg-white p-6 shadow-lg
-          `}
+          className={clsx(
+            'relative mx-4 w-[28rem] rounded-[1.5rem] bg-white p-6 shadow-lg focus:outline-none',
+            isClosing
+              ? 'animate-out fade-out-0 zoom-out-95 duration-300'
+              : 'animate-in fade-in-0 zoom-in-95 duration-300'
+          )}
           onClick={(e) => e.stopPropagation()}
           role='alertdialog'
           aria-modal='true'
@@ -270,14 +304,19 @@ const Modal = () => {
   // 바텀 시트 렌더링 레이아웃
   return createPortal(
     <div
-      className='fixed inset-0 z-50'
+      className={clsx(
+        'fixed inset-0 z-50',
+        isClosing
+          ? 'animate-out slide-out-to-bottom duration-300'
+          : 'animate-in slide-in-from-bottom duration-300'
+      )}
       onClick={handleBackdropClick}
       role='presentation'
     >
       <div
         ref={bottomSheetRef}
         className={clsx(
-          'fixed bottom-0 left-0 right-0 w-full',
+          'fixed bottom-0 left-0 right-0 w-full focus:outline-none',
           'animate-in slide-in-from-bottom duration-300',
           'rounded-t-xl bg-white/70 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl',
           getHeightClasses(modalProps.height),
