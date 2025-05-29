@@ -1,15 +1,15 @@
-import { Metadata } from 'next';
-import './globals.css';
-import localFont from 'next/font/local';
-import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';
+import { Metadata } from "next";
+import "./globals.css";
+import localFont from "next/font/local";
+import ClientLayout from "./client-layout";
 
 export const metadata: Metadata = {
-  title: '어디가냥',
+  title: "어디가냥",
 };
 
 const pretendard = localFont({
-  src: '../../public/fonts/PretendardVariable.woff2',
-  display: 'swap',
+  src: "../../public/fonts/PretendardVariable.woff2",
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={pretendard.className}>
       <body>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
