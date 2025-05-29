@@ -26,7 +26,7 @@ export default function StarRating({
   };
 
   return (
-    <div className='flex gap-1 ${className}'>
+    <div className={`flex gap-1 ${className}`}>
       {Array.from({ length: 5 }).map((_, index) => (
         <StarButton
           key={index}
