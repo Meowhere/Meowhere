@@ -1,9 +1,27 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 html {
   font-size: 62.5%;
 }
 
 body {
-  font-family: "Pretendard", sans-serif;
+  font-family: 'Pretendard', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+input,
+textarea {
+  outline: none;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
