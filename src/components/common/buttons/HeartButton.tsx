@@ -1,11 +1,11 @@
 'use client';
 
-type HeartButtonProps = {
+interface HeartButtonProps {
   isLiked: boolean;
   onToggle: () => void;
   variant?: 'white' | 'black';
   className?: string;
-};
+}
 
 const getIconSrc = (isLiked: boolean, variant: 'white' | 'black') => {
   if (variant === 'black') {
@@ -14,9 +14,7 @@ const getIconSrc = (isLiked: boolean, variant: 'white' | 'black') => {
       : '/assets/icons/heart/ico-heart-bw.svg';
   }
 
-  return isLiked
-    ? '/assets/icons/heart/ico-heart-fill.svg'
-    : '/assets/icons/heart/ico-heart.svg';
+  return isLiked ? '/assets/icons/heart/ico-heart-fill.svg' : '/assets/icons/heart/ico-heart.svg';
 };
 
 export default function HeartButton({

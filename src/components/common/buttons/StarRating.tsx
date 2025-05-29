@@ -2,12 +2,12 @@
 
 import StarButton from './StarButton';
 
-type StarRatingProps = {
+interface StarRatingProps {
   value: number;
   onChange?: (value: number) => void;
   readOnly?: boolean;
   className?: string;
-};
+}
 
 export default function StarRating({
   value,
@@ -28,11 +28,7 @@ export default function StarRating({
   return (
     <div className={`flex gap-1 ${className}`}>
       {Array.from({ length: 5 }).map((_, index) => (
-        <StarButton
-          key={index}
-          filled={index < value}
-          onClick={() => handleClick(index)}
-        />
+        <StarButton key={index} filled={index < value} onClick={() => handleClick(index)} />
       ))}
     </div>
   );

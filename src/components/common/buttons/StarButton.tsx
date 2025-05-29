@@ -1,16 +1,12 @@
 'use client';
 
-type StarButtonProps = {
+interface StarButtonProps {
   filled: boolean;
   onClick: () => void;
   className?: string;
-};
+}
 
-export default function StarButton({
-  filled,
-  onClick,
-  className = '',
-}: StarButtonProps) {
+export default function StarButton({ filled, onClick, className = '' }: StarButtonProps) {
   return (
     <button
       type='button'
@@ -20,9 +16,7 @@ export default function StarButton({
     >
       <img
         src={
-          filled
-            ? '/assets/icons/star/ico-star-bw-fill.svg'
-            : '/assets/icons/star/ico-star-bw.svg'
+          filled ? '/assets/icons/star/ico-star-bw-fill.svg' : '/assets/icons/star/ico-star-bw.svg'
         }
         alt={filled ? '채워진 별' : '빈 별'}
         className='w-full h-full object-contain cursor-pointer'

@@ -2,12 +2,12 @@
 
 import { useState, MouseEventHandler } from 'react';
 
-type ArrowButtonProps = {
+interface ArrowButtonProps {
   direction?: 'left' | 'right' | 'down';
   isOpen?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   className?: string;
-};
+}
 
 export default function ArrowButton({
   direction = 'left',
@@ -34,8 +34,7 @@ export default function ArrowButton({
     return `${basePath}${fileName}`;
   };
 
-  const getRotationClass =
-    direction === 'down' && isOpen ? 'rotate-180' : 'rotate-0';
+  const getRotationClass = direction === 'down' && isOpen ? 'rotate-180' : 'rotate-0';
 
   return (
     <button

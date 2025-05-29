@@ -1,15 +1,13 @@
 'use client';
 
-type VisibilityToggleButtonProps = {
+interface VisibilityToggleButtonProps {
   isVisible: boolean;
   onToggle: () => void;
   className?: string;
-};
+}
 
 const getIconSrc = (isVisible: boolean) => {
-  return isVisible
-    ? '/assets/icons/ico-visibility-on.svg'
-    : '/assets/icons/ico-visibility-off.svg';
+  return isVisible ? '/assets/icons/ico-visibility-on.svg' : '/assets/icons/ico-visibility-off.svg';
 };
 
 export default function VisibilityToggleButton({

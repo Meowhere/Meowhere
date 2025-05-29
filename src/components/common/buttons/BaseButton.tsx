@@ -1,12 +1,12 @@
 'use client';
 
-type BaseButtonProps = {
+interface BaseButtonProps {
   variant?: 'primary' | 'disabled' | 'outline' | 'soft' | 'ghost';
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
   type?: 'button' | 'submit' | 'reset';
-};
+}
 
 const variantClasses = {
   primary: 'bg-primary-300 text-white',
