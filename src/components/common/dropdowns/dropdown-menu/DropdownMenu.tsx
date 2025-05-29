@@ -33,7 +33,12 @@ export default function DropdownMenu({
           )}
           <div className="divide-y divide-gray-100">
             {items.map((item, idx) => (
-              <DropdownItem key={idx} {...item} isMobile />
+              <DropdownItem
+                key={idx}
+                {...item}
+                isMobile
+                isDelete={item.isDelete}
+              />
             ))}
           </div>
         </div>
