@@ -14,15 +14,41 @@ const Modal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
 
+  // 접근성을 위한 고유 ID 생성
+  const modalId = `modal-${Math.random().toString(36).substr(2, 9)}`;
+  const modalTitleId = `modal-title-${Math.random().toString(36).substr(2, 9)}`;
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      // 포커스 트랩을 위해 모달에 포커스 설정
+      const modalElement = modalRef.current || bottomSheetRef.current;
+      if (modalElement) {
+        modalElement.focus();
+      }
     } else {
       document.body.style.overflow = 'unset';
     }
 
     return () => {
       document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  // ESC 키로 모달 닫기
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
@@ -135,7 +161,7 @@ const Modal = () => {
         document.removeEventListener('mouseup', handleGlobalMouseUp);
       };
     }
-  }, [isDragging, dragStart, dragOffset, modalProps?.type]);
+  }, [isDragging, dragStart, handleClose, modalProps?.type]);
 
   if (!isOpen || !modalProps) return null;
 
@@ -148,11 +174,17 @@ const Modal = () => {
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-24 md:pt-0"
         onClick={handleBackdropClick}
+        role="presentation"
       >
         <div
           className={`relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem] animate-in max-md:slide-in-from-bottom duration-300 md:fade-in-0 md:zoom-in-95 rounded-t-[1.5rem] bg-white p-6 shadow-lg ${isDragging ? 'transition-none' : 'transition-transform'}`}
           onClick={(e) => e.stopPropagation()}
           ref={modalRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={modalProps.header ? modalTitleId : undefined}
+          aria-describedby={modalId}
+          tabIndex={-1}
           style={{
             transform: `translateY(${dragOffset}px)`,
           }}
@@ -164,18 +196,23 @@ const Modal = () => {
               onTouchStart={handleDragHandleTouchStart}
               onMouseDown={handleDragHandleMouseDown}
             >
-              <h2 className="font-medium text-gray-800">{modalProps.header}</h2>
+              <h2 id={modalTitleId} className="font-medium text-gray-800">
+                {modalProps.header}
+              </h2>
               <button
                 onClick={handleClose}
                 className="absolute right-0 rounded-sm p-1"
+                aria-label="모달 닫기"
+                type="button"
               >
-                <Image src={CloseIcon} alt="close" width={24} height={24} />
+                <Image src={CloseIcon} alt="" width={24} height={24} />
               </button>
             </div>
           )}
 
           {/* Content */}
           <div
+            id={modalId}
             className="flex flex-col text-gray-700 flex-grow overflow-auto"
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -194,15 +231,30 @@ const Modal = () => {
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
         onClick={handleBackdropClick}
+        role="presentation"
       >
         <div
           className={`
             relative mx-4 w-[28rem] animate-in fade-in-0 zoom-in-95 duration-200 rounded-[1.5rem] bg-white p-6 shadow-lg
           `}
           onClick={(e) => e.stopPropagation()}
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby={modalProps.header ? modalTitleId : undefined}
+          aria-describedby={modalId}
+          tabIndex={-1}
         >
+          {/* Header (Alert의 경우 숨겨진 제목) */}
+          {modalProps.header && (
+            <h2 id={modalTitleId} className="sr-only">
+              {modalProps.header}
+            </h2>
+          )}
+
           {/* Content */}
-          <div className="text-gray-700">{modalProps.children}</div>
+          <div id={modalId} className="text-gray-700">
+            {modalProps.children}
+          </div>
         </div>
       </div>,
       document.body
@@ -211,7 +263,11 @@ const Modal = () => {
 
   // 바텀 시트 렌더링 레이아웃
   return createPortal(
-    <div className="fixed inset-0 z-50" onClick={handleBackdropClick}>
+    <div
+      className="fixed inset-0 z-50"
+      onClick={handleBackdropClick}
+      role="presentation"
+    >
       <div
         ref={bottomSheetRef}
         className={`
@@ -225,12 +281,20 @@ const Modal = () => {
           transform: `translateY(${dragOffset}px)`,
         }}
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={modalProps.header ? modalTitleId : undefined}
+        aria-describedby={modalId}
+        tabIndex={-1}
       >
         {/* Drag Handle - 드래그 가능한 영역 */}
         <div
           className="flex justify-center py-3 cursor-grab active:cursor-grabbing"
           onTouchStart={handleDragHandleTouchStart}
           onMouseDown={handleDragHandleMouseDown}
+          aria-label="드래그하여 시트 이동"
+          role="button"
+          tabIndex={0}
         >
           <div className="h-1 w-24 rounded-full bg-white" />
         </div>
@@ -238,17 +302,23 @@ const Modal = () => {
         {/* Header */}
         {modalProps.header && (
           <div className="flex items-center justify-end px-6 pb-4">
+            <h2 id={modalTitleId} className="sr-only">
+              {modalProps.header}
+            </h2>
             <button
               onClick={handleClose}
               className="rounded-sm p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="시트 닫기"
+              type="button"
             >
-              <Image src={CloseIcon} alt="close" width={24} height={24} />
+              <Image src={CloseIcon} alt="" width={24} height={24} />
             </button>
           </div>
         )}
 
         {/* Content */}
         <div
+          id={modalId}
           className="px-6 pb-6 text-gray-700 overflow-y-auto"
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
