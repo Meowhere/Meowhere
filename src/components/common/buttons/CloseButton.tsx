@@ -1,4 +1,4 @@
-'use Client';
+'use client';
 
 type CloseButtonProps = {
   size?: 'sm' | 'md' | 'lg';
@@ -19,14 +19,14 @@ export default function CloseButton({
 }: CloseButtonProps) {
   return (
     <button
-      type="button"
+      type='button'
       onClick={onClick}
-      aria-label="닫기"
+      aria-label='닫기'
       className={`p-1 ${className}`}
     >
       <img
-        src="/assets/icons/delete/ico-delete.svg"
-        alt="닫기 아이콘"
+        src='/assets/icons/delete/ico-delete.svg'
+        alt='닫기 아이콘'
         className={`${sizeMap[size]} object-contain`}
       />
     </button>

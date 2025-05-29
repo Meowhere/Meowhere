@@ -1,4 +1,4 @@
-'use Client';
+'use client';
 
 type KakaoLoginButtonProps = {
   onClick: () => void;
@@ -13,7 +13,7 @@ export default function KakaoLoginButton({
     <button
       type='button'
       onClick={onClick}
-      className={`relative w-[400px] h-[48px] px-4 border rounded-[10px] text-gray-600 border-gray-400 font-medium ${className}`}
+      className={`relative w-[25rem] h-[3rem] px-4 border rounded-[0.625rem] text-gray-600 border-gray-400 font-medium ${className}`}
       aria-label='카카오 로그인'
     >
       <div className='absolute left-4 top-1/2 -translate-y-1/2'>

@@ -1,4 +1,4 @@
-'use Client';
+'use client';
 
 type BaseButtonProps = {
   variant?: 'primary' | 'disabled' | 'outline' | 'soft' | 'ghost';
@@ -28,7 +28,7 @@ export default function BaseButton({
       type={type}
       onClick={onClick}
       disabled={variant === 'disabled'}
-      className={`w-full px-4 py-3 text-center rounded-[10px] font-semibold ${variantClasses[variant]} ${className}`}
+      className={`w-full px-4 py-3 text-center rounded-[0.625rem] font-semibold ${variantClasses[variant]} ${className}`}
     >
       {children}
     </button>
