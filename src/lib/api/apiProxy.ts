@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function authProxy(
+export async function apiProxy(
   req: NextRequest,
   endpoint: string
 ): Promise<NextResponse> {
@@ -10,6 +10,7 @@ export async function authProxy(
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    Accept: 'application/json',
   };
 
   // 토큰 있으면 헤더 추가
