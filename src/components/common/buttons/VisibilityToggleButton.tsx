@@ -1,19 +1,19 @@
 'use client';
 
+import VisibilityOffIcon from '../icons/VisibilityOffIcon';
+import VisibilityOnIcon from '../icons/VisibiltiyOnIcon';
+
 interface VisibilityToggleButtonProps {
   isVisible: boolean;
   onToggle: () => void;
   className?: string;
 }
 
-const getIconSrc = (isVisible: boolean) => {
-  return isVisible ? '/assets/icons/ico-visibility-on.svg' : '/assets/icons/ico-visibility-off.svg';
-};
-
 export default function VisibilityToggleButton({
   isVisible,
   onToggle,
   className = '',
+  ...rest
 }: VisibilityToggleButtonProps) {
   return (
     <button
@@ -21,12 +21,15 @@ export default function VisibilityToggleButton({
       onClick={onToggle}
       aria-label={isVisible ? '비밀번호 숨기기' : '비밀번호 보기'}
       className={`p-1 ${className}`}
+      {...rest}
     >
-      <img
-        src={getIconSrc(isVisible)}
-        alt={isVisible ? '눈 아이콘' : '가려진 눈 아이콘'}
-        className='w-6 h-6 object-contain'
-      />
+      <div className='w-full h-full cursor-pointer'>
+        {isVisible ? (
+          <VisibilityOnIcon className='w-full h-full text-[#9FA6B2]' />
+        ) : (
+          <VisibilityOffIcon className='w-full h-full text-[#9FA6B2]' />
+        )}
+      </div>
     </button>
   );
 }

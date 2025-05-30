@@ -1,18 +1,20 @@
 'use client';
 
+import KebobIcon from '../icons/KebabIcon';
+
 interface KebabButtonProps {
   onToggle: () => void;
   className?: string;
 }
 
-export default function KebabButton({ onToggle, className = '' }: KebabButtonProps) {
+export default function KebabButton({
+  onToggle,
+  className = 'text=[#79747E',
+  ...rest
+}: KebabButtonProps) {
   return (
-    <button type='button' onClick={onToggle} aria-label='옵션 열기' className={className}>
-      <img
-        src='/assets/icons/ico-kebab-menu.svg'
-        alt='더보기 아이콘'
-        className='w-10 h-10 object-contain'
-      />
+    <button type='button' onClick={onToggle} aria-label='옵션 열기' className={className} {...rest}>
+      <KebobIcon size={40} className='text-[#79747E]' />
     </button>
   );
 }

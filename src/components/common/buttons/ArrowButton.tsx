@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, MouseEventHandler } from 'react';
+import ArrowIcon from '../icons/ArrowIcon';
 
 interface ArrowButtonProps {
   direction?: 'left' | 'right' | 'down';
@@ -13,41 +14,27 @@ export default function ArrowButton({
   direction = 'left',
   isOpen = false,
   onClick,
-  className,
+  className = '',
+  ...rest
 }: ArrowButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const hasHoverEffect = direction === 'left' || direction === 'right';
-
-  const getArrowIconSrc = () => {
-    const basePath = '/assets/icons/arrow/';
-    const hoverDirections = ['left', 'right'] as const;
-    type HoverDirection = (typeof hoverDirections)[number];
-
-    const isHoverDirection = (dir: string): dir is HoverDirection =>
-      hoverDirections.includes(dir as HoverDirection);
-
-    const fileName =
-      isHoverDirection(direction) && isHovered
-        ? `btn-arrow-${direction}-active.svg`
-        : `btn-arrow-${direction}.svg`;
-
-    return `${basePath}${fileName}`;
-  };
 
   const getRotationClass = direction === 'down' && isOpen ? 'rotate-180' : 'rotate-0';
 
   return (
     <button
+      type='button'
       onClick={onClick}
       onMouseEnter={() => hasHoverEffect && setIsHovered(true)}
       onMouseLeave={() => hasHoverEffect && setIsHovered(false)}
       aria-label={`${direction} 화살표 버튼`}
-      className={`p-2 transition-transform ${className}`}
+      className={`p-2 transition-transform duration-200 ${getRotationClass}`}
+      {...rest}
     >
-      <img
-        src={getArrowIconSrc()}
-        alt={`${direction} 화살표 아이콘`}
-        className={`w-6 h-6 transition-transform duration-200 ${getRotationClass}`}
+      <ArrowIcon
+        direction={direction}
+        className={isHovered ? 'text-[#4B4B4B]' : 'text-[#A1A1A1]'}
       />
     </button>
   );
