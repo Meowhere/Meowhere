@@ -15,14 +15,14 @@ export default function DropdownTestPage() {
   };
 
   return (
-    <div className="flex flex-col gap-10 p-10 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold">DropdownAnimation Test</h1>
+    <div className='flex flex-col gap-10 p-10 bg-gray-50 min-h-screen'>
+      <h1 className='text-2xl font-bold'>DropdownAnimation Test</h1>
 
       {/* DrowndownTrigger Button */}
-      <div className="relative">
-        <h2 className="font-semibold mb-2">DrowndownTrigger Button</h2>
+      <div className='relative'>
+        <h2 className='font-semibold mb-2'>DrowndownTrigger Button</h2>
         <button
-          className="inline-block mx-auto w-full border border-black"
+          className='inline-block mx-auto w-full border border-black'
           onClick={handleButtonClick}
         >
           드롭다운 버튼

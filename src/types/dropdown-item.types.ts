@@ -1,18 +1,18 @@
 export interface ButtonItemProps {
-  type: "button";
+  type: 'button';
   label: string;
   onClick: () => void;
   isMobile?: boolean;
-  isDelete?: boolean;
+  isDanger?: boolean;
   disabled?: boolean;
 }
 
 export interface LinkItemProps {
-  type: "link";
+  type: 'link';
   label: string;
   href: string;
   isMobile?: boolean;
-  isDelete?: boolean;
+  isDanger?: boolean;
   disabled?: boolean;
 }
 

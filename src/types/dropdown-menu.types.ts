@@ -1,15 +1,15 @@
 export type DropdownItemLink = {
-  type: "link";
+  type: 'link';
   label: string;
   href: string;
-  isDelete?: boolean;
+  isDanger?: boolean;
 };
 
 export type DropdownItemButton = {
-  type: "button";
+  type: 'button';
   label: string;
   onClick: () => void;
-  isDelete?: boolean;
+  isDanger?: boolean;
 };
 
 export type DropdownItemData = DropdownItemLink | DropdownItemButton;

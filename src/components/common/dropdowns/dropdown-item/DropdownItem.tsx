@@ -11,12 +11,12 @@ export default function DropdownItem({
   type,
   label,
   isMobile = false,
-  isDelete = false,
+  isDanger = false,
   disabled = false,
   ...restProps
 }: DropdownItemProps) {
   const fontSizeClass = isMobile ? 'text-lg' : 'text-md';
-  const textColor = isDelete ? 'text-red-300' : 'text-gray-700';
+  const textColor = isDanger ? 'text-red-300' : 'text-gray-700';
   const radiusClass = isMobile ? 'group-hover:rounded-[0.7rem]' : '';
   const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : '';
 
@@ -56,7 +56,7 @@ export default function DropdownItem({
           }
         >
           <button
-            type="button"
+            type='button'
             onClick={onClick}
             disabled={disabled}
             className={commonClassNames}
