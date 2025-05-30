@@ -3,10 +3,18 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function apiProxy(
   req: NextRequest,
-  endpoint: string
+  endpoint: string,
+  tokenType: 'accessToken' | 'refreshToken' | null = 'accessToken'
 ): Promise<NextResponse> {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
+  let token: string | undefined;
+
+  // tokenType에 따라 다른 쿠키에서 토큰을 가져옴
+  if (tokenType === 'accessToken') {
+    token = cookieStore.get('accessToken')?.value;
+  } else if (tokenType === 'refreshToken') {
+    token = cookieStore.get('refreshToken')?.value;
+  }
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -14,8 +22,8 @@ export async function apiProxy(
   };
 
   // 토큰 있으면 헤더 추가
-  if (accessToken) {
-    headers['Authorization'] = `Bearer ${accessToken}`;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   const fetchOptions: RequestInit = {

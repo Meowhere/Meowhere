@@ -1,5 +1,4 @@
 import { apiProxy } from '@/src/lib/api/apiProxy';
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -21,35 +20,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 쿠키 설정
-    const cookieStore = await cookies();
-
-    // accessToken
-    cookieStore.set('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7, // 7일
-    });
-
-    // refreshToken
-    if (refreshToken) {
-      cookieStore.set('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24 * 30, // 30일
-        path: '/',
-      });
-    }
-
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         message: '로그인 성공',
         user: user,
       },
       { status: 200 }
     );
+
+    // 쿠키 설정
+    // accessToken
+    response.cookies.set('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7, // 7일
+      path: '/',
+    });
+
+    // refreshToken
+    response.cookies.set('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 30, // 30일
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.log(error);
     return NextResponse.json(
