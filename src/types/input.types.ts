@@ -1,13 +1,11 @@
 import { ChangeEventHandler } from 'react';
 
-export interface InputProps {
-  label: string;
-  type?: string;
-  value: string;
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  type: 'text' | 'email' | 'password' | 'number';
   onChange: ChangeEventHandler<HTMLInputElement>;
   error?: string;
   isPassword?: boolean;
-  className?: string;
 }
 export interface TextareaProps {
   value: string;

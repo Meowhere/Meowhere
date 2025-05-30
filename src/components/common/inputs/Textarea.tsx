@@ -4,8 +4,6 @@ import clsx from 'clsx';
 import { TextareaProps } from '../../../types/input.types';
 
 export default function Textarea({ value, onChange, error, className }: TextareaProps) {
-  const [isFocused, setIsFocused] = useState(false);
-
   return (
     <div className={clsx('w-full mb-6 relative', className)}>
       <div
@@ -17,8 +15,6 @@ export default function Textarea({ value, onChange, error, className }: Textarea
         <textarea
           value={value}
           onChange={onChange}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
           rows={36}
           maxLength={700}
           className='w-full bg-transparent border-none focus:outline-none resize-none text-sm font-regular text-gray-800 pt-6'
