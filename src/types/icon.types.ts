@@ -6,7 +6,7 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
   ariaHidden?: boolean;
 }
 
-export interface HeartIconProps extends IconProps {
+export interface LikeIconProps extends IconProps {
   isFilled?: boolean;
   showOverlay?: boolean;
 }
