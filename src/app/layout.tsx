@@ -6,6 +6,10 @@ import ModalProvider from '@/src/components/providers/ModalProvider';
 
 export const metadata: Metadata = {
   title: '어디가냥',
+  description: '이번 주말에 어디가냥',
+  icons: {
+    icon: '/assets/icons/ico-fav.svg',
+  },
 };
 
 const pretendard = localFont({
