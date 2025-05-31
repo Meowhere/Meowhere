@@ -1,19 +1,19 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { TokenType } from '@/src/types/api.types';
-import { logger } from '@/src/lib/api/logger';
+import { logger } from '@/src/utils/logger';
 import {
   getRequestBody,
   getTokenFromCookies,
   buildHeaders,
   buildFetchOptions,
-} from '@/src/lib/api/api-helpers';
+} from '@/src/utils/api-helpers';
 import {
   createSuccessResponse,
   createErrorResponse,
   createInternalErrorResponse,
-} from '@/src/lib/api/response-helpers';
-import { handleTokenRefresh } from '@/src/lib/api/token-refresh';
+} from '@/src/utils/response-helpers';
+import { handleTokenRefresh } from '@/src/utils/token-refresh';
 
 export async function apiProxy(
   req: NextRequest,
@@ -28,8 +28,9 @@ export async function apiProxy(
     isSuccess: boolean;
   }> {
     const token = useToken || getTokenFromCookies(cookieStore, tokenType);
-    const headers = buildHeaders(token);
+    const headers = buildHeaders(req, token);
     const fetchOptions = buildFetchOptions(req, headers, requestBody);
+    console.log(fetchOptions);
 
     try {
       const response = await fetch(
@@ -53,7 +54,7 @@ export async function apiProxy(
 
     // 401 에러시 토큰 갱신
     if (firstResponse.status === 401 && tokenType === 'accessToken') {
-      return await handleTokenRefresh(req, makeApiRequest, firstResponse);
+      return await handleTokenRefresh(makeApiRequest, firstResponse);
     }
 
     return await createErrorResponse(firstResponse);

@@ -3,9 +3,15 @@ import { cookies } from 'next/headers';
 import { TokenType, TokenRefreshResponse } from '@/src/types/api.types';
 import { logger } from './logger';
 
-export async function getRequestBody(req: NextRequest): Promise<string | null> {
+export async function getRequestBody(req: NextRequest): Promise<any | null> {
+  const contentType = req.headers.get('content-type');
+
   if (!['POST', 'PUT', 'PATCH'].includes(req.method)) {
     return null;
+  }
+
+  if (contentType?.includes('multipart/form-data')) {
+    return await req.formData();
   }
 
   try {
@@ -24,11 +30,19 @@ export function getTokenFromCookies(
   return cookieStore.get(tokenType)?.value;
 }
 
-export function buildHeaders(token?: string): Record<string, string> {
+export function buildHeaders(
+  req: NextRequest,
+  token?: string
+): Record<string, string> {
+  const contentType = req.headers.get('content-type');
+
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
     Accept: 'application/json',
   };
+
+  if (!contentType?.includes('multipart/form-data')) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;

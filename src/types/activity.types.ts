@@ -36,7 +36,6 @@ export interface ActivityFormData {
   bannerImageUrl: string;
   rating?: number;
   reviewCount?: number;
-  userId: number;
   subImageUrls: string[];
-  schedules?: Schedule[];
+  schedules?: Omit<Schedule, 'id'>[];
 }

@@ -1,5 +1,4 @@
 import { BASE_URL } from '@/src/constants/api';
-import { Activity } from '@/src/types/activity.types';
 import CreateActivity from './CreateActivity';
 
 export default async function ActivitiesPage() {
@@ -23,20 +22,20 @@ export default async function ActivitiesPage() {
     });
     return res.json();
   };
-  const activityData = await getActivityById(4225);
+  const activityData = await getActivityById(4236);
   const activity = activityData;
 
   // 체험 아이디로 스케줄 호출 테스트
   const getSchedule = async (id: number) => {
     const res = await fetch(
-      `${BASE_URL}/api/activities/${id}/available-schedule?year=2025&month=01`,
+      `${BASE_URL}/api/activities/${id}/available-schedule?year=2026&month=12`,
       {
         method: 'GET',
       }
     );
     return res.json();
   };
-  const scheduleData = await getSchedule(4225);
+  const scheduleData = await getSchedule(4236);
   const schedules = scheduleData;
 
   // 체험 아이디로 리뷰 호출 테스트
@@ -46,11 +45,11 @@ export default async function ActivitiesPage() {
     });
     return res.json();
   };
-  const reviewData = await getSchedule(4225);
+  const reviewData = await getReviews(4236);
   const reviews = reviewData;
 
   return (
-    <div>
+    <div className='space-x-6'>
       <h1>Activity Test</h1>
       <CreateActivity />
       <h2>체험 데이터:</h2>
