@@ -17,10 +17,17 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-animated": "^2.0.0",
     "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@svgr/babel-preset": "^8.1.0",
+    "@svgr/core": "^8.1.0",
+    "@svgr/hast-util-to-babel-ast": "^8.0.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -12,15 +12,16 @@ module.exports = {
         red: {
           300: '#FF472E',
           200: '#FFC2BA',
-          100: '#FFE4E0',
+          100: '#FFF2F0',
         },
         green: {
-          DEFAULT: '#00AC07',
+          200: '#27A00E',
+          100: '#ECFAE9',
         },
         blue: {
           300: '#0085FF',
-          200: '#2EB4FF',
-          100: '#E5F3FF',
+          200: '#0051FF',
+          100: '#EEF5FF',
         },
         black: '#1D1A17',
         gray: {
@@ -36,16 +37,25 @@ module.exports = {
           50: '#FBFAF9',
         },
         white: '#FFFFFF',
+        yellow: {
+          200: '#FFC23D',
+          100: '#FFF6E5',
+        },
+        purple: {
+          200: '#8407C7',
+          100: '#FCF0FF',
+        },
       },
       fontSize: {
-        '3xl': ['3.2rem', { lineHeight: '4.2rem' }],
-        '2xl': ['2.4rem', { lineHeight: '3.2rem' }],
-        '2lg': ['1.8rem', { lineHeight: '2.6rem' }],
-        xl: ['2rem', { lineHeight: '3.2rem' }],
-        lg: ['1.6rem', { lineHeight: '2.6rem' }],
-        md: ['1.4rem', { lineHeight: '2.4rem' }],
-        sm: ['1.3rem', { lineHeight: '2.2rem' }],
-        xs: ['1.2rem', { lineHeight: '1.8rem' }],
+        //1rem = 10px
+        '3xl': ['3.2rem', { lineHeight: '4.2rem' }], // 32px
+        '2xl': ['2.4rem', { lineHeight: '3.2rem' }], // 24px
+        '2lg': ['1.8rem', { lineHeight: '2.6rem' }], // 18px
+        xl: ['2rem', { lineHeight: '3.2rem' }], // 20px
+        lg: ['1.6rem', { lineHeight: '2.6rem' }], // 16px
+        md: ['1.4rem', { lineHeight: '2.4rem' }], // 14px
+        sm: ['1.3rem', { lineHeight: '2.2rem' }], // 13px
+        xs: ['1.2rem', { lineHeight: '1.8rem' }], // 12px
       },
       fontWeight: {
         regular: '400',
@@ -58,5 +68,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animated')],
 };
