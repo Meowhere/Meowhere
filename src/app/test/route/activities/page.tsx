@@ -39,6 +39,16 @@ export default async function ActivitiesPage() {
   const scheduleData = await getSchedule(4225);
   const schedules = scheduleData;
 
+  // 체험 아이디로 리뷰 호출 테스트
+  const getReviews = async (id: number) => {
+    const res = await fetch(`${BASE_URL}/api/activities/${id}/reviews`, {
+      method: 'GET',
+    });
+    return res.json();
+  };
+  const reviewData = await getSchedule(4225);
+  const reviews = reviewData;
+
   return (
     <div>
       <h1>Activity Test</h1>
@@ -47,6 +57,8 @@ export default async function ActivitiesPage() {
       <pre>{JSON.stringify(activity, null, 2)}</pre>
       <h2>스케줄 데이터:</h2>
       <pre>{JSON.stringify(schedules, null, 2)}</pre>
+      <h2>리뷰 데이터:</h2>
+      <pre>{JSON.stringify(reviews, null, 2)}</pre>
       <h2>체험 목록 데이터:</h2>
       <pre>{JSON.stringify(activities, null, 2)}</pre>
     </div>
