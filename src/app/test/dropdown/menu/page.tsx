@@ -10,12 +10,12 @@ import {
 
 export default function DropdownMenuTestPage() {
   return (
-    <div className="flex flex-col gap-10 p-10 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold">DropdownMenu Test Cases</h1>
+    <div className='flex flex-col gap-10 p-10 bg-gray-50 min-h-screen'>
+      <h1 className='text-2xl font-bold'>DropdownMenu Test Cases</h1>
 
       {/* 1. Desktop - 버튼만 */}
       <div>
-        <h2 className="font-semibold mb-2">1. Desktop - 버튼만</h2>
+        <h2 className='font-semibold mb-2'>1. Desktop - 버튼만</h2>
         <DropdownMenu
           items={[
             {
@@ -49,7 +49,7 @@ export default function DropdownMenuTestPage() {
 
       {/* 2. Desktop - 링크 + 버튼 */}
       <div>
-        <h2 className="font-semibold mb-2">2. Desktop - 링크 + 버튼</h2>
+        <h2 className='font-semibold mb-2'>2. Desktop - 링크 + 버튼</h2>
         <DropdownMenu
           items={[
             {
@@ -61,7 +61,7 @@ export default function DropdownMenuTestPage() {
               type: DROPDOWN_ITEM_TYPES.BUTTON,
               label: POST_ACTION_LABELS.DELETE,
               onClick: () => {},
-              isDelete: true,
+              isDanger: true,
             },
           ]}
         />
@@ -69,10 +69,10 @@ export default function DropdownMenuTestPage() {
 
       {/* 3. Mobile - title + 버튼 리스트 + 하단 취소 버튼 */}
       <div>
-        <h2 className="font-semibold mb-2">3. Mobile - 타이틀 + 취소 버튼</h2>
+        <h2 className='font-semibold mb-2'>3. Mobile - 타이틀 + 취소 버튼</h2>
         <DropdownMenu
           isMobile
-          title="체험 상태"
+          title='체험 상태'
           items={[
             {
               type: DROPDOWN_ITEM_TYPES.BUTTON,
@@ -110,12 +110,12 @@ export default function DropdownMenuTestPage() {
 
       {/* 4. Mobile - 링크 포함 + 하단 삭제 버튼 */}
       <div>
-        <h2 className="font-semibold mb-2">
+        <h2 className='font-semibold mb-2'>
           4. Mobile - 링크 포함 + 삭제 버튼
         </h2>
         <DropdownMenu
           isMobile
-          title="함께 배우면 즐거운 스트릿 댄스"
+          title='함께 배우면 즐거운 스트릿 댄스'
           items={[
             {
               type: DROPDOWN_ITEM_TYPES.LINK,
@@ -126,7 +126,7 @@ export default function DropdownMenuTestPage() {
               type: DROPDOWN_ITEM_TYPES.BUTTON,
               label: POST_ACTION_LABELS.DELETE,
               onClick: () => {},
-              isDelete: true,
+              isDanger: true,
             },
           ]}
           bottomButton={{
@@ -139,10 +139,10 @@ export default function DropdownMenuTestPage() {
 
       {/* 5. Mobile - 게시글 dropdown */}
       <div>
-        <h2 className="font-semibold mb-2">5. Mobile - 게시글 dropdown</h2>
+        <h2 className='font-semibold mb-2'>5. Mobile - 게시글 dropdown</h2>
         <DropdownMenu
           isMobile
-          title="게시물 관리"
+          title='게시물 관리'
           items={[
             {
               type: DROPDOWN_ITEM_TYPES.LINK,
@@ -153,7 +153,7 @@ export default function DropdownMenuTestPage() {
               type: DROPDOWN_ITEM_TYPES.BUTTON,
               label: POST_ACTION_LABELS.DELETE,
               onClick: () => {},
-              isDelete: true,
+              isDanger: true,
             },
           ]}
           bottomButton={{
