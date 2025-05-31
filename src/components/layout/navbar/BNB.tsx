@@ -1,15 +1,13 @@
 import { usePathname } from 'next/navigation';
 import SearchIcon from '@/src/components/common/icons/SearchIcon';
-import HeartIcon from '../../common/icons/HeartIcon';
-import NotificationIcon from '../../common/icons/NotificationIcon';
-import UserIcon from '../../common/icons/UserIcon';
-import { useRouter } from 'next/navigation';
+import LikeIcon from '@/src/components/common/icons/LikeIcon';
+import NotificationIcon from '@/src/components/common/icons/NotificationIcon';
+import UserIcon from '@/src/components/common/icons/UserIcon';
 import { useModal } from '@/src/hooks/useModal';
 import Link from 'next/link';
 
 export default function BNB() {
   const pathname = usePathname();
-  const router = useRouter();
   const { review, closeModal } = useModal();
 
   const handleReview = () => {
@@ -46,7 +44,7 @@ export default function BNB() {
         } flex flex-col items-center justify-center gap-1 w-[78px]`}
         href='/favorites'
       >
-        <HeartIcon />
+        <LikeIcon />
         <span>찜목록</span>
       </Link>
       <button
