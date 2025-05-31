@@ -9,20 +9,34 @@ export interface Activity {
   rating: number;
   reviewCount: number;
   userId: number;
-  subImages: SubImages;
-  schedules: Schedules;
+  subImageUrls: SubImage[];
+  schedules: Schedule[];
   createdAt: string;
   updatedAt: string;
 }
 
-export interface Schedules {
+export interface Schedule {
   id: string;
   date: string;
   startTime: string;
   endTime: string;
 }
 
-export interface SubImages {
+export interface SubImage {
   id: number;
   imageUrl: string;
+}
+
+export interface ActivityFormData {
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  rating?: number;
+  reviewCount?: number;
+  userId: number;
+  subImageUrls: string[];
+  schedules?: Schedule[];
 }

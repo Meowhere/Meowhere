@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { BASE_URL } from '@/src/constants/api';
 
-export default function QueryTest() {
+export default function AuthTest() {
   const [loginData, setLoginData] = useState(null);
   const [tokenRefreshData, setTokenRefreshData] = useState(null);
   const [error, setError] = useState(null);
