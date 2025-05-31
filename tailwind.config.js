@@ -47,14 +47,15 @@ module.exports = {
         },
       },
       fontSize: {
-        '3xl': ['3.2rem', { lineHeight: '4.2rem' }],
-        '2xl': ['2.4rem', { lineHeight: '3.2rem' }],
-        '2lg': ['1.8rem', { lineHeight: '2.6rem' }],
-        xl: ['2rem', { lineHeight: '3.2rem' }],
-        lg: ['1.6rem', { lineHeight: '2.6rem' }],
-        md: ['1.4rem', { lineHeight: '2.4rem' }],
-        sm: ['1.3rem', { lineHeight: '2.2rem' }],
-        xs: ['1.2rem', { lineHeight: '1.8rem' }],
+        //1rem = 10px
+        '3xl': ['3.2rem', { lineHeight: '4.2rem' }], // 32px
+        '2xl': ['2.4rem', { lineHeight: '3.2rem' }], // 24px
+        '2lg': ['1.8rem', { lineHeight: '2.6rem' }], // 18px
+        xl: ['2rem', { lineHeight: '3.2rem' }], // 20px
+        lg: ['1.6rem', { lineHeight: '2.6rem' }], // 16px
+        md: ['1.4rem', { lineHeight: '2.4rem' }], // 14px
+        sm: ['1.3rem', { lineHeight: '2.2rem' }], // 13px
+        xs: ['1.2rem', { lineHeight: '1.8rem' }], // 12px
       },
       fontWeight: {
         regular: '400',
