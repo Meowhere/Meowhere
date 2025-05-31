@@ -3,6 +3,7 @@ import { useId, useState } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { InputProps } from '../../../types/input.types';
+import VisibilityToggleButton from '@/src/components/common/buttons/VisibilityToggleButton';
 
 export default function Input({
   label,
@@ -14,11 +15,11 @@ export default function Input({
   className,
 }: InputProps) {
   const inputId = useId();
-  const [visible, setVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
   const isPasswordType = type === 'password';
-  const inputType = isPasswordType && !visible ? 'password' : 'text';
+  const inputType = isPasswordType && !isVisible ? 'password' : 'text';
   const shouldFloat = isFocused || !!value;
 
   return (
@@ -53,24 +54,10 @@ export default function Input({
             autoComplete='off'
           />
           {isPassword && (
-            <button
-              type='button'
-              tabIndex={-1}
-              className='ml-2'
-              onClick={() => setVisible((v) => !v)}
-            >
-              <Image
-                src={
-                  visible
-                    ? '/assets/icons/ico-visibility-on.svg'
-                    : '/assets/icons/ico-visibility-off.svg'
-                }
-                alt={visible ? '숨기기' : '보이기'}
-                width={24}
-                height={24}
-                style={{ display: 'block' }}
-              />
-            </button>
+            <VisibilityToggleButton
+              isVisible={isVisible}
+              onToggle={() => setIsVisible((prev) => !prev)}
+            />
           )}
         </div>
       </div>
