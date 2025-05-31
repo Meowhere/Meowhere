@@ -12,15 +12,16 @@ module.exports = {
         red: {
           300: '#FF472E',
           200: '#FFC2BA',
-          100: '#FFE4E0',
+          100: '#FFF2F0',
         },
         green: {
-          DEFAULT: '#00AC07',
+          200: '#27A00E',
+          100: '#ECFAE9',
         },
         blue: {
           300: '#0085FF',
-          200: '#2EB4FF',
-          100: '#E5F3FF',
+          200: '#0051FF',
+          100: '#EEF5FF',
         },
         black: '#1D1A17',
         gray: {
@@ -36,6 +37,14 @@ module.exports = {
           50: '#FBFAF9',
         },
         white: '#FFFFFF',
+        yellow: {
+          200: '#FFC23D',
+          100: '#FFF6E5',
+        },
+        purple: {
+          200: '#8407C7',
+          100: '#FCF0FF',
+        },
       },
       fontSize: {
         '3xl': ['3.2rem', { lineHeight: '4.2rem' }],
