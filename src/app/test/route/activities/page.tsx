@@ -50,7 +50,7 @@ export default async function ActivitiesPage() {
 
   return (
     <div className='space-x-6'>
-      <h1>Activity Test</h1>
+      <h1>Activity API Test</h1>
       <CreateActivity />
       <h2>체험 데이터:</h2>
       <pre>{JSON.stringify(activity, null, 2)}</pre>

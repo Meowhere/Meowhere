@@ -20,6 +20,7 @@ export async function apiProxy(
   endpoint: string,
   tokenType: TokenType = 'accessToken'
 ): Promise<NextResponse> {
+  console.log('cookie:', req.cookies.get('accessToken'));
   const cookieStore = await cookies();
   const requestBody = await getRequestBody(req);
 

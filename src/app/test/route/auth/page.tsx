@@ -81,7 +81,7 @@ export default function AuthTest() {
 
   return (
     <div>
-      <h1>Query Test Page</h1>
+      <h1>Auth API Test Page</h1>
       <h2>로그인 결과:</h2>
       <pre>{JSON.stringify(loginData, null, 2)}</pre>
       <h2>토큰 갱신 결과:</h2>
