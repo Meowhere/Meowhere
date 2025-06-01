@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/src/constants/api';
-import CreateActivity from './CreateActivity';
+import CreateActivity from './CreateActivityTest';
 
 export default async function ActivitiesPage() {
   // 체험 호출 테스트

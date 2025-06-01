@@ -1,5 +1,6 @@
 import { BASE_URL } from '@/src/constants/api';
 import { cookies } from 'next/headers';
+import MyActivityTest from './MyActivityTest';
 
 async function MyActivities() {
   const cookieStore = await cookies();
@@ -17,9 +18,9 @@ async function MyActivities() {
   };
   const data = await getMyActivities();
   // 내 체험 월별 예약 현황 조회 API test
-  const getMyActivitiesReservationByMonth = async (id: number) => {
+  const getMyActivitiesReservationByMonth = async (activityId: number) => {
     const res = await fetch(
-      `${BASE_URL}/api/my-activities/${id}/reservation-dashboard?year=2026&month=12`,
+      `${BASE_URL}/api/my-activities/${activityId}/reservation-dashboard?year=2026&month=12`,
       {
         method: 'GET',
         headers: {
@@ -66,13 +67,14 @@ async function MyActivities() {
   };
   const reservationByStatus = await getMyActivityReservationsByStatus(
     4236,
-    17334,
-    'pending'
+    17335,
+    'declined' // declined, pending, confirmed
   );
 
   return (
     <div>
       My Activities API Test
+      <MyActivityTest />
       <div className='text-md'>내 체험 목록:</div>
       <pre>{JSON.stringify(data, null, 2)}</pre>
       <div className='text-md'>내 체험 월별 예약 현황 조회:</div>

@@ -20,7 +20,6 @@ export async function apiProxy(
   endpoint: string,
   tokenType: TokenType = 'accessToken'
 ): Promise<NextResponse> {
-  console.log('cookie:', req.cookies.get('accessToken'));
   const cookieStore = await cookies();
   const requestBody = await getRequestBody(req);
 
@@ -31,7 +30,6 @@ export async function apiProxy(
     const token = useToken || getTokenFromCookies(cookieStore, tokenType);
     const headers = buildHeaders(req, token);
     const fetchOptions = buildFetchOptions(req, headers, requestBody);
-    console.log(fetchOptions);
 
     try {
       const response = await fetch(

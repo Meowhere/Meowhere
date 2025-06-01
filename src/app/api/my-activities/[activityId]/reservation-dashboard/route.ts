@@ -3,14 +3,14 @@ import { NextRequest } from 'next/server';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ activityId: string }> }
 ) {
-  const { id } = await params;
+  const { activityId } = await params;
 
   const url = new URL(req.url);
   const queryString = url.search;
 
-  const fullPath = `/my-activities/${id}/reservations${queryString}`;
+  const fullPath = `/my-activities/${activityId}/reservation-dashboard${queryString}`;
 
   return await apiProxy(req, fullPath);
 }

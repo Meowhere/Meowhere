@@ -3,11 +3,11 @@ import { NextRequest } from 'next/server';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ activityId: string }> }
 ) {
-  const { id } = await params;
+  const { activityId } = await params;
 
-  const fullPath = `/activities/${id}/reviews`;
+  const fullPath = `/activities/${activityId}/reviews`;
 
   return await apiProxy(req, fullPath);
 }

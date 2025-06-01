@@ -5,6 +5,13 @@ export async function createSuccessResponse(
   response: Response
 ): Promise<NextResponse> {
   try {
+    if (response.status === 204) {
+      return NextResponse.json(
+        { success: true, message: '삭제 성공' },
+        { status: 200 } // 204 대신 200 사용
+      );
+    }
+
     const data = await response.json();
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
