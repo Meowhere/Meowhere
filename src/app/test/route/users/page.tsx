@@ -27,6 +27,7 @@ export default function UserTestPage() {
     createdAt: '',
     updatedAt: '',
   });
+  const [imageFile, setImageFile] = useState<File>();
 
   const handleSignUp = async () => {
     const res = await fetch(`${BASE_URL}/api/users`, {
@@ -66,6 +67,37 @@ export default function UserTestPage() {
       method: 'PATCH',
       credentials: 'include',
       body: JSON.stringify(UpdateFormData),
+    });
+    const data = await res.json();
+    console.log(data);
+  };
+
+  const handleFileChange = (e: any) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      console.log('선택된 파일:', file.name);
+      console.log('파일 크기:', file.size, '바이트');
+      console.log('파일 타입:', file.type);
+      setImageFile(file);
+    } else {
+      console.log('선택된 파일 없음');
+    }
+  };
+  const uploadUserImage = async () => {
+    if (!imageFile) {
+      alert('업로드할 파일을 먼저 선택해주세요.');
+      console.error('업로드할 파일이 없습니다.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const res = await fetch(`${BASE_URL}/api/users/me/image`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
     });
     const data = await res.json();
     console.log(data);
@@ -139,6 +171,17 @@ export default function UserTestPage() {
       >
         정보 업데이트
       </button>
+      <div className='flex flex-col max-w-[200px] mt-10'>
+        유저 이미지 파일 업로드
+        <input type='file' accept='image/*' onChange={handleFileChange} />
+        <button
+          type='button'
+          className='p-2 bg-primary-300 rounded-md text-white'
+          onClick={uploadUserImage}
+        >
+          이미지 업로드
+        </button>
+      </div>
     </div>
   );
 }
