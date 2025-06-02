@@ -30,9 +30,7 @@ export default function AuthTest() {
             },
           });
           if (!res.ok) {
-            const errorData = await res
-              .json()
-              .catch(() => ({ message: '로그인 실패' }));
+            const errorData = await res.json().catch(() => ({ message: '로그인 실패' }));
             throw new Error(errorData.message || '로그인 실패');
           }
           return res.json();
@@ -43,23 +41,21 @@ export default function AuthTest() {
         console.log('로그인 성공:', loginRes);
 
         // 2. 토큰 갱신
-        const refreshToken = async () => {
-          const res = await fetch(`${BASE_URL}/api/auth/tokens`, {
-            method: 'POST',
-            credentials: 'include',
-          });
-          if (!res.ok) {
-            const errorData = await res
-              .json()
-              .catch(() => ({ message: '토큰 갱신 실패' }));
-            throw new Error(errorData.message || '토큰 갱신 실패');
-          }
-          return res.json();
-        };
+        // const refreshToken = async () => {
+        //   const res = await fetch(`${BASE_URL}/api/auth/tokens`, {
+        //     method: 'POST',
+        //     credentials: 'include',
+        //   });
+        //   if (!res.ok) {
+        //     const errorData = await res.json().catch(() => ({ message: '토큰 갱신 실패' }));
+        //     throw new Error(errorData.message || '토큰 갱신 실패');
+        //   }
+        //   return res.json();
+        // };
 
-        const tokenRes = await refreshToken();
-        setTokenRefreshData(tokenRes);
-        console.log('토큰 갱신 성공:', tokenRes);
+        // const tokenRes = await refreshToken();
+        // setTokenRefreshData(tokenRes);
+        // console.log('토큰 갱신 성공:', tokenRes);
       } catch (err: any) {
         setError(err.message || '알 수 없는 오류 발생');
         console.error('인증 작업 중 오류 발생:', err);
@@ -80,12 +76,12 @@ export default function AuthTest() {
   }
 
   return (
-    <div>
+    <div className='text-xl'>
       <h1>Auth API Test Page</h1>
       <h2>로그인 결과:</h2>
       <pre>{JSON.stringify(loginData, null, 2)}</pre>
-      <h2>토큰 갱신 결과:</h2>
-      <pre>{JSON.stringify(tokenRefreshData, null, 2)}</pre>
+      {/* <h2>토큰 갱신 결과:</h2>
+      <pre>{JSON.stringify(tokenRefreshData, null, 2)}</pre> */}
     </div>
   );
 }

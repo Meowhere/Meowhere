@@ -1,4 +1,5 @@
-// /api/auth/tokens/route.ts
+import { BASE_API_URL } from '@/src/constants/api';
+import { COOKIE_OPTIONS } from '@/src/constants/cookie';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,23 +8,17 @@ export async function POST(request: NextRequest) {
   const refreshToken = cookieStore.get('refreshToken')?.value;
 
   if (!refreshToken) {
-    return NextResponse.json(
-      { error: 'Refresh Token이 없습니다.' },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: 'Refresh Token이 없습니다.' }, { status: 401 });
   }
 
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/tokens`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      }
-    );
+    const res = await fetch(`${BASE_API_URL}/auth/tokens`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    });
 
     if (!res.ok) {
       const errorText = await res.text();
@@ -35,14 +30,10 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await res.json();
-    console.log('외부 API 응답:', data);
     const { accessToken } = data;
 
     if (!accessToken) {
-      return NextResponse.json(
-        { error: '인증 토큰을 받지 못했습니다.' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: '인증 토큰을 받지 못했습니다.' }, { status: 500 });
     }
 
     const response = NextResponse.json(
@@ -54,13 +45,7 @@ export async function POST(request: NextRequest) {
     );
 
     // 쿠키 설정
-    response.cookies.set('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 1, // 1시간
-      path: '/',
-    });
+    response.cookies.set('accessToken', accessToken, COOKIE_OPTIONS.accessToken);
 
     return response;
   } catch (error) {

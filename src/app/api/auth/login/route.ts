@@ -1,3 +1,4 @@
+import { COOKIE_OPTIONS } from '@/src/constants/cookie';
 import { apiProxy } from '@/src/lib/api/apiProxy';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -14,10 +15,7 @@ export async function POST(request: NextRequest) {
     const { accessToken, refreshToken, user } = data;
 
     if (!accessToken) {
-      return NextResponse.json(
-        { error: '인증 토큰을 받지 못했습니다.' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: '인증 토큰을 받지 못했습니다.' }, { status: 500 });
     }
 
     const response = NextResponse.json(
@@ -30,22 +28,10 @@ export async function POST(request: NextRequest) {
 
     // 쿠키 설정
     // accessToken
-    response.cookies.set('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 24, // 1일
-      path: '/',
-    });
+    response.cookies.set('accessToken', accessToken, COOKIE_OPTIONS.accessToken);
 
     // refreshToken
-    response.cookies.set('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7, // 7일
-      path: '/',
-    });
+    response.cookies.set('refreshToken', refreshToken, COOKIE_OPTIONS.refreshToken);
 
     return response;
   } catch (error) {

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { TokenRefreshResponse } from '@/src/types/api.types';
 import { logger } from './logger';
@@ -8,11 +8,10 @@ import {
   createLoginRequiredResponse,
 } from './response-helpers';
 import { BASE_URL } from '../constants/api';
+import { COOKIE_OPTIONS } from '../constants/cookie';
 
 export async function handleTokenRefresh(
-  makeApiRequest: (
-    token?: string
-  ) => Promise<{ response: Response; isSuccess: boolean }>,
+  makeApiRequest: (token?: string) => Promise<{ response: Response; isSuccess: boolean }>,
   originalResponse: Response
 ): Promise<NextResponse> {
   logger.info('토큰 만료 감지, 갱신 시도 중...');
@@ -50,19 +49,12 @@ export async function handleTokenRefresh(
 
     logger.info('토큰 갱신 성공, 원본 요청 재시도 중...');
     // 토큰 갱신이 성공하면 토큰을 포함하여 리퀘스트 재시도
-    const { response: retryResponse, isSuccess: retrySuccess } =
-      await makeApiRequest(accessToken);
+    const { response: retryResponse, isSuccess: retrySuccess } = await makeApiRequest(accessToken);
     // 성공시 토큰을 포함한 성공 리스폰스 보내기
     if (retrySuccess) {
       const successResponse = await createSuccessResponse(retryResponse);
 
-      successResponse.cookies.set('accessToken', accessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 1, // 1시간
-        path: '/',
-      });
+      successResponse.cookies.set('accessToken', accessToken, COOKIE_OPTIONS.accessToken);
 
       return successResponse;
     } else {
