@@ -23,11 +23,11 @@ export async function apiProxy(
   const cookieStore = await cookies();
   const requestBody = await getRequestBody(req);
 
-  async function makeApiRequest(): Promise<{
+  async function makeApiRequest(useToken?: string): Promise<{
     response: Response;
     isSuccess: boolean;
   }> {
-    const token = getTokenFromCookies(cookieStore, tokenType);
+    const token = useToken || getTokenFromCookies(cookieStore, tokenType);
     const headers = buildHeaders(req, token);
     const fetchOptions = buildFetchOptions(req, headers, requestBody);
 
