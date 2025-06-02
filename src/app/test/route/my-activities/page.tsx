@@ -8,8 +8,8 @@ async function MyActivities() {
 
   // 내 체험 API test
   const getMyActivities = async () => {
-    const data = await fetchWithAuth(`/my-activities?size=20`);
-    console.log(data);
+    const res = await fetchWithAuth(`/my-activities?size=20`);
+    const data = res.json();
     return data;
   };
   const data = await getMyActivities();

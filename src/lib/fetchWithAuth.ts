@@ -25,8 +25,8 @@ export async function fetchWithAuth(path: string, options: RequestInit = {}): Pr
   if (response.status === 401) {
     // accessToken 만료 → handleTokenRefresh로 처리
     const refreshedRes = await handleTokenRefresh(makeApiRequest, response);
-    return refreshedRes.json();
+    return refreshedRes;
   }
 
-  return response.json();
+  return response;
 }
