@@ -1,5 +1,6 @@
 'use client';
 
+import { useModal } from '@/src/hooks/useModal';
 import ReservationsLabel from './ReservationsLabel';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 
@@ -13,8 +14,7 @@ interface ReservationsCardProps {
   price: number;
   showCancel?: boolean;
   showReview?: boolean;
-  onCancel?: () => void;
-  onReview?: () => void;
+  onClick?: () => void;
 }
 
 export default function ReservationsCard({
@@ -27,9 +27,15 @@ export default function ReservationsCard({
   price,
   showCancel = false,
   showReview = false,
-  onCancel,
-  onReview,
+  onClick,
 }: ReservationsCardProps) {
+  const { confirm } = useModal();
+
+  const cancelReservation = () => {
+    // 실제 예약 취소 API 호출
+    console.log('예약 취소 로직 실행');
+  };
+
   return (
     <div className='flex flex-col gap-[1.8rem] bg-white px-[2rem] py-[2.4rem] border-b border-gray-200 last:border-none'>
       {/* 내용 */}
@@ -49,12 +55,23 @@ export default function ReservationsCard({
         </div>
       </div>
 
-      {/* 하단 버튼 수정 예정 */}
+      {/* 하단 버튼 */}
       {showCancel && (
         <BaseButton
           variant='soft'
-          className='bg-red-100 text-red-300 hover:brightness-[0.95]'
-          onClick={onCancel}
+          color='red'
+          className='hover:brightness-[0.95]'
+          onClick={() => {
+            confirm({
+              message: '예약을 취소하시겠어요?',
+              confirmText: '예약 취소',
+              cancelText: '아니요',
+              onConfirm: () => {
+                // 실제 예약 취소 로직 호출
+                cancelReservation();
+              },
+            });
+          }}
         >
           예약 취소
         </BaseButton>
@@ -63,8 +80,10 @@ export default function ReservationsCard({
       {showReview && (
         <BaseButton
           variant='soft'
-          className='bg-blue-100 text-blue-200 hover:brightness-[0.95]'
-          onClick={onReview}
+          color='blue'
+          className='hover:brightness-[0.95]'
+          // 후기 작성 페이지로 이동 추가
+          onClick={onClick}
         >
           후기 쓰기
         </BaseButton>
