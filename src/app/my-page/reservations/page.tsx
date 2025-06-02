@@ -57,8 +57,9 @@ export default function ReservationsTestPage() {
   ] as const;
 
   return (
-    <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[4.4rem]'>
-      <div className='w-full max-w-[600px] flex flex-col h-[calc(100vh-13.6rem)]'>
+    <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[4.4rem] lg:pt-[9.6rem]'>
+      {/* 사이드바 추가 및 에러사항 없을 시에, 배경색 white로 */}
+      <div className='w-full flex flex-col h-[calc(100vh-13.6rem)] lg:max-w-[72rem] lg:mx-auto lg:h-[113rem] lg:pt-[9.6rem]'>
         {testData.map((item, idx) => (
           <ReservationsCard key={idx} {...item} />
         ))}
