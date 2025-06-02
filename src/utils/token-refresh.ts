@@ -7,6 +7,7 @@ import {
   createErrorResponse,
   createLoginRequiredResponse,
 } from './response-helpers';
+import { BASE_URL } from '../constants/api';
 
 export async function handleTokenRefresh(
   makeApiRequest: (
@@ -25,17 +26,14 @@ export async function handleTokenRefresh(
       return createLoginRequiredResponse();
     }
 
-    const tokenRefreshResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/tokens`,
-      {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Cookie: `refreshToken=${refreshToken}`,
-        },
-      }
-    );
+    const tokenRefreshResponse = await fetch(`${BASE_URL}/api/auth/tokens`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: `refreshToken=${refreshToken}`,
+      },
+    });
 
     if (!tokenRefreshResponse.ok) {
       logger.warn('토큰 갱신 실패', tokenRefreshResponse.status);
