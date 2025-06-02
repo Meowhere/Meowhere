@@ -45,17 +45,17 @@ export async function apiProxy(
   }
 
   try {
+    // 첫번재 리퀘스트 실행
     const { response: firstResponse, isSuccess } = await makeApiRequest();
-
+    // 성공시 그대로 리스폰스 보내기
     if (isSuccess) {
       return await createSuccessResponse(firstResponse);
     }
-
     // 401 에러시 토큰 갱신
     if (firstResponse.status === 401 && tokenType === 'accessToken') {
       return await handleTokenRefresh(makeApiRequest, firstResponse);
     }
-
+    // 이외 다른 에러 발생시 에러 리스폰스 보내기
     return await createErrorResponse(firstResponse);
   } catch (error) {
     logger.error('프록시 에러', error);

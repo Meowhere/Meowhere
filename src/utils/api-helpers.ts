@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { TokenType, TokenRefreshResponse } from '@/src/types/api.types';
 import { logger } from './logger';
 
+// 리퀘스트 유형에 따라 바디 추가
 export async function getRequestBody(req: NextRequest): Promise<any | null> {
   const contentType = req.headers.get('content-type');
 
@@ -22,6 +23,7 @@ export async function getRequestBody(req: NextRequest): Promise<any | null> {
   }
 }
 
+// 쿠키에 토큰 빼오기
 export function getTokenFromCookies(
   cookieStore: Awaited<ReturnType<typeof cookies>>,
   tokenType: TokenType
@@ -30,6 +32,7 @@ export function getTokenFromCookies(
   return cookieStore.get(tokenType)?.value;
 }
 
+// 리퀘스트에 따라 헤더 설정
 export function buildHeaders(
   req: NextRequest,
   token?: string
@@ -40,10 +43,11 @@ export function buildHeaders(
     Accept: 'application/json',
   };
 
+  // 파일 타입이 아니면 헤더 추가
   if (!contentType?.includes('multipart/form-data')) {
     headers['Content-Type'] = 'application/json';
   }
-
+  // 토큰이 필요하면 헤더에 토큰 추가
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -51,6 +55,7 @@ export function buildHeaders(
   return headers;
 }
 
+// 최종으로 fetchOption 생성
 export function buildFetchOptions(
   req: NextRequest,
   headers: Record<string, string>,
