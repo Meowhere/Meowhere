@@ -18,7 +18,7 @@ interface ArrowIconProps extends SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-export default function ArrowIcon({ direction, className = '' }: ArrowIconProps) {
+export default function ArrowIcon({ direction, className = '', ...rest }: ArrowIconProps) {
   const IconComponent = ICONS[direction];
-  return <IconComponent className={className} />;
+  return <IconComponent className={className} {...rest} />;
 }
