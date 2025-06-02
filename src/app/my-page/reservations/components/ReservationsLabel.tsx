@@ -17,8 +17,7 @@ export default function ReservationsLabel({ label }: ReservationsLabelProps) {
 
   return (
     <span
-      // className={`inline-block w-[6.5rem] h-[2.4rem] px-[1rem] py-[0.6rem] rounded-[2rem] font-semibold text-[1.2rem] leading-[1.2rem] font-medium ${style.bg} ${style.text}`}
-      className={`inline-block w-[65px] h-[24px] px-[10px] py-[6px] rounded-[20px] font-semibold text-[12px] leading-[12px] font-medium ${style.bg} ${style.text}`}
+      className={`inline-block w-[6.5rem] h-[2.4rem] px-[1rem] py-[0.6rem] rounded-[2rem] font-semibold text-[1.2rem] leading-[1.2rem] font-medium ${style.bg} ${style.text}`}
     >
       {label}
     </span>
