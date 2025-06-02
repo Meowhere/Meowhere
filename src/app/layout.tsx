@@ -1,11 +1,15 @@
 import { Metadata } from 'next';
-import './globals.css';
+import '@/src/styles/globals.css';
 import localFont from 'next/font/local';
-import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';
+import ClientLayout from './client-layout';
 import ModalProvider from '@/src/components/providers/ModalProvider';
 
 export const metadata: Metadata = {
   title: '어디가냥',
+  description: '이번 주말에 어디가냥',
+  icons: {
+    icon: '/assets/icons/ico-fav.svg',
+  },
 };
 
 const pretendard = localFont({
@@ -19,9 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendard.className}>
+    <html lang='ko' className={pretendard.className}>
       <body>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ClientLayout>{children}</ClientLayout>
         <ModalProvider />
       </body>
     </html>
