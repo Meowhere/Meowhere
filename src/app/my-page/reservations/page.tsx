@@ -54,7 +54,7 @@ export default function ReservationsTestPage() {
       price: 148000,
       showReview: true,
     },
-  ];
+  ] as const;
 
   return (
     <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[4.4rem]'>

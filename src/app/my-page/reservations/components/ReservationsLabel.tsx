@@ -1,10 +1,8 @@
 'use client';
 
-interface ReservationsLabelProps {
-  label: string;
-}
+import { ReservationsLabelProps, LabelStyleMap } from '../../../../types/reservations-label.types';
 
-const LABEL_STYLE_MAP: Record<string, { bg: string; text: string }> = {
+const LABEL_STYLE_MAP: LabelStyleMap = {
   '예약 완료': { bg: 'bg-green-100', text: 'text-green-200' },
   '예약 취소': { bg: 'bg-gray-100', text: 'text-gray-600' },
   '예약 거절': { bg: 'bg-red-100', text: 'text-red-300' },
