@@ -3,19 +3,7 @@
 import { useModal } from '@/src/hooks/useModal';
 import ReservationsLabel from './ReservationsLabel';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
-
-interface ReservationsCardProps {
-  imageUrl: string;
-  label: string;
-  title: string;
-  date: string;
-  time: string;
-  headCount: number;
-  price: number;
-  showCancel?: boolean;
-  showReview?: boolean;
-  onClick?: () => void;
-}
+import { ReservationsCardProps } from '../../../../types/reservations-card.types';
 
 export default function ReservationsCard({
   imageUrl,
