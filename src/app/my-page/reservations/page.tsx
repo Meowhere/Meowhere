@@ -56,13 +56,27 @@ export default function ReservationsTestPage() {
     },
   ] as const;
 
+  const hasData = testData.length > 0;
+
   return (
     <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[4.4rem]'>
-      <div className='w-full max-w-[600px] flex flex-col h-[calc(100vh-13.6rem)]'>
-        {testData.map((item, idx) => (
-          <ReservationsCard key={idx} {...item} />
-        ))}
-      </div>
+      {hasData ? (
+        <div className='w-full max-w-[600px] flex flex-col h-[calc(100vh-13.6rem)]'>
+          {testData.map((item, idx) => (
+            <ReservationsCard key={idx} {...item} />
+          ))}
+        </div>
+      ) : (
+        <div className='flex flex-col items-center justify-center h-[calc(100vh-13.6rem)]'>
+          <Image
+            src='/assets/icons/logo/ico-empty-view-logo.svg'
+            alt='빈 상태 이미지'
+            width={82}
+            height={123}
+          />
+          <p className='text-md text-gray-500 mt-[2.4rem]'>예약한 체험이 없다냥</p>
+        </div>
+      )}
     </main>
   );
 }
