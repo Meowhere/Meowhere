@@ -1,23 +1,10 @@
 'use client';
 import Input from '@/src/components/common/inputs/Input';
-import { useState, useEffect } from 'react';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+
 export default function MyInfoPage() {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  // 윈도우 크기 체크하여 isDesktop 상태 설정
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 1024); // 1024px 이상을 데스크탑으로 간주
-    };
-
-    checkScreenSize(); // 처음 렌더링 시 실행
-    window.addEventListener('resize', checkScreenSize); // 크기 변화에 따라 실행
-
-    return () => {
-      window.removeEventListener('resize', checkScreenSize); // 컴포넌트 언마운트 시 이벤트 제거
-    };
-  }, []);
+  const { isDesktop } = useBreakpoint();
 
   // const [pw, setPw] = useState('');
   // const [pwError, setPwError] = useState('');
