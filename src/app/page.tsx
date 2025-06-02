@@ -1,16 +1,9 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useQueryUpdate } from '@/src/hooks/useQueryUpdate';
 
 export default function Home() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const updateQuery = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(key, value);
-    router.push(`/?${params.toString()}`);
-  };
+  const { updateQuery } = useQueryUpdate();
 
   return (
     <div className='text-primary-300 h-screen'>

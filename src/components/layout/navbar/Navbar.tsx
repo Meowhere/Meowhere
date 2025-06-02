@@ -4,6 +4,7 @@ import SearchIcon from '../../common/icons/SearchIcon';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useGnbStore } from '@/src/store/gnbStore';
+import { useQueryUpdate } from '@/src/hooks/useQueryUpdate';
 
 function NavbarCategory({
   category,
@@ -14,9 +15,9 @@ function NavbarCategory({
   icon: React.ReactNode;
   value: '' | '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
 }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [isSelected, setIsSelected] = useState(false);
+  const { updateQuery } = useQueryUpdate();
 
   useEffect(() => {
     const currentCategory = searchParams.get('category');
@@ -27,7 +28,7 @@ function NavbarCategory({
     <button
       className={`${isSelected ? 'text-gray-800 border-b border-gray-800' : 'text-gray-500'} flex flex-col items-center gap-[4px] min-w-[78px] cursor-pointer pb-[8px]`}
       onClick={() => {
-        router.push(`/?category=${value}`);
+        updateQuery('category', value);
       }}
     >
       {icon}
@@ -40,7 +41,7 @@ export default function Navbar() {
   const { scrollY } = useScroll();
   const categoryHeight = useTransform(scrollY, [0, 100], [64, 39]);
   const searchParams = useSearchParams();
-  const { backAction, title, rightButtons, setBackAction } = useGnbStore();
+  const { backAction, title, rightButtons } = useGnbStore();
   const pathname = usePathname();
 
   const params = {
@@ -221,9 +222,9 @@ export default function Navbar() {
                   </div>
                   {(params.minPrice || params.maxPrice) && (
                     <div className='flex gap-2 text-gray-400'>
-                      {params.minPrice && <span>{params.minPrice.toLocaleString()}원</span>}
+                      {params.minPrice && <span>{Number(params.minPrice).toLocaleString()}원</span>}
                       <span> ~ </span>
-                      {params.maxPrice && <span>{params.maxPrice.toLocaleString()}원</span>}
+                      {params.maxPrice && <span>{Number(params.maxPrice).toLocaleString()}원</span>}
                     </div>
                   )}
                 </div>
@@ -235,7 +236,11 @@ export default function Navbar() {
               )}
             </button>
           </div>
-          {hasParams || rightButtons.length ? <div className='flex justify-end'></div> : ''}
+          {hasParams || rightButtons.length ? (
+            <div className='flex justify-end w-[24px]'></div>
+          ) : (
+            ''
+          )}
         </div>
         <motion.div
           style={{ height: categoryHeight }}
