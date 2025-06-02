@@ -4,12 +4,9 @@ import CreateActivity from './CreateActivityTest';
 export default async function ActivitiesPage() {
   // 체험 호출 테스트
   const getActivities = async () => {
-    const res = await fetch(
-      `${BASE_URL}/api/activities?method=offset&page=1&size=20`,
-      {
-        method: 'GET',
-      }
-    );
+    const res = await fetch(`${BASE_URL}/api/activities?method=offset&page=1&size=20`, {
+      method: 'GET',
+    });
     return res.json();
   };
   const data = await getActivities();
@@ -49,7 +46,7 @@ export default async function ActivitiesPage() {
   const reviews = reviewData;
 
   return (
-    <div className='space-x-6'>
+    <div className='space-x-6 text-lg'>
       <h1>Activity API Test</h1>
       <CreateActivity />
       <h2>체험 데이터:</h2>
