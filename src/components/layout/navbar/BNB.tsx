@@ -56,9 +56,9 @@ export default function BNB() {
       </button>
       <Link
         className={`${
-          pathname.startsWith('/my-page') ? 'text-primary-300' : 'text-gray-500'
+          pathname.startsWith('/profile') ? 'text-primary-300' : 'text-gray-500'
         } flex flex-col items-center justify-center gap-1 w-[78px]`}
-        href='/my-page'
+        href='/profile'
       >
         <UserIcon />
         <span>프로필</span>
