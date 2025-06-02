@@ -1,7 +1,16 @@
 'use client';
 
 import { BASE_URL } from '@/src/constants/api';
-import { useState } from 'react';
+import { User } from '@/src/types/user.types';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+const UpdateFormData = {
+  nickname: '너구리',
+  profileImageUrl:
+    'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/profile_image/14-1_1899_1748846978952.jpeg',
+  newPassword: 'password123',
+};
 
 export default function UserTestPage() {
   const [formData, setFormData] = useState({
@@ -10,6 +19,14 @@ export default function UserTestPage() {
     password: '',
   });
   const [error, setError] = useState();
+  const [user, setUser] = useState<User>({
+    id: 0,
+    email: '',
+    nickname: '',
+    profileImageUrl: '',
+    createdAt: '',
+    updatedAt: '',
+  });
 
   const handleSignUp = async () => {
     const res = await fetch(`${BASE_URL}/api/users`, {
@@ -34,6 +51,34 @@ export default function UserTestPage() {
     e.preventDefault();
     handleSignUp();
   };
+
+  const getUserData = async () => {
+    const res = await fetch(`${BASE_URL}/api/users/me`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+    const data: User = await res.json();
+    setUser(data);
+  };
+
+  const updateUser = async () => {
+    const res = await fetch(`${BASE_URL}/api/users/me`, {
+      method: 'PATCH',
+      credentials: 'include',
+      body: JSON.stringify(UpdateFormData),
+    });
+    const data = await res.json();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <div>
       User Test Page
@@ -68,15 +113,32 @@ export default function UserTestPage() {
           onChange={handleInputChange}
         />
         <div>
-          {' '}
           <button
             type='submit'
-            className='p-2 bg-primary-300 rounded-xl text-white'
+            className='p-2 bg-primary-300 rounded-md text-white'
           >
             회원가입
           </button>
         </div>
       </form>
+      <div className='mt-10'>내 정보</div>
+      {user.profileImageUrl && (
+        <Image
+          src={user.profileImageUrl}
+          alt='profile'
+          width={200}
+          height={200}
+        />
+      )}
+      <div>이메일: {user.email}</div>
+      <div>닉네임: {user.nickname}</div>
+      <button
+        type='button'
+        className='p-2 bg-primary-300 rounded-md text-white'
+        onClick={updateUser}
+      >
+        정보 업데이트
+      </button>
     </div>
   );
 }
