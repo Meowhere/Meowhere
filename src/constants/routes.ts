@@ -1,8 +1,8 @@
-import { defineRoutes } from "next-route";
+import { defineRoutes } from 'next-route';
 
 export const routes = defineRoutes({
-  home: "/",
-  profile: "/profile",
+  home: '/',
+  profile: '/profile',
   post: (id: string) => `/post/${id}`,
-  setting: "/setting",
+  setting: '/setting',
 });
