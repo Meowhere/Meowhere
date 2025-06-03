@@ -46,6 +46,10 @@ export default function ArrowButtonTestPage() {
             </div>
 
             <div className='text-center'>
+              <ArrowButton direction='right' onClick={() => handleClick('right')} />
+            </div>
+
+            <div className='text-center'>
               <ArrowButton
                 direction='down'
                 isOpen={isDropdownOpen}

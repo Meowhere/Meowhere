@@ -27,3 +27,19 @@ textarea {
   margin: 0;
   box-sizing: border-box;
 }
+
+.swiper-pagination {
+  bottom: 16px !important;
+  z-index: 10;
+  text-align: center;
+}
+
+.swiper-pagination-bullet {
+  background-color: white;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #ff5500;
+  opacity: 1;
+}
