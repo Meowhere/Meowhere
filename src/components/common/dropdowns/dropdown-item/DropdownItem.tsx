@@ -37,11 +37,7 @@ export default function DropdownItem({
     case 'link':
       const { href } = restProps as LinkItemProps;
       return (
-        <div
-          className={
-            isMobile ? 'w-full h-[5.4rem] p-[0.4rem] bg-white group' : ''
-          }
-        >
+        <div className={isMobile ? 'w-full h-[5.4rem] p-[0.4rem] bg-white group' : ''}>
           <Link href={href} className={commonClassNames}>
             {label}
           </Link>
@@ -52,15 +48,12 @@ export default function DropdownItem({
       return (
         <div
           className={
-            isMobile ? 'w-full h-[5.4rem] p-[0.4rem] bg-white group' : ''
+            isMobile
+              ? 'w-full h-[5.4rem] p-[0.4rem] bg-white group'
+              : 'w-[18rem] h-[4.6rem] bg-white group'
           }
         >
-          <button
-            type='button'
-            onClick={onClick}
-            disabled={disabled}
-            className={commonClassNames}
-          >
+          <button type='button' onClick={onClick} disabled={disabled} className={commonClassNames}>
             {label}
           </button>
         </div>
