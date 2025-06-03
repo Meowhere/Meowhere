@@ -21,7 +21,7 @@ interface ArrowIconProps extends SVGProps<SVGSVGElement> {
 
 export default function ArrowIcon({
   direction,
-  size = 24,
+  size = 16,
   className = '',
   ...props
 }: ArrowIconProps) {
