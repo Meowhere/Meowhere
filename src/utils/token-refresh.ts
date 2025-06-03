@@ -7,7 +7,7 @@ import {
   createErrorResponse,
   createLoginRequiredResponse,
 } from './response-helpers';
-import { BASE_API_URL, BASE_URL } from '../constants/api';
+import { BASE_API_URL } from '../constants/api';
 import { COOKIE_OPTIONS } from '../constants/cookie';
 
 export async function handleTokenRefresh(
