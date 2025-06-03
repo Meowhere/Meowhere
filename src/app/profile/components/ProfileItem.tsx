@@ -9,7 +9,7 @@ export default function ProfileItem() {
       <div className='relative w-fit'>
         <Image src={defaultImg} alt='프로필 사진' className='w-[128px] h-[128px] rounded-full' />
         <button className='absolute right-0 bottom-0 rounded-full'>
-          <UploadImg className='w-[36px] h-[36px]' alt='프로필 이미지 업로드' />
+          <UploadImg className='w-[36px] h-[36px]' aria-label='프로필 이미지 업로드' />
         </button>
       </div>
       <div className='flex flex-col items-center justify-center gap-[8px]'>
