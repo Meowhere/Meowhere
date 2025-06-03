@@ -16,7 +16,7 @@ export interface Activity {
 }
 
 export interface Schedule {
-  id: string;
+  id: number;
   date: string;
   startTime: string;
   endTime: string;

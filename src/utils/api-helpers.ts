@@ -4,7 +4,7 @@ import { TokenType, TokenRefreshResponse } from '@/src/types/api.types';
 import { logger } from './logger';
 
 // 리퀘스트 유형에 따라 바디 추가
-export async function getRequestBody(req: NextRequest): Promise<any | null> {
+export async function getRequestBody(req: NextRequest): Promise<string | FormData | null> {
   const contentType = req.headers.get('content-type');
 
   if (!['POST', 'PUT', 'PATCH'].includes(req.method)) {
@@ -33,10 +33,7 @@ export function getTokenFromCookies(
 }
 
 // 리퀘스트에 따라 헤더 설정
-export function buildHeaders(
-  req: NextRequest,
-  token?: string
-): Record<string, string> {
+export function buildHeaders(req: NextRequest, token?: string): Record<string, string> {
   const contentType = req.headers.get('content-type');
 
   const headers: Record<string, string> = {
@@ -59,7 +56,7 @@ export function buildHeaders(
 export function buildFetchOptions(
   req: NextRequest,
   headers: Record<string, string>,
-  requestBody: string | null
+  requestBody: string | FormData | null
 ): RequestInit {
   const fetchOptions: RequestInit = {
     method: req.method,

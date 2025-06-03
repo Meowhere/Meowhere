@@ -6,7 +6,9 @@ export async function POST(
   { params }: { params: Promise<{ reservationId: string }> }
 ) {
   const { reservationId } = await params;
-  const fullPath = `/my-reservations/${reservationId}/reviews`;
+  const url = new URL(req.url);
+  const queryString = url.search;
+  const fullPath = `/my-reservations/${reservationId}/reviews${queryString}`;
 
   return await apiProxy(req, fullPath);
 }
