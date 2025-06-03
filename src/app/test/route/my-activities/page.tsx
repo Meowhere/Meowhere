@@ -1,7 +1,7 @@
 import { BASE_API_URL, BASE_URL } from '@/src/constants/api';
 import { cookies } from 'next/headers';
 import MyActivityTest from './MyActivityTest';
-import { fetchWithAuth } from '@/src/lib/fetchWithAuth';
+import { fetchWithAuth } from '@/src/lib/api/fetchWithAuth';
 
 async function MyActivities() {
   const cookieStore = await cookies();

@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
-import { BASE_API_URL } from '../constants/api';
-import { handleTokenRefresh } from '../utils/token-refresh';
+import { BASE_API_URL } from '../../constants/api';
+import { handleTokenRefresh } from '../../utils/token-refresh';
 
 export async function fetchWithAuth(path: string, options: RequestInit = {}): Promise<any> {
   const cookieStore = await cookies();
