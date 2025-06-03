@@ -12,7 +12,7 @@ export const ICONS: IconTypes = {
   settings: '/assets/icons/account/ico-settings.svg',
 };
 
-export interface ProfileItemProps {
+export interface ProfileMenuItemProps {
   href: string;
   icon: IconType;
   title: string;
