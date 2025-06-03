@@ -15,10 +15,16 @@ const ICONS = {
 
 interface ArrowIconProps extends SVGProps<SVGSVGElement> {
   direction: Direction;
+  size?: number;
   className?: string;
 }
 
-export default function ArrowIcon({ direction, className = '' }: ArrowIconProps) {
+export default function ArrowIcon({
+  direction,
+  size = 24,
+  className = '',
+  ...props
+}: ArrowIconProps) {
   const IconComponent = ICONS[direction];
-  return <IconComponent className={className} />;
+  return <IconComponent width={size} height={size} className={className} {...props} />;
 }
