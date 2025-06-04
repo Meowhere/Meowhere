@@ -6,7 +6,7 @@ import ConfirmModal from '../components/common/modals/ConfirmModal';
 import AuthModal from '../components/common/modals/AuthModal';
 
 export const useModal = () => {
-  const { openModal, closeModal, isOpen } = useModalStore();
+  const { openModal, closeModal } = useModalStore();
 
   const openAuthModal = () => {
     openModal({
@@ -69,7 +69,6 @@ export const useModal = () => {
 
   return {
     closeModal,
-    isOpen,
     openAuthModal,
     openCreateReviewModal,
     openScheduleModal,
