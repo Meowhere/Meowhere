@@ -8,7 +8,7 @@ export default function ProfileMenuItem({ href, icon, title }: ProfileMenuItemPr
   return (
     <Link
       href={href}
-      className='flex flex-row items-center justify-between hover:bg-gray-50 rounded transition-colors duration-200 active:bg-gray-100 p-3'
+      className='flex flex-row items-center justify-between px-[24px] py-[12px] rounded-[10px] hover:bg-gray-50 transition-colors duration-200 active:bg-gray-100 p-3'
     >
       <div className='flex items-center gap-[14px]'>
         <img src={ICONS[icon]} alt={title} />

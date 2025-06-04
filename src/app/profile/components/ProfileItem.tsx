@@ -13,8 +13,8 @@ export default function ProfileItem() {
         </button>
       </div>
       <div className='flex flex-col items-center justify-center gap-[8px]'>
-        <h2 className='text-xl font-semibold text-gray-800'>사용자 이름</h2>
-        <p className='text-lg font-regular text-gray-600'>사용자 이메일</p>
+        <h2 className='text-xl font-semibold text-gray-800 leading-none'>사용자 이름</h2>
+        <p className='text-lg font-regular text-gray-600 leading-none'>user@email.com</p>
       </div>
     </div>
   );
