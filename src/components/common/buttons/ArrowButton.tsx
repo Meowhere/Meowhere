@@ -6,6 +6,7 @@ import ArrowIcon from '../icons/ArrowIcon';
 interface ArrowButtonProps {
   direction?: 'left' | 'right' | 'down';
   isOpen?: boolean;
+  size?: number;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   className?: string;
 }
@@ -13,6 +14,7 @@ interface ArrowButtonProps {
 export default function ArrowButton({
   direction = 'left',
   isOpen = false,
+  size = 16,
   onClick,
   className = '',
   ...rest
@@ -29,11 +31,12 @@ export default function ArrowButton({
       onMouseEnter={() => hasHoverEffect && setIsHovered(true)}
       onMouseLeave={() => hasHoverEffect && setIsHovered(false)}
       aria-label={`${direction} 화살표 버튼`}
-      className={`p-2 transition-transform duration-200 ${getRotationClass}`}
+      className={`p-2 transition-transform duration-200 ${getRotationClass} ${className}`}
       {...rest}
     >
       <ArrowIcon
         direction={direction}
+        size={size}
         className={isHovered ? 'text-[#4B4B4B]' : 'text-[#A1A1A1]'}
       />
     </button>
