@@ -181,10 +181,9 @@ const Modal = () => {
   if ((!isOpen && !isClosing) || !modalProps) return null;
 
   const isBottomSheet = modalProps.type === 'bottomSheet';
-  const isAlert = modalProps.type === 'alert';
 
   // 일반 모달 렌더링 레이아웃
-  if (!isBottomSheet && !isAlert) {
+  if (!isBottomSheet) {
     return createPortal(
       <div
         className={clsx(
@@ -235,48 +234,6 @@ const Modal = () => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {modalProps.children}
-          </div>
-        </div>
-      </div>,
-      document.body
-    );
-  }
-
-  // 경고 모달 렌더링 레이아웃
-  if (isAlert) {
-    return createPortal(
-      <div
-        className={clsx(
-          'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm',
-          isClosing ? 'animate-out fade-out-0 duration-300' : 'animate-in fade-in-0 duration-300'
-        )}
-        onClick={handleBackdropClick}
-        role='presentation'
-      >
-        <div
-          className={clsx(
-            'relative mx-[16px] w-[260px] rounded-[12px] bg-white p-[12px] shadow-lg focus:outline-none',
-            isClosing
-              ? 'animate-out fade-out-0 zoom-out-95 duration-300'
-              : 'animate-in fade-in-0 zoom-in-95 duration-300'
-          )}
-          onClick={(e) => e.stopPropagation()}
-          role='alertdialog'
-          aria-modal='true'
-          aria-labelledby={modalProps.header ? modalTitleId : undefined}
-          aria-describedby={modalId}
-          tabIndex={-1}
-        >
-          {/* Header (Alert의 경우 숨겨진 제목) */}
-          {modalProps.header && (
-            <h2 id={modalTitleId} className='sr-only'>
-              {modalProps.header}
-            </h2>
-          )}
-
-          {/* Content */}
-          <div id={modalId} className='text-gray-700'>
             {modalProps.children}
           </div>
         </div>

@@ -1,9 +1,11 @@
 'use client';
+import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useModal } from '@/src/hooks/useModal';
 
 export default function ModalTest() {
-  const { openAuthModal, openCreateReviewModal, openConfirmModal, openBottomSheetModal } =
+  const { openAuthModal, openCreateReviewModal, openBottomSheetModal, openReservationModal } =
     useModal();
+  const { openConfirmModal, ConfirmModal } = useConfirmModal();
 
   // 후기 모달 예시
   const handleCreateReview = () => {
@@ -16,6 +18,13 @@ export default function ModalTest() {
       onConfirm: () => {
         console.log('작성하기 함수 코드');
       },
+    });
+  };
+
+  // 예약 정보 모달 예시
+  const handleReservation = () => {
+    openReservationModal({
+      // 필요한 프롭들...
     });
   };
 
@@ -46,17 +55,14 @@ export default function ModalTest() {
   // 확인 모달 예시
   const handleConfirm = () => {
     openConfirmModal({
-      message: '예약을 취소하시겠어요? ', // 모달 창 메세지
-      confirmText: '예약 취소', // 확인 버튼 이름
-      cancelText: '아니요', // 취소 버튼 이름
+      message: '예약을 승인할까요?',
       onConfirm: () => {
-        // 필요 함수
-        console.log('예약 취소됨');
+        console.log('승인!');
       },
     });
   };
 
-  // 확인 모달 예시
+  // 인증 모달 예시
   const handleAuthModal = () => {
     openAuthModal();
   };
@@ -65,6 +71,9 @@ export default function ModalTest() {
     <div className='min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300 text-lg'>
       <button className='p-[1rem] border-2' onClick={handleCreateReview}>
         후기 모달
+      </button>
+      <button className='p-[1rem] border-2' onClick={handleReservation}>
+        예약 정보 모달
       </button>
       <button className='p-[1rem] border-2' onClick={handleBottomSheet}>
         바텀 시트
@@ -75,6 +84,7 @@ export default function ModalTest() {
       <button className='p-[1rem] border-2' onClick={handleAuthModal}>
         인증 모달
       </button>
+      <ConfirmModal />
     </div>
   );
 }

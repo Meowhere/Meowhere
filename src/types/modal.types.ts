@@ -29,10 +29,3 @@ export interface CreateReviewModalProps {
   rating: number;
   onConfirm: () => void;
 }
-
-export interface ConfirmModalProps {
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  onConfirm: () => void;
-}

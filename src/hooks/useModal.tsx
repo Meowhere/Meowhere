@@ -1,9 +1,9 @@
 import React from 'react';
 import { useModalStore } from '../store/modalStore';
-import { ConfirmModalProps, ModalProps, CreateReviewModalProps } from '../types/modal.types';
+import { ModalProps, CreateReviewModalProps } from '../types/modal.types';
 import CreateReviewModal from '../components/common/modals/CreateReviewModal';
-import ConfirmModal from '../components/common/modals/ConfirmModal';
 import AuthModal from '../components/common/modals/AuthModal';
+import ReservationModal from '../components/common/modals/ReservationModal';
 
 export const useModal = () => {
   const { openModal, closeModal } = useModalStore();
@@ -53,10 +53,11 @@ export const useModal = () => {
     });
   };
 
-  const openConfirmModal = (props: ConfirmModalProps) => {
+  const openReservationModal = (props: any) => {
+    // 임시 프롭
     openModal({
-      type: 'alert',
-      children: <ConfirmModal {...props} />,
+      header: '예약 정보',
+      children: <ReservationModal {...props} />,
     });
   };
 
@@ -73,8 +74,8 @@ export const useModal = () => {
     openCreateReviewModal,
     openScheduleModal,
     openAlarmModal,
-    openConfirmModal,
     openReviewModal,
     openBottomSheetModal,
+    openReservationModal,
   };
 };
