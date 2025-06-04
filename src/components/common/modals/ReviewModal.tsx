@@ -21,7 +21,7 @@ export default function ReviewModal({
   return (
     <div className='flex flex-col flex-grow gap-2 text-md'>
       {/*임시 데이터*/}
-      <div className='flex-grow justify-center '>
+      <div className='flex-grow justify-center mt-[48px] mb-[32px]'>
         <p className=' text-center'>{title}</p>
         <p className='text-center'>{price}</p>
         <p className='text-center'>{rating}</p>
