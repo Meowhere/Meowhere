@@ -2,18 +2,18 @@
 import { useModal } from '@/src/hooks/useModal';
 
 export default function ModalTest() {
-  const { openReviewModal, openConfirmModal, openBottomSheetModal, closeModal } = useModal();
+  const { openReviewModal, openConfirmModal, openBottomSheetModal } = useModal();
 
   // 후기 모달 예시
   const handleReview = () => {
     openReviewModal({
       title: '함께 배우면 즐거운 스트릿 댄스',
-      schedules: null,
+      schedule: { id: 1, date: '', startTime: '', endTime: '' },
       headCount: 12,
       price: 100000,
+      rating: 3,
       onConfirm: () => {
-        console.log('취소됨');
-        closeModal();
+        console.log('작성하기 함수 코드');
       },
     });
   };
@@ -45,9 +45,12 @@ export default function ModalTest() {
   // 확인 모달 예시
   const handleConfirm = () => {
     openConfirmModal({
-      message: '예약을 취소하시겠어요?',
+      message: '예약을 취소하시겠어요? ', // 모달 창 메세지
+      confirmText: '예약 취소', // 확인 버튼 이름
+      cancelText: '아니요', // 취소 버튼 이름
       onConfirm: () => {
-        console.log('취소됨');
+        // 필요 함수
+        console.log('예약 취소됨');
       },
     });
   };

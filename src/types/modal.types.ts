@@ -23,9 +23,16 @@ export interface ModalState {
 export interface ReviewModalProps {
   header?: string;
   title: string;
-  schedules: Schedule | null;
+  schedule: Schedule;
   headCount: number;
   price: number;
-  onConfirm?: () => void;
-  onCancel?: () => void;
+  rating: number;
+  onConfirm: () => void;
+}
+
+export interface ConfirmModalProps {
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm: () => void;
 }
