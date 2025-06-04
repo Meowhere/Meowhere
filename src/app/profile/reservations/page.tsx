@@ -75,25 +75,25 @@ export default function ReservationsTestPage() {
   const hasData = testData.length > 0;
 
   return (
-    <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[4.4rem] lg:pt-[9.6rem]'>
+    <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[44px] lg:pt-[96px]'>
       {/* 사이드바 추가 및 에러사항 없을 시에, 배경색 white로 */}
-      <div className='w-full flex flex-col h-[calc(100vh-13.6rem)] lg:max-w-[72rem] lg:mx-auto lg:h-[113rem] lg:pt-[9.6rem]'>
+      <div className='w-full flex flex-col h-[calc(100vh-136px)] lg:max-w-[720px] lg:mx-auto lg:h-[1130px] lg:pt-[96px]'>
         {hasData && (
           <div className='flex justify-end'>
-            <div className='relative w-[18rem]'>
+            <div className='relative w-[180px]'>
               <button
                 ref={triggerRef}
                 onClick={toggleDropdown}
                 type='button'
-                className='w-full h-[6.4rem] gap-[1rem] rounded-[1rem] border border-gray-200 bg-white hidden lg:inline-block'
+                className='w-full h-[64px] gap-[10px] rounded-[10px] border border-gray-200 bg-white hidden lg:inline-block'
               >
-                <div className='w-full flex items-center justify-between px-[2rem] py-[0.8rem]'>
+                <div className='w-full flex items-center justify-between px-[20px] py-[8px]'>
                   <div className='flex flex-col items-start'>
                     <span className='text-xs font-regular text-gray-500'>체험 상태</span>
                     <span className='text-md font-regular text-gray-800'>예약 완료</span>
                   </div>
                   <svg
-                    className={`w-[2.4rem] h-[2.4rem] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                    className={`w-[24px] h-[24px] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
                     viewBox='0 0 24 24'
                     fill='none'
                     stroke='#A1A1A1'
@@ -106,7 +106,7 @@ export default function ReservationsTestPage() {
                 </div>
               </button>
 
-              <div className='flex mt-[0.8rem] justify-end hidden lg:block'>
+              <div className='flex mt-[8px] justify-end hidden lg:block'>
                 {isOpen && (
                   <DropdownMenu
                     items={[
@@ -128,7 +128,7 @@ export default function ReservationsTestPage() {
         )}
 
         {hasData ? (
-          <div className='flex flex-col gap-[1.6rem] mt-[2.4rem]'>
+          <div className='flex flex-col gap-[16px] mt-[24px]'>
             {testData.map((item, idx) => (
               <ReservationsCard key={idx} {...item} />
             ))}
@@ -141,7 +141,7 @@ export default function ReservationsTestPage() {
               width={82}
               height={123}
             />
-            <p className='text-md text-gray-500 mt-[2.4rem]'>예약한 체험이 없다냥</p>
+            <p className='text-md text-gray-500 mt-[24px]'>예약한 체험이 없다냥</p>
           </div>
         )}
       </div>
