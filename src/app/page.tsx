@@ -23,10 +23,17 @@ export default function Home() {
       const response = await fetchFromClient(
         `/activities?method=offset&page=1&size=100&${
           searchParams.get('category') ? 'category=' + searchParams.get('category') : ''
-        }`
+        }&${searchParams.get('keyword') ? 'keyword=' + searchParams.get('keyword') : ''}`
       );
       const data = await response.json();
-      setActivities(data.activities);
+      setActivities(
+        data.activities.filter(
+          (item: any) =>
+            item.price >= Number(searchParams.get('min-price') || 0) &&
+            item.price <= Number(searchParams.get('max-price') || Infinity) &&
+            item.address.includes(searchParams.get('address') || '')
+        )
+      );
     };
     fetchData();
   }, [searchParams]);

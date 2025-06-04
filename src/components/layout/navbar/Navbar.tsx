@@ -42,23 +42,34 @@ function NavbarCategory({ category, icon, value }: NavbarCategoryProps) {
   );
 }
 
-function SearchSection({ children, title }: { children: React.ReactNode; title: string }) {
-  const [isOpen, setIsOpen] = useState(false);
-
+function SearchSection({
+  children,
+  title,
+  isOpen,
+  onClick,
+  value = '',
+  ...rest
+}: {
+  children: React.ReactNode;
+  title: string;
+  isOpen: boolean;
+  value?: string;
+  onClick?: () => void;
+}) {
   return (
     <section
       className={`${isOpen ? 'h-auto pt-[18px] pb-[24px]' : 'h-[52px]'} flex flex-col justify-center items-start w-full gap-[16px] bg-white rounded-[8px] px-[24px]`}
-      onClick={() => {
-        if (!isOpen) {
-          setIsOpen(true);
-        }
-      }}
+      {...rest}
+      onClick={onClick}
     >
-      <h2
-        className={`${isOpen ? 'text-[22px]' : 'text-[13px]'} leading-none font-semibold text-gray-800`}
-      >
-        {title}
-      </h2>
+      <div className='flex justify-between items-center w-full'>
+        <h2
+          className={`${isOpen ? 'text-[22px]' : 'text-[13px]'} leading-none font-semibold text-gray-800`}
+        >
+          {title}
+        </h2>
+        <span>{value}</span>
+      </div>
       {isOpen && children}
     </section>
   );
@@ -78,9 +89,12 @@ export default function Navbar() {
   const debouncedPlaceKeyword = useDebouncedValue(placeKeyword, 150);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
+  const [openedSearchSection, setOpenedSearchSection] = useState<'place' | 'price'>('place');
 
   const [selectedMaxPrice, setSelectedMaxPrice] = useState(0);
   const [selectedMinPrice, setSelectedMinPrice] = useState(0);
+
+  const { updateQuery, updateMultipleQueries } = useURLQuery();
 
   const filteredPlaces = useMemo(() => {
     if (!debouncedPlaceKeyword.trim()) {
@@ -128,7 +142,6 @@ export default function Navbar() {
   }, [searchParams]);
 
   const hasParams = Object.values(params).some((value) => value !== null && value.trim() !== '');
-  const maxHeight = Math.max(...Array.from(prices.values()));
 
   if (pathname === '/') {
     return (
@@ -191,7 +204,12 @@ export default function Navbar() {
         {isSearching ? (
           <div className='w-full h-screen bg-gray-100 p-[24px] pb-[200px] fixed top-[76px] left-0 overflow-y-scroll'>
             <div className='flex flex-col justify-center items-center w-full gap-[14px]'>
-              <SearchSection title='지역'>
+              <SearchSection
+                title='지역'
+                isOpen={openedSearchSection === 'place'}
+                onClick={() => setOpenedSearchSection('place')}
+                value={placeKeyword}
+              >
                 <Input
                   label='어디로 갈까요?'
                   className='w-full h-[42px] text-md font-medium rounded-[10px]'
@@ -199,16 +217,29 @@ export default function Navbar() {
                   value={placeKeyword}
                   onChange={(e) => setPlaceKeyword(e.target.value)}
                 />
-                <ul className='flex flex-col justify-start items-start w-full gap-[28px] h-[320px] overflow-y-scroll'>
+                <ul className='flex flex-col justify-start items-start w-full gap-[4px] h-[320px] overflow-y-scroll'>
                   {filteredPlaces.map(([place, count]) => (
-                    <li key={place} className='flex justify-between items-center w-full px-[4px]'>
+                    <li
+                      key={place}
+                      className='min-h-[48px] flex justify-between items-center w-full px-[4px] cursor-pointer'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPlaceKeyword(place);
+                        setOpenedSearchSection('price');
+                      }}
+                    >
                       <span className='text-sm text-gray-700 font-medium'>{place}</span>
                       <span className='text-xs text-gray-500'>{count}개의 체험</span>
                     </li>
                   ))}
                 </ul>
               </SearchSection>
-              <SearchSection title='가격 범위'>
+              <SearchSection
+                title='가격 범위'
+                isOpen={openedSearchSection === 'price'}
+                onClick={() => setOpenedSearchSection('price')}
+                value={`${selectedMinPrice.toLocaleString()}원 ~ ${selectedMaxPrice.toLocaleString()}원`}
+              >
                 <div className='flex justify-start items-end w-full h-[80px] gap-[2px] translate-y-[14px] px-[8px]'>
                   {Array(GAP_OF_PRICE)
                     .fill(0)
@@ -275,7 +306,18 @@ export default function Navbar() {
                   </span>
                 </div>
               </SearchSection>
-              <BaseButton className='w-full h-[42px] text-md font-medium rounded-[10px]'>
+              <BaseButton
+                className='w-full h-[42px] text-md font-medium rounded-[10px]'
+                onClick={() => {
+                  setIsSearching(false);
+                  setBackAction(null);
+                  updateMultipleQueries({
+                    'min-price': selectedMinPrice.toString() || params.minPrice || '',
+                    'max-price': selectedMaxPrice.toString() || params.maxPrice || '',
+                    address: placeKeyword || params.address || '',
+                  });
+                }}
+              >
                 검색
               </BaseButton>
             </div>
