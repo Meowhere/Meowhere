@@ -2,25 +2,26 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import ArrowIcon from '../../common/icons/ArrowIcon';
 import SearchIcon from '../../common/icons/SearchIcon';
 import { usePathname, useSearchParams } from 'next/navigation';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useMemo, useState } from 'react';
 import { useGnbStore } from '@/src/store/gnbStore';
-import { useQueryUpdate } from '@/src/hooks/useQueryUpdate';
+import { useURLQuery } from '@/src/hooks/useURLQuery';
 import { categories } from './Category';
 import BaseButton from '../../common/buttons/BaseButton';
 import Input from '../../common/inputs/Input';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
-import { fetchFromServer } from '@/src/lib/fetch/fetchFromServer';
+import { Activity, Category } from '@/src/types/activity.types';
+import { useDebouncedValue } from '@/src/hooks/useDebouncedValue';
 
 interface NavbarCategoryProps {
-  category: string;
+  category: '모두' | '문화 · 예술' | '음식' | '스포츠' | '투어' | '관광' | '웰빙';
   icon: React.ReactNode;
-  value: '' | '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
+  value: '' | Category;
 }
 
 function NavbarCategory({ category, icon, value }: NavbarCategoryProps) {
   const searchParams = useSearchParams();
   const [isSelected, setIsSelected] = useState(false);
-  const { updateQuery } = useQueryUpdate();
+  const { updateQuery } = useURLQuery();
 
   useEffect(() => {
     const currentCategory = searchParams.get('category');
@@ -41,14 +42,54 @@ function NavbarCategory({ category, icon, value }: NavbarCategoryProps) {
   );
 }
 
+function SearchSection({ children, title }: { children: React.ReactNode; title: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <section
+      className={`${isOpen ? 'h-auto pt-[18px] pb-[24px]' : 'h-[52px]'} flex flex-col justify-center items-start w-full gap-[16px] bg-white rounded-[8px] px-[24px]`}
+      onClick={() => {
+        if (!isOpen) {
+          setIsOpen(true);
+        }
+      }}
+    >
+      <h2
+        className={`${isOpen ? 'text-[22px]' : 'text-[13px]'} leading-none font-semibold text-gray-800`}
+      >
+        {title}
+      </h2>
+      {isOpen && children}
+    </section>
+  );
+}
+
 export default function Navbar() {
   const { scrollY } = useScroll();
-  const categoryHeight = useTransform(scrollY, [0, 100], [64, 39]);
+  const categoryHeight = useTransform(scrollY, [0, 100], [64, 39]); // 아이콘 크기 0이 되는 시점이 39px
   const searchParams = useSearchParams();
-  const { backAction, title, subtitle, rightButtons, isSearching, setIsSearching } = useGnbStore();
+  const { backAction, title, subtitle, rightButtons, isSearching, setIsSearching, setBackAction } =
+    useGnbStore();
   const pathname = usePathname();
   const [prices, setPrices] = useState<Map<number, number>>(new Map());
   const [places, setPlaces] = useState<Map<string, number>>(new Map());
+  const GAP_OF_PRICE = 30;
+  const [placeKeyword, setPlaceKeyword] = useState('');
+  const debouncedPlaceKeyword = useDebouncedValue(placeKeyword, 150);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+
+  const [selectedMaxPrice, setSelectedMaxPrice] = useState(0);
+  const [selectedMinPrice, setSelectedMinPrice] = useState(0);
+
+  const filteredPlaces = useMemo(() => {
+    if (!debouncedPlaceKeyword.trim()) {
+      return Array.from(places.entries());
+    }
+    return Array.from(places.entries()).filter(([place, _]) =>
+      place.includes(debouncedPlaceKeyword)
+    );
+  }, [debouncedPlaceKeyword, places]);
 
   const params = {
     keyword: searchParams.get('keyword'),
@@ -65,35 +106,35 @@ export default function Navbar() {
       const data = await response.json();
       const activities = data.activities;
       const totalCount = data.totalCount;
-      const maxPrice = activities[totalCount - 1].price + 1;
-      const minPrice = activities[0].price;
-      const gapOfPrice = (maxPrice - minPrice) / 30;
+      const fetchedMaxPrice = activities[totalCount - 1].price + 1;
+      const fetchedMinPrice = activities[0].price;
+      const gapOfPrice = (fetchedMaxPrice - fetchedMinPrice) / GAP_OF_PRICE;
 
       let mapForPlaces = new Map();
       let mapForPrices = new Map();
-      activities.forEach((v, i) => {
+      activities.forEach((v: Activity) => {
         const place = v.address.split(' ')[0];
-        const sectionOfPrice = Math.floor((v.price - minPrice) / gapOfPrice);
+        const sectionOfPrice = Math.floor((v.price - fetchedMinPrice) / gapOfPrice);
         mapForPrices.set(sectionOfPrice, (mapForPrices.get(sectionOfPrice) || 0) + 1);
         mapForPlaces.set(place, (mapForPlaces.get(place) || 0) + 1);
       });
 
       setPrices(mapForPrices);
       setPlaces(mapForPlaces);
-
-      console.log(mapForPrices);
-      console.log(mapForPlaces);
+      setMaxPrice(fetchedMaxPrice);
+      setMinPrice(fetchedMinPrice);
     };
     fetchData();
   }, [searchParams]);
 
   const hasParams = Object.values(params).some((value) => value !== null && value.trim() !== '');
+  const maxHeight = Math.max(...Array.from(prices.values()));
 
   if (pathname === '/') {
     return (
       <nav className='fixed top-0 left-0 w-full border-b border-gray-200 bg-white z-30'>
         <div className='flex justify-center gap-[24px] w-full h-[76px] p-[14px] px-[24px] items-center'>
-          {hasParams || rightButtons.length ? (
+          {hasParams || rightButtons.length || backAction ? (
             <div className='flex justify-start'>
               <ArrowIcon
                 direction='left'
@@ -109,7 +150,13 @@ export default function Navbar() {
           <div className='flex justify-center flex-1 max-w-[500px] h-[48px]'>
             <button
               className='w-full h-full bg-white border border-gray-200 text-gray-800 rounded-full text-sm flex items-center justify-center gap-2 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'
-              onClick={() => setIsSearching(true)}
+              onClick={() => {
+                setIsSearching(true);
+                setBackAction(() => {
+                  setIsSearching(false);
+                  setBackAction(null);
+                });
+              }}
             >
               {hasParams ? (
                 <div className='flex flex-col justify-center items-center leading-none gap-[4px]'>
@@ -135,7 +182,7 @@ export default function Navbar() {
               )}
             </button>
           </div>
-          {hasParams || rightButtons.length ? (
+          {hasParams || rightButtons.length || backAction ? (
             <div className='flex justify-end w-[24px]'></div>
           ) : (
             ''
@@ -144,43 +191,90 @@ export default function Navbar() {
         {isSearching ? (
           <div className='w-full h-screen bg-gray-100 p-[24px] pb-[200px] fixed top-[76px] left-0 overflow-y-scroll'>
             <div className='flex flex-col justify-center items-center w-full gap-[14px]'>
-              <section className='flex flex-col justify-center items-start w-full gap-[16px] bg-white rounded-[8px] pt-[18px] px[24px]'>
-                <h2 className='text-[22px] font-semibold text-gray-800'>지역</h2>
+              <SearchSection title='지역'>
                 <Input
                   label='어디로 갈까요?'
                   className='w-full h-[42px] text-md font-medium rounded-[10px]'
                   type='text'
+                  value={placeKeyword}
+                  onChange={(e) => setPlaceKeyword(e.target.value)}
                 />
-                <ul className='flex flex-col justify-start items-start w-full gap-[8px]'>
-                  {Array.from(places.entries()).map(([places, count]) => (
-                    <li key={places} className='flex justify-between items-center w-full'>
-                      <span>{places}</span>
-                      <span>{count}개의 체험</span>
+                <ul className='flex flex-col justify-start items-start w-full gap-[28px] h-[320px] overflow-y-scroll'>
+                  {filteredPlaces.map(([place, count]) => (
+                    <li key={place} className='flex justify-between items-center w-full px-[4px]'>
+                      <span className='text-sm text-gray-700 font-medium'>{place}</span>
+                      <span className='text-xs text-gray-500'>{count}개의 체험</span>
                     </li>
                   ))}
                 </ul>
-              </section>
-              <section className='flex flex-col justify-center items-start w-full gap-[16px] bg-white rounded-[8px] pt-[18px] px-[24px]'>
-                <h2 className='text-[22px] font-semibold text-gray-800'>가격</h2>
-                <div className='flex justify-start items-end w-full h-[148px] gap-[2px]'>
-                  {Array(30)
+              </SearchSection>
+              <SearchSection title='가격 범위'>
+                <div className='flex justify-start items-end w-full h-[80px] gap-[2px] translate-y-[14px] px-[8px]'>
+                  {Array(GAP_OF_PRICE)
                     .fill(0)
-                    .map((v, i) => (
+                    .map((_, i) => (
                       <div
                         key={i}
                         className='w-full bg-primary-300 rounded-[2px]'
-                        style={{ height: `${((prices.get(i) || 0) / prices.size) * 100}%` }}
+                        style={{
+                          height: `${((prices.get(i) || 0) / Math.max(...Array.from(prices.values()), 1)) * 100}%`,
+                        }}
                       />
                     ))}
                 </div>
-                <input
-                  type='range'
-                  min={0}
-                  max={30}
-                  value={0}
-                  className='w-full h-[4px] bg-gray-200 rounded-[2px]'
-                />
-              </section>
+                <div className='relative w-full h-[4px]'>
+                  <div className='relative w-[calc(100%-16px)] h-full m-auto bg-primary-100'>
+                    <div
+                      className='w-[24px] h-[24px] bg-primary-300 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
+                      style={{
+                        left: `${(((selectedMinPrice || minPrice) - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                      }}
+                    />
+                    <div
+                      className='w-[24px] h-[24px] bg-primary-300 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
+                      style={{
+                        left: `${(((selectedMaxPrice || maxPrice) - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                      }}
+                    />
+                    <div
+                      className='h-full absolute bg-primary-300'
+                      style={{
+                        width: `${(((selectedMaxPrice || maxPrice) - (selectedMinPrice || minPrice)) / (maxPrice - minPrice)) * 100}%`,
+                        left: `${(((selectedMinPrice || minPrice) - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                      }}
+                    />
+                  </div>
+                  <input
+                    type='range'
+                    min={minPrice}
+                    max={maxPrice}
+                    value={selectedMinPrice || minPrice}
+                    className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb'
+                    onChange={(e) => {
+                      setSelectedMinPrice(Number(e.target.value));
+                    }}
+                  />
+                  <input
+                    type='range'
+                    min={minPrice}
+                    max={maxPrice}
+                    value={selectedMaxPrice || maxPrice}
+                    className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb'
+                    onChange={(e) => {
+                      setSelectedMaxPrice(Number(e.target.value));
+                    }}
+                  />
+                </div>
+                <div className='grid grid-cols-3 justify-between items-center w-full text-sm text-gray-500'>
+                  <span className='text-left'>
+                    {(selectedMinPrice || minPrice).toLocaleString()}원
+                  </span>
+                  <span className='text-center'>~</span>
+                  <span className='text-right'>
+                    {(selectedMaxPrice || maxPrice).toLocaleString()}원
+                  </span>
+                </div>
+              </SearchSection>
               <BaseButton className='w-full h-[42px] text-md font-medium rounded-[10px]'>
                 검색
               </BaseButton>

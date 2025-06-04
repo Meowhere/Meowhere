@@ -1,16 +1,22 @@
 'use client';
 
-import { useQueryUpdate } from '@/src/hooks/useQueryUpdate';
+import { useURLQuery } from '@/src/hooks/useURLQuery';
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import LikeIcon from '../components/common/icons/LikeIcon';
 import StarFillIcon from '../components/common/icons/StarFillIcon';
+import { useGnbStore } from '../store/gnbStore';
 
 export default function Home() {
-  const { updateQuery } = useQueryUpdate();
+  const { updateQuery } = useURLQuery();
   const [activities, setActivities] = useState([]);
   const searchParams = useSearchParams();
+  const { setBackAction } = useGnbStore();
+
+  useEffect(() => {
+    setBackAction(null);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
