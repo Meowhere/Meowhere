@@ -19,7 +19,6 @@ export default function StarRating({
 }: StarRatingProps) {
   const handleClick = (index: number) => {
     if (readOnly || !onChange) return;
-
     const newValue = value === index + 1 ? index : index + 1;
     onChange(newValue);
   };
@@ -31,10 +30,14 @@ export default function StarRating({
           key={index}
           filled={index < value}
           onClick={() => handleClick(index)}
-          className='hover:scale-110'
-          style={{
-            transition: 'all 0.1s cubic-bezier(0, 0.5, 0.5, 1)',
-          }}
+          className={readOnly ? '' : 'hover:scale-110'}
+          style={
+            readOnly
+              ? undefined
+              : {
+                  transition: 'all 0.1s cubic-bezier(0, 0.5, 0.5, 1)',
+                }
+          }
         />
       ))}
     </div>
