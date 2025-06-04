@@ -6,14 +6,14 @@ import ReviewModal from '../components/common/modals/ReviewModal';
 export const useModal = () => {
   const { openModal, closeModal, isOpen } = useModalStore();
 
-  const review = (props: ReviewModalProps) => {
+  const openReviewModal = (props: ReviewModalProps) => {
     openModal({
       header: '후기 작성',
       children: <ReviewModal props={props} />,
     });
   };
 
-  const confirm = (options: {
+  const openConfirmModal = (options: {
     message: string;
     confirmText?: string;
     cancelText?: string;
@@ -50,7 +50,7 @@ export const useModal = () => {
     });
   };
 
-  const openBottomSheet = (props: Omit<ModalProps, 'type'>) => {
+  const openBottomSheetModal = (props: Omit<ModalProps, 'type'>) => {
     openModal({
       ...props,
       type: 'bottomSheet',
@@ -61,8 +61,8 @@ export const useModal = () => {
     openModal,
     closeModal,
     isOpen,
-    confirm,
-    review,
-    openBottomSheet,
+    openConfirmModal,
+    openReviewModal,
+    openBottomSheetModal,
   };
 };

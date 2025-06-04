@@ -2,11 +2,11 @@
 import { useModal } from '@/src/hooks/useModal';
 
 export default function ModalTest() {
-  const { review, confirm, openBottomSheet, closeModal } = useModal();
+  const { openReviewModal, openConfirmModal, openBottomSheetModal, closeModal } = useModal();
 
   // 후기 모달 예시
   const handleReview = () => {
-    review({
+    openReviewModal({
       title: '함께 배우면 즐거운 스트릿 댄스',
       schedules: null,
       headCount: 12,
@@ -20,7 +20,7 @@ export default function ModalTest() {
 
   // 바텀 시트 예시
   const handleBottomSheet = () => {
-    openBottomSheet({
+    openBottomSheetModal({
       height: 'auto',
       children: (
         <div className='space-y-2'>
@@ -44,7 +44,7 @@ export default function ModalTest() {
 
   // 확인 모달 예시
   const handleConfirm = () => {
-    confirm({
+    openConfirmModal({
       message: '예약을 취소하시겠어요?',
       onConfirm: () => {
         console.log('취소됨');
@@ -53,7 +53,7 @@ export default function ModalTest() {
   };
 
   return (
-    <div className='min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300'>
+    <div className='min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300 text-lg'>
       <button className='p-[1rem] border-2' onClick={handleReview}>
         후기 모달
       </button>
