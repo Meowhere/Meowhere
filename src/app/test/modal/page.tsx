@@ -5,7 +5,7 @@ import { useModal } from '@/src/hooks/useModal';
 export default function ModalTest() {
   const { openAuthModal, openCreateReviewModal, openBottomSheetModal, openReservationModal } =
     useModal();
-  const { openConfirmModal, ConfirmModal } = useConfirmModal();
+  const { openConfirmModal } = useConfirmModal();
 
   // 후기 모달 예시
   const handleCreateReview = () => {
@@ -84,7 +84,6 @@ export default function ModalTest() {
       <button className='p-[1rem] border-2' onClick={handleAuthModal}>
         인증 모달
       </button>
-      <ConfirmModal />
     </div>
   );
 }
