@@ -7,7 +7,7 @@ import {
   createErrorResponse,
   createLoginRequiredResponse,
 } from './response-helpers';
-import { BASE_URL } from '../constants/api';
+import { BASE_API_URL } from '../constants/api';
 import { COOKIE_OPTIONS } from '../constants/cookie';
 
 export async function handleTokenRefresh(
@@ -25,12 +25,12 @@ export async function handleTokenRefresh(
       return createLoginRequiredResponse();
     }
     // 토큰 갱신 요청
-    const tokenRefreshResponse = await fetch(`${BASE_URL}/api/auth/tokens`, {
+    const tokenRefreshResponse = await fetch(`${BASE_API_URL}/auth/tokens`, {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Cookie: `refreshToken=${refreshToken}`,
+        Authorization: `Bearer ${refreshToken}`,
       },
     });
     // 토큰 갱신 실패시 로그인 요청

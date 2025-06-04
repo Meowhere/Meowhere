@@ -1,14 +1,14 @@
 import { BASE_API_URL, BASE_URL } from '@/src/constants/api';
 import { cookies } from 'next/headers';
 import MyActivityTest from './MyActivityTest';
-import { fetchWithAuth } from '@/src/lib/fetchWithAuth';
+import { fetchFromServer } from '@/src/lib/fetch/fetchFromServer';
 
 async function MyActivities() {
   const cookieStore = await cookies();
 
   // 내 체험 API test
   const getMyActivities = async () => {
-    const res = await fetchWithAuth(`/my-activities?size=20`);
+    const res = await fetchFromServer(`/my-activities?size=20`);
     const data = res.json();
     return data;
   };

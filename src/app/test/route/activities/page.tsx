@@ -1,12 +1,11 @@
 import { BASE_URL } from '@/src/constants/api';
 import CreateActivity from './CreateActivityTest';
+import { fetchFromServer } from '@/src/lib/fetch/fetchFromServer';
 
 export default async function ActivitiesPage() {
   // 체험 호출 테스트
   const getActivities = async () => {
-    const res = await fetch(`${BASE_URL}/api/activities?method=offset&page=1&size=20`, {
-      method: 'GET',
-    });
+    const res = await fetchFromServer(`/activities?method=offset&page=1&size=20`);
     return res.json();
   };
   const data = await getActivities();
