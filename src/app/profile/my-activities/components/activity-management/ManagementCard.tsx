@@ -41,7 +41,7 @@ export default function ManagementCard({ title, imageUrl, price, rating }: MyAct
         </div>
       </div>
       <div>
-        <KebabButton onToggle={() => setOpen((prev) => !prev)} />
+        <KebabButton size={24} onToggle={() => setOpen((prev) => !prev)} />
         <ManagementDropdown
           isOpen={open}
           onClose={() => setOpen(false)}
