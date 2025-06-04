@@ -13,6 +13,7 @@ export default function Input({
   error,
   isPassword = false,
   className,
+  ...rest
 }: InputProps) {
   const inputId = useId();
   const [isVisible, setIsVisible] = useState(false);
