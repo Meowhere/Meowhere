@@ -27,7 +27,7 @@ export default function BNB() {
     <nav
       aria-label='페이지 네비게이션'
       role='tablist'
-      className='fixed bottom-0 left-0 h-[88px] w-full bg-white border-t border-gray-200 flex items-start justify-center text-xs py-6 px-[64px]'
+      className='fixed bottom-0 left-0 h-[88px] w-full bg-white border-t border-gray-200 flex items-start justify-center text-xs py-6 px-[64px] z-30'
     >
       <div className='flex justify-between w-full max-w-[500px] min-w-[128px]'>
         <Link
