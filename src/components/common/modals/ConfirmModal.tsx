@@ -2,6 +2,7 @@ import BaseButton from '../buttons/BaseButton';
 import clsx from 'clsx';
 import { ConfirmModalProps } from '@/src/types/confirm.types';
 import ReactDOM from 'react-dom';
+import { useEffect } from 'react';
 
 export default function ConfirmModal({
   isOpen,
@@ -20,6 +21,23 @@ export default function ConfirmModal({
       onClose();
     }
   };
+
+  // ESC 키로 모달 닫기
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   const handleConfirm = () => {
     onConfirm();
@@ -43,6 +61,7 @@ export default function ConfirmModal({
             : 'animate-in fade-in-0 zoom-in-95 duration-300'
         )}
         onClick={(e) => e.stopPropagation()}
+        data-modal
       >
         <div className='flex flex-col text-lg text-black'>
           <p className='text-center my-[28px]'>{message}</p>

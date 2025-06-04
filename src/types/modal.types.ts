@@ -4,7 +4,7 @@ export interface ModalProps {
   header?: string;
   children: React.ReactNode;
   onClose?: () => void;
-  type?: 'modal' | 'bottomSheet' | 'alert'; // 모달 타입
+  type?: 'modal' | 'bottomSheet'; // 모달 타입
   height?: 'auto' | 'half' | 'full'; // 바텀 시트 높이 조절
 }
 

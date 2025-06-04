@@ -45,7 +45,12 @@ const Modal = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        handleClose();
+        // 가장 위에 있는 모달인지 확인
+        const modals = document.querySelectorAll('[data-modal]');
+        const topmostModal = modals[modals.length - 1];
+        if (modalRef.current === topmostModal) {
+          handleClose();
+        }
       }
     };
 
@@ -94,7 +99,6 @@ const Modal = () => {
 
   // 드래그 핸들러 (드래그 핸들 영역에서만)
   const handleDragHandleTouchStart = (e: React.TouchEvent) => {
-    if (modalProps?.type === 'alert') return;
     if (modalProps?.type !== 'bottomSheet' && isDesktop) return;
     e.stopPropagation();
     setDragStart(e.touches[0].clientY);
@@ -102,7 +106,6 @@ const Modal = () => {
   };
 
   const handleDragHandleMouseDown = (e: React.MouseEvent) => {
-    if (modalProps?.type === 'alert') return;
     if (modalProps?.type !== 'bottomSheet' && isDesktop) return;
     e.stopPropagation();
     setDragStart(e.clientY);
@@ -110,7 +113,7 @@ const Modal = () => {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (modalProps?.type === 'alert' || !isDragging) return;
+    if (!isDragging) return;
     if (modalProps?.type !== 'bottomSheet' && isDesktop) return;
     const currentY = e.touches[0].clientY;
     const offset = Math.max(0, currentY - dragStart);
@@ -118,7 +121,7 @@ const Modal = () => {
   };
 
   const handleTouchEnd = () => {
-    if (modalProps?.type === 'alert' || !isDragging) return;
+    if (!isDragging) return;
     if (modalProps?.type !== 'bottomSheet' && isDesktop) return;
     const threshold = 100; // 100px 이상 드래그하면 닫기
     if (dragOffset > threshold) {
@@ -131,7 +134,7 @@ const Modal = () => {
   };
 
   useEffect(() => {
-    if (isDragging && modalProps?.type !== 'alert') {
+    if (isDragging && modalProps?.type) {
       const handleGlobalTouchMove = (e: TouchEvent) => {
         const offset = Math.max(0, e.touches[0].clientY - dragStart);
         setDragOffset(offset);
@@ -203,6 +206,7 @@ const Modal = () => {
               : 'animate-in max-lg:slide-in-from-bottom duration-300 lg:fade-in-0 lg:zoom-in-95'
           )}
           onClick={(e) => e.stopPropagation()}
+          data-modal
           ref={modalRef}
           role='dialog'
           aria-modal='true'
