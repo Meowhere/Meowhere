@@ -13,7 +13,7 @@ export default function ManagementDropdown({
   onClose,
   onEdit,
   onDelete,
-  isDesktop = true,
+  isDesktop,
 }: ManagementDropdownProps) {
   if (!isOpen) return null;
 

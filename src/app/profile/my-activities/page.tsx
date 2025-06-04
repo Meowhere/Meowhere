@@ -8,48 +8,56 @@ export default function MyActivitiesPage() {
   activitiesData
     .push
     // {
+    //   id: 1,
     //   title: '함께 배우면 즐거운 스트릿 댄스',
     //   imageUrl: '/assets/icons/test_img.png',
     //   price: 148000,
     //   rating: 3.8,
     // },
     // {
+    //   id: 2,
     //   title: '함께 배우면 즐거운 스트릿 댄스',
     //   imageUrl: '/assets/icons/test_img.png',
     //   price: 148000,
     //   rating: 3.8,
     // },
     // {
+    //   id: 3,
     //   title: '함께 배우면 즐거운 스트릿 댄스',
     //   imageUrl: '/assets/icons/test_img.png',
     //   price: 148000,
     //   rating: 3.8,
     // },
     // {
+    //   id: 4,
     //   title: '함께 배우면 즐거운 스트릿 댄스',
     //   imageUrl: '/assets/icons/test_img.png',
     //   price: 148000,
     //   rating: 3.8,
     // },
     // {
+    //   id: 5,
     //   title: '함께 배우면 즐거운 스트릿 댄스',
     //   imageUrl: '/assets/icons/test_img.png',
     //   price: 148000,
     //   rating: 3.8,
     // },
     // {
+    //   id: 6,
     //   title: '함께 배우면 즐거운 스트릿 댄스',
     //   imageUrl: '/assets/icons/test_img.png',
     //   price: 148000,
     //   rating: 3.8,
     // },
     // {
+    //   id: 7,
     //   title: '함께 배우면 즐거운 스트릿 댄스',
     //   imageUrl: '/assets/icons/test_img.png',
     //   price: 148000,
     //   rating: 3.8,
     // },
     // {
+    //   id: 8,
     //   title: '함께 배우면 즐거운 스트릿 댄스',
     //   imageUrl: '/assets/icons/test_img.png',
     //   price: 148000,

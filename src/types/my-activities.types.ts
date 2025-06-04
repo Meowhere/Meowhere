@@ -3,6 +3,7 @@ export interface RatingLabelProps {
 }
 
 export interface MyActivitiesProps extends RatingLabelProps {
+  id: number;
   title: string;
   imageUrl: string;
   price: number;
