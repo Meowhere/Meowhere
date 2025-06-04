@@ -1,6 +1,7 @@
 'use client';
 
 import { BASE_URL } from '@/src/constants/api';
+import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 import { ActivityFormData } from '@/src/types/activity.types';
 import { useState } from 'react';
 
@@ -47,7 +48,7 @@ const scheduleFormData = {
 function CreateActivity() {
   // 체험 등록 테스트
   const handlePostActivity = async () => {
-    const res = await fetch(`${BASE_URL}/api/activities`, {
+    const res = await fetchFromClient(`/activities`, {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(activityFormData),
@@ -100,10 +101,7 @@ function CreateActivity() {
 
   return (
     <div className='flex gap-2 items-center'>
-      <button
-        className='m-2 p-1 bg-primary-300 text-white'
-        onClick={handlePostActivity}
-      >
+      <button className='m-2 p-1 bg-primary-300 text-white' onClick={handlePostActivity}>
         POST Activity
       </button>
       <button
