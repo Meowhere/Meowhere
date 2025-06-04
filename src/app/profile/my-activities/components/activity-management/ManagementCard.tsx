@@ -29,12 +29,12 @@ export default function ManagementCard({ title, imageUrl, price, rating }: MyAct
       <div className='flex flex-row items-center gap-[10px]'>
         <img src={imageUrl} alt={title} className='w-[84px] h-[84px] rounded-[8px]' />
         {/* isDesktop일 땐 98px 에 round 10px  그리고 gap은 14px*/}
-        <div className='flex flex-col justify-between gap-[12px] h-[84px]'>
+        <div className='flex flex-col justify-between gap-[12px]'>
           {/* isDestop일 때 gap 18 h 98px */}
           <RatingLabel rating={rating} />
-          <div className='flex flex-col justify-between'>
-            <p className='text-lg font-semibold text-gray-800'>{title}</p>
-            <span className='text-sm font-regular text-gray-600'>
+          <div className='flex flex-col justify-between gap-[12px]'>
+            <p className='text-lg font-semibold text-gray-800 leading-none'>{title}</p>
+            <span className='text-sm font-regular text-gray-600 leading-none'>
               ₩{price.toLocaleString()} /인
             </span>
           </div>
