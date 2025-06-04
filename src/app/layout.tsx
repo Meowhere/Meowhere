@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import './globals.css';
+import '@/src/styles/globals.css';
 import localFont from 'next/font/local';
 import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';
 import ModalProvider from '@/src/components/providers/ModalProvider';
