@@ -4,11 +4,20 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import ReservationsCard from './components/ReservationsCard';
 import DropdownMenu from '../../../components/common/dropdowns/dropdown-menu/DropdownMenu';
+import type { DropdownItemData } from '../../../types/dropdown-menu.types';
 
 export default function ReservationsTestPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [openDirection, setOpenDirection] = useState<'up' | 'down'>('down');
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const reservationStatusItems: DropdownItemData[] = [
+    { type: 'button', label: '예약 완료', onClick: () => {} },
+    { type: 'button', label: '예약 승인', onClick: () => {} },
+    { type: 'button', label: '예약 취소', onClick: () => {} },
+    { type: 'button', label: '예약 거절', onClick: () => {} },
+    { type: 'button', label: '체험 완료', onClick: () => {} },
+  ];
 
   const testData: any[] = [];
 
@@ -109,13 +118,7 @@ export default function ReservationsTestPage() {
               <div className='flex mt-[8px] justify-end hidden lg:block'>
                 {isOpen && (
                   <DropdownMenu
-                    items={[
-                      { type: 'button', label: '예약 완료', onClick: () => {} },
-                      { type: 'button', label: '예약 승인', onClick: () => {} },
-                      { type: 'button', label: '예약 취소', onClick: () => {} },
-                      { type: 'button', label: '예약 거절', onClick: () => {} },
-                      { type: 'button', label: '체험 완료', onClick: () => {} },
-                    ]}
+                    items={reservationStatusItems}
                     isOpen={isOpen}
                     onClose={() => setIsOpen(false)}
                     position='bottom'
