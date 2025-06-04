@@ -61,7 +61,7 @@ export default function Navbar() {
             <div className='flex justify-start'>
               <ArrowIcon
                 direction='left'
-                className='w-[24px] h-[24px]'
+                size={24}
                 onClick={backAction || undefined}
                 aria-label='뒤로가기'
               />
