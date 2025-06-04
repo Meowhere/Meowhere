@@ -8,9 +8,11 @@ export default function Footer() {
 
   return (
     <footer
-      className={`${isDesktop ? 'h-[540px]' : 'h-[468px]'} w-full flex flex-col items-center justify-start bg-[#F5F2EC] text-gray-500 overflow-hidden text-xs text-center`}
+      className={`${isDesktop ? 'h-[540px]' : 'h-[556px]'} w-full flex flex-col items-center justify-start bg-[#F5F2EC] text-gray-500 overflow-hidden text-xs text-center`}
     >
-      <div className='w-full h-9 bg-white rounded-bl-[100px] rounded-br-[100px] shadow-[0px_4px_48px_0px_rgba(0,0,0,0.10)]' />
+      <div
+        className={`${isDesktop ? 'h-[48px]' : 'h-[36px]'} w-full bg-white rounded-bl-[100px] rounded-br-[100px] shadow-[0px_4px_48px_0px_rgba(0,0,0,0.10)]`}
+      />
       <Logo
         className={`${isDesktop ? 'mt-[112px]' : 'mt-[80px]'} w-[78px] h-[114px]`}
         aria-label='어디가냥 로고'
