@@ -16,7 +16,7 @@ export default function ProfileMenuItem({ href, icon, title }: ProfileMenuItemPr
       </div>
       {!isDesktop && (
         <div>
-          <ArrowButton direction='right' className='w-[24px] h-[24px]' />
+          <ArrowButton direction='right' size={18} className='w-[24px] h-[24px]' />
         </div>
       )}
     </Link>
