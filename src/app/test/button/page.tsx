@@ -46,7 +46,7 @@ export default function ArrowButtonTestPage() {
             </div>
 
             <div className='text-center'>
-              <ArrowButton direction='right' onClick={() => handleClick('right')} />
+              <ArrowButton direction='right' size={30} onClick={() => handleClick('right')} />
             </div>
 
             <div className='text-center'>

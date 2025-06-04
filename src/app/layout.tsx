@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import '@/src/styles/globals.css';
 import localFont from 'next/font/local';
-import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';
+import ClientLayout from './client-layout';
 import ModalProvider from '@/src/components/providers/ModalProvider';
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang='ko' className={pretendard.className}>
       <body>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ClientLayout>{children}</ClientLayout>
         <ModalProvider />
       </body>
     </html>
