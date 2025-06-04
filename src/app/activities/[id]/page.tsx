@@ -5,6 +5,7 @@ import ExperienceImageViewer from '../../activities/[id]/components/experience/E
 import ExperienceSummarySection from '../../activities/[id]/components/experience/ExperienceSummarySection';
 import Divider from './components/Divider';
 import SectionTitle from './components/SectionTitle';
+import ExperienceLocationMap from './components/experience/ExperienceLocationMap';
 
 export default function ExperienceDetailPage() {
   const { id } = useParams();
@@ -18,6 +19,7 @@ export default function ExperienceDetailPage() {
       </div>
       <div className='max-w-4xl mx-auto px-4'>
         <SectionTitle title='만나는 곳' subtitle='서울 중구 청계천로 100 10F' />
+        <ExperienceLocationMap address={'서울 중구 청계천로 100 10F'} />
         <Divider />
       </div>
       <div className='max-w-4xl mx-auto px-4'>
