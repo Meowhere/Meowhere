@@ -5,7 +5,7 @@ export default function RatingLabel({ rating }: RatingLabelProps) {
   return (
     <div className='flex items-center justify-center w-fit h-fit gap-[2px] px-[10px] rounded-full bg-yellow-100'>
       <StarFillIcon className='text-yellow-200' size={16} />
-      <span className='text-md font-medium text-gray-800'>{rating}</span>
+      <span className='text-md font-medium text-gray-800'>{rating.toFixed(1)}</span>
     </div>
   );
 }

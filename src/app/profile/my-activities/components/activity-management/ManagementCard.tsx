@@ -5,8 +5,14 @@ import KebabButton from '@/src/components/common/buttons/KebabButton';
 import { useState } from 'react';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import ManagementDropdown from './ManagementDropdown';
+import Image from 'next/image';
 
-export default function ManagementCard({ title, imageUrl, price, rating }: MyActivitiesProps) {
+export default function ManagementCard({
+  title,
+  bannerImageUrl,
+  price,
+  rating,
+}: MyActivitiesProps) {
   const [open, setOpen] = useState(false);
   const { isDesktop } = useBreakpoint();
 
@@ -27,14 +33,14 @@ export default function ManagementCard({ title, imageUrl, price, rating }: MyAct
   return (
     <div className='flex justify-between border-b border-gray-200 py-[24px] w-full'>
       <div className='flex flex-row items-center justify-center gap-[10px] lg:gap-[14px]'>
-        <img
-          src={imageUrl}
+        <Image
+          src={bannerImageUrl}
           alt={title}
-          className='w-[84px] h-[84px] rounded-[8px] lg:w-[98px] lg:h-[98px] lg:rounded-[10px]'
+          width={isDesktop ? 98 : 84}
+          height={isDesktop ? 98 : 84}
+          className='rounded-[8px] lg:rounded-[10px] object-cover object-center aspect-[1/1]'
         />
-        {/* isDesktop일 땐 98px 에 round 10px  그리고 gap은 14px*/}
         <div className='flex flex-col gap-[12px] lg:gap-[18px] lg:h-[98px]'>
-          {/* isDestop일 때 gap 18 h 98px */}
           <RatingLabel rating={rating} />
           <div className='flex flex-col justify-between gap-[12px]'>
             <p className='text-lg font-semibold text-gray-800 leading-none'>{title}</p>

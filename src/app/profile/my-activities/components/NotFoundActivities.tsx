@@ -10,12 +10,8 @@ export default function NotFoundActivities() {
       <Image
         src='/assets/icons/logo/ico-empty-view-logo.svg'
         alt='빈 상태 이미지'
-        width={82}
-        height={123}
-        style={{
-          width: isDesktop ? '282px' : '82px',
-          height: isDesktop ? '423px' : '123px',
-        }}
+        width={isDesktop ? 282 : 82}
+        height={isDesktop ? 423 : 123}
       />
       <div className='flex flex-col lg:items-start'>
         <h1 className='text-2lg font-semibold text-gray-400 lg:text-left'>등록된 체험이 없다냥</h1>

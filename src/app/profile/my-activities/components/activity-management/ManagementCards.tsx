@@ -12,7 +12,7 @@ export default function ManagementCards({ activities }: ManagementCardsProps) {
   }
 
   return (
-    <div className='flex flex-col gap-4 w-full h-full'>
+    <div className='flex flex-col w-full h-[]'>
       {activities.map((activity) => (
         <ManagementCard key={activity.id} {...activity} />
       ))}
