@@ -1,15 +1,15 @@
 import { useModalStore } from '@/src/store/modalStore';
-import { ReviewModalProps } from '@/src/types/modal.types';
+import { CreateReviewModalProps } from '@/src/types/modal.types';
 import BaseButton from '../buttons/BaseButton';
 
-export default function ReviewModal({
+export default function CreateReviewModal({
   title,
   schedule,
   headCount,
   price,
   rating,
   onConfirm,
-}: ReviewModalProps) {
+}: CreateReviewModalProps) {
   const { closeModal } = useModalStore();
   // schedule 포맷 필요
 
@@ -21,7 +21,7 @@ export default function ReviewModal({
   return (
     <div className='flex flex-col flex-grow gap-2 text-md'>
       {/*임시 데이터*/}
-      <div className='flex-grow justify-center mt-[48px] mb-[32px]'>
+      <div className='justify-center mt-[48px] mb-[32px]'>
         <p className=' text-center'>{title}</p>
         <p className='text-center'>{price}</p>
         <p className='text-center'>{rating}</p>

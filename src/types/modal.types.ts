@@ -20,7 +20,7 @@ export interface ModalState {
   setIsClosing: (closing: boolean) => void;
 }
 
-export interface ReviewModalProps {
+export interface CreateReviewModalProps {
   header?: string;
   title: string;
   schedule: Schedule;

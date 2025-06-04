@@ -197,7 +197,7 @@ const Modal = () => {
         <div
           className={clsx(
             'relative w-full h-full flex flex-col lg:max-w-[480px] lg:h-auto lg:rounded-[20px] focus:outline-none',
-            'rounded-t-[20px] bg-white p-[24px] shadow-lg',
+            'rounded-t-[20px] bg-white p-[24px] shadow-lg text-lg',
             isDragging ? 'transition-none' : 'transition-transform',
             isClosing
               ? 'animate-out max-lg:slide-out-to-bottom duration-300 lg:fade-out-0 lg:zoom-out-95'
@@ -300,7 +300,7 @@ const Modal = () => {
       <div
         ref={bottomSheetRef}
         className={clsx(
-          'fixed bottom-0 left-0 right-0 w-full focus:outline-none',
+          'fixed bottom-0 left-0 right-0 w-full focus:outline-none text-lg',
           'animate-in slide-in-from-bottom duration-300',
           'rounded-t-[12px] bg-white/70 backdrop-blur-xl rounded-[12px] border border-white/20 shadow-2xl',
           getHeightClasses(modalProps.height),

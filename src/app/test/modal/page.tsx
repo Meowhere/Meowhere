@@ -2,11 +2,12 @@
 import { useModal } from '@/src/hooks/useModal';
 
 export default function ModalTest() {
-  const { openReviewModal, openConfirmModal, openBottomSheetModal } = useModal();
+  const { openAuthModal, openCreateReviewModal, openConfirmModal, openBottomSheetModal } =
+    useModal();
 
   // 후기 모달 예시
-  const handleReview = () => {
-    openReviewModal({
+  const handleCreateReview = () => {
+    openCreateReviewModal({
       title: '함께 배우면 즐거운 스트릿 댄스',
       schedule: { id: 1, date: '', startTime: '', endTime: '' },
       headCount: 12,
@@ -55,9 +56,14 @@ export default function ModalTest() {
     });
   };
 
+  // 확인 모달 예시
+  const handleAuthModal = () => {
+    openAuthModal();
+  };
+
   return (
     <div className='min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300 text-lg'>
-      <button className='p-[1rem] border-2' onClick={handleReview}>
+      <button className='p-[1rem] border-2' onClick={handleCreateReview}>
         후기 모달
       </button>
       <button className='p-[1rem] border-2' onClick={handleBottomSheet}>
@@ -65,6 +71,9 @@ export default function ModalTest() {
       </button>
       <button className='p-[1rem] border-2' onClick={handleConfirm}>
         확인 모달
+      </button>
+      <button className='p-[1rem] border-2' onClick={handleAuthModal}>
+        인증 모달
       </button>
     </div>
   );
