@@ -17,7 +17,7 @@ const sizeMap = {
 export default function CloseButton({ size = 'md', onClick, className = '' }: CloseButtonProps) {
   return (
     <button type='button' onClick={onClick} aria-label='닫기' className={`p-1 ${className}`}>
-      <DeleteIcon size={sizeMap[size]} className='object-contain text-white' />
+      <DeleteIcon size={sizeMap[size]} className='object-contain text-dark-gray-40' />
     </button>
   );
 }

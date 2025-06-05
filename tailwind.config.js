@@ -45,6 +45,8 @@ module.exports = {
           200: '#8407C7',
           100: '#FCF0FF',
         },
+        'dark-gray': '#2A2C3D',
+        'dark-gray-40': 'rgba(42, 44, 61, 0.4)',
       },
       fontSize: {
         //1rem = 10px
@@ -68,5 +70,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animated')],
+  plugins: [require('tailwindcss-animated'), require('tailwindcss-animate')],
 };
