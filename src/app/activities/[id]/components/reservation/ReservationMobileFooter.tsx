@@ -20,7 +20,7 @@ export default function ReservationMobileFooter({
         <div className='ml-auto'>
           <BaseButton
             onClick={onClickDateSelect}
-            className='w-[106px] h-[48px] text-lg font-bold rounded-full transition'
+            className='min-w-[108px] w-[108px] h-[48px] text-lg font-bold rounded-full transition flex items-center justify-center'
           >
             일정 선택
           </BaseButton>

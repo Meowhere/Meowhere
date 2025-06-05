@@ -3,8 +3,6 @@
 
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import ReservationMobileFooter from './ReservationMobileFooter';
-import { useModal } from '@/src/hooks/useModal';
-import DateSelectModal from './DateSelectModal';
 
 interface ReservationState {
   date: Date | undefined;
@@ -34,28 +32,23 @@ export default function ReservationBox({
   pricePerPerson,
 }: ReservationBoxProps) {
   const { isMobile, hasMounted } = useBreakpoint();
-  // const { openModal } = useModal();
 
   // hasMounted가 false면 SSR 환경이므로 렌더하지 않음
   if (typeof window === 'undefined' || !hasMounted) return null;
 
   const handleOpenDateModal = () => {
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
-    const overmorrow = new Date();
-    overmorrow.setDate(today.getDate() + 2);
-
-    // 모바일일 때만 하단 예약 UI 표시
-    if (isMobile) {
-      return (
-        <ReservationMobileFooter
-          pricePerPerson={pricePerPerson}
-          onClickDateSelect={handleOpenDateModal}
-        />
-      );
-    }
-
-    return null;
+    console.log('날짜 선택 모달을 열어야 합니다');
   };
+
+  // 모바일일 때만 하단 예약 UI 표시
+  if (isMobile) {
+    return (
+      <ReservationMobileFooter
+        pricePerPerson={pricePerPerson}
+        onClickDateSelect={handleOpenDateModal}
+      />
+    );
+  }
+
+  return null;
 }
