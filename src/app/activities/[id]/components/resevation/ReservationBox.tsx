@@ -33,7 +33,7 @@ export default function ReservationBox({
   pricePerPerson,
 }: ReservationBoxProps) {
   const { isMobile, hasMounted } = useBreakpoint();
-  const { openModal } = useModal();
+  // const { openModal } = useModal();
 
   // hasMounted가 false면 SSR 환경이므로 렌더하지 않음
   if (typeof window === 'undefined' || !hasMounted) return null;
@@ -45,32 +45,32 @@ export default function ReservationBox({
     const overmorrow = new Date();
     overmorrow.setDate(today.getDate() + 2);
 
-    openModal({
-      header: '일정을 선택하세요',
-      children: (
-        <DateSelectModal
-          schedule={[
-            {
-              date: tomorrow,
-              label: '내일',
-              times: [
-                { startTime: '오후 2:00', endTime: '오후 3:30', price: 23000 },
-                { startTime: '오후 4:00', endTime: '오후 5:30', price: 23000 },
-              ],
-            },
-            {
-              date: overmorrow,
-              label: '모레',
-              times: [{ startTime: '오전 11:00', endTime: '오후 12:30', price: 25000 }],
-            },
-          ]}
-          onSelect={(date, time) => {
-            onDateChange(date);
-            onTimeChange(`${time.startTime} ~ ${time.endTime}`);
-          }}
-        />
-      ),
-    });
+    // openModal({
+    //   header: '일정을 선택하세요',
+    //   children: (
+    //     <DateSelectModal
+    //       schedule={[
+    //         {
+    //           date: tomorrow,
+    //           label: '내일',
+    //           times: [
+    //             { startTime: '오후 2:00', endTime: '오후 3:30', price: 23000 },
+    //             { startTime: '오후 4:00', endTime: '오후 5:30', price: 23000 },
+    //           ],
+    //         },
+    //         {
+    //           date: overmorrow,
+    //           label: '모레',
+    //           times: [{ startTime: '오전 11:00', endTime: '오후 12:30', price: 25000 }],
+    //         },
+    //       ]}
+    //       onSelect={(date, time) => {
+    //         onDateChange(date);
+    //         onTimeChange(`${time.startTime} ~ ${time.endTime}`);
+    //       }}
+    //     />
+    //   ),
+    // });
   };
 
   // 모바일일 때만 하단 예약 UI 표시

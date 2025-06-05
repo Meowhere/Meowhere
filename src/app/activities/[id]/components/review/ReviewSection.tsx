@@ -31,7 +31,7 @@ export default function ReviewSection({
         />
       </div>
 
-      <div className='flex gap-4 overflow-x-auto pb-2 snap-x scroll-smooth scrollbar-hide px-4'>
+      <div className='flex gap-4 overflow-x-auto pb-2 snap-x scroll-smooth scrollbar-hide'>
         {previewReviews.map((review, idx) => (
           <div key={review.id} className='flex items-stretch'>
             <div className='snap-start shrink-0 w-[256px] mr-[12px]'>

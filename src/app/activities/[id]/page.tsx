@@ -14,7 +14,6 @@ import { useGnbStore } from '@/src/store/gnbStore';
 import HeartIcon from '@/src/components/common/icons/HeartIcon';
 import ExperienceDescription from './components/experience/ExperienceDescription';
 import ReviewSection from './components/review/ReviewSection';
-import { SubImage } from '@/src/types/activity.types';
 
 const dummyExperience = {
   id: 7,
@@ -25,6 +24,11 @@ const dummyExperience = {
   price: 10000,
   address: '서울특별시 강남구 테헤란로 427',
   bannerImageUrl: '/assets/icons/img-main.png',
+  subImages: [
+    { id: 1, imageUrl: '/assets/icons/img-sub1.png' },
+    { id: 2, imageUrl: '/assets/icons/img-sub2.png' },
+    { id: 3, imageUrl: '/assets/icons/img-sub3.png' },
+  ],
   totalCount: 1300,
   averageRating: 4.74,
 };
@@ -113,14 +117,6 @@ const dummyReviews = [
   },
 ];
 
-const bannerImageUrl = '/assets/icons/img-main.png';
-
-const subImages: SubImage[] = [
-  { id: 1, imageUrl: '/assets/icons/img-sub1.png' },
-  { id: 2, imageUrl: '/assets/icons/img-sub2.png' },
-  { id: 3, imageUrl: '/assets/icons/img-sub3.png' },
-];
-
 export default function ExperienceDetailPage() {
   // const { id } = useParams();
   const router = useRouter();
@@ -141,30 +137,38 @@ export default function ExperienceDetailPage() {
   };
 
   return (
-    <main className='min-h-screen pt-[56px]'>
-      <div className='max-w-4xl mx-auto px-4'>
-        <ExperienceImageViewer bannerImageUrl={bannerImageUrl} subImages={subImages} />
-        <ExperienceSummarySection />
+    <main className='min-h-screen pt-[56px] px-[24px]'>
+      <div className='max-w-4xl mx-auto'>
+        <ExperienceImageViewer
+          bannerImageUrl={dummyExperience.bannerImageUrl}
+          subImages={dummyExperience.subImages}
+        />
+        <ExperienceSummarySection
+          title={dummyExperience.title}
+          rating={dummyExperience.averageRating.toFixed(1)}
+          reviewCount={dummyExperience.totalCount}
+          address={dummyExperience.address}
+        />
         <Divider />
       </div>
-      <div className='max-w-4xl mx-auto px-4'>
-        <SectionTitle title='만나는 곳' subtitle='서울 중구 청계천로 100 10F' />
-        <ExperienceLocationMap address={'서울 중구 청계천로 100'} />
+      <div className='max-w-4xl mx-auto'>
+        <SectionTitle title='만나는 곳' subtitle={dummyExperience.address} />
+        <ExperienceLocationMap address={dummyExperience.address} />
         <Divider />
       </div>
-      <div className='max-w-4xl mx-auto px-4'>
+      <div className='max-w-4xl mx-auto'>
         <SectionTitle title='체험 설명' />
         <ExperienceDescription description={dummyExperience.description} />
         <Divider />
       </div>
-      <div className='max-w-4xl mx-auto px-4'>
+      <div className='max-w-4xl mx-auto'>
         <SectionTitle title='후기' />
         <ReviewSection
           rating={dummyExperience.averageRating}
           reviewCount={dummyExperience.totalCount}
           reviews={dummyReviews}
           onOpenModal={() => {
-            console.log('모든 후기 보기 클릭!');
+            console.log('모달 열기');
           }}
         />
       </div>

@@ -6,7 +6,7 @@ interface SectionTitleProps {
 
 export default function SectionTitle({ title, subtitle, className }: SectionTitleProps) {
   return (
-    <div className={`mb-4 flex flex-col px-[12px] gap-[8px] ${className}`}>
+    <div className={`mb-4 flex flex-col gap-[8px] ${className}`}>
       <h2 className='text-[2.2rem] leading-[3.2rem] font-semibold text-gray-800 font-pretendard'>
         {title}
       </h2>
