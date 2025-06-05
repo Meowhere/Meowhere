@@ -3,10 +3,20 @@ import DropdownMenu from '@/src/components/common/dropdowns/dropdown-menu/Dropdo
 import Input from '@/src/components/common/inputs/Input';
 import Textarea from '@/src/components/common/inputs/Textarea';
 import UploadImg from './components/UploadImg';
-import { useState } from 'react';
+import { useGnb } from '@/src/hooks/useGnb';
+import { useGnbStore } from '@/src/store/gnbStore';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
-  const [title, setTitle] = useState('');
+  const { setTitle, setSubtitle } = useGnbStore();
+  const router = useRouter();
+
+  useGnb({
+    title: '안녕',
+    subtitle: '',
+    backAction: () => router.back(),
+    rightButtons: [],
+  });
 
   return (
     <div className='flex flex-col gap-[48px] px-[24px] py-[96px]'>
@@ -19,9 +29,10 @@ export default function RegisterPage() {
       </div>
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
-        <Input name='title' label='제목' type='text' value={title} />
+        <Input name='title' label='제목' type='text' value='' />
+        <Input name='price' label='가격' type='text' value='' />
         {/* <DropdownMenu /> */}
-        {/* <Input /> */}
+        {/* <Input name='location'/> */}
         {/* <Textarea value='' onChange={} error={}/> */}
       </div>
       <div>
