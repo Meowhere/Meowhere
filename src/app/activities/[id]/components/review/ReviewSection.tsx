@@ -2,9 +2,9 @@
 
 import ReviewCard from './ReviewCard';
 import ReviewSummary from './ReviewSummary';
-import { getSatisfactionLabel } from '@/src/utils/getSatisfactionLabel';
-import { Review } from '@/src/types/review.types';
-import VerticalDivider from '../common/VerticalDivider';
+import { getSatisfactionLabel } from '@/src/utils/getSatisfacitonLabel';
+import { Review } from '@/src/types/review.type';
+import VerticalDivider from '../common/VerticleDIvider';
 
 interface ReviewSectionProps {
   rating: number;
