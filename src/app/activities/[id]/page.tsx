@@ -24,7 +24,7 @@ const dummyExperience = {
   category: '투어',
   price: 10000,
   address: '서울특별시 강남구 테헤란로 427',
-  bannerImageUrl: 'https://.../a.png',
+  bannerImageUrl: '/assets/icons/img-main.png',
   totalCount: 1300,
   averageRating: 4.74,
 };
@@ -149,7 +149,7 @@ export default function ExperienceDetailPage() {
       </div>
       <div className='max-w-4xl mx-auto px-4'>
         <SectionTitle title='만나는 곳' subtitle='서울 중구 청계천로 100 10F' />
-        <ExperienceLocationMap address={'서울 중구 청계천로 100 10F'} />
+        <ExperienceLocationMap address={'서울 중구 청계천로 100'} />
         <Divider />
       </div>
       <div className='max-w-4xl mx-auto px-4'>
