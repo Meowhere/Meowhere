@@ -1,26 +1,36 @@
 'use client';
+import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useModal } from '@/src/hooks/useModal';
 
 export default function ModalTest() {
-  const { review, confirm, openBottomSheet, closeModal } = useModal();
+  const { openAuthModal, openCreateReviewModal, openBottomSheetModal, openReservationModal } =
+    useModal();
+  const { openConfirmModal } = useConfirmModal();
 
   // 후기 모달 예시
-  const handleReview = () => {
-    review({
+  const handleCreateReview = () => {
+    openCreateReviewModal({
       title: '함께 배우면 즐거운 스트릿 댄스',
-      schedules: null,
+      schedule: { id: 1, date: '', startTime: '', endTime: '' },
       headCount: 12,
       price: 100000,
+      rating: 3,
       onConfirm: () => {
-        console.log('취소됨');
-        closeModal();
+        console.log('작성하기 함수 코드');
       },
+    });
+  };
+
+  // 예약 정보 모달 예시
+  const handleReservation = () => {
+    openReservationModal({
+      // 필요한 프롭들...
     });
   };
 
   // 바텀 시트 예시
   const handleBottomSheet = () => {
-    openBottomSheet({
+    openBottomSheetModal({
       height: 'auto',
       children: (
         <div className='space-y-2'>
@@ -44,24 +54,35 @@ export default function ModalTest() {
 
   // 확인 모달 예시
   const handleConfirm = () => {
-    confirm({
-      message: '예약을 취소하시겠어요?',
+    openConfirmModal({
+      message: '예약을 승인할까요?',
       onConfirm: () => {
-        console.log('취소됨');
+        console.log('승인!');
       },
     });
   };
 
+  // 인증 모달 예시
+  const handleAuthModal = () => {
+    openAuthModal();
+  };
+
   return (
-    <div className='min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300'>
-      <button className='p-[1rem] border-2' onClick={handleReview}>
+    <div className='min-h-screen flex items-center justify-center gap-10 bg-gradient-to-br from-primary-100 via-primary-200 to-primary-300 text-lg'>
+      <button className='p-[1rem] border-2' onClick={handleCreateReview}>
         후기 모달
+      </button>
+      <button className='p-[1rem] border-2' onClick={handleReservation}>
+        예약 정보 모달
       </button>
       <button className='p-[1rem] border-2' onClick={handleBottomSheet}>
         바텀 시트
       </button>
       <button className='p-[1rem] border-2' onClick={handleConfirm}>
         확인 모달
+      </button>
+      <button className='p-[1rem] border-2' onClick={handleAuthModal}>
+        인증 모달
       </button>
     </div>
   );
