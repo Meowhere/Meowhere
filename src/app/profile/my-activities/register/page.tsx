@@ -8,7 +8,6 @@ import { useGnbStore } from '@/src/store/gnbStore';
 import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
-  const { setTitle, setSubtitle } = useGnbStore();
   const router = useRouter();
 
   useGnb({
