@@ -1,6 +1,6 @@
 import { authApi } from '@/src/services/authApi';
 import { useAuthStore } from '@/src/store/authStore';
-import { User, UserResponse } from '@/src/types/user.types';
+import { SignUpRequest } from '@/src/types/auth.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
@@ -23,21 +23,28 @@ export const useLogin = () => {
 };
 
 export const useSignUp = () => {
-  const queryClient = useQueryClient();
-  const { setUser } = useAuthStore();
+  const signUpMutation = useMutation({ mutationFn: authApi.signUp });
+  const loginMutation = useLogin(); // 로그인 훅 재사용
 
-  return useMutation({
-    mutationFn: authApi.signUp,
-    onSuccess: (data) => {
-      if (data.user && !data.error) {
-        setUser(data.user);
-        queryClient.invalidateQueries({ queryKey: ['user'] });
-      }
-    },
-    onError: (error) => {
-      console.log('회원가입 실패:', error);
-    },
-  });
+  const signUpAndLogin = async (formData: SignUpRequest) => {
+    const signUpResult = await signUpMutation.mutateAsync(formData);
+
+    if (signUpResult?.email) {
+      const loginResult = await loginMutation.mutateAsync({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      return loginResult;
+    }
+
+    return signUpResult;
+  };
+
+  return {
+    ...signUpMutation,
+    signUpAndLogin,
+  };
 };
 
 export const useUser = () => {

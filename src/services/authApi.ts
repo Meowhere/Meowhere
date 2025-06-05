@@ -20,7 +20,7 @@ export const authApi = {
     return res.json();
   },
 
-  signUp: async (credentials: SignUpRequest) => {
+  signUp: async (credentials: SignUpRequest): Promise<User> => {
     const res = await fetchFromClient('/users', {
       method: 'POST',
       credentials: 'include',

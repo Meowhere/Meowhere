@@ -12,7 +12,7 @@ const loginFormData = {
 };
 
 const signUpFormData = {
-  email: 'test111@test.com',
+  email: 'test117@test.com',
   password: 'password123',
   nickname: 'test user',
 };
@@ -22,7 +22,7 @@ export default function AuthTest() {
   const [isUser, setIsUser] = useState<boolean | null>(null);
   const loginMutation = useLogin();
   const logoutMutation = useLogout();
-  const signUpMutation = useSignUp();
+  const { signUpAndLogin } = useSignUp();
   const { data, isLoading, isError, refetch } = useUser();
 
   const handleCheckIfUser = async () => {
@@ -37,7 +37,7 @@ export default function AuthTest() {
   };
 
   const handleSignUp = async () => {
-    const result = await signUpMutation.mutateAsync(signUpFormData);
+    const result = await signUpAndLogin(signUpFormData);
     console.log(result);
   };
 
