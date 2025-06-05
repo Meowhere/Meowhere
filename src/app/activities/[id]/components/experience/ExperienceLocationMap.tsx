@@ -113,5 +113,5 @@ export default function KakaoMap({ address, label }: KakaoMapProps) {
       infoWindow.open(map, marker);
     }
   };
-  return <div ref={mapRef} className='h-[24rem] w-full rounded-[1.2rem] border border-gray-200' />;
+  return <div ref={mapRef} className='h-[328px] w-full rounded-[1.2rem] border border-gray-200' />;
 }
