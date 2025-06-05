@@ -24,11 +24,8 @@ export default function KakaoMap({ address, label }: KakaoMapProps) {
     }
 
     if (window.kakao?.maps) {
-      console.log('Kakao Maps 객체가 이미 로드되어 있습니다.');
       createMap();
     } else {
-      console.log('Kakao Maps 스크립트를 로드합니다.');
-      console.log(apiKey);
       loadKakaoMapScript();
     }
   }, [address, label, apiKey]);
@@ -113,5 +110,7 @@ export default function KakaoMap({ address, label }: KakaoMapProps) {
       infoWindow.open(map, marker);
     }
   };
-  return <div ref={mapRef} className='h-[328px] w-full rounded-[1.2rem] border border-gray-200' />;
+  return (
+    <div ref={mapRef} className='h-[328px] w-full px-6 rounded-[1.2rem] border border-gray-200' />
+  );
 }
