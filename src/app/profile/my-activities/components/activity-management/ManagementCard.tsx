@@ -2,36 +2,24 @@
 import RatingLabel from './RatingLabel';
 import { MyActivitiesProps } from '@/src/types/my-activities.types';
 import KebabButton from '@/src/components/common/buttons/KebabButton';
+import DropdownMenu from '@/src/components/common/dropdowns/dropdown-menu/DropdownMenu';
 import { useState } from 'react';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
-import ManagementDropdown from './ManagementDropdown';
 import Image from 'next/image';
+import { DROPDOWN_ITEM_TYPES, POST_ACTION_LABELS } from '@/src/constants/dropdown';
 
 export default function ManagementCard({
   title,
   bannerImageUrl,
   price,
   rating,
+  ...rest
 }: MyActivitiesProps) {
   const [open, setOpen] = useState(false);
   const { isDesktop } = useBreakpoint();
 
-  // 수정하기 클릭 시 실행될 함수
-  const handleEdit = () => {
-    alert(`${title} 수정하기 클릭!`);
-    setOpen(false);
-  };
-
-  // 삭제 클릭 시 실행될 함수
-  const handleDelete = () => {
-    if (confirm(`${title}을(를) 삭제하시겠습니까?`)) {
-      alert('삭제되었습니다.');
-    }
-    setOpen(false);
-  };
-
   return (
-    <div className='flex justify-between border-b border-gray-200 py-[24px] w-full'>
+    <div className='flex justify-between border-b border-gray-200 last:border-b-0 py-[24px] w-full'>
       <div className='flex flex-row items-center justify-center gap-[10px] lg:gap-[14px]'>
         <Image
           src={bannerImageUrl}
@@ -50,16 +38,36 @@ export default function ManagementCard({
           </div>
         </div>
       </div>
-      <div>
+      <div className='relative'>
         <KebabButton size={24} onToggle={() => setOpen((prev) => !prev)} />
-        <ManagementDropdown
-          isOpen={open}
-          onClose={() => setOpen(false)}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          isDesktop={isDesktop}
-        />
-        {/* 등록하기랑 수정하기 할 Eo 이 코드는 다시 수정할 예정 */}
+        {open && (
+          <div className='absolute left-[-140px] top-[-20px] z-10'>
+            <DropdownMenu
+              isOpen={open}
+              isMobile={!isDesktop}
+              title={title}
+              items={[
+                {
+                  type: DROPDOWN_ITEM_TYPES.LINK,
+                  label: POST_ACTION_LABELS.EDIT,
+                  href: '/',
+                },
+                {
+                  type: DROPDOWN_ITEM_TYPES.BUTTON,
+                  label: POST_ACTION_LABELS.DELETE,
+                  onClick: () => {},
+                  isDanger: true,
+                },
+              ]}
+              bottomButton={{
+                type: DROPDOWN_ITEM_TYPES.BUTTON,
+                label: POST_ACTION_LABELS.CANCEL,
+                onClick: () => setOpen(false),
+              }}
+              onClose={() => setOpen(false)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
