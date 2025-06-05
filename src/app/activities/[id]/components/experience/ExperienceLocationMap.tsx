@@ -15,7 +15,7 @@ interface KakaoMapResult {
 
 export default function KakaoMap({ address, label }: KakaoMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const apiKey = process.env.NEXT_PUBLIC_KAKAO_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
 
   useEffect(() => {
     if (!apiKey) {
@@ -28,6 +28,7 @@ export default function KakaoMap({ address, label }: KakaoMapProps) {
       createMap();
     } else {
       console.log('Kakao Maps 스크립트를 로드합니다.');
+      console.log(apiKey);
       loadKakaoMapScript();
     }
   }, [address, label, apiKey]);

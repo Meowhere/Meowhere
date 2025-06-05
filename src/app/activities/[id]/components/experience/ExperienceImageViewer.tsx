@@ -7,21 +7,31 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import CloseButton from '@/src/components/common/buttons/CloseButton';
+import { SubImage } from '@/src/types/activity.types';
 
-const imageUrls = [
-  '/assets/icons/img-main.png',
-  '/assets/icons/img-sub1.png',
-  '/assets/icons/img-sub2.png',
-  '/assets/icons/img-sub3.png',
-];
+interface ExperienceImageViewerProps {
+  bannerImageUrl: string;
+  subImages: SubImage[];
+}
 
-export default function ExperienceImageViewer() {
+// const imageUrls = [
+//   '/assets/icons/img-main.png',
+//   '/assets/icons/img-sub1.png',
+//   '/assets/icons/img-sub2.png',
+//   '/assets/icons/img-sub3.png',
+// ];
+
+export default function ExperienceImageViewer({
+  bannerImageUrl,
+  subImages,
+}: ExperienceImageViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const imageUrls = [bannerImageUrl, ...subImages.map((img) => img.imageUrl)];
   return (
     <>
-      <div className='grid grid-cols-2 gap-0.5 p-4 max-w-[69.1rem] mx-auto'>
+      <div className='grid grid-cols-2 gap-0.5 p-4 max-w-[691px] mx-auto'>
         {imageUrls.map((url, index) => (
           <div
             key={index}
