@@ -1,22 +1,20 @@
-import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
+import { BASE_API_URL } from '../constants/api';
 
 export async function checkEmailExistence(email: string): Promise<boolean | null> {
   const credentials = {
     email: email,
     password: '1',
   };
-  try {
-    const res = await fetchFromClient('/auth/login', {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(credentials),
-    });
 
-    if (res.status === 400) return true;
-    if (res.status === 404) return false;
-  } catch (error) {
-    console.error('이메일 확인 중 네트워크 또는 기타 오류 발생:', error);
-    return null;
-  }
+  const res = await fetch(`${BASE_API_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  if (res.status === 400) return true;
+  if (res.status === 404) return false;
   return null;
 }

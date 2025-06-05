@@ -28,7 +28,7 @@ export default function AuthTest() {
 
   const handleCheckIfUser = async () => {
     const result = await checkEmailExistence('yhk8462@naver.com');
-    console.log(result);
+    console.log('email:', result);
     setIsUser(result);
   };
 
