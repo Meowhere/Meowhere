@@ -7,6 +7,10 @@ export async function fetchFromClient(path: string, options: RequestInit = {}): 
       ...options,
       credentials: 'include',
     });
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error: ${res.status}`);
+    }
     return res;
   } catch (error) {
     logger.error('fetchFromClient error:', error);

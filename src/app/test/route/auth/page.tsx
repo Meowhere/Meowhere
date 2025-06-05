@@ -24,6 +24,7 @@ export default function AuthTest() {
   const logoutMutation = useLogout();
   const { signUpAndLogin } = useSignUp();
   const { data, isLoading, isError, refetch } = useUser();
+  const [signUpResult, setSignUpResult] = useState({});
 
   const handleCheckIfUser = async () => {
     const result = await checkEmailExistence('yhk8462@naver.com');
@@ -39,6 +40,7 @@ export default function AuthTest() {
   const handleSignUp = async () => {
     const result = await signUpAndLogin(signUpFormData);
     console.log(result);
+    setSignUpResult(result);
   };
 
   const handleFetchUser = async () => {
@@ -52,6 +54,7 @@ export default function AuthTest() {
   useEffect(() => {
     console.log('AuthStore user:', user);
     console.log('Query data:', data);
+    console.log('error:');
   }, [user, data]);
 
   return (
@@ -75,7 +78,7 @@ export default function AuthTest() {
         </div>
       </div>
       <div>로그인 리스폰스: {user && user.nickname}</div>
-      <div>회원가입 리스폰스:</div>
+      <div>회원가입 리스폰스: {JSON.stringify(signUpResult)}</div>
       <div>
         이메일 검증 리스폰스: {isUser === true ? 'true' : isUser === false ? 'false' : 'null'}
       </div>
