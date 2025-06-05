@@ -54,8 +54,8 @@ export default function AuthTest() {
   useEffect(() => {
     console.log('AuthStore user:', user);
     console.log('Query data:', data);
-    console.log('error:');
-  }, [user, data]);
+    console.log('error:', isError);
+  }, [user, data, isError]);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen gap-[16px]'>
