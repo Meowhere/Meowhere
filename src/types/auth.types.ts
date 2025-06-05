@@ -5,6 +5,18 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface LoginResponse {
+  message: string;
+  user?: User;
+  error?: string;
+}
+
+export interface SignUpRequest {
+  email: string;
+  password: string;
+  nickname: string;
+}
+
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;

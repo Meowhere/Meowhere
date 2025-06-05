@@ -1,87 +1,84 @@
 'use client';
 
+import BaseButton from '@/src/components/common/buttons/BaseButton';
+import { useLogin, useLogout, useSignUp, useUser } from '@/src/hooks/auth/useAuth';
+import { useAuthStore } from '@/src/store/authStore';
+import { checkEmailExistence } from '@/src/utils/checkEmailExistence';
 import { useEffect, useState } from 'react';
-import { BASE_URL } from '@/src/constants/api';
+
+const loginFormData = {
+  email: 'yhk8462@naver.com',
+  password: 'password123',
+};
+
+const signUpFormData = {
+  email: 'test111@test.com',
+  password: 'password123',
+  nickname: 'test user',
+};
 
 export default function AuthTest() {
-  const [loginData, setLoginData] = useState(null);
-  const [tokenRefreshData, setTokenRefreshData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { user } = useAuthStore();
+  const [isUser, setIsUser] = useState<boolean | null>(null);
+  const loginMutation = useLogin();
+  const logoutMutation = useLogout();
+  const signUpMutation = useSignUp();
+  const { data, isLoading, isError, refetch } = useUser();
 
-  // 로그인 및 토큰 갱신 로직을 useEffect 안으로 이동
+  const handleCheckIfUser = async () => {
+    const result = await checkEmailExistence('yhk8462@naver.com');
+    console.log(result);
+    setIsUser(result);
+  };
+
+  const handleLogin = async () => {
+    const result = await loginMutation.mutateAsync(loginFormData);
+    console.log(result);
+  };
+
+  const handleSignUp = async () => {
+    const result = await signUpMutation.mutateAsync(signUpFormData);
+    console.log(result);
+  };
+
+  const handleFetchUser = async () => {
+    refetch();
+  };
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
+
   useEffect(() => {
-    const performAuthOperations = async () => {
-      try {
-        setLoading(true);
-
-        // 1. 로그인
-        const formData = {
-          email: 'yhk8462@naver.com',
-          password: 'password123',
-        };
-        const login = async (formData: any) => {
-          const res = await fetch(`${BASE_URL}/api/auth/login`, {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            credentials: 'include', // 브라우저 쿠키를 포함
-            headers: {
-              'Content-Type': 'application/json', // JSON 바디를 보내므로 헤더 명시
-            },
-          });
-          if (!res.ok) {
-            const errorData = await res.json().catch(() => ({ message: '로그인 실패' }));
-            throw new Error(errorData.message || '로그인 실패');
-          }
-          return res.json();
-        };
-
-        const loginRes = await login(formData);
-        setLoginData(loginRes);
-        console.log('로그인 성공:', loginRes);
-
-        // 2. 토큰 갱신
-        // const refreshToken = async () => {
-        //   const res = await fetch(`${BASE_URL}/api/auth/tokens`, {
-        //     method: 'POST',
-        //     credentials: 'include',
-        //   });
-        //   if (!res.ok) {
-        //     const errorData = await res.json().catch(() => ({ message: '토큰 갱신 실패' }));
-        //     throw new Error(errorData.message || '토큰 갱신 실패');
-        //   }
-        //   return res.json();
-        // };
-
-        // const tokenRes = await refreshToken();
-        // setTokenRefreshData(tokenRes);
-        // console.log('토큰 갱신 성공:', tokenRes);
-      } catch (err: any) {
-        setError(err.message || '알 수 없는 오류 발생');
-        console.error('인증 작업 중 오류 발생:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    performAuthOperations();
-  }, []);
-
-  if (loading) {
-    return <div>로딩 중...</div>;
-  }
-
-  if (error) {
-    return <div>오류: {error}</div>;
-  }
+    console.log('AuthStore user:', user);
+    console.log('Query data:', data);
+  }, [user, data]);
 
   return (
-    <div className='text-xl'>
-      <h1>Auth API Test Page</h1>
-      <h2>로그인 결과:</h2>
-      <pre>{JSON.stringify(loginData, null, 2)}</pre>
-      {/* <h2>토큰 갱신 결과:</h2>
-      <pre>{JSON.stringify(tokenRefreshData, null, 2)}</pre> */}
+    <div className='flex flex-col items-center justify-center min-h-screen gap-[16px]'>
+      <h1>Auth Query API Test Page</h1>
+      <div className='flex gap-[16px]'>
+        <div className='flex'>
+          <BaseButton onClick={handleLogin}>로그인</BaseButton>
+        </div>
+        <div className='flex'>
+          <BaseButton onClick={handleSignUp}>회원가입</BaseButton>
+        </div>
+        <div className='flex'>
+          <BaseButton onClick={handleCheckIfUser}>이메일 검증</BaseButton>
+        </div>
+        <div className='flex'>
+          <BaseButton onClick={handleFetchUser}>사용자 정보</BaseButton>
+        </div>
+        <div className='flex'>
+          <BaseButton onClick={handleLogout}>로그아웃</BaseButton>
+        </div>
+      </div>
+      <div>로그인 리스폰스: {user && user.nickname}</div>
+      <div>회원가입 리스폰스:</div>
+      <div>
+        이메일 검증 리스폰스: {isUser === true ? 'true' : isUser === false ? 'false' : 'null'}
+      </div>
     </div>
   );
 }
