@@ -44,4 +44,3 @@ export default function ReviewCard({
     </div>
   );
 }
-s;
