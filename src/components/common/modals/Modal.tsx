@@ -3,24 +3,19 @@
 import { useModalStore } from '@/src/store/modalStore';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import CloseIcon from '@/public/assets/icons/delete/ico-delete.svg';
-import Image from 'next/image';
 import clsx from 'clsx';
+import CloseButton from '../buttons/CloseButton';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 const Modal = () => {
-  const {
-    isOpen,
-    modalProps,
-    resetModal,
-    setCloseHandler,
-    isClosing,
-    setIsClosing,
-  } = useModalStore();
+  const { isOpen, modalProps, resetModal, setCloseHandler, isClosing, setIsClosing } =
+    useModalStore();
   const [dragStart, setDragStart] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false); // 드래그 애니메이션
   const modalRef = useRef<HTMLDivElement>(null);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
+  const { isDesktop } = useBreakpoint();
 
   // 접근성을 위한 고유 ID 생성
   const modalId = `modal-${Math.random().toString(36).substr(2, 9)}`;
@@ -29,7 +24,7 @@ const Modal = () => {
   useEffect(() => {
     if (isOpen) {
       setIsClosing(false);
-      document.body.style.overflow = 'hidden';
+      // document.body.style.overflow = 'hidden';
       // 포커스 트랩을 위해 모달에 포커스 설정
       const modalElement = modalRef.current || bottomSheetRef.current;
       if (modalElement) {
@@ -50,7 +45,12 @@ const Modal = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        handleClose();
+        // 가장 위에 있는 모달인지 확인
+        const modals = document.querySelectorAll('[data-modal]');
+        const topmostModal = modals[modals.length - 1];
+        if (modalRef.current === topmostModal) {
+          handleClose();
+        }
       }
     };
 
@@ -97,34 +97,32 @@ const Modal = () => {
     return heightMap[height as keyof typeof heightMap] || heightMap.auto;
   };
 
-  // 바텀 시트 드래그 핸들러 (드래그 핸들 영역에서만)
+  // 드래그 핸들러 (드래그 핸들 영역에서만)
   const handleDragHandleTouchStart = (e: React.TouchEvent) => {
-    if (modalProps?.type === 'alert') return;
-    if (modalProps?.type !== 'bottomSheet' && window.innerWidth >= 768) return;
+    if (modalProps?.type !== 'bottomSheet' && isDesktop) return;
     e.stopPropagation();
     setDragStart(e.touches[0].clientY);
     setIsDragging(true);
   };
 
   const handleDragHandleMouseDown = (e: React.MouseEvent) => {
-    if (modalProps?.type === 'alert') return;
-    if (modalProps?.type !== 'bottomSheet' && window.innerWidth >= 768) return;
+    if (modalProps?.type !== 'bottomSheet' && isDesktop) return;
     e.stopPropagation();
     setDragStart(e.clientY);
     setIsDragging(true);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (modalProps?.type === 'alert' || !isDragging) return;
-    if (modalProps?.type !== 'bottomSheet' && window.innerWidth >= 768) return;
+    if (!isDragging) return;
+    if (modalProps?.type !== 'bottomSheet' && isDesktop) return;
     const currentY = e.touches[0].clientY;
     const offset = Math.max(0, currentY - dragStart);
     setDragOffset(offset);
   };
 
   const handleTouchEnd = () => {
-    if (modalProps?.type === 'alert' || !isDragging) return;
-    if (modalProps?.type !== 'bottomSheet' && window.innerWidth >= 768) return;
+    if (!isDragging) return;
+    if (modalProps?.type !== 'bottomSheet' && isDesktop) return;
     const threshold = 100; // 100px 이상 드래그하면 닫기
     if (dragOffset > threshold) {
       handleClose();
@@ -136,7 +134,7 @@ const Modal = () => {
   };
 
   useEffect(() => {
-    if (isDragging && modalProps?.type !== 'alert') {
+    if (isDragging && modalProps?.type) {
       const handleGlobalTouchMove = (e: TouchEvent) => {
         const offset = Math.max(0, e.touches[0].clientY - dragStart);
         setDragOffset(offset);
@@ -183,34 +181,48 @@ const Modal = () => {
     }
   }, [isDragging, dragStart, handleClose, modalProps?.type]);
 
+  useEffect(() => {
+    const preventScroll = (e: Event) => {
+      e.preventDefault();
+    };
+
+    if (isOpen) {
+      document.addEventListener('wheel', preventScroll, { passive: false });
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+    }
+
+    return () => {
+      document.removeEventListener('wheel', preventScroll);
+      document.removeEventListener('touchmove', preventScroll);
+    };
+  }, [isOpen]);
+
   if ((!isOpen && !isClosing) || !modalProps) return null;
 
   const isBottomSheet = modalProps.type === 'bottomSheet';
-  const isAlert = modalProps.type === 'alert';
 
   // 일반 모달 렌더링 레이아웃
-  if (!isBottomSheet && !isAlert) {
+  if (!isBottomSheet) {
     return createPortal(
       <div
         className={clsx(
-          'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-24 md:pt-0',
-          isClosing
-            ? 'animate-out fade-out-0 duration-300'
-            : 'animate-in fade-in-0 duration-300'
+          'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-[96px] lg:pt-0',
+          isClosing ? 'animate-out fade-out-0 duration-300' : 'animate-in fade-in-0 duration-300'
         )}
         onClick={handleBackdropClick}
         role='presentation'
       >
         <div
           className={clsx(
-            'relative w-full h-full flex flex-col md:max-w-md md:h-auto md:rounded-[1.5rem] focus:outline-none',
-            'rounded-t-[1.5rem] bg-white p-6 shadow-lg',
+            'relative w-full h-full flex flex-col lg:max-w-[480px] lg:h-auto lg:rounded-[20px] focus:outline-none',
+            'rounded-t-[20px] bg-white p-[24px] shadow-lg text-lg',
             isDragging ? 'transition-none' : 'transition-transform',
             isClosing
-              ? 'animate-out max-md:slide-out-to-bottom duration-300 md:fade-out-0 md:zoom-out-95'
-              : 'animate-in max-md:slide-in-from-bottom duration-300 md:fade-in-0 md:zoom-in-95'
+              ? 'animate-out max-lg:slide-out-to-bottom duration-300 lg:fade-out-0 lg:zoom-out-95'
+              : 'animate-in max-lg:slide-in-from-bottom duration-300 lg:fade-in-0 lg:zoom-in-95'
           )}
           onClick={(e) => e.stopPropagation()}
+          data-modal
           ref={modalRef}
           role='dialog'
           aria-modal='true'
@@ -224,21 +236,14 @@ const Modal = () => {
           {/* Header */}
           {modalProps.header && (
             <div
-              className='relative mb-4 flex items-center justify-center max-md:cursor-grab max-md:active:cursor-grabbing'
+              className='relative mb-4 flex items-center justify-center max-lg:cursor-grab max-lg:active:cursor-grabbing'
               onTouchStart={handleDragHandleTouchStart}
               onMouseDown={handleDragHandleMouseDown}
             >
-              <h2 id={modalTitleId} className='font-medium text-gray-800'>
+              <h2 id={modalTitleId} className='font-medium text-lg text-gray-800'>
                 {modalProps.header}
               </h2>
-              <button
-                onClick={handleClose}
-                className='absolute right-0 rounded-sm p-1'
-                aria-label='모달 닫기'
-                type='button'
-              >
-                <Image src={CloseIcon} alt='' width={24} height={24} />
-              </button>
+              <CloseButton onClick={handleClose} className='absolute right-0' size='sm' />
             </div>
           )}
 
@@ -249,50 +254,6 @@ const Modal = () => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {modalProps.children}
-          </div>
-        </div>
-      </div>,
-      document.body
-    );
-  }
-
-  // 경고 모달 렌더링 레이아웃
-  if (isAlert) {
-    return createPortal(
-      <div
-        className={clsx(
-          'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm',
-          isClosing
-            ? 'animate-out fade-out-0 duration-300'
-            : 'animate-in fade-in-0 duration-300'
-        )}
-        onClick={handleBackdropClick}
-        role='presentation'
-      >
-        <div
-          className={clsx(
-            'relative mx-4 w-[28rem] rounded-[1.5rem] bg-white p-6 shadow-lg focus:outline-none',
-            isClosing
-              ? 'animate-out fade-out-0 zoom-out-95 duration-300'
-              : 'animate-in fade-in-0 zoom-in-95 duration-300'
-          )}
-          onClick={(e) => e.stopPropagation()}
-          role='alertdialog'
-          aria-modal='true'
-          aria-labelledby={modalProps.header ? modalTitleId : undefined}
-          aria-describedby={modalId}
-          tabIndex={-1}
-        >
-          {/* Header (Alert의 경우 숨겨진 제목) */}
-          {modalProps.header && (
-            <h2 id={modalTitleId} className='sr-only'>
-              {modalProps.header}
-            </h2>
-          )}
-
-          {/* Content */}
-          <div id={modalId} className='text-gray-700'>
             {modalProps.children}
           </div>
         </div>
@@ -316,9 +277,9 @@ const Modal = () => {
       <div
         ref={bottomSheetRef}
         className={clsx(
-          'fixed bottom-0 left-0 right-0 w-full focus:outline-none',
+          'fixed bottom-0 left-0 right-0 w-full focus:outline-none text-lg',
           'animate-in slide-in-from-bottom duration-300',
-          'rounded-t-xl bg-white/70 backdrop-blur-xl rounded-xl border border-white/20 shadow-2xl',
+          'rounded-t-[12px] bg-white/70 backdrop-blur-xl rounded-[12px] border border-white/20 shadow-2xl',
           getHeightClasses(modalProps.height),
           isDragging ? 'transition-none' : 'transition-transform'
         )}
@@ -334,19 +295,19 @@ const Modal = () => {
       >
         {/* Drag Handle - 드래그 가능한 영역 */}
         <div
-          className='flex justify-center py-3 cursor-grab active:cursor-grabbing'
+          className='flex justify-center py-[12px] cursor-grab active:cursor-grabbing'
           onTouchStart={handleDragHandleTouchStart}
           onMouseDown={handleDragHandleMouseDown}
           aria-label='드래그하여 시트 이동'
           role='button'
           tabIndex={0}
         >
-          <div className='h-1 w-24 rounded-full bg-white' />
+          <div className='h-1 w-[90px] rounded-full bg-white' />
         </div>
 
         {/* Header */}
         {modalProps.header && (
-          <div className='flex items-center justify-end px-6 pb-4'>
+          <div className='flex items-center justify-end px-[24px] pb-[16px]'>
             <h2 id={modalTitleId} className='sr-only'>
               {modalProps.header}
             </h2>
@@ -356,7 +317,7 @@ const Modal = () => {
               aria-label='시트 닫기'
               type='button'
             >
-              <Image src={CloseIcon} alt='' width={24} height={24} />
+              <CloseButton />
             </button>
           </div>
         )}
@@ -364,7 +325,7 @@ const Modal = () => {
         {/* Content */}
         <div
           id={modalId}
-          className='px-6 pb-6 text-gray-700 overflow-y-auto'
+          className='px-[24px] pb-[24px] text-gray-700 overflow-y-auto'
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
