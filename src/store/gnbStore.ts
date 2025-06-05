@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface GnbStore {
+export interface GnbStore {
   backAction: (() => void) | null;
   title: string;
   subtitle: string;

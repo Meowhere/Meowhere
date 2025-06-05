@@ -1,8 +1,8 @@
 'use client';
 
-import Navbar from '../components/layout/navbar/Navbar';
+import Navbar from '../components/layout/navbar';
 import Footer from '../components/layout/Footer';
-import BNB from '../components/layout/navbar/BNB';
+import BNB from '../components/layout/navbar/mobile/BNB';
 import { usePathname } from 'next/navigation';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';

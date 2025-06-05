@@ -8,10 +8,13 @@ import Link from 'next/link';
 
 export default function BNB() {
   const pathname = usePathname();
-  const { review, closeModal } = useModal();
+  const { openAlarmModal, closeModal } = useModal();
 
+  {
+    /* 임시 알림, 이후 구현 예정 */
+  }
   const handleReview = () => {
-    review({
+    openAlarmModal({
       title: '대충 수많은 알림들',
       schedules: null,
       headCount: 12,
