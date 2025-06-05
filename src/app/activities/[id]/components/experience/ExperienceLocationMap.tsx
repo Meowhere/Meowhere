@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import OverlayContent from '../common/OverlayContent';
+import { KakaoPlace, KakaoStatus } from '@/src/types/kakao-map.types';
 
 interface KakaoMapProps {
   address: string;
@@ -50,8 +51,8 @@ export default function KakaoMap({ address }: KakaoMapProps) {
 
     const places = new window.kakao.maps.services.Places();
 
-    places.keywordSearch(address, (data: any[], status: string) => {
-      if (status !== window.kakao.maps.services.Status.OK || data.length === 0) {
+    places.keywordSearch(address, (data: KakaoPlace, status: KakaoStatus) => {
+      if (status !== 'OK' || data.length === 0) {
         console.error('검색 실패:', address);
         return;
       }
