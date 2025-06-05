@@ -14,12 +14,9 @@ export default function ReservationMobileFooter({
   return (
     <div className='fixed flex justify-center bottom-[24px] left-0 w-full px-4 pb-4 z-50 bg-transparent'>
       <div className='w-[327px] h-[64px] py-[16px] px-[8px] bg-white rounded-full border border-gray-200 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)] backdrop-blur-md flex items-center'>
-        {/* 좌측: 텍스트 */}
         <p className='text-lg font-semibold px-[24px] text-gray-800'>
           ₩ {pricePerPerson.toLocaleString()} <span>/ 인</span>
         </p>
-
-        {/* 우측: 버튼 (오른쪽 끝으로 밀기 위해 margin-left 자동 설정) */}
         <div className='ml-auto'>
           <BaseButton
             onClick={onClickDateSelect}
