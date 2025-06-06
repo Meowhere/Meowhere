@@ -1,20 +1,26 @@
 'use client';
-import { useId, useState } from 'react';
+import { forwardRef, useId, useState } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { InputProps } from '../../../types/input.types';
 import VisibilityToggleButton from '@/src/components/common/buttons/VisibilityToggleButton';
 
-export default function Input({
-  label,
-  type = 'text',
-  value,
-  onChange,
-  error,
-  isPassword = false,
-  className,
-  ...rest
-}: InputProps) {
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  {
+    label,
+    type = 'text',
+    value,
+    onChange,
+    onBlur,
+    name,
+    error,
+    isPassword = false,
+    disabled = false,
+    className,
+    ...rest
+  },
+  ref
+) {
   const inputId = useId();
   const [isVisible, setIsVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -46,12 +52,22 @@ export default function Input({
         {/* input & icon */}
         <div className='flex-1 flex items-center'>
           <input
+            ref={ref}
+            id={inputId}
+            name={name}
             type={inputType}
             value={value}
             onChange={onChange}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            className='w-full bg-transparent border-none focus:outline-none text-md font-regular text-gray-800 pt-2'
+            onBlur={(e) => {
+              setIsFocused(false);
+              onBlur?.(e);
+            }}
+            disabled={disabled}
+            className={clsx(
+              'w-full bg-transparent border-none focus:outline-none text-md font-regular text-gray-800 pt-2'
+              // shouldFloat ? 'pt-[20px]' : ''
+            )}
             autoComplete='off'
             {...rest}
           />
@@ -66,4 +82,6 @@ export default function Input({
       {error && <div className='text-red-300 text-sm mt-2 ml-2'>{error}</div>}
     </div>
   );
-}
+});
+
+export default Input;

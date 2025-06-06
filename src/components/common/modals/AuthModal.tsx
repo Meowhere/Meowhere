@@ -25,7 +25,7 @@ const loginSchema = z.object({
 const signUpSchema = z
   .object({
     email: z.string().email('유효한 이메일을 입력해주세요.'),
-    nickname: z.string().min(2, '닉네임은 최소 2자 이상이어야 합니다.'),
+    nickname: z.string().min(1, '닉네임을 입력해주세요.'),
     password: z.string().min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
     passwordConfirm: z.string(),
   })
@@ -43,7 +43,6 @@ export default function AuthModal() {
   const navigate = useRouter();
   const { closeModal } = useModal();
   const [mode, setMode] = useState<'initial' | 'login' | 'signup'>('initial');
-  const [currentEmail, setCurrentEmail] = useState('');
   const loginMutation = useLogin();
   const { signUpAndLogin } = useSignUp();
 
@@ -65,8 +64,6 @@ export default function AuthModal() {
 
   const handleEmailCheck = async (data: InitialFormValues) => {
     // 이메일 유무 확인
-    setCurrentEmail(data.email);
-
     try {
       const exists = await checkEmailExistence(data.email);
       // 이메일 존재 유무에 따라 모드 변경
@@ -108,12 +105,13 @@ export default function AuthModal() {
       }
       closeModal();
     } catch (error) {
-      console.error('SignUp error:', error);
+      console.error('회원가입 오류:', error);
       signUpForm.setError('email', { message: '회원가입에 실패했습니다.' });
     }
   };
 
   const handleKakaoLogin = () => {
+    // 카카오 로그인
     console.log('카카오');
   };
 
@@ -124,6 +122,7 @@ export default function AuthModal() {
     signUpForm.reset();
   };
 
+  const emailValue = initialForm.watch('email');
   const isAccountPage = pathname === '/account';
 
   return (
@@ -150,6 +149,7 @@ export default function AuthModal() {
             label='이메일'
             type='email'
             {...initialForm.register('email')}
+            value={emailValue}
             error={initialForm.formState.errors.email?.message}
           />
           <div className='flex flex-col gap-[16px] mt-[60px]'>
@@ -168,6 +168,7 @@ export default function AuthModal() {
             type='email'
             {...loginForm.register('email')}
             disabled
+            value={emailValue}
             error={loginForm.formState.errors.email?.message}
           />
           <Input
@@ -193,6 +194,7 @@ export default function AuthModal() {
             type='email'
             {...signUpForm.register('email')}
             disabled
+            value={emailValue}
             error={signUpForm.formState.errors.email?.message}
           />
           <Input
