@@ -13,6 +13,7 @@ export default function Input({
   error,
   isPassword = false,
   className,
+  ...rest
 }: InputProps) {
   const inputId = useId();
   const [isVisible, setIsVisible] = useState(false);
@@ -52,6 +53,7 @@ export default function Input({
             onBlur={() => setIsFocused(false)}
             className='w-full bg-transparent border-none focus:outline-none text-md font-regular text-gray-800 pt-2'
             autoComplete='off'
+            {...rest}
           />
           {isPassword && (
             <VisibilityToggleButton
