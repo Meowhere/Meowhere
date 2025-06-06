@@ -17,6 +17,13 @@ export interface SignUpRequest {
   nickname: string;
 }
 
+export interface SignUpResponse {
+  message: string;
+  success?: string;
+  user?: User;
+  error?: string;
+}
+
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;

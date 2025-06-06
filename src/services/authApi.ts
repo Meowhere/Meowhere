@@ -1,6 +1,6 @@
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
-import { LoginRequest, LoginResponse, SignUpRequest } from '../types/auth.types';
-import { User, UserResponse } from '../types/user.types';
+import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from '../types/auth.types';
+import { User } from '../types/user.types';
 
 export const authApi = {
   login: async (credentials: LoginRequest): Promise<LoginResponse> => {
@@ -21,13 +21,12 @@ export const authApi = {
     return res.json();
   },
 
-  signUp: async (credentials: SignUpRequest): Promise<User> => {
+  signUp: async (credentials: SignUpRequest): Promise<SignUpResponse> => {
     const res = await fetchFromClient('/users', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(credentials),
     });
-
     return res.json();
   },
 

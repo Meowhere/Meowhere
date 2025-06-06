@@ -12,7 +12,7 @@ const loginFormData = {
 };
 
 const signUpFormData = {
-  email: 'test123@test.com',
+  email: 'testuser123@test.com',
   password: 'password123',
   nickname: 'test user',
 };

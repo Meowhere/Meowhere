@@ -28,8 +28,7 @@ export const useSignUp = () => {
 
   const signUpAndLogin = async (formData: SignUpRequest) => {
     const signUpResult = await signUpMutation.mutateAsync(formData);
-
-    if (signUpResult?.email) {
+    if (signUpResult?.success) {
       const loginResult = await loginMutation.mutateAsync({
         email: formData.email,
         password: formData.password,
