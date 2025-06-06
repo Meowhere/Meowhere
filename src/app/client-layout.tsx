@@ -17,13 +17,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const showBNB = !isDesktop && !pathname.startsWith('/activities');
 
   return (
-    <div className={`${preventBodyScroll ? 'overflow-hidden' : ''}`}>
-      <ReactQueryProvider>
-        <Navbar />
+    <ReactQueryProvider>
+      <div className={`${preventBodyScroll ? 'overflow-hidden' : ''} h-screen `}>
         {children}
+        <Navbar />
+
         {showBNB && <BNB />}
         {showFooter && <Footer />}
-      </ReactQueryProvider>
-    </div>
+      </div>
+    </ReactQueryProvider>
   );
 }

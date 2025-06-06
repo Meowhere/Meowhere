@@ -28,6 +28,7 @@ export default function PlaceFilter({
       handleReset={() => {
         removeQuery('address');
         setPlaceKeyword('');
+        setOpenedSearchSection('price');
       }}
     >
       <Input

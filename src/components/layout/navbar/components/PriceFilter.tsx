@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import FilterSection from './FilterSection';
 
 export default function PriceFilter({
@@ -27,8 +28,10 @@ export default function PriceFilter({
   paramsMinPrice: number;
   paramsMaxPrice: number;
 }) {
-  if (selectedMinPrice === 0) setSelectedMinPrice(paramsMinPrice || minPrice);
-  if (selectedMaxPrice === 0) setSelectedMaxPrice(paramsMaxPrice || maxPrice);
+  useEffect(() => {
+    if (selectedMinPrice === 0) setSelectedMinPrice(paramsMinPrice || minPrice);
+    if (selectedMaxPrice === 0) setSelectedMaxPrice(paramsMaxPrice || maxPrice);
+  }, [paramsMinPrice, paramsMaxPrice, selectedMinPrice, selectedMaxPrice, minPrice, maxPrice]);
 
   return (
     <FilterSection
@@ -43,6 +46,7 @@ export default function PriceFilter({
       handleReset={() => {
         setSelectedMinPrice(minPrice);
         setSelectedMaxPrice(maxPrice);
+        setOpenedSearchSection('place');
       }}
     >
       {/* 그래프 */}
@@ -64,13 +68,13 @@ export default function PriceFilter({
       <div className='relative w-full h-[4px]'>
         <div className='relative w-[calc(100%-16px)] h-full m-auto bg-primary-100'>
           <div
-            className='w-[24px] h-[24px] bg-primary-300 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
+            className='w-[24px] h-[24px] bg-white shadow-xl z-10 border border-gray-200 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
             style={{
               left: `${((selectedMinPrice - minPrice) / (maxPrice - minPrice)) * 100}%`,
             }}
           />
           <div
-            className='w-[24px] h-[24px] bg-primary-300 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
+            className='w-[24px] h-[24px] bg-white shadow-xl z-10 border border-gray-200 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
             style={{
               left: `${((selectedMaxPrice - minPrice) / (maxPrice - minPrice)) * 100}%`,
             }}
@@ -88,9 +92,10 @@ export default function PriceFilter({
           min={minPrice}
           max={maxPrice}
           value={selectedMinPrice}
-          className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb'
+          className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb z-20'
           onChange={(e) => {
-            setSelectedMinPrice(Number(e.target.value));
+            Number(e.target.value) < selectedMaxPrice &&
+              setSelectedMinPrice(Number(e.target.value));
           }}
         />
         <input
@@ -98,9 +103,10 @@ export default function PriceFilter({
           min={minPrice}
           max={maxPrice}
           value={selectedMaxPrice}
-          className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb'
+          className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb z-20'
           onChange={(e) => {
-            setSelectedMaxPrice(Number(e.target.value));
+            Number(e.target.value) > selectedMinPrice &&
+              setSelectedMaxPrice(Number(e.target.value));
           }}
         />
       </div>

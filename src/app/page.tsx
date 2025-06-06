@@ -6,14 +6,19 @@ import { useSearchParams } from 'next/navigation';
 import LikeIcon from '../components/common/icons/LikeIcon';
 import StarFillIcon from '../components/common/icons/StarFillIcon';
 import { useGnbStore } from '../store/gnbStore';
+import { useURLQuery } from '../hooks/useURLQuery';
 
 export default function Home() {
   const [activities, setActivities] = useState([]);
   const searchParams = useSearchParams();
+  const { updateQuery } = useURLQuery();
   const { setBackAction } = useGnbStore();
 
   useEffect(() => {
     setBackAction(null);
+    if (!searchParams.get('category')) {
+      updateQuery('category', '');
+    }
   }, []);
 
   useEffect(() => {
@@ -37,7 +42,7 @@ export default function Home() {
   }, [searchParams]);
 
   return (
-    <div className='text-primary-300'>
+    <div>
       <br />
       <br />
       <br />

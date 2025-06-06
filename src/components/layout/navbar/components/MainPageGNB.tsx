@@ -54,23 +54,29 @@ export default function MainPageGNB() {
         )}
 
         {/* 중앙 (검색 버튼) */}
-        <AnimatePresence>
-          <motion.div
-            className='flex justify-center flex-1 max-w-[500px] h-[48px]'
-            layout
-            transition={{ duration: 0.5, ease: [0, 1, 0, 1] }}
-          >
-            <SearchButton
-              hasParams={hasParams}
-              params={params}
-              setIsSearching={setIsSearching}
-              setBackAction={setBackAction}
-              isSearching={isSearching}
-              setKeyword={setKeyword}
-              keyword={keyword}
-            />
-          </motion.div>
-        </AnimatePresence>
+        {/* <AnimatePresence> */}
+        <motion.div
+          className='flex justify-center flex-1 max-w-[500px] h-[48px]'
+          layout='size'
+          transition={{
+            duration: 0,
+            layout: {
+              duration: 0.5,
+              ease: [0, 1, 0, 1],
+            },
+          }}
+        >
+          <SearchButton
+            hasParams={hasParams}
+            params={params}
+            setIsSearching={setIsSearching}
+            setBackAction={setBackAction}
+            isSearching={isSearching}
+            setKeyword={setKeyword}
+            keyword={keyword}
+          />
+        </motion.div>
+        {/* </AnimatePresence> */}
 
         {/* 오른쪽 (버튼들) */}
         {hasParams || rightButtons.length || backAction ? (

@@ -18,7 +18,7 @@ export default function FilterSection({
 }) {
   return (
     <motion.section
-      className={`bg-white rounded-[8px] w-full px-[24px] overflow-hidden`}
+      className={`${isOpen ? '' : 'cursor-pointer'} bg-white rounded-[8px] w-full px-[24px] overflow-hidden`}
       onClick={onClick}
       animate={{
         maxHeight: isOpen ? 480 : 52,

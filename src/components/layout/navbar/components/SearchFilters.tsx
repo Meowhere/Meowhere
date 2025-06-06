@@ -123,8 +123,8 @@ export default function SearchFilters({
             updateMultipleQueries({
               'min-price': minPrice === selectedMinPrice ? '' : selectedMinPrice.toString(),
               'max-price': maxPrice === selectedMaxPrice ? '' : selectedMaxPrice.toString(),
-              address: placeKeyword || '',
-              keyword: keyword || '',
+              address: placeKeyword || params.address || '',
+              keyword: keyword || params.keyword || '',
             });
           }}
         >
