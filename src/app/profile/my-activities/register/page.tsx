@@ -39,11 +39,13 @@ export default function RegisterPage() {
         <RegisterForm />
       </div>
       <RegisterCalendar />
-      <div className='w-[128px] absolute right-[24px] top-full'>
-        <BaseButton variant='primary' className='text-md font-semibold'>
-          등록 하기
-        </BaseButton>
-      </div>
+      {isDesktop && (
+        <div className='w-[128px] absolute right-[24px] top-full'>
+          <BaseButton variant='primary' className='text-md font-semibold'>
+            등록 하기
+          </BaseButton>
+        </div>
+      )}
     </div>
   );
 }
