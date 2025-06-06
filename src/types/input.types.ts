@@ -13,4 +13,5 @@ export interface TextareaProps {
   error?: string;
   className?: string;
   register?: any; // For react-hook-form
+  placeholder?: string;
 }

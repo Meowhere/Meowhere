@@ -6,6 +6,7 @@ import { TextareaProps } from '../../../types/input.types';
 export default function Textarea({
   value = '',
   error,
+  placeholder = '내용을 입력해 주세요',
   className,
   register,
   ...rest
@@ -33,7 +34,7 @@ export default function Textarea({
     <div className={clsx('w-full mb-6 relative', className)}>
       <div
         className={clsx(
-          'px-6 py-4 rounded-2xl border bg-white relative',
+          'px-[20px] py-[12px] rounded-2xl border bg-white relative',
           error ? 'border-red-300' : 'border-gray-200 focus-within:border-gray-200'
         )}
       >
@@ -43,8 +44,8 @@ export default function Textarea({
           rows={5}
           ref={setRefs}
           maxLength={700}
-          className='w-full bg-transparent border-none focus:outline-none resize-none text-sm font-regular text-gray-800 pt-6 scrollbar-hide'
-          // style={{ minHeight: '10rem' }}
+          placeholder={placeholder}
+          className='w-full bg-transparent border-none focus:outline-none resize-none text-md font-regular text-gray-800 placeholder:text-gray-500 scrollbar-hide'
         />
         <div className='flex justify-between items-center mt-2'>
           <span className='text-gray-400 text-xs'>{value.length} / 700</span>

@@ -28,17 +28,17 @@ export default function Input({
     <div className={clsx('w-full mb-6 relative', className)}>
       <div
         className={clsx(
-          'flex items-center px-6 py-4 rounded-2xl border bg-white relative',
+          'flex items-center px-[20px] py-[12px] rounded-2xl border bg-white relative',
           error ? 'border-red-300' : 'border-gray-200 focus-within:border-gray-200'
         )}
       >
         <label
           htmlFor={inputId}
           className={clsx(
-            'absolute left-6 pointer-events-none select-none transition-all duration-200',
+            'absolute pointer-events-none select-none transition-all duration-200',
             shouldFloat
-              ? 'top-2 text-xs font-regular text-gray-400'
-              : 'top-1/2 -translate-y-1/2 text-md font-regular text-gray-400'
+              ? 'top-2 text-xs font-regular text-gray-500'
+              : 'top-1/2 -translate-y-1/2 text-md font-regular text-gray-500'
           )}
         >
           {label}
