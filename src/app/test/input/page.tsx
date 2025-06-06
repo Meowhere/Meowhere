@@ -1,80 +1,84 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
 import Input from '../../../components/common/inputs/Input';
 import Textarea from '../../../components/common/inputs/Textarea';
 
+type FormValues = {
+  email: string;
+  password: string;
+  nickname: string;
+  textarea: string;
+};
+
 export default function Page() {
-  // 모든 상태를 이 페이지에서 관리
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [pw, setPw] = useState('');
-  const [pwError, setPwError] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [nicknameError, setNicknameError] = useState('');
-  const [textarea, setTextarea] = useState('');
-  const [textareaError, setTextareaError] = useState('');
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>({
+    mode: 'onChange',
+  });
 
-  // 이메일 유효성 검사
-  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setEmail(val);
-    setEmailError(
-      val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) ? '이메일 형식으로 입력해 주세요' : ''
-    );
-  }, []);
+  // floating label 등 value 체크용
+  const emailValue = watch('email', '');
+  const pwValue = watch('password', '');
+  const nicknameValue = watch('nickname', '');
+  const textareaValue = watch('textarea', '');
 
-  // 비밀번호 유효성 검사
-  const handlePwChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setPw(val);
-    setPwError(val.length > 0 && val.length < 6 ? '6자 이상 입력하세요' : '');
-  }, []);
-
-  // 닉네임 유효성 검사
-  const handleNicknameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setNickname(val);
-    setNicknameError(val.length > 0 && val.length < 2 ? '2자 이상 입력하세요' : '');
-  }, []);
-
-  // textarea 유효성 검사 (10자 이상, 700자 이하)
-  const handleTextareaChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value;
-    setTextarea(val);
-    if (val.length > 700) {
-      setTextareaError('700자 이내로 입력해 주세요');
-    } else if (val.length > 0 && val.length < 10) {
-      setTextareaError('10자 이상 입력하세요');
-    } else {
-      setTextareaError('');
-    }
-  }, []);
+  // 폼 제출 핸들러
+  const onSubmit = (data: FormValues) => {
+    alert(JSON.stringify(data, null, 2));
+  };
 
   return (
-    <div className='max-w-lg mx-auto py-10'>
+    <form className='max-w-lg mx-auto py-40' onSubmit={handleSubmit(onSubmit)}>
       <Input
+        name='email'
         label='이메일'
         type='email'
-        value={email}
-        onChange={handleEmailChange}
-        error={emailError}
+        register={register('email', {
+          required: '이메일을 입력해 주세요',
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: '이메일 형식으로 입력해 주세요',
+          },
+        })}
+        error={errors.email?.message}
+        value={emailValue}
       />
       <Input
+        name='password'
         label='비밀번호'
         type='password'
         isPassword
-        value={pw}
-        onChange={handlePwChange}
-        error={pwError}
+        register={register('password', {
+          required: '비밀번호를 입력해 주세요',
+          minLength: { value: 6, message: '6자 이상 입력하세요' },
+        })}
+        error={errors.password?.message}
+        value={pwValue}
       />
       <Input
+        name='nickname'
         label='닉네임'
         type='text'
-        value={nickname}
-        onChange={handleNicknameChange}
-        error={nicknameError}
+        register={register('nickname', {
+          required: '닉네임을 입력해 주세요',
+          minLength: { value: 2, message: '2자 이상 입력하세요' },
+        })}
+        error={errors.nickname?.message}
+        value={nicknameValue}
       />
-      <Textarea value={textarea} onChange={handleTextareaChange} error={textareaError} />
-    </div>
+      <Textarea
+        register={register('textarea', {
+          required: '내용을 입력해 주세요',
+          minLength: { value: 10, message: '10자 이상 입력하세요' },
+          maxLength: { value: 700, message: '700자 이내로 입력해 주세요' },
+        })}
+        error={errors.textarea?.message}
+        value={textareaValue}
+      />
+    </form>
   );
 }
