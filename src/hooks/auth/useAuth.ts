@@ -86,7 +86,7 @@ export const useLogout = () => {
     mutationFn: authApi.logout,
     onSuccess: () => {
       logout();
-      queryClient.clear();
+      queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
 };
