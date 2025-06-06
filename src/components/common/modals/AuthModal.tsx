@@ -130,15 +130,11 @@ export default function AuthModal() {
       {/* Header */}
       <div className='flex items-center justify-center mb-[48px]'>
         {mode !== 'initial' && (
-          <div className='absolute left-0'>
-            <ArrowButton size={24} onClick={handleBack} />
-          </div>
+          <ArrowButton size={24} onClick={handleBack} className='absolute left-0' />
         )}
         <h2 className='text-md text-black'>{HEADER[mode]}</h2>
         {!isAccountPage && (
-          <div className='absolute right-0'>
-            <CloseButton size='sm' onClick={closeModal} />
-          </div>
+          <CloseButton size='md' onClick={closeModal} className='absolute right-0' />
         )}
       </div>
 
@@ -153,7 +149,11 @@ export default function AuthModal() {
             error={initialForm.formState.errors.email?.message}
           />
           <div className='flex flex-col gap-[16px] mt-[60px]'>
-            <BaseButton type='submit' disabled={initialForm.formState.isSubmitting}>
+            <BaseButton
+              type='submit'
+              disabled={initialForm.formState.isSubmitting}
+              className='h-[48px]'
+            >
               {initialForm.formState.isSubmitting ? '확인 중...' : '계속'}
             </BaseButton>
             <KakaoLoginButton onClick={handleKakaoLogin} className='h-[48px]' />
