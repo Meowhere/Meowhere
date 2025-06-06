@@ -29,14 +29,11 @@ export default function formatRelativeTime(date: string) {
     return day in DAY_TO_KR;
   }
 
-  if (Math.abs(diffDays) > 2)
-    return target.toLocaleDateString('ko-KR').replace(/\//g, '.');
+  if (Math.abs(diffDays) > 2) return target.toLocaleDateString('ko-KR').replace(/\//g, '.');
 
   if (isValidDayKey(diffDays)) return DAY_TO_KR[diffDays];
 
-  if (Math.abs(diffHours) > 0)
-    return `${Math.abs(diffHours)}시간 ${isFuture ? '후' : '전'}`;
-  if (Math.abs(diffMinutes) > 0)
-    return `${Math.abs(diffMinutes)}분 ${isFuture ? '후' : '전'}`;
+  if (Math.abs(diffHours) > 0) return `${Math.abs(diffHours)}시간 ${isFuture ? '후' : '전'}`;
+  if (Math.abs(diffMinutes) > 0) return `${Math.abs(diffMinutes)}분 ${isFuture ? '후' : '전'}`;
   return isFuture ? '곧' : '방금 전';
 }

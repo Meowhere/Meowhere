@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useGnbStore } from '@/src/store/gnbStore';
 import { useSearchParams } from 'next/navigation';
 import ArrowIcon from '@/src/components/common/icons/ArrowIcon';
@@ -20,12 +20,15 @@ export default function MainPageGNB() {
   const searchParams = useSearchParams();
   const { setPreventBodyScroll } = useUIStore();
 
-  const params = {
-    keyword: searchParams.get('keyword'),
-    minPrice: searchParams.get('min-price'),
-    maxPrice: searchParams.get('max-price'),
-    address: searchParams.get('address'),
-  };
+  const params = useMemo(
+    () => ({
+      keyword: searchParams.get('keyword'),
+      minPrice: searchParams.get('min-price'),
+      maxPrice: searchParams.get('max-price'),
+      address: searchParams.get('address'),
+    }),
+    [searchParams]
+  );
 
   const hasParams = Object.values(params).some((value) => value !== null && value.trim() !== '');
 

@@ -1,7 +1,7 @@
 import { useURLQuery } from '@/src/hooks/useURLQuery';
 import { Category } from '@/src/types/activity.types';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 
 interface NavbarCategoryProps {
   category: '모두' | '문화 · 예술' | '음식' | '스포츠' | '투어' | '관광' | '웰빙';
@@ -11,12 +11,10 @@ interface NavbarCategoryProps {
 
 export default function CategoryButton({ category, icon, value }: NavbarCategoryProps) {
   const searchParams = useSearchParams();
-  const [isSelected, setIsSelected] = useState(false);
   const { updateQuery } = useURLQuery();
 
-  useEffect(() => {
-    const currentCategory = searchParams.get('category');
-    setIsSelected(currentCategory === value);
+  const isSelected = useMemo(() => {
+    return searchParams.get('category') === value;
   }, [searchParams, value]);
 
   return (
