@@ -62,11 +62,18 @@ export default function AuthModal() {
     defaultValues: { email: '', nickname: '', password: '', passwordConfirm: '' },
   });
 
+  // watch 값들
+  const initialEmailValue = initialForm.watch('email');
+  const loginEmailValue = loginForm.watch('email');
+  const loginPasswordValue = loginForm.watch('password');
+  const signUpEmailValue = signUpForm.watch('email');
+  const signUpNicknameValue = signUpForm.watch('nickname');
+  const signUpPasswordValue = signUpForm.watch('password');
+  const signUpPasswordConfirmValue = signUpForm.watch('passwordConfirm');
+
   const handleEmailCheck = async (data: InitialFormValues) => {
-    // 이메일 유무 확인
     try {
       const exists = await checkEmailExistence(data.email);
-      // 이메일 존재 유무에 따라 모드 변경
       const newMode = exists ? 'login' : 'signup';
       setMode(newMode);
 
@@ -84,7 +91,6 @@ export default function AuthModal() {
 
   const handleLogin = async (data: LoginFormValues) => {
     try {
-      // 로그인 로직
       await loginMutation.mutateAsync(data);
       if (isAccountPage) {
         navigate.push('/');
@@ -98,7 +104,6 @@ export default function AuthModal() {
 
   const handleSignUp = async (data: SignUpFormValues) => {
     try {
-      // 회원 가입 로직
       await signUpAndLogin(data);
       if (isAccountPage) {
         navigate.push('/');
@@ -111,18 +116,15 @@ export default function AuthModal() {
   };
 
   const handleKakaoLogin = () => {
-    // 카카오 로그인
     console.log('카카오');
   };
 
   const handleBack = () => {
     setMode('initial');
-    // 폼 초기화
     loginForm.reset();
     signUpForm.reset();
   };
 
-  const emailValue = initialForm.watch('email');
   const isAccountPage = pathname === '/account';
 
   return (
@@ -138,15 +140,15 @@ export default function AuthModal() {
         )}
       </div>
 
-      {/* Forms */}
+      {/* Initial Form - 이메일 확인 */}
       {mode === 'initial' && (
         <form onSubmit={initialForm.handleSubmit(handleEmailCheck)}>
           <Input
             label='이메일'
             type='email'
+            watchValue={initialEmailValue}
+            error={initialForm.formState.errors.email}
             {...initialForm.register('email')}
-            value={emailValue}
-            error={initialForm.formState.errors.email?.message}
           />
           <div className='flex flex-col gap-[16px] mt-[60px]'>
             <BaseButton
@@ -161,25 +163,31 @@ export default function AuthModal() {
         </form>
       )}
 
+      {/* Login Form */}
       {mode === 'login' && (
         <form onSubmit={loginForm.handleSubmit(handleLogin)}>
           <Input
             label='이메일'
             type='email'
-            {...loginForm.register('email')}
+            watchValue={loginEmailValue}
+            error={initialForm.formState.errors.email}
             disabled
-            value={emailValue}
-            error={loginForm.formState.errors.email?.message}
+            {...loginForm.register('email')}
           />
           <Input
             label='비밀번호'
             type='password'
-            isPassword={true}
+            isPassword
+            watchValue={loginPasswordValue}
+            error={loginForm.formState.errors.password}
             {...loginForm.register('password')}
-            error={loginForm.formState.errors.password?.message}
           />
           <div className='flex flex-col gap-[16px] mt-[60px]'>
-            <BaseButton type='submit' disabled={loginForm.formState.isSubmitting}>
+            <BaseButton
+              type='submit'
+              disabled={loginForm.formState.isSubmitting}
+              className='h-[48px]'
+            >
               {loginForm.formState.isSubmitting ? '로그인 중...' : '로그인'}
             </BaseButton>
             <KakaoLoginButton onClick={handleKakaoLogin} className='h-[48px]' />
@@ -187,38 +195,46 @@ export default function AuthModal() {
         </form>
       )}
 
+      {/* SignUp Form */}
       {mode === 'signup' && (
         <form onSubmit={signUpForm.handleSubmit(handleSignUp)}>
           <Input
             label='이메일'
             type='email'
-            {...signUpForm.register('email')}
+            watchValue={signUpEmailValue}
+            error={signUpForm.formState.errors.email}
             disabled
-            value={emailValue}
-            error={signUpForm.formState.errors.email?.message}
+            {...signUpForm.register('email')}
           />
           <Input
             label='닉네임'
             type='text'
+            watchValue={signUpNicknameValue}
+            error={signUpForm.formState.errors.nickname}
             {...signUpForm.register('nickname')}
-            error={signUpForm.formState.errors.nickname?.message}
           />
           <Input
             label='비밀번호'
             type='password'
+            isPassword
+            watchValue={signUpPasswordValue}
+            error={signUpForm.formState.errors.password}
             {...signUpForm.register('password')}
-            error={signUpForm.formState.errors.password?.message}
-            isPassword={true}
           />
           <Input
             label='비밀번호 확인'
             type='password'
+            isPassword
+            watchValue={signUpPasswordConfirmValue}
+            error={signUpForm.formState.errors.passwordConfirm}
             {...signUpForm.register('passwordConfirm')}
-            error={signUpForm.formState.errors.passwordConfirm?.message}
-            isPassword={true}
           />
           <div className='flex flex-col gap-[16px] mt-[60px]'>
-            <BaseButton type='submit' disabled={signUpForm.formState.isSubmitting}>
+            <BaseButton
+              type='submit'
+              disabled={signUpForm.formState.isSubmitting}
+              className='h-[48px]'
+            >
               {signUpForm.formState.isSubmitting ? '가입 중...' : '회원가입'}
             </BaseButton>
             <KakaoLoginButton onClick={handleKakaoLogin} className='h-[48px]' />
