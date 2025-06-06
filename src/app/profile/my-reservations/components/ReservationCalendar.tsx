@@ -9,7 +9,7 @@ import type {
   StatusData,
   ReservationCalendarProps,
   TileClassNameArgs,
-} from '../../../../types/my-reservation-calendar.types';
+} from '@/src/types/my-reservation-calendar.types';
 
 export default function ReservationCalendar({ statusData }: ReservationCalendarProps) {
   const [value, setValue] = useState<Date>(new Date());
