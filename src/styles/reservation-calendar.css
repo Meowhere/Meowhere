@@ -30,6 +30,12 @@
   line-height: 1;
 }
 
+.react-calendar__navigation button:focus {
+  outline: none;
+  box-shadow: 0 0 0 1.5px #ff5500; /* primary-300 */
+  border-radius: 3px;
+}
+
 .react-calendar__viewContainer {
   max-width: 745px;
   margin: 0 auto;
@@ -47,7 +53,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   font-size: 1.1rem;
   font-weight: 600; /* semibold */
   line-height: normal; /* auto (기본) */
@@ -64,4 +69,10 @@
 
 .react-calendar__tile {
   min-width: 47px;
+}
+
+.react-calendar__tile:focus {
+  outline: none;
+  box-shadow: 0 0 0 1.5px #ff5500; /* primary-300 */
+  border-radius: 6px;
 }
