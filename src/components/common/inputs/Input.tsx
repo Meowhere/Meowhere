@@ -65,8 +65,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             }}
             disabled={disabled}
             className={clsx(
-              'w-full bg-transparent border-none focus:outline-none text-md font-regular text-gray-800 pt-2'
-              // shouldFloat ? 'pt-[20px]' : ''
+              'w-full bg-transparent border-none focus:outline-none text-md font-regular text-gray-800 pt-2',
+              shouldFloat ? 'pt-[20px]' : '',
+              'transition-[padding-top] duration-200'
             )}
             autoComplete='off'
             {...rest}
