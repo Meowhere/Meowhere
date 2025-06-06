@@ -10,5 +10,4 @@ export interface ReservationsCardProps {
   price: number;
   showCancel?: boolean;
   showReview?: boolean;
-  onClick?: () => void;
 }

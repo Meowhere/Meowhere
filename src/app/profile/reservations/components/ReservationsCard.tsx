@@ -1,9 +1,10 @@
 'use client';
 
 import { useModal } from '@/src/hooks/useModal';
+import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import ReservationsLabel from './ReservationsLabel';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
-import { ReservationsCardProps } from '../../../../types/reservations-card.types';
+import { ReservationsCardProps } from '@/src/types/reservations-card.types';
 
 export default function ReservationsCard({
   imageUrl,
@@ -15,13 +16,31 @@ export default function ReservationsCard({
   price,
   showCancel = false,
   showReview = false,
-  onClick,
 }: ReservationsCardProps) {
-  const { confirm } = useModal();
+  const { openConfirmModal } = useConfirmModal();
+  const { openCreateReviewModal } = useModal();
 
   const cancelReservation = () => {
     // 실제 예약 취소 API 호출
     console.log('예약 취소 로직 실행');
+  };
+
+  const openReviewModal = () => {
+    openCreateReviewModal({
+      title,
+      schedule: {
+        id: 1,
+        date,
+        startTime: time.split(' - ')[0],
+        endTime: time.split(' - ')[1],
+      },
+      headCount,
+      price,
+      rating: 3,
+      onConfirm: () => {
+        console.log('후기 작성 완료');
+      },
+    });
   };
 
   return (
@@ -53,15 +72,7 @@ export default function ReservationsCard({
             color='red'
             className='w-full text-[1.4rem] font-semibold hover:brightness-[0.95] lg:w-[128px] h-[42px] rounded-[10px]'
             onClick={() => {
-              confirm({
-                message: '예약을 취소하시겠어요?',
-                confirmText: '예약 취소',
-                cancelText: '아니요',
-                onConfirm: () => {
-                  // 실제 예약 취소 로직 호출
-                  cancelReservation();
-                },
-              });
+              cancelReservation();
             }}
           >
             예약 취소
@@ -73,7 +84,7 @@ export default function ReservationsCard({
             variant='soft'
             color='blue'
             className='w-full text-[1.4rem] font-semibold hover:brightness-[0.95] lg:w-[128px] h-[42px] rounded-[10px]'
-            onClick={onClick}
+            onClick={openReviewModal}
           >
             후기 쓰기
           </BaseButton>
