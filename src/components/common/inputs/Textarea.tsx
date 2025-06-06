@@ -3,26 +3,22 @@ import { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import { TextareaProps } from '../../../types/input.types';
 
-// 반응형 기본 rows 계산 함수
-function getResponsiveRows() {
-  if (typeof window === 'undefined') return 5; // SSR-safe
-  const width = window.innerWidth;
-  if (width < 640) return 5; // 모바일(sm 이하)
-  if (width < 1024) return 7; // 태블릿(md/lg)
-  return 10; // 데스크탑(xl 이상)
-}
-
-export default function Textarea({ value, onChange, error, className }: TextareaProps) {
+export default function Textarea({
+  value = '',
+  error,
+  className,
+  register,
+  ...rest
+}: TextareaProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [rows, setRows] = useState<number>(getResponsiveRows());
 
-  // 반응형 rows: 화면 크기 변경 시 rows 값 업데이트
-  useEffect(() => {
-    const updateRows = () => setRows(getResponsiveRows());
-    window.addEventListener('resize', updateRows);
-    updateRows();
-    return () => window.removeEventListener('resize', updateRows);
-  }, []);
+  // ref 콜백 합성
+  function setRefs(el: HTMLTextAreaElement) {
+    textareaRef.current = el;
+    if (register && typeof register.ref === 'function') {
+      register.ref(el);
+    }
+  }
 
   // 자동 높이 조절 (줄 수 증가)
   useEffect(() => {
@@ -42,12 +38,12 @@ export default function Textarea({ value, onChange, error, className }: Textarea
         )}
       >
         <textarea
-          value={value}
-          onChange={onChange}
-          rows={rows}
-          ref={textareaRef}
+          {...rest}
+          {...register}
+          rows={5}
+          ref={setRefs}
           maxLength={700}
-          className='w-full bg-transparent border-none focus:outline-none resize-none text-sm font-regular text-gray-800 pt-6'
+          className='w-full bg-transparent border-none focus:outline-none resize-none text-sm font-regular text-gray-800 pt-6 scrollbar-hide'
           // style={{ minHeight: '10rem' }}
         />
         <div className='flex justify-between items-center mt-2'>

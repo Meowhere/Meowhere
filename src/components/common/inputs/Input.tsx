@@ -7,10 +7,11 @@ import VisibilityToggleButton from '@/src/components/common/buttons/VisibilityTo
 
 export default function Input({
   label,
+  name,
   type = 'text',
   value,
-  onChange,
   error,
+  register,
   isPassword = false,
   className,
   ...rest
@@ -31,7 +32,6 @@ export default function Input({
           error ? 'border-red-300' : 'border-gray-200 focus-within:border-gray-200'
         )}
       >
-        {/* Floating label */}
         <label
           htmlFor={inputId}
           className={clsx(
@@ -46,9 +46,12 @@ export default function Input({
         {/* input & icon */}
         <div className='flex-1 flex items-center'>
           <input
+            {...rest}
+            {...register}
+            id={inputId}
+            name={name}
             type={inputType}
             value={value}
-            onChange={onChange}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className='w-full bg-transparent border-none focus:outline-none text-md font-regular text-gray-800 pt-2'

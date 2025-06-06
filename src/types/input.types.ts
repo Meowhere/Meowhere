@@ -6,10 +6,11 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   // onChange: ChangeEventHandler<HTMLInputElement>;
   error?: string;
   isPassword?: boolean;
+  register?: any; // For react-hook-form
 }
 export interface TextareaProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  value?: string;
   error?: string;
   className?: string;
+  register?: any; // For react-hook-form
 }
