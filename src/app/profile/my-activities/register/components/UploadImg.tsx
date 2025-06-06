@@ -38,7 +38,7 @@ export default function UploadImg({ file: fileProp, onFileChange }: UploadImgPro
   };
 
   return (
-    <div className='flex' onClick={handleDivClick}>
+    <div className='flex'>
       {preview ? (
         <div className='relative w-[160px] h-[160px] md:w-[346px] md:h-[346px] lg:w-[160px] lg:h-[160px]'>
           <Image
@@ -62,7 +62,10 @@ export default function UploadImg({ file: fileProp, onFileChange }: UploadImgPro
           />
         </div>
       ) : (
-        <div className='flex flex-col items-center justify-center w-[160px] h-[160px] md:w-[346px] md:h-[346px] lg:w-[160px] lg:h-[160px] gap-[8px] border border-[2px] border-dashed border-gray-300 rounded-[12px] cursor-pointer'>
+        <div
+          onClick={handleDivClick}
+          className='flex flex-col items-center justify-center w-[160px] h-[160px] md:w-[346px] md:h-[346px] lg:w-[160px] lg:h-[160px] gap-[8px] border border-[2px] border-dashed border-gray-300 rounded-[12px] cursor-pointer'
+        >
           <Image src='/assets/icons/ico-plus.svg' alt='upload' width={48} height={48} />
           <p className='text-md font-medium text-gray-500'>이미지 업로드</p>
         </div>
