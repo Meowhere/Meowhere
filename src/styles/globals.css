@@ -36,3 +36,13 @@ textarea {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+.slider-thumb {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.slider-thumb::-webkit-slider-thumb {
+  pointer-events: all;
+  cursor: pointer;
+}
