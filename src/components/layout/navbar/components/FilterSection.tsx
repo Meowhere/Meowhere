@@ -1,9 +1,12 @@
+import { motion } from 'framer-motion';
+
 export default function FilterSection({
   children,
   title,
   isOpen,
   onClick,
   value = '',
+  handleReset,
   ...rest
 }: {
   children: React.ReactNode;
@@ -11,22 +14,56 @@ export default function FilterSection({
   isOpen: boolean;
   value?: string;
   onClick?: () => void;
+  handleReset: () => void;
 }) {
   return (
-    <section
-      className={`${isOpen ? 'h-auto pt-[18px] pb-[24px]' : 'h-[52px]'} flex flex-col justify-center items-start w-full gap-[16px] bg-white rounded-[8px] px-[24px]`}
-      {...rest}
+    <motion.section
+      className={`bg-white rounded-[8px] w-full px-[24px] overflow-hidden`}
       onClick={onClick}
+      animate={{
+        maxHeight: isOpen ? 480 : 52,
+        paddingTop: isOpen ? 22 : 18,
+        paddingBottom: isOpen ? 24 : 18,
+      }}
+      transition={{
+        ease: [0, 1, 0, 1],
+        duration: 0.5,
+      }}
+      {...rest}
     >
-      <div className='flex justify-between items-center w-full'>
-        <h2
-          className={`${isOpen ? 'text-[22px]' : 'text-[13px]'} leading-none font-semibold text-gray-800`}
+      <div className='w-full flex flex-col justify-center items-start gap-[16px]'>
+        <motion.div
+          className='flex justify-between items-center w-full text-[13px] text-gray-800'
+          animate={{ marginBottom: isOpen ? 0 : 16 }}
+          transition={{
+            ease: [0, 1, 0, 1],
+            duration: 0.5,
+          }}
         >
-          {title}
-        </h2>
-        <span>{value}</span>
+          <motion.h2
+            className={`leading-none font-semibold`}
+            animate={{
+              fontSize: isOpen ? '22px' : '13px',
+            }}
+            transition={{
+              ease: [0, 1, 0, 1],
+              duration: 0.5,
+            }}
+          >
+            {title}
+          </motion.h2>
+          <span className='text-gray-600'>
+            {isOpen ? (
+              <button onClick={handleReset} className='text-primary-300'>
+                초기화
+              </button>
+            ) : (
+              <span className='text-gray-600'>{value}</span>
+            )}
+          </span>
+        </motion.div>
+        {children}
       </div>
-      {isOpen && children}
-    </section>
+    </motion.section>
   );
 }

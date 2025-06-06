@@ -11,25 +11,41 @@ export default function PriceFilter({
   prices,
   setSelectedMinPrice,
   setSelectedMaxPrice,
+  paramsMinPrice,
+  paramsMaxPrice,
 }: {
   openedSearchSection: 'place' | 'price';
   setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price'>>;
   selectedMinPrice: number;
   selectedMaxPrice: number;
+  setSelectedMinPrice: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedMaxPrice: React.Dispatch<React.SetStateAction<number>>;
   minPrice: number;
   maxPrice: number;
   GAP_OF_PRICE: number;
   prices: Map<number, number>;
-  setSelectedMinPrice: React.Dispatch<React.SetStateAction<number>>;
-  setSelectedMaxPrice: React.Dispatch<React.SetStateAction<number>>;
+  paramsMinPrice: number;
+  paramsMaxPrice: number;
 }) {
+  if (selectedMinPrice === 0) setSelectedMinPrice(paramsMinPrice || minPrice);
+  if (selectedMaxPrice === 0) setSelectedMaxPrice(paramsMaxPrice || maxPrice);
+
   return (
     <FilterSection
       title='가격 범위'
       isOpen={openedSearchSection === 'price'}
       onClick={() => setOpenedSearchSection('price')}
-      value={`${selectedMinPrice.toLocaleString()}원 ~ ${selectedMaxPrice.toLocaleString()}원`}
+      value={
+        minPrice === selectedMinPrice && maxPrice === selectedMaxPrice
+          ? '모든 가격'
+          : `${selectedMinPrice.toLocaleString()}원 ~ ${selectedMaxPrice.toLocaleString()}원`
+      }
+      handleReset={() => {
+        setSelectedMinPrice(minPrice);
+        setSelectedMaxPrice(maxPrice);
+      }}
     >
+      {/* 그래프 */}
       <div className='flex justify-start items-end w-full h-[80px] gap-[2px] translate-y-[14px] px-[8px]'>
         {Array(GAP_OF_PRICE)
           .fill(0)
@@ -43,25 +59,27 @@ export default function PriceFilter({
             />
           ))}
       </div>
+
+      {/* 슬라이더 */}
       <div className='relative w-full h-[4px]'>
         <div className='relative w-[calc(100%-16px)] h-full m-auto bg-primary-100'>
           <div
             className='w-[24px] h-[24px] bg-primary-300 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
             style={{
-              left: `${(((selectedMinPrice || minPrice) - minPrice) / (maxPrice - minPrice)) * 100}%`,
+              left: `${((selectedMinPrice - minPrice) / (maxPrice - minPrice)) * 100}%`,
             }}
           />
           <div
             className='w-[24px] h-[24px] bg-primary-300 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
             style={{
-              left: `${(((selectedMaxPrice || maxPrice) - minPrice) / (maxPrice - minPrice)) * 100}%`,
+              left: `${((selectedMaxPrice - minPrice) / (maxPrice - minPrice)) * 100}%`,
             }}
           />
           <div
             className='h-full absolute bg-primary-300'
             style={{
-              width: `${(((selectedMaxPrice || maxPrice) - (selectedMinPrice || minPrice)) / (maxPrice - minPrice)) * 100}%`,
-              left: `${(((selectedMinPrice || minPrice) - minPrice) / (maxPrice - minPrice)) * 100}%`,
+              width: `${((selectedMaxPrice - selectedMinPrice) / (maxPrice - minPrice)) * 100}%`,
+              left: `${((selectedMinPrice - minPrice) / (maxPrice - minPrice)) * 100}%`,
             }}
           />
         </div>
@@ -69,7 +87,7 @@ export default function PriceFilter({
           type='range'
           min={minPrice}
           max={maxPrice}
-          value={selectedMinPrice || minPrice}
+          value={selectedMinPrice}
           className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb'
           onChange={(e) => {
             setSelectedMinPrice(Number(e.target.value));
@@ -79,17 +97,19 @@ export default function PriceFilter({
           type='range'
           min={minPrice}
           max={maxPrice}
-          value={selectedMaxPrice || maxPrice}
+          value={selectedMaxPrice}
           className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb'
           onChange={(e) => {
             setSelectedMaxPrice(Number(e.target.value));
           }}
         />
       </div>
+
+      {/* 가격 범위 */}
       <div className='grid grid-cols-3 justify-between items-center w-full text-sm text-gray-500'>
-        <span className='text-left'>{(selectedMinPrice || minPrice).toLocaleString()}원</span>
+        <span className='text-left'>{selectedMinPrice.toLocaleString()}원</span>
         <span className='text-center'>~</span>
-        <span className='text-right'>{(selectedMaxPrice || maxPrice).toLocaleString()}원</span>
+        <span className='text-right'>{selectedMaxPrice.toLocaleString()}원</span>
       </div>
     </FilterSection>
   );

@@ -1,5 +1,6 @@
 import Input from '@/src/components/common/inputs/Input';
 import FilterSection from './FilterSection';
+import { useURLQuery } from '@/src/hooks/useURLQuery';
 
 export default function PlaceFilter({
   openedSearchSection,
@@ -7,25 +8,33 @@ export default function PlaceFilter({
   placeKeyword,
   setPlaceKeyword,
   filteredPlaces,
+  address,
 }: {
   openedSearchSection: 'place' | 'price';
   setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price'>>;
   placeKeyword: string;
   setPlaceKeyword: React.Dispatch<React.SetStateAction<string>>;
   filteredPlaces: [string, number][];
+  address: string | null;
 }) {
+  const { removeQuery } = useURLQuery();
+
   return (
     <FilterSection
       title='지역'
       isOpen={openedSearchSection === 'place'}
       onClick={() => setOpenedSearchSection('place')}
-      value={placeKeyword}
+      value={placeKeyword.length > 0 ? placeKeyword : address || ''}
+      handleReset={() => {
+        removeQuery('address');
+        setPlaceKeyword('');
+      }}
     >
       <Input
         label='어디로 갈까요?'
         className='w-full h-[42px] text-md font-medium rounded-[10px]'
         type='text'
-        value={placeKeyword}
+        value={placeKeyword.length > 0 ? placeKeyword : address || ''}
         onChange={(e) => setPlaceKeyword(e.target.value)}
       />
       <ul className='flex flex-col justify-start items-start w-full gap-[4px] h-[320px] overflow-y-scroll'>

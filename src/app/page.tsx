@@ -1,6 +1,5 @@
 'use client';
 
-import { useURLQuery } from '@/src/hooks/useURLQuery';
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -9,7 +8,6 @@ import StarFillIcon from '../components/common/icons/StarFillIcon';
 import { useGnbStore } from '../store/gnbStore';
 
 export default function Home() {
-  const { updateQuery } = useURLQuery();
   const [activities, setActivities] = useState([]);
   const searchParams = useSearchParams();
   const { setBackAction } = useGnbStore();
@@ -50,66 +48,7 @@ export default function Home() {
       <br />
       <br />
       <br />
-      ~~~어디가냥 메인 페이지~~~
-      <br />
-      <label>
-        주소
-        <input
-          type='text'
-          className='w-[200px] h-[24px] text-gray-800 bg-gray-100'
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              const inputValue = (e.target as HTMLInputElement).value;
-              updateQuery('address', inputValue);
-            }
-          }}
-        />
-      </label>
-      <br />
-      <br />
-      <label>
-        검색
-        <input
-          type='text'
-          className='w-[200px] h-[24px] text-gray-800 bg-gray-100'
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              const inputValue = (e.target as HTMLInputElement).value;
-              updateQuery('keyword', inputValue);
-            }
-          }}
-        />
-      </label>
-      <br />
-      <br />
-      <label>
-        최소가격
-        <input
-          type='text'
-          className='w-[200px] h-[24px] text-gray-800 bg-gray-100'
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              const inputValue = (e.target as HTMLInputElement).value;
-              updateQuery('min-price', inputValue);
-            }
-          }}
-        />
-      </label>
-      <br />
-      <br />
-      <label>
-        최대가격
-        <input
-          type='text'
-          className='w-[200px] h-[24px] text-gray-800 bg-gray-100'
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              const inputValue = (e.target as HTMLInputElement).value;
-              updateQuery('max-price', inputValue);
-            }
-          }}
-        />
-      </label>
+
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-[24px] mt-6 p-[24px]'>
         {activities.map((item: any) => (
           <article key={item.id}>

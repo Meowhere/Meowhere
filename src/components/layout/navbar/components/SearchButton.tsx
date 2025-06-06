@@ -5,6 +5,9 @@ export default function SearchButton({
   params,
   setIsSearching,
   setBackAction,
+  keyword,
+  setKeyword,
+  isSearching,
 }: {
   hasParams: boolean;
   params: {
@@ -15,11 +18,16 @@ export default function SearchButton({
   };
   setIsSearching: (isSearching: boolean) => void;
   setBackAction: (action: (() => void) | null) => void;
+  setKeyword: (keyword: string) => void;
+  keyword: string;
+  isSearching: boolean;
 }) {
   return (
     <button
       className='w-full h-full bg-white border border-gray-200 text-gray-800 rounded-full text-sm flex items-center justify-center gap-2 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'
       onClick={() => {
+        if (isSearching) return;
+
         setIsSearching(true);
         setBackAction(() => {
           setIsSearching(false);
@@ -27,7 +35,17 @@ export default function SearchButton({
         });
       }}
     >
-      {hasParams ? (
+      {/* 검색 중 */}
+      {isSearching ? (
+        <input
+          type='text'
+          placeholder='여기에 검색어 입력'
+          className='w-full h-full text-sm text-gray-800 text-center px-[16px]'
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+        />
+      ) : hasParams ? (
+        // 검색 안함 + 필터 있음
         <div className='flex flex-col justify-center items-center leading-none gap-[4px]'>
           <div className='flex'>
             <span>{params.address}</span>
@@ -44,6 +62,7 @@ export default function SearchButton({
           )}
         </div>
       ) : (
+        // 검색 안함 + 필터 없음
         <>
           <SearchIcon />
           <span>새로운 체험 찾기</span>

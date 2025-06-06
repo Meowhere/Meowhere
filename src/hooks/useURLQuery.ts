@@ -3,6 +3,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 interface QueryUpdater {
   updateQuery: (key: string, value: string) => void;
   removeQuery: (key: string) => void;
+  resetQueries: () => void;
   updateMultipleQueries: (updates: Record<string, string>) => void;
 }
 
@@ -47,5 +48,9 @@ export function useURLQuery(): QueryUpdater {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  return { updateQuery, removeQuery, updateMultipleQueries };
+  const resetQueries = () => {
+    router.push(`${pathname}`);
+  };
+
+  return { updateQuery, removeQuery, updateMultipleQueries, resetQueries };
 }
