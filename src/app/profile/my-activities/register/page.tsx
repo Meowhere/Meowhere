@@ -1,5 +1,6 @@
 'use client';
 import UploadImg from './components/UploadImg';
+import UploadImgList from './components/UploadImgList';
 import { useGnb } from '@/src/hooks/useGnb';
 // import { useGnbStore } from '@/src/store/gnbStore';
 import { useRouter } from 'next/navigation';
@@ -9,7 +10,7 @@ export default function RegisterPage() {
   const router = useRouter();
 
   useGnb({
-    title: '체험 등록',
+    title: '내 체험 등록',
     subtitle: '',
     backAction: () => router.back(),
     rightButtons: [],
@@ -23,7 +24,7 @@ export default function RegisterPage() {
       </div>
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
-        <UploadImg />
+        <UploadImgList />
       </div>
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
