@@ -5,6 +5,7 @@ import { useGnb } from '@/src/hooks/useGnb';
 // import { useGnbStore } from '@/src/store/gnbStore';
 import { useRouter } from 'next/navigation';
 import RegisterForm from './components/RegisterForm';
+import RegisterCalendar from './components/register-calendar/RegisterCalendar';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -13,7 +14,11 @@ export default function RegisterPage() {
     title: '내 체험 등록',
     subtitle: '',
     backAction: () => router.back(),
-    rightButtons: [],
+    rightButtons: [
+      <button key='submit' className='text-md font-semibold text-primary-300'>
+        등록
+      </button>,
+    ],
   });
 
   return (
@@ -30,9 +35,7 @@ export default function RegisterPage() {
         <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
         <RegisterForm />
       </div>
-      <div>
-        <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
-      </div>
+      <RegisterCalendar />
     </div>
   );
 }
