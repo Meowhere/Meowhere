@@ -1,10 +1,6 @@
 import { BASE_URL } from '@/src/constants/api';
 import { logger } from '@/src/utils/logger';
 
-export interface HttpError extends Error {
-  status?: number;
-}
-
 export async function fetchFromClient(path: string, options: RequestInit = {}): Promise<Response> {
   try {
     const res = await fetch(`${BASE_URL}/api/${path}`, {
@@ -13,8 +9,7 @@ export async function fetchFromClient(path: string, options: RequestInit = {}): 
     });
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
-      const error: HttpError = new Error(errorData.message || `HTTP error: ${res.status}`);
-      error.status = res.status;
+      const error = new Error(errorData.message || `HTTP error: ${res.status}`);
       throw error;
     }
     return res;
