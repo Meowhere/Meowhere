@@ -38,7 +38,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const [isFocused, setIsFocused] = useState(false);
 
   const isPasswordType = type === 'password' || isPassword;
-  const inputType = isPasswordType && !isVisible ? 'password' : type;
+  const inputType = isPasswordType ? (isVisible ? 'text' : 'password') : type;
 
   // floating label 조건: 포커스 중이거나 값이 있을 때
   const shouldFloat = isFocused || !!watchValue;
