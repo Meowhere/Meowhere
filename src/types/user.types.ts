@@ -6,3 +6,8 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UserResponse {
+  user?: User | null;
+  error?: string;
+}

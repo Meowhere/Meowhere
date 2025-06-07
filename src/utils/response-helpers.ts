@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import { logger } from './logger';
 
-export async function createSuccessResponse(
-  response: Response
-): Promise<NextResponse> {
+export async function createSuccessResponse(response: Response): Promise<NextResponse> {
   try {
     if (response.status === 204) {
       return NextResponse.json(
@@ -16,16 +14,11 @@ export async function createSuccessResponse(
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
     logger.error('성공 응답 JSON 파싱 실패', error);
-    return NextResponse.json(
-      { error: 'Response parsing failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Response parsing failed' }, { status: 500 });
   }
 }
 
-export async function createErrorResponse(
-  response: Response
-): Promise<NextResponse> {
+export async function createErrorResponse(response: Response): Promise<NextResponse> {
   try {
     const errorData = await response.json();
     return NextResponse.json(
@@ -37,10 +30,7 @@ export async function createErrorResponse(
     );
   } catch (error) {
     logger.error('에러 응답 JSON 파싱 실패', error);
-    return NextResponse.json(
-      { error: 'External API Error' },
-      { status: response.status }
-    );
+    return NextResponse.json({ error: 'External API Error' }, { status: response.status });
   }
 }
 
