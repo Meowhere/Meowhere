@@ -61,7 +61,7 @@ export default function RegisterForm() {
         register={register('description', {
           required: '설명을 입력해주세요',
           minLength: { value: 10, message: '10자 이상 입력하세요.' },
-          maxLength: { value: 700, message: '500자 이하로 입력하세요.' },
+          maxLength: { value: 700, message: '700자 이하로 입력하세요.' },
         })}
         error={errors.description?.message}
         value={descriptionValue}
