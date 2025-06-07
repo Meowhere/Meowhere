@@ -1,40 +1,92 @@
+import { BASE_URL, KAKAO_API } from '@/src/constants/api';
 import { authApi } from '@/src/services/authApi';
 import { useAuthStore } from '@/src/store/authStore';
 import { SignUpRequest } from '@/src/types/auth.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+// 공통 성공 처리 로직
+const handleAuthSuccess = (
+  data: { user?: any; error?: string },
+  setUser: (user: any) => void,
+  queryClient: ReturnType<typeof useQueryClient>
+) => {
+  if (data.user && !data.error) {
+    setUser(data.user);
+    queryClient.invalidateQueries({ queryKey: ['user'] });
+  }
+};
+
+// 로그인 훅
 export const useLogin = () => {
   const queryClient = useQueryClient();
   const { setUser } = useAuthStore();
 
   return useMutation({
     mutationFn: authApi.login,
-    onSuccess: (data) => {
-      if (data.user && !data.error) {
-        setUser(data.user);
-        queryClient.invalidateQueries({ queryKey: ['user'] });
-      }
-    },
+    onSuccess: (data) => handleAuthSuccess(data, setUser, queryClient),
     onError: (error) => {
-      console.log('로그인 실패:', error);
+      console.error('로그인 실패:', error);
     },
   });
 };
 
+// 카카오 로그인 훅
+export const useKakaoLogin = () => {
+  const navigate = useRouter();
+  const queryClient = useQueryClient();
+  const { setUser } = useAuthStore();
+  const redirectUri = `${BASE_URL}/oauth/kakao`;
+
+  const kakaoLoginMutation = useMutation({
+    mutationFn: authApi.kakaoLogin,
+    onSuccess: (data) => {
+      handleAuthSuccess(data, setUser, queryClient);
+      navigate.push('/');
+    },
+    onError: (error) => {
+      console.error('카카오 로그인 실패:', error);
+      navigate.push('/account?error=kakao_login_failed');
+    },
+  });
+
+  const kakaoLoginRequest = () => {
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_API}&redirect_uri=${redirectUri}&response_type=code`;
+    window.location.href = kakaoAuthUrl;
+  };
+
+  const kakaoCallbackLogin = async (token: string) => {
+    try {
+      return await kakaoLoginMutation.mutateAsync({ redirectUri, token });
+    } catch (error) {
+      console.error('카카오 콜백 로그인 실패:', error);
+      throw error;
+    }
+  };
+
+  return { kakaoLoginRequest, kakaoCallbackLogin };
+};
+
+// 회원가입 + 자동 로그인 훅
 export const useSignUp = () => {
   const signUpMutation = useMutation({ mutationFn: authApi.signUp });
-  const loginMutation = useLogin(); // 로그인 훅 재사용
+  const loginMutation = useLogin();
 
   const signUpAndLogin = async (formData: SignUpRequest) => {
     const signUpResult = await signUpMutation.mutateAsync(formData);
-    if (signUpResult?.success) {
-      const loginResult = await loginMutation.mutateAsync({
-        email: formData.email,
-        password: formData.password,
-      });
 
-      return loginResult;
+    if (signUpResult?.success) {
+      try {
+        const loginResult = await loginMutation.mutateAsync({
+          email: formData.email,
+          password: formData.password,
+        });
+        return loginResult;
+      } catch (loginError) {
+        console.error('회원가입 후 로그인 실패:', loginError);
+        throw loginError;
+      }
     }
 
     return signUpResult;
@@ -46,6 +98,7 @@ export const useSignUp = () => {
   };
 };
 
+// 현재 사용자 정보 조회 훅
 export const useUser = () => {
   const { setUser, setLoading } = useAuthStore();
 
@@ -53,17 +106,13 @@ export const useUser = () => {
     queryKey: ['user'],
     queryFn: authApi.getMe,
     retry: 1,
-    staleTime: 5 * 60 * 1000, // 5분
+    staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
     if (query.isSuccess) {
-      if (query.data && !query.error) {
-        setUser(query.data);
-      } else {
-        setUser(null);
-      }
+      setUser(query.data && !query.error ? query.data : null);
       setLoading(false);
     }
 
@@ -77,6 +126,7 @@ export const useUser = () => {
   return query;
 };
 
+// 로그아웃 훅
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const { logout } = useAuthStore();
@@ -86,6 +136,9 @@ export const useLogout = () => {
     onSuccess: () => {
       logout();
       queryClient.invalidateQueries({ queryKey: ['user'] });
+    },
+    onError: (error) => {
+      console.error('로그아웃 실패:', error);
     },
   });
 };

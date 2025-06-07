@@ -1,5 +1,11 @@
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
-import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from '../types/auth.types';
+import {
+  KakaoLoginRequest,
+  LoginRequest,
+  LoginResponse,
+  SignUpRequest,
+  SignUpResponse,
+} from '../types/auth.types';
 import { User } from '../types/user.types';
 
 export const authApi = {
@@ -34,6 +40,15 @@ export const authApi = {
     const res = await fetchFromClient('/auth/logout', {
       method: 'POST',
       credentials: 'include',
+    });
+    return res.json();
+  },
+
+  kakaoLogin: async (credentials: KakaoLoginRequest): Promise<LoginResponse> => {
+    const res = await fetchFromClient('/oauth/sign-in', {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(credentials),
     });
     return res.json();
   },

@@ -11,6 +11,11 @@ export interface LoginResponse {
   error?: string;
 }
 
+export interface KakaoLoginRequest {
+  redirectUri: string;
+  token: string;
+}
+
 export interface SignUpRequest {
   email: string;
   password: string;

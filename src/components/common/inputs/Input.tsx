@@ -1,7 +1,7 @@
 'use client';
 import { useId, useState, forwardRef } from 'react';
 import clsx from 'clsx';
-import { FieldError, FieldValues, Path } from 'react-hook-form';
+import { FieldError } from 'react-hook-form';
 import VisibilityToggleButton from '@/src/components/common/buttons/VisibilityToggleButton';
 
 interface InputProps {

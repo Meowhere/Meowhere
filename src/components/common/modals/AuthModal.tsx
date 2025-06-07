@@ -8,7 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
-import { useLogin, useSignUp } from '@/src/hooks/auth/useAuth';
+import { useKakaoLogin, useLogin, useSignUp } from '@/src/hooks/auth/useAuth';
 import { checkEmailExistence } from '@/src/utils/checkEmailExistence';
 import ArrowButton from '../buttons/ArrowButton';
 import { HEADER } from '@/src/constants/modal';
@@ -45,6 +45,7 @@ export default function AuthModal() {
   const [mode, setMode] = useState<'initial' | 'login' | 'signup'>('initial');
   const loginMutation = useLogin();
   const { signUpAndLogin } = useSignUp();
+  const { kakaoLoginRequest } = useKakaoLogin();
 
   // 각 모드별 폼 분리
   const initialForm = useForm<InitialFormValues>({
@@ -116,7 +117,7 @@ export default function AuthModal() {
   };
 
   const handleKakaoLogin = () => {
-    console.log('카카오');
+    kakaoLoginRequest();
   };
 
   const handleBack = () => {
