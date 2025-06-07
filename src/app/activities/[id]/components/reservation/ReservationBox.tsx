@@ -3,12 +3,7 @@
 
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import ReservationMobileFooter from './ReservationMobileFooter';
-
-interface ReservationState {
-  date: Date | undefined;
-  time: string;
-  count: number;
-}
+import { ReservationState } from '@/src/types/reservation.types';
 
 interface ReservationBoxProps {
   state: ReservationState;

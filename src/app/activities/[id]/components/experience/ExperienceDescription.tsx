@@ -6,7 +6,7 @@ interface ExperienceDescriptionProps {
 
 export default function ExperienceDescription({ description }: ExperienceDescriptionProps) {
   return (
-    <div className='text-gray-700 text-md font-regular opacity-[0.75] whitespace-pre-wrap leading-relaxed'>
+    <div className='text-gray-700 text-md font-regular whitespace-pre-wrap leading-relaxed'>
       {description}
     </div>
   );

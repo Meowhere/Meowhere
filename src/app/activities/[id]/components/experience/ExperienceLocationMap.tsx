@@ -4,24 +4,18 @@ import { useEffect, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import OverlayContent from '../common/OverlayContent';
 import { KakaoPlace, KakaoStatus } from '@/src/types/kakao-map.types';
+import { KAKAO_MAP_API_KEY } from '@/src/constants/api';
 
-interface KakaoMapProps {
+interface ExperienceLocationMapProps {
   address: string;
 }
 
-// Kakao Map API 타입 정의
-interface KakaoMapResult {
-  x: string;
-  y: string;
-}
-
-export default function KakaoMap({ address }: KakaoMapProps) {
+export default function ExperienceLocationMap({ address }: ExperienceLocationMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
 
   useEffect(() => {
-    if (!apiKey) {
-      console.error('Kakao API 키가 없습니다. .env 설정을 확인하세요.');
+    if (!KAKAO_MAP_API_KEY) {
+      console.error('지도 서비스를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.');
       return;
     }
 
@@ -37,10 +31,11 @@ export default function KakaoMap({ address }: KakaoMapProps) {
     if (document.querySelector(`script[src*="dapi.kakao.com"]`)) return;
 
     const script = document.createElement('script');
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false&libraries=services`;
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_API_KEY}&autoload=false&libraries=services`;
     script.async = true;
     script.onload = () => window.kakao.maps.load(createMap);
-    script.onerror = () => console.error('Kakao Map 스크립트 로드 실패');
+    script.onerror = () =>
+      console.error('지도 서비스를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.');
     document.head.appendChild(script);
   };
 

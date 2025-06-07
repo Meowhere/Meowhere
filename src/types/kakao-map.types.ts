@@ -1,5 +1,3 @@
-export type KakaoStatus = 'OK' | 'ZERO_RESULT' | 'ERROR';
-
 export interface KakaoPlace {
   id: string;
   place_name: string;
@@ -7,3 +5,5 @@ export interface KakaoPlace {
   y: string;
   [key: string]: any;
 }
+
+export type KakaoStatus = 'OK' | 'ZERO_RESULT' | 'ERROR';

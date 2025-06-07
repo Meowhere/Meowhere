@@ -4,8 +4,8 @@ interface OverlayContentProps {
 
 export default function OverlayContent({ placeName }: OverlayContentProps) {
   return (
-    <div className='px-3 py-1.5 rounded-full border-2 border-[#007AFF] bg-white flex items-center shadow-md'>
-      <div className='w-5 h-5 flex items-center justify-center bg-[#007AFF] text-white text-sm rounded-full mr-2'>
+    <div className='px-[12px] py-[6px] rounded-full border-2 border-blue-300 bg-white flex items-center shadow-md'>
+      <div className='w-[20px] h-[20px] flex items-center justify-center bg-blue-300 text-white text-sm rounded-full mr-[8px]'>
         <svg
           className='w-[12px] h-[12px]'
           viewBox='0 0 24 24'

@@ -1,7 +1,6 @@
-import { formatDistanceToNow } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import StarRating from '@/src/components/common/buttons/StarRating';
+import formatRelativeTime from '@/src/lib/formatRelativeTime';
 
 interface ReviewCardProps {
   nickname: string;
@@ -18,18 +17,15 @@ export default function ReviewCard({
   content,
   rating,
 }: ReviewCardProps) {
-  const formattedDate = formatDistanceToNow(new Date(createdAt), {
-    addSuffix: true,
-    locale: ko,
-  });
+  const formattedDate = formatRelativeTime(createdAt);
 
   return (
-    <div className='flex flex-col items-start gap-[12px] w-[288px] p-[12px] bg-white'>
+    <div className='flex flex-col items-start gap-[12px] w-[256px] p-[12px] bg-white'>
       <div className='flex items-center gap-[8px]'>
         <StarRating value={rating} readOnly />
         <p className='text-[#A4A1AA] text-xs font-regular'>{formattedDate}</p>
       </div>
-      <p className='text-sm font-regular text-gray-700 line-clamp-4 max-w-[240px]'>{content}</p>
+      <p className='text-sm font-regular text-gray-700 line-clamp-4 max-w-[232px]'>{content}</p>
 
       <div className='flex items-center gap-[8px]'>
         <Image
@@ -39,7 +35,7 @@ export default function ReviewCard({
           height={38}
           className='rounded-full object-cover'
         />
-        <p className='text-xs font-medium text-[#121]'>{nickname}</p>
+        <p className='text-xs font-medium text-black'>{nickname}</p>
       </div>
     </div>
   );

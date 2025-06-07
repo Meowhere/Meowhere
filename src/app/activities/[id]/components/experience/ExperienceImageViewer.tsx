@@ -18,12 +18,12 @@ export default function ExperienceImageViewer({
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const imageUrls = [bannerImageUrl, ...subImages.map((img) => img.imageUrl)];
+  const imageUrls = [bannerImageUrl, ...subImages.map((img) => img.imageUrl)] as string[];
 
   return (
     <>
       <div className='overflow-hidden'>
-        <div className='grid grid-cols-2 gap-[5px] mt-4 mb-4 mx-auto'>
+        <div className='grid grid-cols-2 gap-[5px] mt-4 mb-4 mx-auto rounded-[30px] overflow-hidden'>
           {imageUrls.map((url, index) => (
             <div
               key={index}
@@ -57,10 +57,14 @@ export default function ExperienceImageViewer({
           >
             {imageUrls.map((url, index) => (
               <SwiperSlide key={index} className='flex items-center justify-center'>
-                <img
+                <Image
                   src={url}
                   alt={`확대 이미지 ${index + 1}`}
                   className='w-full max-h-[calc(100vh-64px)] object-contain'
+                  width={1200}
+                  height={800}
+                  priority={index === 0}
+                  quality={100}
                 />
               </SwiperSlide>
             ))}
