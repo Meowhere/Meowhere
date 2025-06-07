@@ -18,7 +18,7 @@ export default function FilterSection({
 }) {
   return (
     <motion.section
-      className={`${isOpen ? '' : 'cursor-pointer'} bg-white rounded-[8px] w-full px-[24px] overflow-hidden`}
+      className={`${isOpen ? '' : 'cursor-pointer'} bg-white rounded-[8px] w-full px-[24px] overflow-hidden gnb-shadow`}
       onClick={onClick}
       animate={{
         maxHeight: isOpen ? 480 : 52,
@@ -40,7 +40,7 @@ export default function FilterSection({
             duration: 0.5,
           }}
         >
-          <motion.h2
+          <motion.span
             className={`leading-none font-semibold`}
             animate={{
               fontSize: isOpen ? '22px' : '13px',
@@ -51,7 +51,7 @@ export default function FilterSection({
             }}
           >
             {title}
-          </motion.h2>
+          </motion.span>
           <span className='text-gray-600'>
             {isOpen ? (
               <button onClick={handleReset} className='text-primary-300'>

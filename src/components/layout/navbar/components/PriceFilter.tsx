@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
+import { motion } from 'framer-motion';
 
 export default function PriceFilter({
   openedSearchSection,
@@ -24,13 +25,21 @@ export default function PriceFilter({
   minPrice: number;
   maxPrice: number;
   GAP_OF_PRICE: number;
-  prices: Map<number, number>;
+  prices: number[];
   paramsMinPrice: number;
   paramsMaxPrice: number;
 }) {
+  const getSliderThumbMin = () => ((selectedMinPrice - minPrice) / (maxPrice - minPrice)) * 100;
+  const getSliderThumbMax = () => ((selectedMaxPrice - minPrice) / (maxPrice - minPrice)) * 100;
+
+  const [sliderThumbMin, setSliderThumbMin] = useState(getSliderThumbMin());
+  const [sliderThumbMax, setSliderThumbMax] = useState(getSliderThumbMax());
+
   useEffect(() => {
     if (selectedMinPrice === 0) setSelectedMinPrice(paramsMinPrice || minPrice);
     if (selectedMaxPrice === 0) setSelectedMaxPrice(paramsMaxPrice || maxPrice);
+    setSliderThumbMin(getSliderThumbMin());
+    setSliderThumbMax(getSliderThumbMax());
   }, [paramsMinPrice, paramsMaxPrice, selectedMinPrice, selectedMaxPrice, minPrice, maxPrice]);
 
   return (
@@ -54,11 +63,30 @@ export default function PriceFilter({
         {Array(GAP_OF_PRICE)
           .fill(0)
           .map((_, i) => (
-            <div
+            <motion.div
               key={i}
-              className='w-full bg-primary-300 rounded-[2px]'
+              className={`w-full rounded-[2px] ${
+                (selectedMinPrice <= (i + 1) * (maxPrice / GAP_OF_PRICE) ||
+                  selectedMinPrice === minPrice) &&
+                (selectedMaxPrice >= (i + 1) * (maxPrice / GAP_OF_PRICE) ||
+                  selectedMaxPrice === maxPrice)
+                  ? 'bg-primary-300'
+                  : 'bg-gray-200'
+              }`}
               style={{
-                height: `${((prices.get(i) || 0) / Math.max(...Array.from(prices.values()), 1)) * 100}%`,
+                height: `${
+                  openedSearchSection === 'price' ? (prices[i] / Math.max(...prices, 1)) * 100 : 0
+                }%`,
+              }}
+              initial={{ height: 0 }}
+              animate={{
+                height: `${
+                  openedSearchSection === 'price' ? (prices[i] / Math.max(...prices, 1)) * 100 : 0
+                }%`,
+              }}
+              transition={{
+                duration: 0.5 * (prices[i] / Math.max(...prices, 1)),
+                ease: [0, 0.5, 0.5, 1],
               }}
             />
           ))}
@@ -66,24 +94,24 @@ export default function PriceFilter({
 
       {/* 슬라이더 */}
       <div className='relative w-full h-[4px]'>
-        <div className='relative w-[calc(100%-16px)] h-full m-auto bg-primary-100'>
+        <div className='relative w-[calc(100%-16px)] h-full m-auto bg-gray-200'>
           <div
             className='w-[24px] h-[24px] bg-white shadow-xl z-10 border border-gray-200 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
             style={{
-              left: `${((selectedMinPrice - minPrice) / (maxPrice - minPrice)) * 100}%`,
+              left: `${sliderThumbMin}%`,
             }}
           />
           <div
             className='w-[24px] h-[24px] bg-white shadow-xl z-10 border border-gray-200 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
             style={{
-              left: `${((selectedMaxPrice - minPrice) / (maxPrice - minPrice)) * 100}%`,
+              left: `${sliderThumbMax}%`,
             }}
           />
           <div
             className='h-full absolute bg-primary-300'
             style={{
-              width: `${((selectedMaxPrice - selectedMinPrice) / (maxPrice - minPrice)) * 100}%`,
-              left: `${((selectedMinPrice - minPrice) / (maxPrice - minPrice)) * 100}%`,
+              width: `${sliderThumbMax - sliderThumbMin}%`,
+              left: `${sliderThumbMin}%`,
             }}
           />
         </div>

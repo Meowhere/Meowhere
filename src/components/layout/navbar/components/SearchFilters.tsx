@@ -4,10 +4,8 @@ import PlaceFilter from './PlaceFilter';
 import PriceFilter from './PriceFilter';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
-import { Activity } from '@/src/types/activity.types';
 import { useURLQuery } from '@/src/hooks/useURLQuery';
 import { useDebouncedValue } from '@/src/hooks/useDebouncedValue';
-import { useSearchParams } from 'next/navigation';
 
 export default function SearchFilters({
   setIsSearching,
@@ -27,11 +25,6 @@ export default function SearchFilters({
 }) {
   const GAP_OF_PRICE = 30;
 
-  const [places, setPlaces] = useState<Map<string, number>>(new Map());
-  const [prices, setPrices] = useState<Map<number, number>>(new Map());
-
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
   const [selectedMaxPrice, setSelectedMaxPrice] = useState(0);
   const [selectedMinPrice, setSelectedMinPrice] = useState(0);
 
@@ -39,47 +32,36 @@ export default function SearchFilters({
   const [placeKeyword, setPlaceKeyword] = useState('');
 
   const debouncedPlaceKeyword = useDebouncedValue(placeKeyword, 150);
-  const searchParams = useSearchParams();
 
   const { updateMultipleQueries } = useURLQuery();
 
+  const [globalStats, setGlobalStats] = useState<{
+    places: [string, number][];
+    prices: number[];
+    priceRange: { min: number; max: number };
+    totalCount: number;
+  }>({
+    places: [],
+    prices: [],
+    priceRange: { min: 0, max: 0 },
+    totalCount: 0,
+  });
+
   const filteredPlaces = useMemo(() => {
     if (!debouncedPlaceKeyword.trim()) {
-      return Array.from(places.entries());
+      return globalStats.places;
     }
-    return Array.from(places.entries()).filter(([place, _]) =>
-      place.includes(debouncedPlaceKeyword)
-    );
-  }, [debouncedPlaceKeyword, places]);
+    return globalStats.places.filter(([place, _]) => place.includes(debouncedPlaceKeyword));
+  }, [debouncedPlaceKeyword, globalStats.places]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetchFromClient(
-        `/activities?method=offset&page=1&size=100&sort=price_asc`
-      );
+      const response = await fetchFromClient('/activities/statistics');
       const data = await response.json();
-      const activities = data.activities;
-      const totalCount = data.totalCount;
-      const fetchedMaxPrice = activities[totalCount - 1].price + 1;
-      const fetchedMinPrice = activities[0].price;
-      const gapOfPrice = (fetchedMaxPrice - fetchedMinPrice) / GAP_OF_PRICE;
-
-      let mapForPlaces = new Map();
-      let mapForPrices = new Map();
-      activities.forEach((v: Activity) => {
-        const place = v.address.split(' ')[0];
-        const sectionOfPrice = Math.floor((v.price - fetchedMinPrice) / gapOfPrice);
-        mapForPrices.set(sectionOfPrice, (mapForPrices.get(sectionOfPrice) || 0) + 1);
-        mapForPlaces.set(place, (mapForPlaces.get(place) || 0) + 1);
-      });
-
-      setPrices(mapForPrices);
-      setPlaces(mapForPlaces);
-      setMaxPrice(fetchedMaxPrice);
-      setMinPrice(fetchedMinPrice);
+      setGlobalStats(data);
     };
     fetchData();
-  }, [searchParams]);
+  }, []);
 
   return (
     <motion.div
@@ -106,10 +88,10 @@ export default function SearchFilters({
           setOpenedSearchSection={setOpenedSearchSection}
           selectedMinPrice={selectedMinPrice}
           selectedMaxPrice={selectedMaxPrice}
-          minPrice={minPrice}
-          maxPrice={maxPrice}
+          minPrice={globalStats.priceRange.min}
+          maxPrice={globalStats.priceRange.max}
           GAP_OF_PRICE={GAP_OF_PRICE}
-          prices={prices}
+          prices={globalStats.prices}
           setSelectedMinPrice={setSelectedMinPrice}
           setSelectedMaxPrice={setSelectedMaxPrice}
           paramsMinPrice={Number(params.minPrice)}
@@ -121,8 +103,10 @@ export default function SearchFilters({
             setIsSearching(false);
             setBackAction(null);
             updateMultipleQueries({
-              'min-price': minPrice === selectedMinPrice ? '' : selectedMinPrice.toString(),
-              'max-price': maxPrice === selectedMaxPrice ? '' : selectedMaxPrice.toString(),
+              'min-price':
+                globalStats.priceRange.min === selectedMinPrice ? '' : selectedMinPrice.toString(),
+              'max-price':
+                globalStats.priceRange.max === selectedMaxPrice ? '' : selectedMaxPrice.toString(),
               address: placeKeyword || params.address || '',
               keyword: keyword || params.keyword || '',
             });

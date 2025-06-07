@@ -46,3 +46,12 @@ textarea {
   pointer-events: all;
   cursor: pointer;
 }
+
+.gnb-shadow {
+  box-shadow: 0px 4px 40px 0px rgba(80, 45, 25, 0.1);
+}
+
+.swiper .swiper-pagination-bullet {
+  background-color: white !important;
+  margin: 0 2px !important;
+}

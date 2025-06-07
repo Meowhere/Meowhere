@@ -2,17 +2,28 @@
 
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import LikeIcon from '../components/common/icons/LikeIcon';
 import StarFillIcon from '../components/common/icons/StarFillIcon';
 import { useGnbStore } from '../store/gnbStore';
 import { useURLQuery } from '../hooks/useURLQuery';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
+import Image from 'next/image';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
 export default function Home() {
   const [activities, setActivities] = useState([]);
+  const [popularActivities, setPopularActivities] = useState([]);
   const searchParams = useSearchParams();
   const { updateQuery } = useURLQuery();
   const { setBackAction } = useGnbStore();
+  const router = useRouter();
+  const { isDesktop } = useBreakpoint();
 
   useEffect(() => {
     setBackAction(null);
@@ -41,19 +52,49 @@ export default function Home() {
     fetchData();
   }, [searchParams]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetchFromClient(
+        `/activities?method=offset&page=1&size=5&sort=most_reviewed`
+      );
+      const data = await response.json();
+      setPopularActivities(data.activities);
+    };
+    fetchData();
+  }, []);
+
   return (
     <div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={isDesktop ? 1.2 : 1}
+        modules={[Pagination, Autoplay]}
+        pagination={{
+          clickable: true,
+        }}
+        autoplay={{
+          delay: 1000,
+          pauseOnMouseEnter: true,
+          disableOnInteraction: false,
+        }}
+        loop
+      >
+        {popularActivities.map((item: any) => (
+          <SwiperSlide key={item.id}>
+            <div className='lg:rounded-[24px] w-full h-[200px] bg-gray-200 cursor-pointer overflow-hidden relative'>
+              <div className='absolute top-0 left-0 pl-[8vw] w-full h-full flex flex-col justify-center items-start z-10 bg-gradient-to-r from-black/50 to-transparent'>
+                <h2 className=' text-white text-2xl font-semibold max-w-[calc(100%-64px)] break-keep leading-[1.25]'>
+                  {item.title}
+                </h2>
+                <span className=' text-white text-sm font-medium mt-[0.4rem] opacity-80'>
+                  이달의 인기체험
+                </span>
+              </div>
+              <Image src={item.bannerImageUrl} alt={item.title} fill className='object-cover' />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-[24px] mt-6 p-[24px]'>
         {activities.map((item: any) => (
           <article key={item.id}>
@@ -61,7 +102,8 @@ export default function Home() {
               <img
                 src={item.bannerImageUrl}
                 alt={item.title}
-                className='w-full aspect-square object-cover rounded-[20px]'
+                className='w-full aspect-square object-cover rounded-[20px] cursor-pointer'
+                onClick={() => router.push(`/activities/${item.id}`)}
               />
               <div className='absolute top-[16px] left-[16px] flex items-center text-sm text-gray-500'>
                 <div className='flex items-center justify-center gap-[4px] bg-white rounded-full w-[58px] h-[24px] font-medium'>

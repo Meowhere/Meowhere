@@ -33,8 +33,7 @@ export default function MainPageGNB() {
   const hasParams = Object.values(params).some((value) => value !== null && value.trim() !== '');
 
   useEffect(() => {
-    if (isSearching) setPreventBodyScroll(true);
-    else setPreventBodyScroll(false);
+    setPreventBodyScroll(isSearching);
   }, [isSearching]);
 
   return (
@@ -90,7 +89,7 @@ export default function MainPageGNB() {
       </div>
 
       {/* GNB 하단 */}
-      <div className='relative z-10'>
+      <div className='relative z-10 flex justify-center'>
         <AnimatePresence>
           {isSearching ? (
             <SearchFilters

@@ -1,10 +1,13 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { categories } from '@/src/components/layout/navbar/components/Category';
 import CategoryButton from '@/src/components/layout/navbar/components/CategoryButton';
+import { useSearchParams } from 'next/navigation';
 
 export default function CategorySection() {
   const { scrollY } = useScroll();
   const categoryHeight = useTransform(scrollY, [0, 100], [64, 39]); // 아이콘 크기 0이 되는 시점이 39px
+  const searchParams = useSearchParams();
+
   return (
     <motion.div
       style={{ height: categoryHeight }}
@@ -16,6 +19,7 @@ export default function CategorySection() {
           category={category.category}
           icon={category.icon}
           value={category.value}
+          isSelected={category.value === searchParams.get('category')}
         />
       ))}
     </motion.div>
