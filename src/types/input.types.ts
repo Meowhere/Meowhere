@@ -1,15 +1,16 @@
-import { ChangeEventHandler } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   type: 'text' | 'email' | 'password' | 'number';
-  // onChange: ChangeEventHandler<HTMLInputElement>;
   error?: string;
   isPassword?: boolean;
+  register?: UseFormRegisterReturn; // For react-hook-form
 }
 export interface TextareaProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  value?: string;
   error?: string;
   className?: string;
+  register?: UseFormRegisterReturn; // For react-hook-form
+  placeholder?: string;
 }
