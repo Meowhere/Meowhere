@@ -30,7 +30,7 @@ export default function CreateReviewModal({
   };
 
   const formatDate = (isoDate: string) => {
-    const [year, month, day] = isoDate.split('-');
+    const [year, month, day] = isoDate.split('. ');
     return `${Number(year)}. ${Number(month)}. ${Number(day)}`;
   };
 

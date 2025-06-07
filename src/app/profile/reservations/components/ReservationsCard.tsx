@@ -53,7 +53,7 @@ export default function ReservationsCard({
           className='w-[86px] h-[86px] rounded-[8px] object-cover lg:w-[98px] lg:h-[98px] lg:rounded-[10px]'
         />
         <div className='flex flex-col justify-between gap-[6px] lg:gap-[18px]'>
-          <ReservationsLabel label={label} />
+          <ReservationsLabel status={label} />
           <div className='flex flex-col gap-[4px] pl-[4px] lg:gap-[8px]'>
             <p className='text-[1.4rem] leading-[1.4rem] font-semibold text-gray-800 lg:text-[1.6rem]'>
               {title}
