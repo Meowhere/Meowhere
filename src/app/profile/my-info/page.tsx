@@ -81,7 +81,7 @@ export default function MyInfoPage() {
       setIsSubmitting(true);
 
       // PATCH 요청에 포함할 데이터 준비
-      const updateData: Partial<User & { password?: string }> = {};
+      const updateData: Partial<User & { newPassword?: string }> = {};
 
       // 닉네임이 변경된 경우에만 포함
       if (data.nickname !== user?.nickname) {
@@ -90,7 +90,7 @@ export default function MyInfoPage() {
 
       // 비밀번호가 입력된 경우에만 포함
       if (data.password) {
-        updateData.password = data.password;
+        updateData.newPassword = data.password;
       }
 
       // 변경사항이 없는 경우
