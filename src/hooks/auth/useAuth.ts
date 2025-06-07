@@ -43,11 +43,11 @@ export const useKakaoLogin = () => {
     mutationFn: authApi.kakaoLogin,
     onSuccess: (data) => {
       handleAuthSuccess(data, setUser, queryClient);
-      navigate.push('/');
+      navigate.replace('/');
     },
     onError: (error) => {
       console.error('카카오 로그인 실패:', error);
-      navigate.push('/account?error=kakao_login_failed');
+      navigate.replace('/account?error=kakao_login_failed');
     },
   });
 
@@ -66,6 +66,42 @@ export const useKakaoLogin = () => {
   };
 
   return { kakaoLoginRequest, kakaoCallbackLogin };
+};
+
+// 카카오 회원가입 훅
+export const useKakaoSignUp = () => {
+  const navigate = useRouter();
+  const queryClient = useQueryClient();
+  const { setUser } = useAuthStore();
+  const redirectUri = `${BASE_URL}/oauth/kakao`;
+
+  const kakaoSignUpMutation = useMutation({
+    mutationFn: authApi.kakaoSignUp,
+    onSuccess: (data) => {
+      handleAuthSuccess(data, setUser, queryClient);
+      navigate.replace('/');
+    },
+    onError: (error) => {
+      console.error('카카오 회원가입 실패:', error);
+      navigate.replace('/account?error=kakao_signup_failed');
+    },
+  });
+
+  const kakaoSignUpRequest = () => {
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_API}&redirect_uri=${redirectUri}&response_type=code`;
+    window.location.href = kakaoAuthUrl;
+  };
+
+  const kakaoCallbackSignUp = async (nickname: string, token: string) => {
+    try {
+      return await kakaoSignUpMutation.mutateAsync({ nickname, redirectUri, token });
+    } catch (error) {
+      console.error('카카오 콜백 로그인 실패:', error);
+      throw error;
+    }
+  };
+
+  return { kakaoSignUpRequest, kakaoCallbackSignUp };
 };
 
 // 회원가입 + 자동 로그인 훅

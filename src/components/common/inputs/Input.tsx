@@ -63,7 +63,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           className={clsx(
             'absolute pointer-events-none select-none transition-all duration-200',
             shouldFloat
-              ? 'top-2 text-xs font-regular text-gray-500'
+              ? 'top-[14px] text-xs font-regular text-gray-500'
               : 'top-1/2 -translate-y-1/2 text-md font-regular text-gray-500',
             disabled && 'text-gray-400'
           )}

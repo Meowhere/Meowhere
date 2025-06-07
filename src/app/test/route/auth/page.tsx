@@ -2,6 +2,7 @@
 
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useLogin, useLogout, useSignUp, useUser } from '@/src/hooks/auth/useAuth';
+import { useModal } from '@/src/hooks/useModal';
 import { useAuthStore } from '@/src/store/authStore';
 import { checkEmailExistence } from '@/src/utils/checkEmailExistence';
 import { useEffect, useState } from 'react';
@@ -25,6 +26,7 @@ export default function AuthTest() {
   const { signUpAndLogin } = useSignUp();
   const { data, isLoading, isError, refetch } = useUser();
   const [signUpResult, setSignUpResult] = useState({});
+  const { openAuthModal } = useModal();
 
   const handleCheckIfUser = async () => {
     const result = await checkEmailExistence('yhk8462@naver.com');
@@ -51,6 +53,10 @@ export default function AuthTest() {
     logoutMutation.mutate();
   };
 
+  const handleAuthModal = () => {
+    openAuthModal();
+  };
+
   useEffect(() => {
     console.log('AuthStore user:', user);
     console.log('Query data:', data);
@@ -75,6 +81,9 @@ export default function AuthTest() {
         </div>
         <div className='flex'>
           <BaseButton onClick={handleLogout}>로그아웃</BaseButton>
+        </div>
+        <div className='flex'>
+          <BaseButton onClick={handleAuthModal}>로그인 모달</BaseButton>
         </div>
       </div>
       <div>로그인 리스폰스: {user && user.nickname}</div>

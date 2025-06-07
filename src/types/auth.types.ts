@@ -16,6 +16,12 @@ export interface KakaoLoginRequest {
   token: string;
 }
 
+export interface KakaoSignUpRequest {
+  nickname: string;
+  redirectUri: string;
+  token: string;
+}
+
 export interface SignUpRequest {
   email: string;
   password: string;
