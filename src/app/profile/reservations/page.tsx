@@ -1,10 +1,24 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import ReservationsCard from './components/ReservationsCard';
 import DropdownMenu from '../../../components/common/dropdowns/dropdown-menu/DropdownMenu';
 import type { DropdownItemData } from '../../../types/dropdown-menu.types';
+import { ReservationStatus } from '@/src/types/reservations-status.types';
+import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
+
+interface testDataInterface {
+  label: ReservationStatus;
+  imageUrl: string;
+  title: string;
+  date: string;
+  time: string;
+  headCount: number;
+  price: number;
+  showCancel?: boolean;
+  showReview?: boolean;
+}
 
 export default function ReservationsTestPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,57 +33,57 @@ export default function ReservationsTestPage() {
     { type: 'button', label: '체험 완료', onClick: () => {} },
   ];
 
-  const testData: any[] = [];
+  // const testData: any[] = [];
 
-  // const testData = [
-  //   {
-  //     label: '예약 완료',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //     showCancel: true,
-  //   },
-  //   {
-  //     label: '예약 승인',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //   },
-  //   {
-  //     label: '예약 취소',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //   },
-  //   {
-  //     label: '예약 거절',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //   },
-  //   {
-  //     label: '체험 완료',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //     showReview: true,
-  //   },
-  // ] as const;
+  const testData: testDataInterface[] = [
+    {
+      label: 'pending',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+      showCancel: true,
+    },
+    {
+      label: 'confirmed',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+    },
+    {
+      label: 'canceled',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+    },
+    {
+      label: 'declined',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+    },
+    {
+      label: 'completed',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+      showReview: true,
+    },
+  ];
 
   const toggleDropdown = () => {
     if (!triggerRef.current) return;
@@ -82,6 +96,15 @@ export default function ReservationsTestPage() {
   };
 
   const hasData = testData.length > 0;
+
+  const getReservations = async () => {
+    const res = await fetchFromClient('/my-reservations');
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getReservations();
+  }, []);
 
   return (
     <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[44px] lg:pt-[96px]'>
