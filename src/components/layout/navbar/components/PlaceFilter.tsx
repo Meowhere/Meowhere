@@ -2,6 +2,7 @@ import Input from '@/src/components/common/inputs/Input';
 import FilterSection from './FilterSection';
 import { useURLQuery } from '@/src/hooks/useURLQuery';
 import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function PlaceFilter({
   openedSearchSection,
@@ -9,16 +10,16 @@ export default function PlaceFilter({
   placeKeyword,
   setPlaceKeyword,
   filteredPlaces,
-  address,
 }: {
   openedSearchSection: 'place' | 'price';
   setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price'>>;
   placeKeyword: string;
   setPlaceKeyword: React.Dispatch<React.SetStateAction<string>>;
   filteredPlaces: [string, number][];
-  address: string | null;
 }) {
   const { removeQuery } = useURLQuery();
+  const searchParams = useSearchParams();
+  const address = searchParams.get('address');
 
   useEffect(() => {
     if (address) setPlaceKeyword(address);

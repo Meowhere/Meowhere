@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGnbStore } from '@/src/store/gnbStore';
 import { useSearchParams } from 'next/navigation';
 import ArrowIcon from '@/src/components/common/icons/ArrowIcon';
@@ -20,15 +20,12 @@ export default function MainPageGNB() {
   const searchParams = useSearchParams();
   const { setPreventBodyScroll } = useUIStore();
 
-  const params = useMemo(
-    () => ({
-      keyword: searchParams.get('keyword'),
-      minPrice: searchParams.get('min-price'),
-      maxPrice: searchParams.get('max-price'),
-      address: searchParams.get('address'),
-    }),
-    [searchParams]
-  );
+  const params = {
+    keyword: searchParams.get('keyword'),
+    minPrice: searchParams.get('min-price'),
+    maxPrice: searchParams.get('max-price'),
+    address: searchParams.get('address'),
+  };
 
   const hasParams = Object.values(params).some((value) => value !== null && value.trim() !== '');
 
@@ -41,7 +38,7 @@ export default function MainPageGNB() {
       {/* GNB 상단 */}
       <div className='relative bg-white flex justify-center gap-[24px] w-full h-[76px] p-[14px] px-[24px] items-center z-40'>
         {/* 왼쪽 (뒤로가기 버튼) */}
-        {hasParams || rightButtons.length || backAction ? (
+        {Boolean(hasParams || rightButtons.length || backAction) && (
           <div className='flex justify-start'>
             <ArrowIcon
               direction='left'
@@ -51,12 +48,9 @@ export default function MainPageGNB() {
               className='cursor-pointer'
             />
           </div>
-        ) : (
-          ''
         )}
 
         {/* 중앙 (검색 버튼) */}
-        {/* <AnimatePresence> */}
         <motion.div
           className='flex justify-center flex-1 max-w-[500px] h-[48px]'
           layout='size'
@@ -78,13 +72,10 @@ export default function MainPageGNB() {
             keyword={keyword}
           />
         </motion.div>
-        {/* </AnimatePresence> */}
 
         {/* 오른쪽 (버튼들) */}
-        {hasParams || rightButtons.length || backAction ? (
+        {Boolean(hasParams || rightButtons.length || backAction) && (
           <div className='flex justify-end w-[24px]' />
-        ) : (
-          ''
         )}
       </div>
 
@@ -95,7 +86,6 @@ export default function MainPageGNB() {
             <SearchFilters
               setIsSearching={setIsSearching}
               setBackAction={setBackAction}
-              params={params}
               keyword={keyword}
               key='search'
             />

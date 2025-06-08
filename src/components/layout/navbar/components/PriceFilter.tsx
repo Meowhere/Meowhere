@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import FilterSection from './FilterSection';
 import { motion } from 'framer-motion';
+import { useSearchParams } from 'next/navigation';
 
 export default function PriceFilter({
   openedSearchSection,
@@ -13,8 +14,6 @@ export default function PriceFilter({
   prices,
   setSelectedMinPrice,
   setSelectedMaxPrice,
-  paramsMinPrice,
-  paramsMaxPrice,
 }: {
   openedSearchSection: 'place' | 'price';
   setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price'>>;
@@ -26,22 +25,20 @@ export default function PriceFilter({
   maxPrice: number;
   GAP_OF_PRICE: number;
   prices: number[];
-  paramsMinPrice: number;
-  paramsMaxPrice: number;
 }) {
-  const getSliderThumbMin = () => ((selectedMinPrice - minPrice) / (maxPrice - minPrice)) * 100;
-  const getSliderThumbMax = () => ((selectedMaxPrice - minPrice) / (maxPrice - minPrice)) * 100;
+  const sliderThumbMin = ((selectedMinPrice - minPrice) / (maxPrice - minPrice)) * 100;
+  const sliderThumbMax = ((selectedMaxPrice - minPrice) / (maxPrice - minPrice)) * 100;
 
-  const [sliderThumbMin, setSliderThumbMin] = useState(getSliderThumbMin());
-  const [sliderThumbMax, setSliderThumbMax] = useState(getSliderThumbMax());
+  const searchParams = useSearchParams();
+  const paramsMinPrice = Number(searchParams.get('min-price'));
+  const paramsMaxPrice = Number(searchParams.get('max-price'));
 
   useEffect(() => {
     if (selectedMinPrice === 0) setSelectedMinPrice(paramsMinPrice || minPrice);
     if (selectedMaxPrice === 0) setSelectedMaxPrice(paramsMaxPrice || maxPrice);
-    setSliderThumbMin(getSliderThumbMin());
-    setSliderThumbMax(getSliderThumbMax());
   }, [paramsMinPrice, paramsMaxPrice, selectedMinPrice, selectedMaxPrice, minPrice, maxPrice]);
 
+  const maxCount = Math.max(...prices, 1);
   return (
     <FilterSection
       title='가격 범위'
@@ -73,19 +70,12 @@ export default function PriceFilter({
                   ? 'bg-primary-300'
                   : 'bg-gray-200'
               }`}
-              style={{
-                height: `${
-                  openedSearchSection === 'price' ? (prices[i] / Math.max(...prices, 1)) * 100 : 0
-                }%`,
-              }}
               initial={{ height: 0 }}
               animate={{
-                height: `${
-                  openedSearchSection === 'price' ? (prices[i] / Math.max(...prices, 1)) * 100 : 0
-                }%`,
+                height: `${openedSearchSection === 'price' ? (prices[i] / maxCount) * 100 : 0}%`,
               }}
               transition={{
-                duration: 0.5 * (prices[i] / Math.max(...prices, 1)),
+                duration: 0.5 * (prices[i] / maxCount),
                 ease: [0, 0.5, 0.5, 1],
               }}
             />

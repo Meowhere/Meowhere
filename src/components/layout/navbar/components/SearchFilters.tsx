@@ -10,18 +10,11 @@ import { useDebouncedValue } from '@/src/hooks/useDebouncedValue';
 export default function SearchFilters({
   setIsSearching,
   setBackAction,
-  params,
   keyword,
 }: {
   setIsSearching: (isSearching: boolean) => void;
   setBackAction: (action: (() => void) | null) => void;
   keyword: string;
-  params: {
-    address: string | null;
-    keyword: string | null;
-    minPrice: string | null;
-    maxPrice: string | null;
-  };
 }) {
   const GAP_OF_PRICE = 30;
 
@@ -63,6 +56,19 @@ export default function SearchFilters({
     fetchData();
   }, []);
 
+  const handleSearch = () => {
+    setIsSearching(false);
+    setBackAction(null);
+    updateMultipleQueries({
+      'min-price':
+        globalStats.priceRange.min === selectedMinPrice ? '' : selectedMinPrice.toString(),
+      'max-price':
+        globalStats.priceRange.max === selectedMaxPrice ? '' : selectedMaxPrice.toString(),
+      address: placeKeyword || '',
+      keyword: keyword || '',
+    });
+  };
+
   return (
     <motion.div
       className=' z-20 w-full h-screen bg-gray-100 p-[24px] pb-[200px] fixed top-[76px] left-0 overflow-y-scroll'
@@ -81,36 +87,22 @@ export default function SearchFilters({
           placeKeyword={placeKeyword}
           setPlaceKeyword={setPlaceKeyword}
           filteredPlaces={filteredPlaces}
-          address={params.address}
         />
         <PriceFilter
           openedSearchSection={openedSearchSection}
           setOpenedSearchSection={setOpenedSearchSection}
-          selectedMinPrice={selectedMinPrice}
-          selectedMaxPrice={selectedMaxPrice}
           minPrice={globalStats.priceRange.min}
           maxPrice={globalStats.priceRange.max}
           GAP_OF_PRICE={GAP_OF_PRICE}
           prices={globalStats.prices}
+          selectedMinPrice={selectedMinPrice}
+          selectedMaxPrice={selectedMaxPrice}
           setSelectedMinPrice={setSelectedMinPrice}
           setSelectedMaxPrice={setSelectedMaxPrice}
-          paramsMinPrice={Number(params.minPrice)}
-          paramsMaxPrice={Number(params.maxPrice)}
         />
         <BaseButton
           className='w-full h-[42px] text-md font-medium rounded-[10px] mt-auto'
-          onClick={() => {
-            setIsSearching(false);
-            setBackAction(null);
-            updateMultipleQueries({
-              'min-price':
-                globalStats.priceRange.min === selectedMinPrice ? '' : selectedMinPrice.toString(),
-              'max-price':
-                globalStats.priceRange.max === selectedMaxPrice ? '' : selectedMaxPrice.toString(),
-              address: placeKeyword || params.address || '',
-              keyword: keyword || params.keyword || '',
-            });
-          }}
+          onClick={handleSearch}
         >
           검색
         </BaseButton>
