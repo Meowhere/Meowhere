@@ -1,5 +1,3 @@
-'use client';
-
 import ReservationCalendar from '../my-reservations/components/ReservationCalendar';
 
 // 임시데이터

@@ -10,9 +10,11 @@ import type {
   ReservationCalendarProps,
   TileClassNameArgs,
 } from '@/src/types/my-reservation-calendar.types';
+import { useModal } from '@/src/hooks/useModal';
 
 export default function ReservationCalendar({ statusData }: ReservationCalendarProps) {
   const [value, setValue] = useState<Date>(new Date());
+  const { openReservationModal } = useModal();
 
   // 상태별 표시 content 구성
   const tileContent = ({ date }: { date: Date }) => {
@@ -46,6 +48,12 @@ export default function ReservationCalendar({ statusData }: ReservationCalendarP
         {contents}
       </div>
     );
+  };
+
+  const handleReservation = () => {
+    openReservationModal({
+      // 필요한 프롭들...
+    });
   };
 
   const tileClassName = ({
@@ -84,6 +92,7 @@ export default function ReservationCalendar({ statusData }: ReservationCalendarP
         }}
         tileContent={tileContent}
         tileClassName={tileClassName}
+        onClickDay={handleReservation}
       />
     </div>
   );
