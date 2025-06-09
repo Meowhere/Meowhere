@@ -1,14 +1,23 @@
 'use client';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Input from '../../../components/common/inputs/Input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import Textarea from '../../../components/common/inputs/Textarea';
 
-type FormValues = {
-  email: string;
-  password: string;
-  nickname: string;
-  textarea: string;
-};
+// zod 스키마 정의
+const formSchema = z.object({
+  scrollableContent: z
+    .string()
+    .min(1, '내용을 입력해주세요')
+    .max(700, '최대 700자까지 입력 가능합니다'),
+  autoResizeContent: z
+    .string()
+    .min(1, '내용을 입력해주세요')
+    .max(700, '최대 700자까지 입력 가능합니다'),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 export default function Page() {
   const {
@@ -16,23 +25,28 @@ export default function Page() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      scrollableContent: '',
+      autoResizeContent: '',
+    },
     mode: 'onChange',
   });
 
-  // floating label 등 value 체크용
-  const emailValue = watch('email', '');
-  const pwValue = watch('password', '');
-  const nicknameValue = watch('nickname', '');
-  const textareaValue = watch('textarea', '');
+  // watch 값들
+  const scrollableValue = watch('scrollableContent');
+  const autoResizeValue = watch('autoResizeContent');
 
-  // 폼 제출 핸들러
-  const onSubmit = (data: FormValues) => {
-    alert(JSON.stringify(data, null, 2));
+  const onSubmit = (data: FormData) => {
+    console.log('폼 데이터:', data);
+    alert('폼이 성공적으로 제출되었습니다!');
   };
 
   return (
     <form className='max-w-lg mx-auto py-40' onSubmit={handleSubmit(onSubmit)}>
+      {/* Input들 주석 처리 */}
+      {/* 
       <Input
         name='email'
         label='이메일'
@@ -70,15 +84,58 @@ export default function Page() {
         error={errors.nickname?.message}
         value={nicknameValue}
       />
-      <Textarea
-        register={register('textarea', {
-          required: '내용을 입력해 주세요',
-          minLength: { value: 10, message: '10자 이상 입력하세요' },
-          maxLength: { value: 700, message: '700자 이내로 입력해 주세요' },
-        })}
-        error={errors.textarea?.message}
-        value={textareaValue}
-      />
+      */}
+
+      {/* Scrollable Textarea */}
+      <div className='mb-4'>
+        <Textarea
+          {...register('scrollableContent')}
+          name='scrollableContent'
+          placeholder='내용을 입력해 주세요'
+          watchValue={scrollableValue}
+          error={errors.scrollableContent}
+          scrollable={true}
+          autoResize={false}
+          maxLength={700}
+          rows={5}
+        />
+      </div>
+
+      {/* Auto Resize Textarea */}
+      <div className='mb-4'>
+        <Textarea
+          {...register('autoResizeContent')}
+          name='autoResizeContent'
+          placeholder='내용을 입력해 주세요'
+          watchValue={autoResizeValue}
+          error={errors.autoResizeContent}
+          scrollable={false}
+          autoResize={true}
+          maxLength={700}
+          maxHeight='300px'
+        />
+      </div>
+
+      {/* 제출 버튼 */}
+      <button
+        type='submit'
+        className='w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'
+      >
+        제출하기
+      </button>
+
+      {/* 현재 값 표시 (디버깅용) */}
+      <div className='mt-8 p-4 bg-gray-100 rounded-lg'>
+        <h3 className='font-semibold mb-2'>현재 입력 값:</h3>
+        <div className='text-sm'>
+          <p>
+            <strong>Scrollable:</strong> {scrollableValue}
+          </p>
+          <p>
+            <strong>Auto Resize:</strong> {autoResizeValue}
+          </p>
+        </div>
+      </div>
     </form>
   );
 }
