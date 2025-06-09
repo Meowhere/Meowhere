@@ -91,19 +91,12 @@ export default function ActivityList({
           <ActivityCard key={item.id} activity={item} />
         ))}
       </div>
-      <div className='w-full flex justify-center mt-8'>
-        {hasNextPage && (
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            className='px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300'
-          >
-            {isFetchingNextPage ? '로딩 중...' : '더 보기'}
-          </button>
-        )}
-        {!hasNextPage && <div className='text-gray-500 text-xs'>모든 체험을 확인했어요</div>}
-        <div ref={sentinelRef} className='h-[1px]' />
-      </div>
+      {!hasNextPage && (
+        <div className='w-full flex justify-center pt-[128px] pb-[24px]'>
+          <span className='text-gray-500 text-xs'>모든 체험을 확인했어요</span>
+        </div>
+      )}
+      <div ref={sentinelRef} className='h-[1px]' />
     </>
   );
 }
