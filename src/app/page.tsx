@@ -1,25 +1,21 @@
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/autoplay';
-
 import { Category } from '../types/activity.types';
 import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
-import ActivityCard from './_components/ActivityCard';
+import ActivityList from './_components/ActivityList';
 
 export default async function Home({
-  searchParams,
+  searchParams: searchParamsPromise,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     category: Category;
     keyword: string;
     'min-price': string;
     'max-price': string;
     address: string;
-  };
+  }>;
 }) {
+  const searchParams = await searchParamsPromise;
   const popularResponse = await fetchFromClient(
     `/activities?method=offset&page=1&size=5&sort=most_reviewed`
   );
@@ -29,11 +25,14 @@ export default async function Home({
   const category = searchParams.category || '';
   const keyword = searchParams.keyword || '';
 
-  const activitiesResponse = await fetchFromClient(
-    `/activities?method=offset&page=1&size=100&${
-      category ? `category=${category}` : ''
-    }&${keyword ? `keyword=${keyword}` : ''}`
-  );
+  const params = new URLSearchParams({
+    method: 'cursor',
+    size: '30',
+    ...(category && { category }),
+    ...(keyword && { keyword }),
+  });
+
+  const activitiesResponse = await fetchFromClient(`/activities?${params.toString()}`);
 
   const activitiesData = await activitiesResponse.json();
 
@@ -46,20 +45,10 @@ export default async function Home({
       item.price >= minPrice && item.price <= maxPrice && item.address.includes(address)
   );
 
-  // useEffect(() => {
-  //   setBackAction(null);
-  // }, []);
-
   return (
     <>
-      {/* <GNBController /> */}
       <PopularActivitiesBanner popularActivities={popularActivities} />
-
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-[24px] mt-6 p-[24px]'>
-        {activities.map((item: any) => (
-          <ActivityCard key={item.id} activity={item} />
-        ))}
-      </div>
+      <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
     </>
   );
 }

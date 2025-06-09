@@ -4,6 +4,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import Image from 'next/image';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 
 export default function PopularActivitiesBanner({
   popularActivities,
@@ -21,7 +25,7 @@ export default function PopularActivitiesBanner({
         clickable: true,
       }}
       autoplay={{
-        delay: 1000,
+        delay: 5000,
         pauseOnMouseEnter: true,
         disableOnInteraction: false,
       }}
@@ -38,7 +42,13 @@ export default function PopularActivitiesBanner({
                 이달의 인기체험
               </span>
             </div>
-            <Image src={item.bannerImageUrl} alt={item.title} fill className='object-cover' />
+            <Image
+              priority
+              src={item.bannerImageUrl}
+              alt={item.title}
+              fill
+              className='object-cover'
+            />
           </div>
         </SwiperSlide>
       ))}

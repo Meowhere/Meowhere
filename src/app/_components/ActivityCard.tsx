@@ -18,7 +18,13 @@ export default function ActivityCard({ activity }: { activity: any }) {
         />
         <div className='absolute top-[16px] left-[16px] flex items-center text-sm text-gray-500'>
           <div className='flex items-center justify-center gap-[4px] bg-white rounded-full w-[58px] h-[24px] font-medium'>
-            <StarFillIcon size={14} className='text-yellow-200' /> {activity.rating.toFixed(1)}
+            {activity.rating > 0 ? (
+              <>
+                <StarFillIcon size={14} className='text-yellow-200' /> {activity.rating.toFixed(1)}
+              </>
+            ) : (
+              <span className='text-gray-500 text-[1.1rem]'>평점 없음</span>
+            )}
           </div>
         </div>
         <LikeIcon
@@ -42,7 +48,7 @@ export default function ActivityCard({ activity }: { activity: any }) {
 
         <footer className='leading-none flex justify-between items-center w-full text-[1.1rem] font-normal text-gray-500'>
           <span>{activity.price.toLocaleString()}원 / 인</span>
-          <span>{activity.reviewCount}개의 후기</span>
+          <span>{activity.reviewCount > 0 ? `${activity.reviewCount}개의 후기` : '후기 없음'}</span>
         </footer>
       </div>
     </article>

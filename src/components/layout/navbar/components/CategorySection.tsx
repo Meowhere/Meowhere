@@ -19,7 +19,7 @@ export default function CategorySection() {
           category={category.category}
           icon={category.icon}
           value={category.value}
-          isSelected={category.value === searchParams.get('category')}
+          isSelected={category.value === (searchParams.get('category') || '')}
         />
       ))}
     </motion.div>
