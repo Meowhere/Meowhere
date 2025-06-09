@@ -1,25 +1,16 @@
-import { InputHTMLAttributes } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { FieldError } from 'react-hook-form';
 
-// export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
-//   label: string;
-//   type?: 'text' | 'email' | 'password' | 'tel' | 'url';
-//   value?: string;
-//   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-//   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-//   name?: string;
-//   error?: string;
-//   isPassword?: boolean;
-//   disabled?: boolean;
-//   className?: string;
-// }
-
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  type: 'text' | 'email' | 'password' | 'number';
-  error?: string;
+export interface InputProps {
+  label: string;
+  name?: string;
+  type?: 'text' | 'email' | 'password' | 'tel' | 'url';
+  watchValue?: string; // watch로부터 받은 현재 값
+  error?: FieldError | string;
   isPassword?: boolean;
-  register?: UseFormRegisterReturn; // For react-hook-form
+  className?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  required?: boolean;
 }
 
 export interface TextareaProps {

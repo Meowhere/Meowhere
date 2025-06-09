@@ -1,21 +1,8 @@
 'use client';
 import { useId, useState, forwardRef } from 'react';
 import clsx from 'clsx';
-import { FieldError } from 'react-hook-form';
 import VisibilityToggleButton from '@/src/components/common/buttons/VisibilityToggleButton';
-
-interface InputProps {
-  label: string;
-  name?: string;
-  type?: 'text' | 'email' | 'password' | 'tel' | 'url';
-  watchValue?: string; // watch로부터 받은 현재 값
-  error?: FieldError | string;
-  isPassword?: boolean;
-  className?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  required?: boolean;
-}
+import { InputProps } from '@/src/types/input.types';
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
