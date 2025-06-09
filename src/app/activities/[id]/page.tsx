@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import ExperienceImageViewer from './components/experience/ExperienceImageViewer';
 import ExperienceSummarySection from './components/experience/ExperienceSummarySection';
 import Divider from './components/common/Divider';
-import SectionTitle from './components/common/SectionTitle';
+import SectionTitle from './components/common/SectionTItle';
 import ExperienceLocationMap from './components/experience/ExperienceLocationMap';
 import ReservationBox from './components/reservation/ReservationBox';
 import { useRouter } from 'next/navigation';
