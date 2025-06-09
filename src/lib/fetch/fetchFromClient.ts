@@ -16,7 +16,7 @@ export async function fetchFromClient(path: string, options: RequestInit = {}): 
   } catch (error) {
     logger.error('fetchFromClient error:', error);
     throw new Error(
-      error instanceof Error ? `Network error: ${error.message}` : 'Unknown network error'
+      error instanceof Error ? `${error.message}` : 'Unknown network error'
     );
   }
 }

@@ -3,7 +3,6 @@ import { authApi } from '@/src/services/authApi';
 import { SignUpRequest } from '@/src/types/auth.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 // 공통 성공 처리 로직
 const handleAuthSuccess = (
@@ -81,16 +80,21 @@ export const useKakaoSignUp = () => {
     },
   });
 
+  const kakaoSignUpRequest = () => {
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_API}&redirect_uri=${redirectUri}&response_type=code&state=signup`;
+    window.location.href = kakaoAuthUrl;
+  };
+
   const kakaoCallbackSignUp = async (nickname: string, token: string) => {
     try {
       return await kakaoSignUpMutation.mutateAsync({ nickname, redirectUri, token });
     } catch (error) {
-      console.error('카카오 콜백 로그인 실패:', error);
+      console.error('카카오 콜백 회원가입 실패:', error);
       throw error;
     }
   };
 
-  return { kakaoCallbackSignUp };
+  return { kakaoCallbackSignUp, kakaoSignUpRequest };
 };
 
 // 회원가입 + 자동 로그인 훅
