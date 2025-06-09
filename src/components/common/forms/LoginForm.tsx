@@ -3,7 +3,7 @@ import Input from '../inputs/Input';
 import BaseButton from '../buttons/BaseButton';
 import KakaoLoginButton from '../buttons/KakaoLoginButton';
 import { useKakaoLogin, useLogin } from '@/src/hooks/auth/useAuth';
-import { InitialFormValues, LoginFormValues } from '../modals/AuthModal';
+import { LoginFormValues } from '../modals/AuthModal';
 import { usePathname, useRouter } from 'next/navigation';
 import { useModal } from '@/src/hooks/useModal';
 

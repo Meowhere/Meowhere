@@ -87,11 +87,6 @@ export const useKakaoSignUp = () => {
     },
   });
 
-  const kakaoSignUpRequest = () => {
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_API}&redirect_uri=${redirectUri}&response_type=code`;
-    window.location.href = kakaoAuthUrl;
-  };
-
   const kakaoCallbackSignUp = async (nickname: string, token: string) => {
     try {
       return await kakaoSignUpMutation.mutateAsync({ nickname, redirectUri, token });
@@ -101,7 +96,7 @@ export const useKakaoSignUp = () => {
     }
   };
 
-  return { kakaoSignUpRequest, kakaoCallbackSignUp };
+  return { kakaoCallbackSignUp };
 };
 
 // 회원가입 + 자동 로그인 훅

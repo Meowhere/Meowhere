@@ -32,7 +32,7 @@ function KakaoCallbackPage() {
 
         try {
           // 임의의 닉네임 생성
-          const randomNickname = `카카오유저${Math.floor(Math.random() * 10000)
+          const randomNickname = `체험냥${Math.floor(Math.random() * 10000)
             .toString()
             .padStart(4, '0')}`;
 
