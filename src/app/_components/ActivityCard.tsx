@@ -1,10 +1,11 @@
 'use client';
 
+import { Activity } from '@/src/types/activity.types';
 import LikeIcon from '../../components/common/icons/LikeIcon';
 import StarFillIcon from '../../components/common/icons/StarFillIcon';
 import { useRouter } from 'next/navigation';
 
-export default function ActivityCard({ activity }: { activity: any }) {
+export default function ActivityCard({ activity }: { activity: Activity }) {
   const router = useRouter();
 
   return (

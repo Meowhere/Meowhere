@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Logo from '@/public/assets/icons/logo/ico-logo.svg';
 import Typography from '@/public/assets/icons/logo/ico-typography.svg';
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 export default function Footer() {
   return (

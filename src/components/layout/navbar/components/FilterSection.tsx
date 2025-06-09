@@ -7,6 +7,7 @@ export default function FilterSection({
   onClick,
   value = '',
   handleReset,
+  className,
   ...rest
 }: {
   children: React.ReactNode;
@@ -15,11 +16,15 @@ export default function FilterSection({
   value?: string;
   onClick?: () => void;
   handleReset: () => void;
+  className?: string;
 }) {
   return (
     <motion.section
-      className={`${isOpen ? '' : 'cursor-pointer'} bg-white rounded-[8px] w-full px-[24px] overflow-hidden gnb-shadow`}
-      onClick={onClick}
+      className={`${className} ${isOpen ? '' : 'cursor-pointer'} bg-white rounded-[8px] w-full h-fit px-[24px] overflow-hidden gnb-shadow`}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
       animate={{
         maxHeight: isOpen ? 480 : 52,
         paddingTop: isOpen ? 22 : 18,
@@ -31,7 +36,9 @@ export default function FilterSection({
       }}
       {...rest}
     >
-      <div className='w-full flex flex-col justify-center items-start gap-[16px]'>
+      <div
+        className={`${isOpen ? 'h-full' : ''} w-full flex flex-col justify-center items-start gap-[16px]`}
+      >
         <motion.div
           className='flex justify-between items-center w-full text-[13px] text-gray-800'
           animate={{ marginBottom: isOpen ? 0 : 16 }}
@@ -43,7 +50,7 @@ export default function FilterSection({
           <motion.span
             className={`leading-none font-semibold`}
             animate={{
-              fontSize: isOpen ? '22px' : '13px',
+              fontSize: isOpen ? '2.2rem' : '1.3rem',
             }}
             transition={{
               ease: [0, 1, 0, 1],
@@ -54,7 +61,13 @@ export default function FilterSection({
           </motion.span>
           <span className='text-gray-600'>
             {isOpen ? (
-              <button onClick={handleReset} className='text-primary-300'>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleReset();
+                }}
+                className='text-primary-300'
+              >
                 초기화
               </button>
             ) : (

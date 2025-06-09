@@ -1,6 +1,6 @@
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 
-import { Category } from '../types/activity.types';
+import { Activity, Category } from '../types/activity.types';
 import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
 import ActivityList from './_components/ActivityList';
 
@@ -41,7 +41,7 @@ export default async function Home({
   const address = searchParams.address || '';
 
   const activities = activitiesData.activities.filter(
-    (item: any) =>
+    (item: Activity) =>
       item.price >= minPrice && item.price <= maxPrice && item.address.includes(address)
   );
 

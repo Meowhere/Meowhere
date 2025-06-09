@@ -34,8 +34,8 @@ export default function PriceFilter({
   const paramsMaxPrice = Number(searchParams.get('max-price'));
 
   useEffect(() => {
-    if (selectedMinPrice === 0) setSelectedMinPrice(paramsMinPrice || minPrice);
-    if (selectedMaxPrice === 0) setSelectedMaxPrice(paramsMaxPrice || maxPrice);
+    if (selectedMinPrice === 0) setSelectedMinPrice(paramsMinPrice || minPrice); //최소 가격 슬라이더로 선택된 가격이 0이면 -> 파라미터의 가격으로 설정 || 없으면 최소 가격으로 설정
+    if (selectedMaxPrice === 0) setSelectedMaxPrice(paramsMaxPrice || maxPrice); //최대 가격 슬라이더로 선택된 가격이 0이면 -> 파라미터의 가격으로 설정 || 없으면 최대 가격으로 설정
   }, [paramsMinPrice, paramsMaxPrice, selectedMinPrice, selectedMaxPrice, minPrice, maxPrice]);
 
   const maxCount = Math.max(...prices, 1);

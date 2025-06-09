@@ -38,17 +38,17 @@ export default function MainPageGNB() {
       {/* GNB 상단 */}
       <div className='relative bg-white flex justify-center gap-[24px] w-full h-[76px] p-[14px] px-[24px] items-center z-40'>
         {/* 왼쪽 (뒤로가기 버튼) */}
-        {Boolean(hasParams || rightButtons.length || backAction) && (
-          <div className='flex justify-start'>
-            <ArrowIcon
-              direction='left'
-              size={24}
-              onClick={backAction || resetQueries}
-              aria-label='뒤로가기'
-              className='cursor-pointer'
-            />
-          </div>
-        )}
+        <div
+          className={`${hasParams || rightButtons.length || backAction ? 'flex justify-start' : 'hidden'}`}
+        >
+          <ArrowIcon
+            direction='left'
+            size={24}
+            onClick={backAction || resetQueries}
+            aria-label='뒤로가기'
+            className='cursor-pointer'
+          />
+        </div>
 
         {/* 중앙 (검색 버튼) */}
         <motion.div
@@ -74,9 +74,9 @@ export default function MainPageGNB() {
         </motion.div>
 
         {/* 오른쪽 (버튼들) */}
-        {Boolean(hasParams || rightButtons.length || backAction) && (
-          <div className='flex justify-end w-[24px]' />
-        )}
+        <div
+          className={`${hasParams || rightButtons.length || backAction ? 'flex justify-end w-[24px]' : 'hidden'}`}
+        />
       </div>
 
       {/* GNB 하단 */}

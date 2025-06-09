@@ -8,11 +8,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
+import { Activity } from '@/src/types/activity.types';
 
 export default function PopularActivitiesBanner({
   popularActivities,
 }: {
-  popularActivities: any[];
+  popularActivities: Activity[];
 }) {
   const { isDesktop } = useBreakpoint();
   return (
@@ -31,7 +32,7 @@ export default function PopularActivitiesBanner({
       }}
       loop
     >
-      {popularActivities.map((item: any) => (
+      {popularActivities.map((item: Activity) => (
         <SwiperSlide key={item.id}>
           <div className='lg:rounded-[24px] lg:h-[524px] w-full h-[200px] bg-gray-200 cursor-pointer overflow-hidden relative'>
             <div className='absolute top-0 left-0 pl-[8vw] w-full h-full flex flex-col justify-center items-start z-10 bg-gradient-to-r from-black/50 to-transparent'>

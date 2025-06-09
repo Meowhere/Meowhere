@@ -36,6 +36,7 @@ export default function PlaceFilter({
         setPlaceKeyword('');
         setOpenedSearchSection('price');
       }}
+      className='h-full'
     >
       <Input
         label='어디로 갈까요?'
@@ -44,7 +45,7 @@ export default function PlaceFilter({
         value={placeKeyword}
         onChange={(e) => setPlaceKeyword(e.target.value)}
       />
-      <ul className='flex flex-col justify-start items-start w-full gap-[4px] h-[320px] overflow-y-scroll'>
+      <ul className='flex flex-col justify-start items-start w-full gap-[4px] h-full overflow-y-scroll'>
         {filteredPlaces.map(([place, count]) => (
           <li
             key={place}

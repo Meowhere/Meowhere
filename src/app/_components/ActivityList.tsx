@@ -5,12 +5,13 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import ActivityCard from './ActivityCard';
 import { useEffect, useRef } from 'react';
+import { Activity } from '@/src/types/activity.types';
 
 export default function ActivityList({
   initialActivities,
   initialCursor,
 }: {
-  initialActivities: any[];
+  initialActivities: Activity[];
   initialCursor: string | null;
 }) {
   const searchParams = useSearchParams();
@@ -19,14 +20,9 @@ export default function ActivityList({
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['activities', searchParams.toString()],
     queryFn: async ({ pageParam }) => {
-      console.log('queryFn 실행됨 :', pageParam);
-
       if (!pageParam) {
-        console.log('첫 페이지 요청');
         return { activities: initialActivities, cursorId: initialCursor };
       }
-
-      console.log('추가 요청');
 
       const category = searchParams.get('category') || '';
       const keyword = searchParams.get('keyword') || '';
@@ -48,7 +44,7 @@ export default function ActivityList({
       const address = searchParams.get('address') || '';
 
       const filteredActivities = data.activities.filter(
-        (item: any) =>
+        (item: Activity) =>
           item.price >= minPrice && item.price <= maxPrice && item.address.includes(address)
       );
 
@@ -56,20 +52,16 @@ export default function ActivityList({
     },
     initialPageParam: null,
     getNextPageParam: (lastPage) => {
-      console.log('getNext 실행됨, cursor:', lastPage.cursorId);
       return lastPage.cursorId;
     },
   });
 
   useEffect(() => {
-    console.log('observer 시작');
-
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
 
         if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          console.log('자동 로딩');
           fetchNextPage();
         }
       },
@@ -91,12 +83,11 @@ export default function ActivityList({
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const allActivities = data?.pages.flatMap((page) => page.activities) || [];
-  console.log('렌더링 개수:', allActivities.length);
 
   return (
     <>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-[24px] lg:gap-x-[12px] lg:gap-y-[80px] mt-6 p-[24px] lg:px-[86px]'>
-        {allActivities.map((item: any) => (
+        {allActivities.map((item: Activity) => (
           <ActivityCard key={item.id} activity={item} />
         ))}
       </div>
@@ -110,7 +101,7 @@ export default function ActivityList({
             {isFetchingNextPage ? '로딩 중...' : '더 보기'}
           </button>
         )}
-        {!hasNextPage && <div className='text-gray-500'>더 이상 활동이 없습니다</div>}
+        {!hasNextPage && <div className='text-gray-500 text-xs'>모든 체험을 확인했어요</div>}
         <div ref={sentinelRef} className='h-[1px]' />
       </div>
     </>
