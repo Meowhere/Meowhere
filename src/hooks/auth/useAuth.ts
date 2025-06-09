@@ -1,6 +1,5 @@
 import { BASE_URL, KAKAO_API } from '@/src/constants/api';
 import { authApi } from '@/src/services/authApi';
-import { useAuthStore } from '@/src/store/authStore';
 import { SignUpRequest } from '@/src/types/auth.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -9,11 +8,9 @@ import { useEffect } from 'react';
 // 공통 성공 처리 로직
 const handleAuthSuccess = (
   data: { user?: any; error?: string },
-  setUser: (user: any) => void,
   queryClient: ReturnType<typeof useQueryClient>
 ) => {
   if (data.user && !data.error) {
-    setUser(data.user);
     queryClient.invalidateQueries({ queryKey: ['user'] });
   }
 };
@@ -21,11 +18,10 @@ const handleAuthSuccess = (
 // 로그인 훅
 export const useLogin = () => {
   const queryClient = useQueryClient();
-  const { setUser } = useAuthStore();
 
   return useMutation({
     mutationFn: authApi.login,
-    onSuccess: (data) => handleAuthSuccess(data, setUser, queryClient),
+    onSuccess: (data) => handleAuthSuccess(data, queryClient),
     onError: (error) => {
       console.error('로그인 실패:', error);
     },
@@ -36,13 +32,12 @@ export const useLogin = () => {
 export const useKakaoLogin = () => {
   const navigate = useRouter();
   const queryClient = useQueryClient();
-  const { setUser } = useAuthStore();
   const redirectUri = `${BASE_URL}/oauth/kakao`;
 
   const kakaoLoginMutation = useMutation({
     mutationFn: authApi.kakaoLogin,
     onSuccess: (data) => {
-      handleAuthSuccess(data, setUser, queryClient);
+      handleAuthSuccess(data, queryClient);
       navigate.replace('/');
     },
     onError: (error) => {
@@ -72,13 +67,12 @@ export const useKakaoLogin = () => {
 export const useKakaoSignUp = () => {
   const navigate = useRouter();
   const queryClient = useQueryClient();
-  const { setUser } = useAuthStore();
   const redirectUri = `${BASE_URL}/oauth/kakao`;
 
   const kakaoSignUpMutation = useMutation({
     mutationFn: authApi.kakaoSignUp,
     onSuccess: (data) => {
-      handleAuthSuccess(data, setUser, queryClient);
+      handleAuthSuccess(data, queryClient);
       navigate.replace('/');
     },
     onError: (error) => {
@@ -131,8 +125,6 @@ export const useSignUp = () => {
 
 // 현재 사용자 정보 조회 훅
 export const useUser = () => {
-  const { setUser, setLoading } = useAuthStore();
-
   const query = useQuery({
     queryKey: ['user'],
     queryFn: authApi.getMe,
@@ -141,31 +133,16 @@ export const useUser = () => {
     refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    if (query.isSuccess) {
-      setUser(query.data && !query.error ? query.data : null);
-      setLoading(false);
-    }
-
-    if (query.isError) {
-      console.error('사용자 정보 조회 실패:', query.error);
-      setUser(null);
-      setLoading(false);
-    }
-  }, [query.isSuccess, query.isError, query.data, query.error, setUser, setLoading]);
-
   return query;
 };
 
 // 로그아웃 훅
 export const useLogout = () => {
   const queryClient = useQueryClient();
-  const { logout } = useAuthStore();
 
   return useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
-      logout();
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
     onError: (error) => {
