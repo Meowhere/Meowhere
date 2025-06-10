@@ -1,11 +1,11 @@
 'use client';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
-import ManagementCard from './components/activity-management/ManagementCard';
 import ManagementCards from './components/activity-management/ManagementCards';
 import NotFoundActivities from './components/NotFoundActivities';
 import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import Link from 'next/link';
 
 export default function MyActivitiesPage() {
   const router = useRouter();
@@ -97,7 +97,7 @@ export default function MyActivitiesPage() {
             <div className='absolute right-0 w-[128px]'>
               <BaseButton
                 variant='primary'
-                className=' text-md font-semibold'
+                className='text-md font-semibold'
                 onClick={() => router.push('/profile/my-activities/register')}
               >
                 새 체험

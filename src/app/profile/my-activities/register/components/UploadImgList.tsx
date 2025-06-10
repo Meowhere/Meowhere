@@ -31,7 +31,7 @@ export default function UploadImgList() {
   };
 
   return (
-    <div className='flex flex-wrap gap-[5px]'>
+    <div className='grid grid-cols-2 gap-[5px] lg:grid-cols-[repeat(4,160px)] justify-center'>
       {files.map((file, idx) => (
         <UploadImg key={idx} file={file} onFileChange={(file) => handleFileChange(file, idx)} />
       ))}

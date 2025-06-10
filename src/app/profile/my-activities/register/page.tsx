@@ -28,7 +28,9 @@ export default function RegisterPage() {
     <div className='relative flex flex-col gap-[48px] lg:gap-[64px] px-[24px] py-[96px] mb-[300px]'>
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
-        <UploadImg />
+        <div className='w-[160px]'>
+          <UploadImg />
+        </div>
       </div>
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
