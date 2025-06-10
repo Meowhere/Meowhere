@@ -5,6 +5,20 @@ import Image from 'next/image';
 import ReservationsCard from './components/ReservationsCard';
 import type { DropdownItemButton } from '../../../types/dropdown-menu.types';
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
+import { ReservationStatus } from '@/src/types/reservations-status.types';
+import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
+
+interface testDataInterface {
+  label: ReservationStatus;
+  imageUrl: string;
+  title: string;
+  date: string;
+  time: string;
+  headCount: number;
+  price: number;
+  showCancel?: boolean;
+  showReview?: boolean;
+}
 
 export default function ReservationsTestPage() {
   const [selectedStatus, setSelectedStatus] = useState('예약 완료');
@@ -45,10 +59,9 @@ export default function ReservationsTestPage() {
 
   // const testData: any[] = [];
 
-  // 카드 상세 데이터
-  const testData = [
+  const testData: testDataInterface[] = [
     {
-      label: '예약 완료',
+      label: 'pending',
       imageUrl: '/assets/icons/test_img.png',
       title: '함께 배우면 즐거운 스트릿 댄스',
       date: '2023. 2. 14',
@@ -58,7 +71,7 @@ export default function ReservationsTestPage() {
       showCancel: true,
     },
     {
-      label: '예약 승인',
+      label: 'confirmed',
       imageUrl: '/assets/icons/test_img.png',
       title: '함께 배우면 즐거운 스트릿 댄스',
       date: '2023. 2. 14',
@@ -67,7 +80,7 @@ export default function ReservationsTestPage() {
       price: 148000,
     },
     {
-      label: '예약 취소',
+      label: 'canceled',
       imageUrl: '/assets/icons/test_img.png',
       title: '함께 배우면 즐거운 스트릿 댄스',
       date: '2023. 2. 14',
@@ -76,7 +89,7 @@ export default function ReservationsTestPage() {
       price: 148000,
     },
     {
-      label: '예약 거절',
+      label: 'declined',
       imageUrl: '/assets/icons/test_img.png',
       title: '함께 배우면 즐거운 스트릿 댄스',
       date: '2023. 2. 14',
@@ -85,7 +98,7 @@ export default function ReservationsTestPage() {
       price: 148000,
     },
     {
-      label: '체험 완료',
+      label: 'completed',
       imageUrl: '/assets/icons/test_img.png',
       title: '함께 배우면 즐거운 스트릿 댄스',
       date: '2023. 2. 14',
@@ -94,9 +107,19 @@ export default function ReservationsTestPage() {
       price: 148000,
       showReview: true,
     },
-  ] as const;
+  ];
+
 
   const hasData = testData.length > 0;
+
+  const getReservations = async () => {
+    const res = await fetchFromClient('/my-reservations');
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getReservations();
+  }, []);
 
   return (
     <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[44px] lg:pt-[96px]'>
