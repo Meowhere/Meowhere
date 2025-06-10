@@ -39,7 +39,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
   const reviews = data?.pages.flatMap((page) => page.reviews) ?? [];
 
   return (
-    <div className='h-[60vh] overflow-y-auto px-[12px] py-[12px] scrollbar-hide'>
+    <div className='h-[60vh] overflow-y-auto px-[12px] scrollbar-hide'>
       <div className='flex justify-between items-center pt-[24px] pb-[12px]'>
         <span className='text-[2.2rem] font-semibold text-gray-800'>
           후기 {reviewCount.toLocaleString()}개
@@ -75,7 +75,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
         <p className='text-center text-sm text-gray-400 py-2'>모든 후기를 확인하셨습니다.</p>
       )}
 
-      <div ref={observerRef} className='h-[20px]' />
+      <div ref={observerRef} className='h-[4px]' />
     </div>
   );
 }

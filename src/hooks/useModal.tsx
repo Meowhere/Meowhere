@@ -6,6 +6,8 @@ import AuthModal from '../components/common/modals/AuthModal';
 import ReservationModal from '../components/common/modals/ReservationModal';
 import ReviewListModal from '../app/activities/[id]/components/review/ReviewListModal';
 import { ReviewListModalProps } from '../app/activities/[id]/components/review/ReviewListModal';
+import ScheduleModal from '../app/activities/[id]/components/reservation/ScheduleModal';
+import { ScheduleModalProps } from '../app/activities/[id]/components/reservation/ScheduleModal';
 
 export const useModal = () => {
   const { openModal, closeModal } = useModalStore();
@@ -31,11 +33,11 @@ export const useModal = () => {
     });
   };
 
-  const openScheduleModal = (props: any) => {
-    // 임시 프롭
+  const openScheduleModal = (props: ScheduleModalProps) => {
     openModal({
       header: '일정 선택',
-      children: <></>,
+      children: <ScheduleModal {...props} />,
+      height: 'full',
     });
   };
 

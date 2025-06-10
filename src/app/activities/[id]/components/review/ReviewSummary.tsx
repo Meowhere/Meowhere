@@ -14,7 +14,7 @@ export default function ReviewSummary({
       <div className='flex items-center gap-[16px]'>
         <p className='text-5xl font-semibold text-gray-900'>{rating.toFixed(1)}</p>
         <div className='flex flex-col'>
-          <span className='text-2lg font-regular text-gray-700'>{satisfactionLabel}</span>
+          <span className='text-xl font-regular text-gray-700'>{satisfactionLabel}</span>
           <span className='text-md font-regular text-gray-700'>
             후기 {reviewCount.toLocaleString()}개
           </span>
