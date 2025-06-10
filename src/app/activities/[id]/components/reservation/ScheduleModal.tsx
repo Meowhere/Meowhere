@@ -1,15 +1,14 @@
 'use client';
 
-import { format, parseISO, isToday, addDays, isSameDay } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale/ko';
 import { useState } from 'react';
 import CounterButton from '../common/CounterButton';
-import CalendarButton from '../common/CalendarButton';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
-import clsx from 'clsx';
 import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useModal } from '@/src/hooks/useModal';
 import { useRouter } from 'next/navigation';
+import ScheduleList from './ScheduleList';
 
 interface Schedule {
   id: number;
@@ -31,34 +30,6 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
   const { openConfirmModal, ConfirmModal } = useConfirmModal();
   const { closeModal } = useModal();
   const router = useRouter();
-
-  const groupedByDate = schedules.reduce(
-    (acc, schedule) => {
-      (acc[schedule.date] = acc[schedule.date] || []).push(schedule);
-      return acc;
-    },
-    {} as Record<string, Schedule[]>
-  );
-
-  const formattedDate = (dateStr: string) => {
-    const parsed = parseISO(dateStr);
-    const today = new Date();
-    const tomorrow = addDays(today, 1);
-    const dayAfterTomorrow = addDays(today, 2);
-
-    let label = '';
-    if (isToday(parsed)) {
-      label = '(오늘)';
-    } else if (isSameDay(parsed, tomorrow)) {
-      label = '(내일)';
-    } else if (isSameDay(parsed, dayAfterTomorrow)) {
-      label = '(모레)';
-    } else {
-      const weekday = format(parsed, 'eeee', { locale: ko });
-      label = `(${weekday})`;
-    }
-    return `${format(parsed, 'yy. MM. dd')} ${label}`;
-  };
 
   const handleScheduleSelect = (id: number, date: string) => {
     setSelectedSchedule({ id, date });
@@ -126,51 +97,12 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
           </div>
         </div>
 
-        <div className='flex flex-col gap-[16px]'>
-          <div className='flex items-center justify-between'>
-            <p className='text-[2.2rem] font-semibold text-gray-800 mt-[16px]'>체험 날짜</p>
-            <CalendarButton onClick={() => void 0} />
-          </div>
-          {Object.entries(groupedByDate).map(([date, timeSlots]) => (
-            <div key={date}>
-              <p className='mb-[12px] text-lg font-semibold text-gray-800'>{formattedDate(date)}</p>
-              <div className='flex flex-col gap-[12px]'>
-                {timeSlots.map((schedule) => {
-                  const { id, startTime, endTime } = schedule;
-                  const isSelected = selectedSchedule?.id === id;
-                  const inputId = `schedule-${date}-${id}`;
-                  return (
-                    <label
-                      key={`${date}-${id}`}
-                      htmlFor={inputId}
-                      className={clsx(
-                        'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200',
-                        isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200',
-                        'hover:border-primary-200 hover:bg-primary-25'
-                      )}
-                    >
-                      <input
-                        type='radio'
-                        id={inputId}
-                        name='schedule-selection'
-                        value={id}
-                        checked={isSelected}
-                        onChange={() => handleScheduleSelect(id, date)}
-                        className='hidden'
-                      />
-                      <p className='text-md font-medium text-gray-800'>
-                        오후 {startTime} ~ 오후 {endTime}
-                      </p>
-                      <p className='text-sm font-regular text-gray-500'>
-                        {price.toLocaleString()}원 / 인
-                      </p>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
+        <ScheduleList
+          schedules={schedules}
+          selectedSchedule={selectedSchedule}
+          onScheduleSelect={handleScheduleSelect}
+          price={price}
+        />
       </div>
 
       <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white border-t border-gray-100 z-50'>
