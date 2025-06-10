@@ -4,7 +4,7 @@ import { CSSProperties } from 'react';
 import CalendarIcon from '@/src/components/common/icons/CalendarIcon';
 
 interface CalendarButtonProps {
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
   size?: number;
   style?: CSSProperties;
@@ -16,15 +16,9 @@ export default function CalendarButton({
   size = 24,
   style,
   ...rest
-}: CalendarButtonProps) {
+}: CalendarButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <button
-      type='button'
-      onClick={() => console.log('캘린더 버튼 클릭됨')}
-      className={className}
-      style={style}
-      {...rest}
-    >
+    <button type='button' onClick={onClick} className={className} style={style} {...rest}>
       <CalendarIcon width={size} height={size} className='text-gray-800' />
     </button>
   );

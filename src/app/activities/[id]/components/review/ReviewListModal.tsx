@@ -51,7 +51,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
       </div>
 
       {reviews.map((review, idx) => (
-        <div key={`${review.id}-${idx}`} className='pt-[12px]'>
+        <div key={review.id} className='pt-[12px]'>
           <ReviewCard
             nickname={review.user.nickname}
             profileImageUrl={review.user.profileImageUrl}

@@ -8,7 +8,7 @@ interface ReviewCardProps {
   createdAt: string;
   content: string;
   rating: number;
-  variant?: 'card' | 'list';
+  variant?: 'card' | 'list'; // 카드의 표시 형태 ('card': 일반적인 카드 형태, 'list': 목록 아이템 형태, 기본값: 'card')
 }
 
 export default function ReviewCard({

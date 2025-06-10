@@ -2,6 +2,8 @@
 
 import clsx from 'clsx';
 import { Schedule } from '@/src/types/schedule.types';
+import { format, parse } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 interface ScheduleTimeSlotProps {
   schedule: Schedule;
@@ -32,6 +34,11 @@ export default function ScheduleTimeSlot({
   const { id, startTime, endTime } = schedule;
   const inputId = `schedule-${date}-${id}`;
 
+  const formattedStartTime = format(parse(startTime, 'HH:mm', new Date()), 'aa h:mm', {
+    locale: ko,
+  });
+  const formattedEndTime = format(parse(endTime, 'HH:mm', new Date()), 'aa h:mm', { locale: ko });
+
   return (
     <label
       htmlFor={inputId}
@@ -47,7 +54,7 @@ export default function ScheduleTimeSlot({
         className='hidden'
       />
       <p className={styles.timeText}>
-        오후 {startTime} ~ 오후 {endTime}
+        {formattedStartTime} ~ {formattedEndTime}
       </p>
       <p className={styles.priceText}>{price.toLocaleString()}원 / 인</p>
     </label>

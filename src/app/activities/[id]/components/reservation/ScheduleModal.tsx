@@ -9,13 +9,7 @@ import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useModal } from '@/src/hooks/useModal';
 import { useRouter } from 'next/navigation';
 import ScheduleList from './ScheduleList';
-
-interface Schedule {
-  id: number;
-  date: string;
-  startTime: string;
-  endTime: string;
-}
+import { Schedule } from '@/src/types/schedule.types';
 
 export interface ScheduleModalProps {
   price: number;

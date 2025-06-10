@@ -35,7 +35,12 @@ export default function ScheduleList({
     <div className={styles.container}>
       <div className={styles.header}>
         <p className={styles.title}>체험 날짜</p>
-        <CalendarButton onClick={() => void 0} />
+        <CalendarButton
+          onClick={() => {
+            console.log('캘린더 버튼 클릭됨');
+            /* TODO: 달력 UI 연동 기능 추가 */
+          }}
+        />
       </div>
       {Object.entries(groupedByDate).map(([date, timeSlots]) => (
         <div key={date}>

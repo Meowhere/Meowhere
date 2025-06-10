@@ -1,9 +1,4 @@
-interface Schedule {
-  id: number;
-  date: string;
-  startTime: string;
-  endTime: string;
-}
+import { Schedule } from '@/src/types/schedule.types';
 
 export const groupSchedulesByDate = (schedules: Schedule[]) => {
   return schedules.reduce(
