@@ -55,13 +55,13 @@ export default function CreateReviewModal({
             <StarFillIcon
               key={i}
               onClick={() => setCurrentRating(i)}
-              className='w-[33px] h-[30px] cursor-pointer text-yellow-200'
+              className='w-[42px] h-[42px] cursor-pointer text-yellow-200'
             />
           ) : (
             <StarIcon
               key={i}
               onClick={() => setCurrentRating(i)}
-              className='w-[33px] h-[30px] cursor-pointer text-gray-400'
+              className='w-[42px] h-[42px] cursor-pointer text-gray-400'
             />
           )
         )}
