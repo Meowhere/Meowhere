@@ -3,50 +3,55 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import ReservationsCard from './components/ReservationsCard';
-import DropdownMenu from '../../../components/common/dropdowns/dropdown-menu/DropdownMenu';
-import DropdownTrigger from '@/src/components/common/dropdowns/dropdown-trigger/DropdownTrigger';
-import type { DropdownItemData } from '../../../types/dropdown-menu.types';
+import type { DropdownItemButton } from '../../../types/dropdown-menu.types';
+import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 
 export default function ReservationsTestPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [openDirection, setOpenDirection] = useState<'up' | 'down'>('down');
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const [text, setText] = useState('예약 완료');
+  const [selectedStatus, setSelectedStatus] = useState('예약 완료');
 
-  const reservationStatusItems: DropdownItemData[] = [
+  const handleDropdownChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Handle dropdown change if needed
+    setSelectedStatus(event.target.value);
+    console.log('Dropdown changed:', event.target.value);
+  };
+
+  const reservationStatusItems: DropdownItemButton[] = [
     {
       type: 'button',
       label: '예약 완료',
       onClick: () => {
-        setText('예약 완료');
+        setSelectedStatus('예약 완료');
       },
     },
     {
       type: 'button',
       label: '예약 승인',
       onClick: () => {
-        setText('예약 승인');
+        setSelectedStatus('예약 승인');
       },
     },
     {
       type: 'button',
       label: '예약 취소',
       onClick: () => {
-        setText('예약 취소');
+        setSelectedStatus('예약 취소');
       },
     },
     {
       type: 'button',
       label: '예약 거절',
       onClick: () => {
-        setText('예약 거절');
+        setSelectedStatus('예약 거절');
       },
     },
     {
       type: 'button',
       label: '체험 완료',
       onClick: () => {
-        setText('체험 완료');
+        setSelectedStatus('체험 완료');
       },
     },
   ];
@@ -121,43 +126,12 @@ export default function ReservationsTestPage() {
       <div className='w-full flex flex-col h-[calc(100vh-136px)] lg:max-w-[720px] lg:mx-auto lg:h-[1130px] lg:pt-[96px]'>
         {hasData && (
           <div className='flex justify-end'>
-            <div className='relative w-[180px]'>
-              <button
-                ref={triggerRef}
-                onClick={toggleDropdown}
-                type='button'
-                className='w-full h-[64px] gap-[10px] rounded-[10px] border border-gray-200 bg-white hidden lg:inline-block'
-              >
-                <div className='w-full flex items-center justify-between px-[20px] py-[8px]'>
-                  <div className='flex flex-col items-start'>
-                    <span className='text-xs font-regular text-gray-500'>체험 상태</span>
-                    <span className='text-md font-regular text-gray-800'>{text}</span>
-                  </div>
-                  <svg
-                    className={`w-[24px] h-[24px] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='#A1A1A1'
-                    strokeWidth='2.25'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  >
-                    <polyline points='6 15 12 9 18 15' />
-                  </svg>
-                </div>
-              </button>
-
-              <div className='flex mt-[8px] justify-end hidden lg:block'>
-                {isOpen && (
-                  <DropdownMenu
-                    items={reservationStatusItems}
-                    isOpen={isOpen}
-                    onClose={() => setIsOpen(false)}
-                    position='bottom'
-                    isMobile={false}
-                  />
-                )}
-              </div>
+            <div className='w-[180px]'>
+              <Dropdown
+                dropdownItems={reservationStatusItems}
+                triggerLabel='체험 상태'
+                selectedValue={selectedStatus}
+              />
             </div>
           </div>
         )}
