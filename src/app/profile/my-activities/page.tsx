@@ -15,13 +15,13 @@ export default function MyActivitiesPage() {
     subtitle: '',
     backAction: () => router.back(),
     rightButtons: [
-      <button
+      <Link
         key='register'
         className='text-md font-semibold text-primary-300'
-        onClick={() => router.push('/profile/my-activities/register')}
+        href='/profile/my-activities/register'
       >
         새 체험
-      </button>,
+      </Link>,
     ],
   });
 
