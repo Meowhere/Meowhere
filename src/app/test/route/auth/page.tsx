@@ -3,7 +3,6 @@
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useLogin, useLogout, useSignUp, useUser } from '@/src/hooks/auth/useAuth';
 import { useModal } from '@/src/hooks/useModal';
-import { useAuthStore } from '@/src/store/authStore';
 import { checkEmailExistence } from '@/src/utils/checkEmailExistence';
 import { useEffect, useState } from 'react';
 
@@ -19,7 +18,6 @@ const signUpFormData = {
 };
 
 export default function AuthTest() {
-  const { user } = useAuthStore();
   const [isUser, setIsUser] = useState<boolean | null>(null);
   const loginMutation = useLogin();
   const logoutMutation = useLogout();
@@ -58,10 +56,9 @@ export default function AuthTest() {
   };
 
   useEffect(() => {
-    console.log('AuthStore user:', user);
     console.log('Query data:', data);
     console.log('error:', isError);
-  }, [user, data, isError]);
+  }, [data, isError]);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen gap-[16px]'>
@@ -86,7 +83,7 @@ export default function AuthTest() {
           <BaseButton onClick={handleAuthModal}>로그인 모달</BaseButton>
         </div>
       </div>
-      <div>로그인 리스폰스: {user && user.nickname}</div>
+      <div>로그인 리스폰스: {data?.nickname}</div>
       <div>회원가입 리스폰스: {JSON.stringify(signUpResult)}</div>
       <div>
         이메일 검증 리스폰스: {isUser === true ? 'true' : isUser === false ? 'false' : 'null'}
