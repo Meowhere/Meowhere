@@ -5,7 +5,6 @@ import { TextareaProps } from '../../../types/input.types';
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
   {
-    label,
     name,
     watchValue = '',
     error,
@@ -17,48 +16,16 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
     rows = 5,
     autoResize = false,
     scrollable = true,
-    maxHeight = '300px',
+    maxHeight = '1500px',
     ...rest
   },
   ref
 ) {
   const internalRef = useRef<HTMLTextAreaElement>(null);
-
-  // ref 합성 함수
-  const setRefs = (el: HTMLTextAreaElement | null) => {
-    internalRef.current = el;
-    if (typeof ref === 'function') {
-      ref(el);
-    } else if (ref) {
-      ref.current = el;
-    }
-  };
+  // const textAreaRef = (ref as React.RefObject<HTMLTextAreaElement>) || internalRef;
 
   // 에러 메시지 처리
   const errorMessage = typeof error === 'string' ? error : error?.message;
-
-  // 스타일 통합
-  const getTextareaStyles = () => {
-    const styles: React.CSSProperties = {};
-
-    // maxHeight 동적 설정
-    if (!autoResize && !scrollable) {
-      styles.maxHeight = maxHeight;
-      styles.overflowY = 'hidden';
-    }
-
-    return styles;
-  };
-
-  // textarea 스타일 조건
-  const getTextareaClasses = () => ({
-    // resize 옵션
-    'resize-none': autoResize || !scrollable,
-    'resize-y': !autoResize && scrollable,
-    // overflow 옵션
-    'overflow-hidden': !scrollable && !autoResize,
-    'overflow-y-auto': scrollable && !autoResize,
-  });
 
   // 자동 높이 조절 함수
   const adjustHeight = () => {
@@ -67,13 +34,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
       el.style.height = 'auto';
       const scrollHeight = el.scrollHeight;
       const maxHeightValue = parseInt(maxHeight);
-
       if (scrollHeight <= maxHeightValue) {
         el.style.height = `${scrollHeight}px`;
         el.style.overflowY = 'hidden';
       } else {
         el.style.height = maxHeight;
-        el.style.overflowY = scrollable ? 'auto' : 'hidden';
+        el.style.overflowY = 'auto';
       }
     }
   };
@@ -96,7 +62,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
       >
         <textarea
           {...rest}
-          ref={setRefs}
+          ref={(el) => {
+            // 내부 ref, 외부 ref 둘 다 연결
+            internalRef.current = el;
+            if (typeof ref === 'function') ref(el);
+            else if (ref) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = el;
+          }}
           name={name}
           rows={autoResize ? 1 : rows}
           maxLength={maxLength}
@@ -104,12 +75,11 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
           disabled={disabled}
           onInput={adjustHeight}
           className={clsx(
-            'w-full bg-transparent border-none focus:outline-none resize-none text-md font-regular placeholder:text-gray-500 scrollbar-hide',
+            'w-full bg-transparent border-none focus:outline-none resize-none text-md font-regular placeholder:text-gray-500',
+            autoResize ? 'scrollbar-hide' : '',
             errorMessage ? 'text-red-300' : 'text-gray-800',
-            getTextareaClasses(),
             disabled && 'cursor-not-allowed text-gray-400'
           )}
-          style={getTextareaStyles()}
         />
         {/* 글자 수 카운터 */}
         {maxLength && (
