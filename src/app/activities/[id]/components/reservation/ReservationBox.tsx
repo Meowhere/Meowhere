@@ -1,9 +1,7 @@
-// ReservationBox.tsx
 'use client';
 
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import ReservationMobileFooter from './ReservationMobileFooter';
-import { ReservationState } from '@/src/types/reservation.types';
 import { useModal } from '@/src/hooks/useModal';
 import { dummySchedule } from '../../data/dummySchedule';
 

@@ -65,7 +65,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
       ))}
 
       {isFetchingNextPage && (
-        <div className='flex flex-col items-center py-6 space-y-2'>
+        <div className='flex flex-col items-center py-[24px] space-y-[8px]'>
           <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
           <p className='text-sm text-gray-500 animate-pulse'>후기를 불러오는 중입니다...</p>
         </div>
