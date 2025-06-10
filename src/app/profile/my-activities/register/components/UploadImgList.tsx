@@ -1,39 +1,51 @@
 import { useState } from 'react';
 import UploadImg from './UploadImg';
 
+// 고유 id 생성 함수(uuid 써도 됨 의견 궁금합니다.)
+const genId = () => Math.random().toString(36).slice(2) + Date.now();
+
+type FileObj = {
+  id: string;
+  file: File | null;
+};
+
+const MAX_FILES = 4;
+
 export default function UploadImgList() {
-  const [files, setFiles] = useState<(File | null)[]>([null]);
+  const [files, setFiles] = useState<FileObj[]>([{ id: genId(), file: null }]);
 
   // 각 UploadImg에서 파일이 업로드될 때 호출
-  const handleFileChange = (file: File | null, idx: number) => {
-    let newFiles = [...files];
-    newFiles[idx] = file;
-    // 마지막(빈) UploadImg에 파일이 업로드되면 새 빈 UploadImg 추가
-    if (idx === files.length - 1 && file) {
-      newFiles.push(null);
+  const handleFileChange = (file: File | null, id: string) => {
+    let newFiles = files.map((f) => (f.id === id ? { ...f, file } : f));
+
+    // 파일 추가 (마지막 빈 칸에 업로드 & 4개 미만일 때만 새 빈 추가)
+    if (file && id === files[files.length - 1].id && files.length < MAX_FILES) {
+      newFiles.push({ id: genId(), file: null });
     }
-    // 파일을 삭제한 경우
+
+    // 파일 삭제
     if (!file) {
-      // 마지막이 아닌 곳에서 삭제하면 해당 인덱스 제거
-      if (idx !== files.length - 1) {
-        newFiles.splice(idx, 1);
-      }
-      // 마지막이 null이 아닌 경우, 마지막에 null 추가
-      if (newFiles.length === 0 || newFiles[newFiles.length - 1] !== null) {
-        newFiles.push(null);
-      }
-      // 만약 처음부터 아무것도 없으면 최소 1개는 남기기
+      // 해당 파일 객체를 제거
+      newFiles = newFiles.filter((f) => f.id !== id);
+
+      // ⚠️ 조건 분기 설명 ⚠️
+      // 1. 완전히 비었으면 무조건 하나 남기기(최소 1개)
       if (newFiles.length === 0) {
-        newFiles = [null];
+        newFiles = [{ id: genId(), file: null }];
+      }
+      // 2. 빈 슬롯(null)이 없다면 빈 슬롯 추가 (최대 4개 제한)
+      else if (newFiles.length < MAX_FILES && !newFiles.find((f) => f.file === null)) {
+        newFiles.push({ id: genId(), file: null });
       }
     }
+
     setFiles(newFiles);
   };
 
   return (
-    <div className='grid grid-cols-2 gap-[5px] lg:grid-cols-[repeat(4,160px)] justify-center'>
-      {files.map((file, idx) => (
-        <UploadImg key={idx} file={file} onFileChange={(file) => handleFileChange(file, idx)} />
+    <div className='grid grid-cols-2 gap-[5px] justify-center lg:grid-cols-[repeat(4,160px)] lg:justify-start'>
+      {files.map((f) => (
+        <UploadImg key={f.id} file={f.file} onFileChange={(file) => handleFileChange(file, f.id)} />
       ))}
     </div>
   );

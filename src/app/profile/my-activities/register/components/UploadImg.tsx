@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useRef, useState, useEffect } from 'react';
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface UploadImgProps {
   file?: File | null;
@@ -11,7 +10,6 @@ export default function UploadImg({ file: fileProp, onFileChange }: UploadImgPro
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(fileProp ?? null);
   const [preview, setPreview] = useState<string | null>(null);
-  const { isTablet } = useBreakpoint();
 
   useEffect(() => {
     if (fileProp !== undefined) setFile(fileProp);
@@ -40,12 +38,12 @@ export default function UploadImg({ file: fileProp, onFileChange }: UploadImgPro
   return (
     <div className='flex'>
       {preview ? (
-        <div className='relative w-full aspect-square rounded-[12px] lg:w-[160px] lg:h-[160px]'>
+        <div className='relative w-full aspect-square lg:w-[160px] lg:h-[160px]'>
           <Image
             src={preview}
             alt='preview'
             fill
-            className='object-cover object-center transition-transform duration-300'
+            className='object-cover object-center rounded-[12px] transition-transform duration-300'
           />
           <Image
             src='/assets/icons/delete/ico-delete-image.svg'
