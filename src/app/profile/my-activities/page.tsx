@@ -6,8 +6,9 @@ import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Link from 'next/link';
-import { DUMMY_DATA } from './components/DummyData';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { useInfiniteActivities } from '@/src/hooks/useInfiniteActivities';
+import SkeletonActivities from './components/SkeletonActivities';
 
 export default function MyActivitiesPage() {
   const router = useRouter();
@@ -27,45 +28,41 @@ export default function MyActivitiesPage() {
     ],
   });
 
-  // 무한스크롤에 보여줄 개수 설정 (한 번에 4개씩)
-  const PAGE_SIZE = 6;
-  const [page, setPage] = useState(1);
-
-  // 실제로 화면에 보일 데이터 (더미에서 n개씩 잘라서 보여줌)
-  const visibleActivities = DUMMY_DATA.slice(0, page * PAGE_SIZE);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteActivities();
 
   // 바닥 감지 ref
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  // 다음 페이지 존재 여부
-  const hasNextPage = visibleActivities.length < DUMMY_DATA.length;
-  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
-
   useEffect(() => {
-    if (!observerRef.current || !hasNextPage) return;
-
+    if (!observerRef.current) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isFetchingNextPage) {
-          setIsFetchingNextPage(true);
-          setTimeout(() => {
-            // 실제 API라면 fetch 후에 setPage
-            setPage((prev) => prev + 1);
-            setIsFetchingNextPage(false);
-          }, 800); // 로딩 감성용 0.8초 delay
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
         }
       },
       { threshold: 1 }
     );
-
     observer.observe(observerRef.current);
+
     return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const activities = data?.pages.flatMap((page) => page.activities) ?? [];
 
   // 실제 데이터는 API 호출 등을 통해 가져올 수 있습니다.
   return (
     <div className='relative flex flex-col mx-[24px] my-[112px]'>
-      {visibleActivities.length === 0 ? (
+      {isLoading ? (
+        <div>
+          {[...Array(6)].map((_, idx) => (
+            <div key={idx}>
+              <SkeletonActivities />
+            </div>
+          ))}
+        </div>
+      ) : activities.length === 0 ? (
         <NotFoundActivities />
       ) : (
         <div>
@@ -80,7 +77,7 @@ export default function MyActivitiesPage() {
               </BaseButton>
             </div>
           )}
-          <ManagementCards activities={visibleActivities} />
+          <ManagementCards activities={activities} />
 
           {/* 무한 스크롤 하단 */}
           {isFetchingNextPage && (
