@@ -7,6 +7,9 @@ import CounterButton from '../common/CounterButton';
 import CalendarButton from '../common/CalendarButton';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import clsx from 'clsx';
+import { useConfirmModal } from '@/src/hooks/useConfirmModal';
+import { useModal } from '@/src/hooks/useModal';
+import { useRouter } from 'next/navigation';
 
 interface Schedule {
   id: number;
@@ -25,6 +28,9 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
   const [selectedSchedule, setSelectedSchedule] = useState<{ id: number; date: string } | null>(
     null
   );
+  const { openConfirmModal, ConfirmModal } = useConfirmModal();
+  const { closeModal } = useModal();
+  const router = useRouter();
 
   const groupedByDate = schedules.reduce(
     (acc, schedule) => {
@@ -54,11 +60,58 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
     return `${format(parsed, 'yy. MM. dd')} ${label}`;
   };
 
+  const handleScheduleSelect = (id: number, date: string) => {
+    setSelectedSchedule({ id, date });
+  };
+
+  const handleReserve = async () => {
+    if (!selectedSchedule) {
+      alert('예약할 날짜를 선택해주세요.');
+      return;
+    }
+
+    try {
+      // API 요청 데이터 준비
+      const reservationData = {
+        scheduleId: selectedSchedule.id,
+        date: selectedSchedule.date,
+        headCount: count,
+        totalPrice: price * count,
+      };
+
+      // TODO: API 연동 시 아래 주석을 해제하고 사용
+      /*
+      const response = await fetch('/api/reservations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reservationData),
+      });
+
+      if (!response.ok) {
+        throw new Error('예약 처리 중 오류가 발생했습니다.');
+      }
+      */
+
+      openConfirmModal({
+        message: '예약이 완료되었습니다.',
+        confirmText: '확인',
+        onConfirm: () => {
+          // TODO: API 연동 시 아래 주석을 해제하고 사용
+          // router.push('/reservations');
+          console.log('예약 데이터:', reservationData);
+          closeModal();
+        },
+      });
+    } catch (error) {
+      alert('예약 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <>
-      {/* 본문 영역 */}
       <div className='flex max-h-[80vh] flex-col gap-[24px] overflow-y-scroll scrollbar-hide p-[12px] pb-[120px]'>
-        {/* 인원 선택 */}
         <div className='flex flex-col gap-[24px]'>
           <p className='text-[2.2rem] font-semibold text-gray-800'>인원</p>
           <div className='flex items-center justify-between'>
@@ -73,7 +126,6 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
           </div>
         </div>
 
-        {/* 날짜 및 시간 리스트 */}
         <div className='flex flex-col gap-[16px]'>
           <div className='flex items-center justify-between'>
             <p className='text-[2.2rem] font-semibold text-gray-800 mt-[16px]'>체험 날짜</p>
@@ -83,26 +135,27 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
             <div key={date}>
               <p className='mb-[12px] text-lg font-semibold text-gray-800'>{formattedDate(date)}</p>
               <div className='flex flex-col gap-[12px]'>
-                {timeSlots.map(({ id, startTime, endTime }) => {
+                {timeSlots.map((schedule) => {
+                  const { id, startTime, endTime } = schedule;
                   const isSelected = selectedSchedule?.id === id;
                   const inputId = `schedule-${date}-${id}`;
                   return (
                     <label
-                      key={id}
+                      key={`${date}-${id}`}
                       htmlFor={inputId}
                       className={clsx(
-                        'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-colors',
-                        isSelected ? 'border-primary-500' : 'border-gray-200',
-                        'hover:border-primary-200'
+                        'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200',
+                        isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200',
+                        'hover:border-primary-200 hover:bg-primary-25'
                       )}
                     >
                       <input
                         type='radio'
                         id={inputId}
-                        name={`schedule-${date}`}
+                        name='schedule-selection'
                         value={id}
                         checked={isSelected}
-                        onChange={() => setSelectedSchedule({ id, date })}
+                        onChange={() => handleScheduleSelect(id, date)}
                         className='hidden'
                       />
                       <p className='text-md font-medium text-gray-800'>
@@ -120,7 +173,6 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
         </div>
       </div>
 
-      {/* 하단 고정 영역 */}
       <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white border-t border-gray-100 z-50'>
         <div className='flex items-center justify-between w-full gap-[12px]'>
           <div className='flex flex-col gap-[4px] min-w-0'>
@@ -133,9 +185,17 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
               {(price * count).toLocaleString()}원
             </p>
           </div>
-          <BaseButton className='w-[128px] h-[42px] rounded-[10px]'>예약하기</BaseButton>
+          <BaseButton
+            className='w-[128px] h-[42px] rounded-[10px]'
+            onClick={handleReserve}
+            disabled={!selectedSchedule}
+          >
+            예약하기
+          </BaseButton>
         </div>
       </div>
+
+      <ConfirmModal />
     </>
   );
 }
