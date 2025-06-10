@@ -1,12 +1,19 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 5;
 
 const fetchActivities = async ({ pageParam = 0 }) => {
-  const res = await fetchFromClient(`my-activities?size=${PAGE_SIZE}&cursorId=${pageParam}`);
+  const page = 1;
+  // 커서 기반이면 method=cursor, 페이지네이션은 cursorId 사용!
+  let query = `method=cursor&size=${PAGE_SIZE}`;
+  if (pageParam) {
+    query += `&cursorId=${pageParam}`;
+  }
+  const res = await fetchFromClient(`activities?${query}`);
   if (!res.ok) throw new Error('체험 리스트 불러오기 실패');
-  return res.json();
+  const data = await res.json();
+  return data;
 };
 
 export function useInfiniteActivities() {
@@ -15,7 +22,9 @@ export function useInfiniteActivities() {
     queryFn: fetchActivities,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
+      // 마지막 페이지라면 undefined
       if (!lastPage.activities || lastPage.activities.length < PAGE_SIZE) return undefined;
+      // 마지막 activity의 id를 cursorId로 사용
       return lastPage.activities[lastPage.activities.length - 1].id;
     },
   });

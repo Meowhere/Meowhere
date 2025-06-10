@@ -49,7 +49,11 @@ export default function MyActivitiesPage() {
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const activities = data?.pages.flatMap((page) => page.activities) ?? [];
+  // id 기준 중복 제거
+  const activities =
+    data?.pages
+      .flatMap((page) => page.activities)
+      .filter((v, i, arr) => arr.findIndex((a) => a.id === v.id) === i) ?? [];
 
   // 실제 데이터는 API 호출 등을 통해 가져올 수 있습니다.
   return (
