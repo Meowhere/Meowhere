@@ -8,26 +8,10 @@ import { useModal } from '@/src/hooks/useModal';
 import { dummySchedule } from '../../data/dummySchedule';
 
 interface ReservationBoxProps {
-  state: ReservationState;
-  onDateChange: (date: Date | undefined) => void;
-  onTimeChange: (time: string) => void;
-  onCountChange: (count: number) => void;
-  onReserve: () => void;
-  availableTimes: string[];
-  loading?: boolean;
   pricePerPerson: number;
 }
 
-export default function ReservationBox({
-  state,
-  onDateChange,
-  onTimeChange,
-  onCountChange,
-  onReserve,
-  availableTimes,
-  loading = false,
-  pricePerPerson,
-}: ReservationBoxProps) {
+export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) {
   const { isMobile, hasMounted } = useBreakpoint();
   const { openScheduleModal } = useModal();
 

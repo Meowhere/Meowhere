@@ -1,15 +1,11 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import ExperienceImageViewer from './components/experience/ExperienceImageViewer';
 import ExperienceSummarySection from './components/experience/ExperienceSummarySection';
 import Divider from './components/common/Divider';
 import SectionTitle from './components/common/SectionTItle';
 import ExperienceLocationMap from './components/experience/ExperienceLocationMap';
 import ReservationBox from './components/reservation/ReservationBox';
-import { useRouter } from 'next/navigation';
-import { useGnbStore } from '@/src/store/gnbStore';
 import ExperienceDescription from './components/experience/ExperienceDescription';
 import ReviewSection from './components/review/ReviewSection';
 import { dummyReviews } from './data/dummyReviews';
@@ -35,24 +31,7 @@ const dummyExperience = {
 };
 
 export default function ExperienceDetailPage() {
-  // const { id } = useParams();
-  const router = useRouter();
-  const { setTitle, setSubtitle } = useGnbStore();
   const { openReviewListModal } = useModal();
-
-  // 예약 상태 정의
-  const [date, setDate] = useState<Date>();
-  const [time, setTime] = useState('');
-  const [count, setCount] = useState(1);
-
-  // 더미 데이터
-  const pricePerPerson = 23000;
-  const availableTimes = ['오후 2:00 ~ 오후 3:30', '오후 4:00 ~ 오후 5:30'];
-
-  // 예약 시 실행될 함수 (임시 콘솔)
-  const handleReserve = () => {
-    console.log('예약 정보:', { date, time, count });
-  };
 
   return (
     <main className='min-h-screen pt-[56px] px-[24px]'>
@@ -95,16 +74,7 @@ export default function ExperienceDetailPage() {
           }
         />
       </div>
-
-      <ReservationBox
-        state={{ date, time, count }}
-        onDateChange={setDate}
-        onTimeChange={setTime}
-        onCountChange={setCount}
-        onReserve={handleReserve}
-        availableTimes={availableTimes}
-        pricePerPerson={pricePerPerson}
-      />
+      <ReservationBox pricePerPerson={dummyExperience.price} />
     </main>
   );
 }
