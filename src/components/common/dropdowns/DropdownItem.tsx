@@ -1,3 +1,5 @@
+import { DropdownItemProps } from '@/src/types/dropdown-item.types';
+
 export default function DropdownItem({
   label,
   isMobile = false,
@@ -8,12 +10,12 @@ export default function DropdownItem({
 }: DropdownItemProps) {
   const fontSizeClass = isMobile ? 'text-lg' : 'text-md';
   const textColor = isDanger ? 'text-red-300' : 'text-gray-700';
-  const radiusClass = isMobile ? 'group-hover:rounded-[0.7rem]' : '';
+  const radiusClass = isMobile ? 'group-hover:rounded-[7px]' : '';
   const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : '';
   const commonClassNames = `
     w-full
-    ${isMobile ? 'h-full group-hover:h-[4.6rem]' : 'h-[4.6rem]'}
-    py-[1rem]
+    ${isMobile ? 'h-full group-hover:h-[46px]' : 'h-[46px]'}
+    py-[10px]
     hover:bg-gray-100
     ${radiusClass}
     ${fontSizeClass} ${textColor}
@@ -31,9 +33,7 @@ export default function DropdownItem({
   return (
     <div
       className={
-        isMobile
-          ? 'w-full h-[5.4rem] p-[0.4rem] bg-white group'
-          : 'w-full h-[4.6rem] bg-white group'
+        isMobile ? 'w-full h-[54px] p-[4px] bg-white group' : 'w-full h-[46px] bg-white group'
       }
     >
       <button type='button' onClick={handleItemClick} className={commonClassNames}>
@@ -41,13 +41,4 @@ export default function DropdownItem({
       </button>
     </div>
   );
-}
-
-export interface DropdownItemProps {
-  label: string;
-  isMobile?: boolean;
-  isDanger?: boolean;
-  disabled?: boolean;
-  onClick: () => void;
-  onClose: () => void;
 }

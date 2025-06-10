@@ -1,54 +1,41 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import ReservationsCard from './components/ReservationsCard';
 import type { DropdownItemButton } from '../../../types/dropdown-menu.types';
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 
 export default function ReservationsTestPage() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [openDirection, setOpenDirection] = useState<'up' | 'down'>('down');
-  const triggerRef = useRef<HTMLButtonElement>(null);
   const [selectedStatus, setSelectedStatus] = useState('예약 완료');
 
-  const handleDropdownChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Handle dropdown change if needed
-    setSelectedStatus(event.target.value);
-    console.log('Dropdown changed:', event.target.value);
-  };
-
+  // 드롭다운 메뉴 아이템 데이터
   const reservationStatusItems: DropdownItemButton[] = [
     {
-      type: 'button',
       label: '예약 완료',
       onClick: () => {
         setSelectedStatus('예약 완료');
       },
     },
     {
-      type: 'button',
       label: '예약 승인',
       onClick: () => {
         setSelectedStatus('예약 승인');
       },
     },
     {
-      type: 'button',
       label: '예약 취소',
       onClick: () => {
         setSelectedStatus('예약 취소');
       },
     },
     {
-      type: 'button',
       label: '예약 거절',
       onClick: () => {
         setSelectedStatus('예약 거절');
       },
     },
     {
-      type: 'button',
       label: '체험 완료',
       onClick: () => {
         setSelectedStatus('체험 완료');
@@ -58,6 +45,7 @@ export default function ReservationsTestPage() {
 
   // const testData: any[] = [];
 
+  // 카드 상세 데이터
   const testData = [
     {
       label: '예약 완료',
@@ -107,16 +95,6 @@ export default function ReservationsTestPage() {
       showReview: true,
     },
   ] as const;
-
-  const toggleDropdown = () => {
-    if (!triggerRef.current) return;
-    const rect = triggerRef.current.getBoundingClientRect();
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const spaceAbove = rect.top;
-
-    setOpenDirection(spaceBelow < 200 && spaceAbove > 200 ? 'up' : 'down');
-    setIsOpen((prev) => !prev);
-  };
 
   const hasData = testData.length > 0;
 
