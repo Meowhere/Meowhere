@@ -4,72 +4,104 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import ReservationsCard from './components/ReservationsCard';
 import DropdownMenu from '../../../components/common/dropdowns/dropdown-menu/DropdownMenu';
+import DropdownTrigger from '@/src/components/common/dropdowns/dropdown-trigger/DropdownTrigger';
 import type { DropdownItemData } from '../../../types/dropdown-menu.types';
 
 export default function ReservationsTestPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [openDirection, setOpenDirection] = useState<'up' | 'down'>('down');
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const [text, setText] = useState('예약 완료');
 
   const reservationStatusItems: DropdownItemData[] = [
-    { type: 'button', label: '예약 완료', onClick: () => {} },
-    { type: 'button', label: '예약 승인', onClick: () => {} },
-    { type: 'button', label: '예약 취소', onClick: () => {} },
-    { type: 'button', label: '예약 거절', onClick: () => {} },
-    { type: 'button', label: '체험 완료', onClick: () => {} },
+    {
+      type: 'button',
+      label: '예약 완료',
+      onClick: () => {
+        setText('예약 완료');
+      },
+    },
+    {
+      type: 'button',
+      label: '예약 승인',
+      onClick: () => {
+        setText('예약 승인');
+      },
+    },
+    {
+      type: 'button',
+      label: '예약 취소',
+      onClick: () => {
+        setText('예약 취소');
+      },
+    },
+    {
+      type: 'button',
+      label: '예약 거절',
+      onClick: () => {
+        setText('예약 거절');
+      },
+    },
+    {
+      type: 'button',
+      label: '체험 완료',
+      onClick: () => {
+        setText('체험 완료');
+      },
+    },
   ];
 
-  const testData: any[] = [];
+  // const testData: any[] = [];
 
-  // const testData = [
-  //   {
-  //     label: '예약 완료',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //     showCancel: true,
-  //   },
-  //   {
-  //     label: '예약 승인',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //   },
-  //   {
-  //     label: '예약 취소',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //   },
-  //   {
-  //     label: '예약 거절',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //   },
-  //   {
-  //     label: '체험 완료',
-  //     imageUrl: '/assets/icons/test_img.png',
-  //     title: '함께 배우면 즐거운 스트릿 댄스',
-  //     date: '2023. 2. 14',
-  //     time: '11:00 - 12:30',
-  //     headCount: 10,
-  //     price: 148000,
-  //     showReview: true,
-  //   },
-  // ] as const;
+  const testData = [
+    {
+      label: '예약 완료',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+      showCancel: true,
+    },
+    {
+      label: '예약 승인',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+    },
+    {
+      label: '예약 취소',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+    },
+    {
+      label: '예약 거절',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+    },
+    {
+      label: '체험 완료',
+      imageUrl: '/assets/icons/test_img.png',
+      title: '함께 배우면 즐거운 스트릿 댄스',
+      date: '2023. 2. 14',
+      time: '11:00 - 12:30',
+      headCount: 10,
+      price: 148000,
+      showReview: true,
+    },
+  ] as const;
 
   const toggleDropdown = () => {
     if (!triggerRef.current) return;
@@ -99,7 +131,7 @@ export default function ReservationsTestPage() {
                 <div className='w-full flex items-center justify-between px-[20px] py-[8px]'>
                   <div className='flex flex-col items-start'>
                     <span className='text-xs font-regular text-gray-500'>체험 상태</span>
-                    <span className='text-md font-regular text-gray-800'>예약 완료</span>
+                    <span className='text-md font-regular text-gray-800'>{text}</span>
                   </div>
                   <svg
                     className={`w-[24px] h-[24px] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
