@@ -1,7 +1,7 @@
 'use client';
 
 import { SVGProps } from 'react';
-import MinusSvg from '@/public/assets/icons/ico-minus.svg';
+import MinusSvg from '@/public/assets/icons/counter/ico-minus.svg';
 
 interface MinusIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
