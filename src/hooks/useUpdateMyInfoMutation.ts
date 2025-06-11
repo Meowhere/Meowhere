@@ -5,7 +5,7 @@ import { User } from '@/src/types/user.types';
 type UpdateMyInfoPayload = {
   nickname?: string;
   newPassword?: string;
-  // profileImageUrl?: string; // 별도 POST로 처리
+  profileImageUrl?: string;
 };
 
 export const useUpdateMyInfoMutation = () => {

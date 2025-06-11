@@ -1,118 +1,66 @@
 'use client';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import UploadImg from '@/public/assets/icons/account/upload-btn.svg';
 import defaultImg from '@/public/assets/icons/account/default-img.png';
 import Image from 'next/image';
-import { User } from '@/src/types/user.types';
+import { useMyInfoQuery } from '@/src/hooks/useMyInfoQuery';
+import { useUploadProfileImageMutation } from '@/src/hooks/useUploadProfileImgMutation';
+import { useUpdateMyInfoMutation } from '@/src/hooks/useUpdateMyInfoMutation';
 
 export default function ProfileItem() {
-  const [user, setUser] = useState<User | null>(null);
-  const [profileImg, setProfileImg] = useState<string | null>(null);
+  const { data: user, isLoading } = useMyInfoQuery();
+  const { mutateAsync: uploadProfileImg, isPending: isUploading } = useUploadProfileImageMutation();
+  const { mutateAsync: updateMyInfo, isPending: isPatching } = useUpdateMyInfoMutation();
+
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [isUploading, setIsUploading] = useState(false);
+  const [localPreview, setLocalPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 사용자 정보 가져오기
-  const fetchUserInfo = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/users/me');
-
-      if (!response.ok) {
-        throw new Error('사용자 정보를 가져오는데 실패했습니다.');
-      }
-
-      const userData: User = await response.json();
-      setUser(userData);
-
-      // 프로필 이미지 설정 (서버에서 가져온 이미지 우선)
-      if (userData.profileImageUrl) {
-        setProfileImg(userData.profileImageUrl);
-      }
-    } catch (error) {
-      console.error('사용자 정보 가져오기 실패:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // 컴포넌트 마운트 시 사용자 정보 가져오기
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
-
+  // 업로드 버튼 클릭
   const handleUploadClick = () => {
-    if (isUploading) return; // 업로드 중이면 클릭 무시
+    if (isUploading || isPatching) return;
     fileInputRef.current?.click();
   };
 
+  // 파일 업로드 처리
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !user) return;
 
     try {
-      setIsUploading(true);
-
-      // 1. 미리보기용 로컬 이미지 설정
+      // 미리보기(로컬) 먼저 세팅
       const reader = new FileReader();
       reader.onload = (event) => {
-        setProfileImg(event.target?.result as string);
+        setLocalPreview(event.target?.result as string);
       };
       reader.readAsDataURL(file);
 
-      // 2. 서버에 이미지 업로드
-      const formData = new FormData();
-      formData.append('image', file); // API에 맞는 필드명 사용
+      // 1. 이미지 업로드 (POST)
+      const uploadResult = await uploadProfileImg(file);
 
-      const uploadResponse = await fetch('/api/users/me/image', {
-        method: 'POST',
-        body: formData,
-      });
+      // 2. PATCH profileImageUrl 업데이트
+      await updateMyInfo({ profileImageUrl: uploadResult.profileImageUrl });
 
-      if (!uploadResponse.ok) {
-        throw new Error('이미지 업로드에 실패했습니다.');
-      }
-
-      const uploadResult = await uploadResponse.json();
-
-      // 3. 업로드된 이미지 URL을 사용자 정보에 반영
-      const updateResponse = await fetch('/api/users/me', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          profileImageUrl: uploadResult.profileImageUrl || uploadResult.imageUrl, // API 응답에 따라 조정
-        }),
-      });
-
-      if (!updateResponse.ok) {
-        throw new Error('프로필 이미지 업데이트에 실패했습니다.');
-      }
-
-      const updatedUser: User = await updateResponse.json();
-      setUser(updatedUser);
-      setProfileImg(updatedUser.profileImageUrl || null);
-    } catch (error) {
-      console.error('이미지 업로드 실패:', error);
-      alert(error instanceof Error ? error.message : '이미지 업로드에 실패했습니다.');
-
-      // 실패 시 원래 이미지로 복원
-      setProfileImg(user?.profileImageUrl || null);
+      // 3. react-query가 알아서 useMyInfoQuery 쿼리 invalidate 함!
+      setTimeout(() => setLocalPreview(null), 500); // 잠깐 프리뷰 보여주고 동기화
+    } catch (error: any) {
+      alert(error?.message || '이미지 업로드에 실패했습니다.');
+      setLocalPreview(null);
     } finally {
-      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
+  // 이미지 클릭: 프리뷰 오픈
   const handleImageClick = () => {
-    if (profileImg) setPreviewOpen(true);
+    if (user?.profileImageUrl || localPreview) setPreviewOpen(true);
   };
 
+  // 프리뷰 닫기
   const handlePreviewClose = () => setPreviewOpen(false);
 
-  // 로딩 중 표시
-  if (loading) {
+  // 로딩/에러 처리
+  if (isLoading) {
     return (
       <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-6 rounded-[20px] bg-white shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'>
         <div className='w-[128px] h-[128px] bg-gray-200 rounded-full animate-pulse'></div>
@@ -123,8 +71,6 @@ export default function ProfileItem() {
       </div>
     );
   }
-
-  // 사용자 정보가 없는 경우
   if (!user) {
     return (
       <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-6 rounded-[20px] bg-white shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'>
@@ -133,11 +79,14 @@ export default function ProfileItem() {
     );
   }
 
+  // 프로필 이미지 보여줄 우선순위: 업로드 프리뷰 > 서버에서 받은 이미지 > 디폴트
+  const imgSrc = localPreview || user.profileImageUrl || defaultImg;
+
   return (
     <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-[22px] rounded-[20px] bg-white shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'>
       <div className='relative w-fit'>
         <Image
-          src={profileImg || defaultImg}
+          src={imgSrc}
           alt='프로필 사진'
           width={128}
           height={128}
@@ -150,7 +99,7 @@ export default function ProfileItem() {
             aria-label='프로필 이미지 업로드'
             onClick={handleUploadClick}
           />
-          {isUploading && (
+          {(isUploading || isPatching) && (
             <div className='absolute right-0 bottom-0 w-[36px] h-[36px] rounded-full bg-black bg-opacity-20 flex items-center justify-center'>
               <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin'></div>
             </div>
@@ -162,7 +111,7 @@ export default function ProfileItem() {
           accept='image/*'
           className='hidden'
           onChange={handleFileChange}
-          disabled={isUploading}
+          disabled={isUploading || isPatching}
         />
       </div>
       <div className='flex flex-col items-center justify-center gap-[8px]'>
@@ -171,14 +120,14 @@ export default function ProfileItem() {
       </div>
 
       {/* 미리보기 모달 */}
-      {previewOpen && profileImg && (
+      {previewOpen && imgSrc && (
         <div
           className='fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50'
           onClick={handlePreviewClose}
         >
           <div className='relative' onClick={(e) => e.stopPropagation()}>
             <Image
-              src={profileImg}
+              src={imgSrc}
               alt='프로필 미리보기'
               width={320}
               height={320}
