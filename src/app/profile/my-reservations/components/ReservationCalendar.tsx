@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Calendar from 'react-calendar';
+import Calendar, { OnArgs } from 'react-calendar';
 import { STATUS_STYLE_MAP } from '@/src/constants/calendar';
 import '@/src/styles/reservation-calendar.css';
 
@@ -11,7 +11,7 @@ import { DropdownItemButton } from '@/src/types/dropdown-menu.types';
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 
 export default function ReservationCalendar() {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date('2025-12-05'));
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const { openReservationModal } = useModal();
   const [selectedMyActivity, setSelectedMyActivity] = useState<MyActivity | null>(null);
   const [myActivities, setMyActivities] = useState<MyActivity[]>([]); // 이걸 드롭다운 컴포넌트에 뿌려줘야 함
@@ -19,7 +19,7 @@ export default function ReservationCalendar() {
     useState<MyActivityReservationsByMonth[]>();
   const [dropdownItems, setDropdownItems] = useState<DropdownItemButton[]>([]);
 
-  const getMyActivities = async () => {
+  const getMyActivities = async (date: Date) => {
     const res = await fetchFromClient('/my-activities');
     const json = await res.json();
     setMyActivities(json.activities);
@@ -30,7 +30,7 @@ export default function ReservationCalendar() {
           label: activity.title,
           onClick: () => {
             setSelectedMyActivity(activity);
-            getMyActivityReservationsByMonth(activity.id, currentDate);
+            getMyActivityReservationsByMonth(activity.id, date);
           },
         })
       );
@@ -54,6 +54,12 @@ export default function ReservationCalendar() {
       activityId,
       date,
     });
+  };
+
+  const handleActiveStartDateChange = ({ action, activeStartDate, value, view }: OnArgs) => {
+    if (!activeStartDate) return;
+
+    setCurrentDate(activeStartDate);
   };
 
   // 상태별 표시 content 구성
@@ -120,8 +126,8 @@ export default function ReservationCalendar() {
   };
 
   useEffect(() => {
-    getMyActivities();
-  }, []);
+    getMyActivities(currentDate);
+  }, [currentDate]);
 
   return (
     <div className='mx-auto min-w-[327px] w-full'>
@@ -144,6 +150,7 @@ export default function ReservationCalendar() {
           else if (Array.isArray(nextValue) && nextValue[0] instanceof Date)
             setCurrentDate(nextValue[0]);
         }}
+        onActiveStartDateChange={handleActiveStartDateChange}
         tileContent={tileContent}
         tileClassName={tileClassName}
         onClickDay={(value) =>
