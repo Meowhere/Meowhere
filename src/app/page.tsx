@@ -20,6 +20,7 @@ export default async function Home({
     `/activities?method=offset&page=1&size=5&sort=most_reviewed`
   );
   const popularData = await popularResponse.json();
+  console.log(popularData);
   const popularActivities = popularData.activities;
 
   const category = searchParams.category || '';
