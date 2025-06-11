@@ -6,7 +6,8 @@ import RecommendList from './_components/RecommendList';
 export default function NotFound() {
   const { data, isError, isLoading } = usePopularActivities(6);
 
-  if (isLoading || isError || !data) return null;
+  // 추천 데이터가 있는지 확인
+  const hasRecommendations = data && data.activities && data.activities.length > 0;
 
   return (
     <div className='min-h-screen flex flex-col items-center'>
@@ -27,8 +28,10 @@ export default function NotFound() {
         </div>
       </div>
       <div className='text-center'>
-        <h2 className='font-semibold text-gray-300 text-2xl lg:text-'>이런 체험은 어떠세요?</h2>
-        <RecommendList activities={data.activities} />
+        <h2 className='font-semibold text-gray-300 text-2xl'>이런 체험은 어떠세요?</h2>
+        {!isLoading && !isError && hasRecommendations && (
+          <RecommendList activities={data.activities} />
+        )}
       </div>
     </div>
   );
