@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useGnbStore } from '@/src/store/gnbStore';
 import { useSearchParams } from 'next/navigation';
-import ArrowIcon from '@/src/components/common/icons/ArrowIcon';
-import { motion } from 'framer-motion';
-
-import SearchFilters from './SearchFilters';
-import SearchButton from './SearchButton';
-import CategorySection from './CategorySection';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useURLQuery } from '@/src/hooks/useURLQuery';
+import { useGnbStore } from '@/src/store/gnbStore';
 import { useUIStore } from '@/src/store/uiStore';
+
+import MobileSearchFilters from '../mobile/MobileSearchFilters';
+import CategorySection from './CategorySection';
+import SearchButton from './SearchButton';
+import ArrowIcon from '@/src/components/common/icons/ArrowIcon';
 
 export default function MainPageGNB() {
   const { backAction, rightButtons, isSearching, setIsSearching, setBackAction } = useGnbStore();
@@ -83,12 +82,7 @@ export default function MainPageGNB() {
       <div className='relative z-10 flex justify-center'>
         <AnimatePresence>
           {isSearching ? (
-            <SearchFilters
-              setIsSearching={setIsSearching}
-              setBackAction={setBackAction}
-              keyword={keyword}
-              key='search'
-            />
+            <MobileSearchFilters keyword={keyword} key='search' />
           ) : (
             <CategorySection key='category' />
           )}
