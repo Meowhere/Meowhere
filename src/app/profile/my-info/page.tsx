@@ -4,10 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useEffect, useState } from 'react';
 import Input from '@/src/components/common/inputs/Input';
-import Textarea from '@/src/components/common/inputs/Textarea';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import { User } from '@/src/types/user.types';
+import { useMyInfoQuery } from '@/src/hooks/useMyInfoQuery';
+import { useUpdateMyInfoMutation } from '@/src/hooks/useUpdateMyInfoMutation';
 
 const myInfoSchema = z
   .object({
@@ -46,9 +47,14 @@ type MyInfoForm = z.infer<typeof myInfoSchema>;
 
 export default function MyInfoPage() {
   const { isDesktop } = useBreakpoint();
-  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 쿼리 훅
+  const { data: user, isLoading, isError } = useMyInfoQuery();
+  // 뮤테이션 훅
+  const { mutate: updateMyInfo, isPending } = useUpdateMyInfoMutation();
 
   const {
     register,
@@ -60,7 +66,6 @@ export default function MyInfoPage() {
     resolver: zodResolver(myInfoSchema),
     defaultValues: {
       nickname: '',
-      bio: '',
       password: '',
       confirmPassword: '',
     },
@@ -68,73 +73,58 @@ export default function MyInfoPage() {
   });
 
   const nicknameValue = watch('nickname', '');
-  const bioValue = watch('bio');
   const pwValue = watch('password', '');
   const pwConfirmValue = watch('confirmPassword', '');
 
+  // user 데이터 받아오면 폼에 set
+  useEffect(() => {
+    if (user) {
+      reset({
+        nickname: user.nickname,
+        password: '',
+        confirmPassword: '',
+      });
+    }
+  }, [user, reset]);
+
   const onSubmit = (data: MyInfoForm) => {
-    alert(JSON.stringify(data, null, 2));
-    // reset(); // 폼 리셋 원하면 주석 해제
+    // user가 없으면 아무 것도 보내지 않음
+    if (!user) return;
+
+    const payload: any = {};
+
+    // 비밀번호, 닉네임 중 변경된 값만 PATCH에 넘기기
+    if (data.nickname !== user.nickname) payload.nickname = data.nickname;
+    if (data.password) payload.newPassword = data.password;
+
+    updateMyInfo(payload, {
+      onSuccess: () => {
+        alert('내 정보가 성공적으로 수정되었습니다!');
+        reset({
+          ...user,
+          nickname: data.nickname,
+          password: '',
+          confirmPassword: '',
+        });
+      },
+      onError: (e: any) => {
+        alert(e?.message || '정보 수정 실패');
+      },
+    });
   };
 
-  // // 변경사항이 있는지 확인
-  // const hasChanges = () => {
-  //   if (!user) return false;
-
-  //   // 닉네임이 변경되었거나
-  //   const nicknameChanged = nicknameValue !== user.nickname;
-
-  //   // 비밀번호가 입력되었을 때
-  //   const passwordEntered = pwValue.length > 0;
-
-  //   return nicknameChanged || passwordEntered;
-  // };
-
-  // const isButtonDisabled = isSubmitting || !hasChanges();
-
-  // // 사용자 정보 가져오기
-  // const fetchUserInfo = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await fetch('/api/users/me');
-
-  //     if (!response.ok) {
-  //       throw new Error('사용자 정보를 가져오는데 실패했습니다.');
-  //     }
-
-  //     const mockUser = { nickname: '테스트유저' } as User;
-  //     setUser(mockUser);
-
-  //     // 폼에 기존 닉네임 값 설정
-  //     setValue('nickname', mockUser.nickname);
-  //   } catch (error) {
-  //     console.error('사용자 정보 가져오기 실패:', error);
-  //     alert('사용자 정보를 가져오는데 실패했습니다.');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // // 컴포넌트 마운트 시 사용자 정보 가져오기
-  // useEffect(() => {
-  //   fetchUserInfo();
-  // }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div className='flex justify-center items-center h-[400px]'>
-  //       <p className='text-gray-600'>사용자 정보를 불러오는 중...</p>
-  //     </div>
-  //   );
-  // }
-
-  // if (!user) {
-  //   return (
-  //     <div className='flex justify-center items-center h-[400px]'>
-  //       <p className='text-red-600'>사용자 정보를 불러올 수 없습니다.</p>
-  //     </div>
-  //   );
-  // }
+  if (isLoading)
+    return (
+      <div className='flex justify-center items-center h-[400px]'>
+        <p className='text-gray-600'>사용자 정보를 불러오는 중...</p>
+      </div>
+    );
+  if (isError || !user)
+    return (
+      <div className='flex justify-center items-center h-[400px]'>
+        <p className='text-red-600'>사용자 정보를 불러올 수 없습니다.</p>
+      </div>
+    );
 
   return (
     <form
@@ -178,7 +168,11 @@ export default function MyInfoPage() {
       {isDesktop && (
         <div className='flex justify-end w-full'>
           <div className='w-[128px]'>
-            <BaseButton variant='primary' disabled className='py-[12px]'>
+            <BaseButton
+              variant='primary'
+              disabled={isPending || !isDirty || !isValid}
+              className='py-[12px]'
+            >
               변경하기
             </BaseButton>
           </div>
