@@ -3,6 +3,7 @@ import '@/src/styles/globals.css';
 import localFont from 'next/font/local';
 import ClientLayout from './client-layout';
 import ModalProvider from '@/src/components/providers/ModalProvider';
+import Toast from '../components/common/toast/Toast';
 
 export const metadata: Metadata = {
   title: '어디가냥',
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang='ko' className={pretendard.className}>
       <body>
         <ClientLayout>
-          {children} <ModalProvider />
+          {children}
+          <ModalProvider />
+          <Toast />
         </ClientLayout>
       </body>
     </html>
