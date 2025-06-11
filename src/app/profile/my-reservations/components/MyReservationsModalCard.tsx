@@ -33,14 +33,16 @@ export default function MyReservationsModalCard({
         <div className='text-[14px] font-semibold text-gray-800'>{reservationInfo.nickname}</div>
         <div className='text-[13px] text-gray-600'>{reservationInfo.headCount}명</div>
       </section>
-      <section className='flex gap-[8px] mt-[18px]'>
-        <BaseButton variant='soft' color='red' onClick={onDecline}>
-          거절
-        </BaseButton>
-        <BaseButton variant='soft' color='blue' onClick={onConfirm}>
-          예약 승인
-        </BaseButton>
-      </section>
+      {reservationInfo.status === 'pending' && (
+        <section className='flex gap-[8px] mt-[18px]'>
+          <BaseButton variant='soft' color='red' onClick={onDecline}>
+            거절
+          </BaseButton>
+          <BaseButton variant='soft' color='blue' onClick={onConfirm}>
+            예약 승인
+          </BaseButton>
+        </section>
+      )}
       {!isLast && <div className='w-full h-[1px] bg-gray-200 mt-[20px]'></div>}
     </article>
   );

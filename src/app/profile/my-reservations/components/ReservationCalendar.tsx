@@ -113,7 +113,7 @@ export default function ReservationCalendar() {
 
     const base = 'flex flex-col min-h-[86px] pt-[10px] pb-[8px] text-[1.1rem] font-semibold';
 
-    if (!isSameMonth) return `${base} text-gray-400 opacity-40`;
+    if (!isSameMonth) return `${base} text-gray-300`;
     if (day === 0) return `${base} text-red-300`;
     if (day === 6) return `${base} text-blue-300`;
     return `${base} text-gray-600`;
