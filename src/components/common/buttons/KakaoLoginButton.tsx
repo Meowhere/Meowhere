@@ -16,7 +16,7 @@ export default function KakaoLoginButton({
     <button
       type='button'
       onClick={onClick}
-      className={`relative w-[25rem] h-[3rem] px-4 border rounded-[0.625rem] text-gray-600 border-gray-400 font-medium text-center w-ful ${className}`}
+      className={`relative h-[3rem] px-4 border rounded-[0.625rem] text-gray-600 font-medium text-center w-full ${className}`}
       aria-label='카카오 로그인'
       {...rest}
     >

@@ -1,8 +1,8 @@
-import { ReservationLabelType } from './reservations-label.types';
+import { ReservationStatus } from './reservations-status.types';
 
 export interface ReservationsCardProps {
   imageUrl: string;
-  label: ReservationLabelType;
+  label: ReservationStatus;
   title: string;
   date: string;
   time: string;
@@ -10,5 +10,4 @@ export interface ReservationsCardProps {
   price: number;
   showCancel?: boolean;
   showReview?: boolean;
-  onClick?: () => void;
 }

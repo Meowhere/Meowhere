@@ -22,14 +22,16 @@ export default function RegisterCalendar() {
       <div className='flex flex-row items-center justify-between'>
         <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
         {isDesktop && (
-          <BaseButton
-            variant='soft'
-            color='blue'
-            className='w-[176px] py-[10px] text-md font-semibold'
-            onClick={handleAddItem}
-          >
-            일정 추가
-          </BaseButton>
+          <div className='w-[176px]'>
+            <BaseButton
+              variant='soft'
+              color='blue'
+              className='py-[10px] text-md font-semibold'
+              onClick={handleAddItem}
+            >
+              일정 추가
+            </BaseButton>
+          </div>
         )}
       </div>
       <div className='flex flex-col gap-[20px]'>
