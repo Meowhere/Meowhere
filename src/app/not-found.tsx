@@ -1,9 +1,7 @@
 'use client';
 import Image from 'next/image';
-import { useBreakpoint } from '../hooks/useBreakpoint';
 
 export default function NotFound() {
-  const { isDesktop } = useBreakpoint();
   return (
     <div className='min-h-screen flex flex-col items-center justify-center'>
       <div className='flex flex-col items-center justify-center gap-[12px] lg:gap-[16px]'>

@@ -9,13 +9,17 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import { Activity } from '@/src/types/activity.types';
+import { usePopularActivities } from '@/src/hooks/usePopularActivities';
 
-export default function PopularActivitiesBanner({
-  popularActivities,
-}: {
-  popularActivities: Activity[];
-}) {
+export default function PopularActivitiesBanner() {
   const { isDesktop } = useBreakpoint();
+
+  const { data, isLoading, isError } = usePopularActivities();
+
+  if (isLoading || isError || !data) return null;
+
+  const popularActivities = data?.activities;
+
   return (
     <Swiper
       spaceBetween={isDesktop ? 32 : 10}

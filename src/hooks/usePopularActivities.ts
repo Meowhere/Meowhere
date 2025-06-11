@@ -9,9 +9,7 @@ export const usePopularActivities = () => {
       const response = await fetchFromClient(
         `/activities?method=offset&page=1&size=5&sort=most_reviewed`
       );
-      const data = await response.json();
-      const popularActivities = data.activities;
-      return popularActivities;
+      return response.json();
     },
     retry: 1,
     staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
