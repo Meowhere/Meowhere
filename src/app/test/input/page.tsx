@@ -1,80 +1,141 @@
 'use client';
-import { useState, useCallback } from 'react';
-import Input from '../../../components/common/inputs/Input';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import Textarea from '../../../components/common/inputs/Textarea';
 
+// zod 스키마 정의
+const formSchema = z.object({
+  scrollableContent: z
+    .string()
+    .min(1, '내용을 입력해주세요')
+    .max(700, '최대 700자까지 입력 가능합니다'),
+  autoResizeContent: z
+    .string()
+    .min(1, '내용을 입력해주세요')
+    .max(700, '최대 700자까지 입력 가능합니다'),
+});
+
+type FormData = z.infer<typeof formSchema>;
+
 export default function Page() {
-  // 모든 상태를 이 페이지에서 관리
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [pw, setPw] = useState('');
-  const [pwError, setPwError] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [nicknameError, setNicknameError] = useState('');
-  const [textarea, setTextarea] = useState('');
-  const [textareaError, setTextareaError] = useState('');
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      scrollableContent: '',
+      autoResizeContent: '',
+    },
+    mode: 'onChange',
+  });
 
-  // 이메일 유효성 검사
-  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setEmail(val);
-    setEmailError(
-      val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) ? '이메일 형식으로 입력해 주세요' : ''
-    );
-  }, []);
+  // watch 값들
+  const scrollableValue = watch('scrollableContent');
+  const autoResizeValue = watch('autoResizeContent');
 
-  // 비밀번호 유효성 검사
-  const handlePwChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setPw(val);
-    setPwError(val.length > 0 && val.length < 6 ? '6자 이상 입력하세요' : '');
-  }, []);
-
-  // 닉네임 유효성 검사
-  const handleNicknameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setNickname(val);
-    setNicknameError(val.length > 0 && val.length < 2 ? '2자 이상 입력하세요' : '');
-  }, []);
-
-  // textarea 유효성 검사 (10자 이상, 700자 이하)
-  const handleTextareaChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value;
-    setTextarea(val);
-    if (val.length > 700) {
-      setTextareaError('700자 이내로 입력해 주세요');
-    } else if (val.length > 0 && val.length < 10) {
-      setTextareaError('10자 이상 입력하세요');
-    } else {
-      setTextareaError('');
-    }
-  }, []);
+  const onSubmit = (data: FormData) => {
+    console.log('폼 데이터:', data);
+    alert('폼이 성공적으로 제출되었습니다!');
+  };
 
   return (
-    <div className='max-w-lg mx-auto py-10'>
+    <form className='max-w-lg mx-auto py-40' onSubmit={handleSubmit(onSubmit)}>
+      {/* Input들 주석 처리 */}
+      {/* 
       <Input
+        name='email'
         label='이메일'
         type='email'
-        value={email}
-        onChange={handleEmailChange}
-        error={emailError}
+        register={register('email', {
+          required: '이메일을 입력해 주세요',
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: '이메일 형식으로 입력해 주세요',
+          },
+        })}
+        error={errors.email?.message}
+        value={emailValue}
       />
       <Input
+        name='password'
         label='비밀번호'
         type='password'
         isPassword
-        value={pw}
-        onChange={handlePwChange}
-        error={pwError}
+        register={register('password', {
+          required: '비밀번호를 입력해 주세요',
+          minLength: { value: 6, message: '6자 이상 입력하세요' },
+        })}
+        error={errors.password?.message}
+        value={pwValue}
       />
       <Input
+        name='nickname'
         label='닉네임'
         type='text'
-        value={nickname}
-        onChange={handleNicknameChange}
-        error={nicknameError}
+        register={register('nickname', {
+          required: '닉네임을 입력해 주세요',
+          minLength: { value: 2, message: '2자 이상 입력하세요' },
+        })}
+        error={errors.nickname?.message}
+        value={nicknameValue}
       />
-      <Textarea value={textarea} onChange={handleTextareaChange} error={textareaError} />
-    </div>
+      */}
+
+      {/* Scrollable Textarea */}
+      <div className='mb-4'>
+        <Textarea
+          {...register('scrollableContent')}
+          name='scrollableContent'
+          placeholder='내용을 입력해 주세요'
+          watchValue={scrollableValue}
+          error={errors.scrollableContent}
+          scrollable={true}
+          autoResize={false}
+          maxLength={700}
+          rows={5}
+        />
+      </div>
+
+      {/* Auto Resize Textarea */}
+      <div className='mb-4'>
+        <Textarea
+          {...register('autoResizeContent')}
+          name='autoResizeContent'
+          placeholder='내용을 입력해 주세요'
+          watchValue={autoResizeValue}
+          error={errors.autoResizeContent}
+          scrollable={false}
+          autoResize={true}
+          maxLength={700}
+          maxHeight='300px'
+        />
+      </div>
+
+      {/* 제출 버튼 */}
+      <button
+        type='submit'
+        className='w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'
+      >
+        제출하기
+      </button>
+
+      {/* 현재 값 표시 (디버깅용) */}
+      <div className='mt-8 p-4 bg-gray-100 rounded-lg'>
+        <h3 className='font-semibold mb-2'>현재 입력 값:</h3>
+        <div className='text-sm'>
+          <p>
+            <strong>Scrollable:</strong> {scrollableValue}
+          </p>
+          <p>
+            <strong>Auto Resize:</strong> {autoResizeValue}
+          </p>
+        </div>
+      </div>
+    </form>
   );
 }
