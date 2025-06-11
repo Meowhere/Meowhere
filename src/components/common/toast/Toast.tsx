@@ -8,6 +8,7 @@ export default function Toast() {
   const { isVisible, type, message } = useToastStore();
 
   const icon = type === 'success' ? <CheckCircleIcon size={40} /> : <AlertCircleIcon size={40} />;
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -19,7 +20,7 @@ export default function Toast() {
             className='border px-[32px] py-[18px] rounded-[40px] shadow flex items-center gap-[20px] bg-white'
           >
             {icon}
-            <span className='text-gray-800 text-xl font-bold'>{message}</span>
+            <span className='text-gray-800 text-xl font-semibold'>{message}</span>
           </motion.div>
         </div>
       )}
