@@ -1,3 +1,6 @@
+import { Category } from './activity.types';
+import { Activity } from './activity.types';
+
 export interface RatingLabelProps {
   rating: number;
 }
@@ -7,7 +10,7 @@ export interface MyActivitiesProps extends RatingLabelProps {
   userId?: number;
   title: string;
   description?: string;
-  category?: string;
+  category?: Category;
   price: number;
   address?: string;
   bannerImageUrl: string;
@@ -22,3 +25,9 @@ export interface MyActivitiesProps extends RatingLabelProps {
 //   onEdit: () => void;
 //   onDelete: () => void;
 // }
+
+export interface ActivitiesPage {
+  activities: Activity[];
+  totalCount: number;
+  cursorId: number | null;
+}

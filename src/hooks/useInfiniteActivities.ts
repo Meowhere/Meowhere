@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
+import { ActivitiesPage } from '../types/my-activities.types';
 
 const PAGE_SIZE = 5;
 
@@ -21,7 +22,7 @@ export function useInfiniteActivities() {
     queryKey: ['my-activities'],
     queryFn: fetchActivities,
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => {
+    getNextPageParam: (lastPage: ActivitiesPage) => {
       // 마지막 페이지라면 undefined
       if (!lastPage.activities || lastPage.activities.length < PAGE_SIZE) return undefined;
       // 마지막 activity의 id를 cursorId로 사용
