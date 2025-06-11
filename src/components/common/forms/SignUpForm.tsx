@@ -38,6 +38,8 @@ export default function SignUpForm({ signUpForm }: SignUpFormProps) {
 
   // 회원가입
   const handleSignUp = async (data: SignUpFormValues) => {
+    const isAccountPage = pathname === '/account';
+
     try {
       await signUpAndLogin(data);
       if (isAccountPage) {
@@ -54,8 +56,6 @@ export default function SignUpForm({ signUpForm }: SignUpFormProps) {
   const handleKakaoLogin = () => {
     kakaoLoginRequest();
   };
-
-  const isAccountPage = pathname === '/account';
 
   return (
     <form onSubmit={signUpForm.handleSubmit(handleSignUp)}>
