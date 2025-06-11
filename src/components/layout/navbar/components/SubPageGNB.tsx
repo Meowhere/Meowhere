@@ -8,7 +8,7 @@ export default function SubPageGNB() {
   return (
     <nav className='fixed top-0 left-0 w-full border-b border-gray-200 bg-white text-xs z-30'>
       <div className='flex justify-center gap-[24px] w-full h-[48px] p-[14px] px-[24px] items-center'>
-        {backAction || rightButtons.length ? (
+        {Boolean(backAction || rightButtons.length) && (
           <div className='flex justify-start w-[60px]'>
             <ArrowIcon
               direction='left'
@@ -17,14 +17,12 @@ export default function SubPageGNB() {
               aria-label='뒤로가기'
             />
           </div>
-        ) : (
-          ''
         )}
         <div className='flex flex-col justify-center items-center flex-1 gap-[4px]'>
           <span className='text-md leading-none'>{title}</span>
           {subtitle && <span className='text-xs leading-none text-gray-500'>{subtitle}</span>}
         </div>
-        {backAction || rightButtons.length ? (
+        {Boolean(backAction || rightButtons.length) && (
           <div className='flex justify-end items-center gap-[12px] w-[60px]'>
             {rightButtons.map((button, index) =>
               React.cloneElement(button as ReactElement, {
@@ -32,8 +30,6 @@ export default function SubPageGNB() {
               })
             )}
           </div>
-        ) : (
-          ''
         )}
       </div>
     </nav>

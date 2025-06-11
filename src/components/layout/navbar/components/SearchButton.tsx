@@ -22,18 +22,20 @@ export default function SearchButton({
   keyword: string;
   isSearching: boolean;
 }) {
+  function handleSearch() {
+    if (isSearching) return;
+
+    setIsSearching(true);
+    setBackAction(() => {
+      setIsSearching(false);
+      setBackAction(null);
+    });
+  }
+
   return (
     <button
       className='w-full h-full bg-white border border-gray-200 text-gray-800 rounded-full text-sm flex items-center justify-center gap-2 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'
-      onClick={() => {
-        if (isSearching) return;
-
-        setIsSearching(true);
-        setBackAction(() => {
-          setIsSearching(false);
-          setBackAction(null);
-        });
-      }}
+      onClick={handleSearch}
     >
       {/* 검색 중 */}
       {isSearching ? (
