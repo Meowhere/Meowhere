@@ -13,7 +13,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const { isDesktop } = useBreakpoint();
   const { preventBodyScroll } = useUIStore();
 
-  const showFooter = isDesktop || !pathname.startsWith('/my-page');
+  const showFooter = isDesktop || !pathname.startsWith('/profile');
   const showBNB = !isDesktop && !pathname.startsWith('/activities');
 
   const getGNBHeight = () => {

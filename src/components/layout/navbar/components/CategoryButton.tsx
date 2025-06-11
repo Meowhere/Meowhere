@@ -13,14 +13,14 @@ export default function CategoryButton({ category, icon, value, isSelected }: Na
 
   return (
     <button
-      className={`${isSelected ? 'text-gray-800 border-b border-gray-800' : 'text-gray-500'} flex flex-col items-center gap-[4px] min-w-[78px] cursor-pointer pb-[8px]`}
+      className={`${isSelected ? 'text-gray-800 border-b lg:border-b-2 border-gray-800' : 'text-gray-500'} flex flex-col items-center gap-[4px] min-w-[78px] lg:min-w-[120px] h-full lg:pt-[16px] cursor-pointer pb-[8px]`}
       onClick={() => {
         updateQuery('category', value);
       }}
       aria-label={category}
     >
       {icon}
-      <span className='text-xs'>{category}</span>
+      <span className='text-xs lg:text-md'>{category}</span>
     </button>
   );
 }

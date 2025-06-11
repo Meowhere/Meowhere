@@ -26,7 +26,7 @@ export default function NotFoundActivities() {
               variant='soft'
               color='red'
               children='체험 등록하러 가기'
-              className='w-[180px]'
+              className='w-[180px] bg-primary-100 text-primary-300 text-md font-semibold'
               onClick={() => {
                 router.push('/profile/my-activities/register');
               }}
