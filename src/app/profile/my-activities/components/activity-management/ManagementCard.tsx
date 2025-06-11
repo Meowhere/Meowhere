@@ -2,7 +2,7 @@
 import RatingLabel from './RatingLabel';
 import { MyActivitiesProps } from '@/src/types/my-activities.types';
 import KebabButton from '@/src/components/common/buttons/KebabButton';
-import DropdownMenu from '@/src/components/common/dropdowns/dropdown-menu/DropdownMenu';
+import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
 import { useState } from 'react';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Image from 'next/image';
