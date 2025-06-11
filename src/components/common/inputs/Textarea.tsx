@@ -1,60 +1,105 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect, forwardRef } from 'react';
 import clsx from 'clsx';
 import { TextareaProps } from '../../../types/input.types';
 
-// 반응형 기본 rows 계산 함수
-function getResponsiveRows() {
-  if (typeof window === 'undefined') return 5; // SSR-safe
-  const width = window.innerWidth;
-  if (width < 640) return 5; // 모바일(sm 이하)
-  if (width < 1024) return 7; // 태블릿(md/lg)
-  return 10; // 데스크탑(xl 이상)
-}
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
+  {
+    name,
+    watchValue = '',
+    error,
+    placeholder = '내용을 입력해 주세요',
+    className,
+    disabled = false,
+    required = false,
+    maxLength = 700,
+    rows = 5,
+    autoResize = false,
+    scrollable = true,
+    maxHeight = '1500px',
+    ...rest
+  },
+  ref
+) {
+  const internalRef = useRef<HTMLTextAreaElement>(null);
+  // const textAreaRef = (ref as React.RefObject<HTMLTextAreaElement>) || internalRef;
 
-export default function Textarea({ value, onChange, error, className }: TextareaProps) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [rows, setRows] = useState<number>(getResponsiveRows());
+  // 에러 메시지 처리
+  const errorMessage = typeof error === 'string' ? error : error?.message;
 
-  // 반응형 rows: 화면 크기 변경 시 rows 값 업데이트
-  useEffect(() => {
-    const updateRows = () => setRows(getResponsiveRows());
-    window.addEventListener('resize', updateRows);
-    updateRows();
-    return () => window.removeEventListener('resize', updateRows);
-  }, []);
-
-  // 자동 높이 조절 (줄 수 증가)
-  useEffect(() => {
-    const el = textareaRef.current;
-    if (el) {
+  // 자동 높이 조절 함수
+  const adjustHeight = () => {
+    const el = internalRef.current;
+    if (el && autoResize) {
       el.style.height = 'auto';
-      el.style.height = `${el.scrollHeight}px`;
+      const scrollHeight = el.scrollHeight;
+      const maxHeightValue = parseInt(maxHeight);
+      if (scrollHeight <= maxHeightValue) {
+        el.style.height = `${scrollHeight}px`;
+        el.style.overflowY = 'hidden';
+      } else {
+        el.style.height = maxHeight;
+        el.style.overflowY = 'auto';
+      }
     }
-  }, [value]);
+  };
+
+  // watchValue 변경시 높이 조절
+  useEffect(() => {
+    if (autoResize) {
+      adjustHeight();
+    }
+  }, [watchValue, autoResize]);
 
   return (
     <div className={clsx('w-full mb-6 relative', className)}>
       <div
         className={clsx(
-          'px-6 py-4 rounded-2xl border bg-white relative',
-          error ? 'border-red-300' : 'border-gray-200 focus-within:border-gray-200'
+          'px-[20px] py-[12px] rounded-2xl border bg-white relative transition-colors duration-200',
+          error ? 'border-red-300' : 'border-gray-200',
+          disabled && 'bg-gray-50 cursor-not-allowed'
         )}
       >
         <textarea
-          value={value}
-          onChange={onChange}
-          rows={rows}
-          ref={textareaRef}
-          maxLength={700}
-          className='w-full bg-transparent border-none focus:outline-none resize-none text-sm font-regular text-gray-800 pt-6'
-          // style={{ minHeight: '10rem' }}
+          {...rest}
+          ref={(el) => {
+            // 내부 ref, 외부 ref 둘 다 연결
+            internalRef.current = el;
+            if (typeof ref === 'function') ref(el);
+            else if (ref) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = el;
+          }}
+          name={name}
+          rows={autoResize ? 1 : rows}
+          maxLength={maxLength}
+          placeholder={placeholder}
+          disabled={disabled}
+          onInput={adjustHeight}
+          className={clsx(
+            'w-full bg-transparent border-none focus:outline-none resize-none text-md font-regular placeholder:text-gray-500',
+            autoResize ? 'scrollbar-hide' : '',
+            errorMessage ? 'text-red-300' : 'text-gray-800',
+            disabled && 'cursor-not-allowed text-gray-400'
+          )}
         />
-        <div className='flex justify-between items-center mt-2'>
-          <span className='text-gray-400 text-xs'>{value.length} / 700</span>
-        </div>
+        {/* 글자 수 카운터 */}
+        {maxLength && (
+          <div className='flex justify-end items-center mt-2'>
+            <span
+              className={clsx(
+                'text-xs',
+                (watchValue?.length || 0) > maxLength * 0.9 ? 'text-red-400' : 'text-gray-400'
+              )}
+            >
+              {watchValue?.length || 0} / {maxLength}
+            </span>
+          </div>
+        )}
       </div>
-      {error && <div className='text-red-300 text-[15px] mt-2 ml-2'>{error}</div>}
+
+      {/* Error Message */}
+      {errorMessage && <div className='text-red-300 text-md mt-2 ml-2'>{errorMessage}</div>}
     </div>
   );
-}
+});
+
+export default Textarea;
