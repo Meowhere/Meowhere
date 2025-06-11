@@ -1,8 +1,10 @@
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 
 import { Activity, Category } from '../types/activity.types';
+import CategorySection from '../components/layout/navbar/components/CategorySection';
 import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
 import ActivityList from './_components/ActivityList';
+import DesktopSearchFilters from '../components/layout/navbar/desktop/DesktopSearchFilters';
 
 export default async function Home({
   searchParams: searchParamsPromise,
@@ -48,6 +50,10 @@ export default async function Home({
   return (
     <>
       <PopularActivitiesBanner popularActivities={popularActivities} />
+      <DesktopSearchFilters isForPage />
+      <div className='hidden lg:sticky mt-[88px] top-[95px] z-40 lg:flex lg:justify-center w-full bg-white border-b border-gray-200'>
+        <CategorySection />
+      </div>
       <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
     </>
   );

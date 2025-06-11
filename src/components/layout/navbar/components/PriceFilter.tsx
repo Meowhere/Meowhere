@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import FilterSection from './FilterSection';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 export default function PriceFilter({
   openedSearchSection,
@@ -15,8 +16,8 @@ export default function PriceFilter({
   setSelectedMinPrice,
   setSelectedMaxPrice,
 }: {
-  openedSearchSection: 'place' | 'price';
-  setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price'>>;
+  openedSearchSection: 'place' | 'price' | '';
+  setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price' | ''>>;
   selectedMinPrice: number;
   selectedMaxPrice: number;
   setSelectedMinPrice: React.Dispatch<React.SetStateAction<number>>;
@@ -32,6 +33,7 @@ export default function PriceFilter({
   const searchParams = useSearchParams();
   const paramsMinPrice = Number(searchParams.get('min-price'));
   const paramsMaxPrice = Number(searchParams.get('max-price'));
+  const isDesktop = useBreakpoint();
 
   useEffect(() => {
     if (selectedMinPrice === 0) setSelectedMinPrice(paramsMinPrice || minPrice); //최소 가격 슬라이더로 선택된 가격이 0이면 -> 파라미터의 가격으로 설정 || 없으면 최소 가격으로 설정
@@ -42,7 +44,7 @@ export default function PriceFilter({
   return (
     <FilterSection
       title='가격 범위'
-      isOpen={openedSearchSection === 'price'}
+      isOpen={isDesktop ? true : openedSearchSection === 'place'}
       onClick={() => setOpenedSearchSection('price')}
       value={
         minPrice === selectedMinPrice && maxPrice === selectedMaxPrice
@@ -54,6 +56,7 @@ export default function PriceFilter({
         setSelectedMaxPrice(maxPrice);
         setOpenedSearchSection('place');
       }}
+      className='h-full flex flex-col justify-start items-center gap-[16px]'
     >
       {/* 그래프 */}
       <div className='flex justify-start items-end w-full h-[80px] gap-[2px] translate-y-[14px] px-[8px]'>
