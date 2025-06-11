@@ -1,7 +1,10 @@
 'use client';
 import Image from 'next/image';
+import { usePopularActivities } from '../hooks/usePopularActivities';
 
 export default function NotFound() {
+  const { data, isError, isLoading, error } = usePopularActivities(6);
+
   return (
     <div className='min-h-screen flex flex-col items-center justify-center'>
       <div className='flex flex-col items-center justify-center gap-[12px] lg:gap-[16px]'>
