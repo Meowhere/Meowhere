@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 import { PopularActivitiesResponse } from '../types/activity.types';
 
-export const usePopularActivities = () => {
+export const usePopularActivities = (size: number) => {
   return useQuery<PopularActivitiesResponse>({
     queryKey: ['popular-activities'],
     queryFn: async () => {
       const response = await fetchFromClient(
-        `/activities?method=offset&page=1&size=5&sort=most_reviewed`
+        `/activities?method=offset&page=1&size=${size}&sort=most_reviewed`
       );
       return response.json();
     },

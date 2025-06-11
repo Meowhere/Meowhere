@@ -14,11 +14,19 @@ import { usePopularActivities } from '@/src/hooks/usePopularActivities';
 export default function PopularActivitiesBanner() {
   const { isDesktop } = useBreakpoint();
 
-  const { data, isLoading, isError } = usePopularActivities();
+  const { data, isLoading, isError } = usePopularActivities(5);
 
-  if (isLoading || isError || !data) return null;
+  if (isLoading) {
+    return <div className='h-[200px] lg:h-[524px] bg-gray-200 animate-pulse rounded-[24px]' />;
+  }
 
-  const popularActivities = data?.activities;
+  if (isError || !data?.activities?.length) {
+    return (
+      <div className='h-[200px] lg:h-[524px] bg-gray-100 flex items-center justify-center'>
+        <p className='text-gray-500'>인기 체험을 불러올 수 없습니다.</p>
+      </div>
+    );
+  }
 
   return (
     <Swiper
@@ -36,7 +44,7 @@ export default function PopularActivitiesBanner() {
       }}
       loop
     >
-      {popularActivities.map((item: Activity) => (
+      {data.activities.map((item: Activity) => (
         <SwiperSlide key={item.id}>
           <div className='lg:rounded-[24px] lg:h-[524px] w-full h-[200px] bg-gray-200 cursor-pointer overflow-hidden relative'>
             <div className='absolute top-0 left-0 pl-[8vw] w-full h-full flex flex-col justify-center items-start z-10 bg-gradient-to-r from-black/50 to-transparent'>

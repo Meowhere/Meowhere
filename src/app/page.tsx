@@ -1,9 +1,7 @@
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
-
 import { Activity, Category } from '../types/activity.types';
 import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
 import ActivityList from './_components/ActivityList';
-import { usePopularActivities } from '../hooks/usePopularActivities';
 
 export default async function Home({
   searchParams: searchParamsPromise,
