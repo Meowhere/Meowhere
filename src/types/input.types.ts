@@ -14,8 +14,17 @@ export interface InputProps {
 }
 
 export interface TextareaProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  error?: string;
+  label?: string;
+  name?: string;
+  watchValue?: string; // watch로부터 받은 현재 값 (floating label용)
+  error?: FieldError | string;
   className?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  required?: boolean;
+  maxLength?: number;
+  rows?: number;
+  autoResize?: boolean; // 자동 높이 조절 여부
+  scrollable?: boolean; // 스크롤 허용 여부
+  maxHeight?: string; // 최대 높이 (autoResize 사용시)
 }
