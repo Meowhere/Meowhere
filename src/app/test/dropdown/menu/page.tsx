@@ -1,50 +1,32 @@
 'use client';
 
 import { useState } from 'react';
-import DropdownMenu from '../../../../components/common/dropdowns/dropdown-menu/DropdownMenu';
-import {
-  DROPDOWN_ITEM_TYPES,
-  RESERVATION_STATUS_LABELS,
-  POST_ACTION_LABELS,
-} from '../../../../constants/dropdown';
+import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
+import { DropdownItemButton, DropdownItemData } from '@/src/types/dropdown-menu.types';
 
 export default function DropdownMenuTestPage() {
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleAction = (label: string) => {
+    console.log('선택된 값:', label);
+  };
+
+  const commonItems: DropdownItemData[] = [
+    { type: 'button', label: '예약 완료', onClick: () => {} },
+    { type: 'button', label: '예약 승인', onClick: () => {} },
+    { type: 'button', label: '예약 취소', onClick: () => {} },
+    { type: 'button', label: '예약 거절', onClick: () => {} },
+    { type: 'button', label: '체험 완료', onClick: () => {} },
+  ];
+
   return (
     <div className='flex flex-col gap-10 p-10 bg-gray-50 min-h-screen'>
-      <h1 className='text-2xl font-bold'>DropdownMenu Test Cases</h1>
+      <h1 className='text-2xl font-bold'>DropdownMenu Test Page</h1>
 
       {/* 1. Desktop - 버튼만 */}
       <div>
         <h2 className='font-semibold mb-2'>1. Desktop - 버튼만</h2>
-        <DropdownMenu
-          items={[
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.COMPLETED,
-              onClick: () => {},
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.APPROVED,
-              onClick: () => {},
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.CANCELED,
-              onClick: () => {},
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.REJECTED,
-              onClick: () => {},
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.EXPERIENCE_COMPLETED,
-              onClick: () => {},
-            },
-          ]}
-        />
+        <DropdownMenu items={commonItems} onItemClick={handleAction} onClose={() => {}} />
       </div>
 
       {/* 2. Desktop - 링크 + 버튼 */}
@@ -52,117 +34,73 @@ export default function DropdownMenuTestPage() {
         <h2 className='font-semibold mb-2'>2. Desktop - 링크 + 버튼</h2>
         <DropdownMenu
           items={[
-            {
-              type: DROPDOWN_ITEM_TYPES.LINK,
-              label: POST_ACTION_LABELS.EDIT,
-              href: '/page',
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: POST_ACTION_LABELS.DELETE,
-              onClick: () => {},
-              isDanger: true,
-            },
+            { type: 'link', label: '수정하기', href: '/edit' },
+            { type: 'button', label: '삭제', onClick: () => {}, isDanger: true },
           ]}
+          onItemClick={handleAction}
+          onClose={() => {}}
         />
       </div>
 
-      {/* 3. Mobile - title + 버튼 리스트 + 하단 취소 버튼 */}
+      {/* 3. Mobile - 타이틀 + 버튼 + 하단 취소 */}
       <div>
         <h2 className='font-semibold mb-2'>3. Mobile - 타이틀 + 취소 버튼</h2>
         <DropdownMenu
           isMobile
           title='체험 상태'
-          items={[
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.COMPLETED,
-              onClick: () => {},
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.APPROVED,
-              onClick: () => {},
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.CANCELED,
-              onClick: () => {},
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.REJECTED,
-              onClick: () => {},
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: RESERVATION_STATUS_LABELS.EXPERIENCE_COMPLETED,
-              onClick: () => {},
-            },
-          ]}
+          items={commonItems}
           bottomButton={{
-            type: DROPDOWN_ITEM_TYPES.BUTTON,
-            label: POST_ACTION_LABELS.CANCEL,
-            onClick: () => alert('취소'),
+            type: 'button',
+            label: '취소',
+            onClick: () => setIsOpen(false),
           }}
+          onItemClick={(label) => {
+            handleAction(label);
+            setIsOpen(false);
+          }}
+          onClose={() => setIsOpen(false)}
         />
       </div>
 
-      {/* 4. Mobile - 링크 포함 + 하단 삭제 버튼 */}
-      <div>
-        <h2 className='font-semibold mb-2'>
-          4. Mobile - 링크 포함 + 삭제 버튼
-        </h2>
+      {/* 4. Mobile - 링크 포함 + 삭제 버튼 */}
+      {/* <div>
+        <h2 className='font-semibold mb-2'>4. Mobile - 링크 포함 + 삭제 버튼</h2>
         <DropdownMenu
           isMobile
           title='함께 배우면 즐거운 스트릿 댄스'
           items={[
-            {
-              type: DROPDOWN_ITEM_TYPES.LINK,
-              label: POST_ACTION_LABELS.EDIT,
-              href: '/page',
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: POST_ACTION_LABELS.DELETE,
-              onClick: () => {},
-              isDanger: true,
-            },
+            { type: 'link', label: '수정하기', href: '/edit' },
+            { type: 'button', label: '삭제', onClick: () => {}, isDanger: true },
           ]}
           bottomButton={{
-            type: DROPDOWN_ITEM_TYPES.BUTTON,
-            label: POST_ACTION_LABELS.CANCEL,
-            onClick: () => {},
+            type: 'button',
+            label: '취소',
+            onClick: () => alert('닫기'),
           }}
+          onItemClick={handleItemClick}
+          onClose={() => {}}
         />
-      </div>
+      </div> */}
 
       {/* 5. Mobile - 게시글 dropdown */}
-      <div>
+      {/* <div>
         <h2 className='font-semibold mb-2'>5. Mobile - 게시글 dropdown</h2>
         <DropdownMenu
           isMobile
           title='게시물 관리'
           items={[
-            {
-              type: DROPDOWN_ITEM_TYPES.LINK,
-              label: POST_ACTION_LABELS.EDIT,
-              href: '/page',
-            },
-            {
-              type: DROPDOWN_ITEM_TYPES.BUTTON,
-              label: POST_ACTION_LABELS.DELETE,
-              onClick: () => {},
-              isDanger: true,
-            },
+            { type: 'link', label: '게시물 수정', href: '/edit' },
+            { type: 'button', label: '게시물 삭제', onClick: () => {}, isDanger: true },
           ]}
           bottomButton={{
-            type: DROPDOWN_ITEM_TYPES.BUTTON,
-            label: POST_ACTION_LABELS.CANCEL,
-            onClick: () => {},
+            type: 'button',
+            label: '취소',
+            onClick: () => alert('취소'),
           }}
+          onItemClick={handleItemClick}
+          onClose={() => {}}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

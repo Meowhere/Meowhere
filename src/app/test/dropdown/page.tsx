@@ -1,11 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import DropdownMenu from '../../../components/common/dropdowns/dropdown-menu/DropdownMenu';
-import {
-  DROPDOWN_ITEM_TYPES,
-  RESERVATION_STATUS_LABELS,
-} from '../../../constants/dropdown';
+import DropdownMenu from '../../../components/common/dropdowns/DropdownMenu';
+import { DROPDOWN_ITEM_TYPES, RESERVATION_STATUS_LABELS } from '../../../constants/dropdown';
 
 export default function DropdownTestPage() {
   const [isOpen, setIsOpen] = useState(false);

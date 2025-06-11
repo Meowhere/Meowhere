@@ -1,19 +1,8 @@
-export interface ButtonItemProps {
-  type: 'button';
+export interface DropdownItemProps {
   label: string;
+  isMobile?: boolean;
+  isDanger?: boolean;
+  disabled?: boolean;
   onClick: () => void;
-  isMobile?: boolean;
-  isDanger?: boolean;
-  disabled?: boolean;
+  onClose: () => void;
 }
-
-export interface LinkItemProps {
-  type: 'link';
-  label: string;
-  href: string;
-  isMobile?: boolean;
-  isDanger?: boolean;
-  disabled?: boolean;
-}
-
-export type DropdownItemProps = ButtonItemProps | LinkItemProps;
