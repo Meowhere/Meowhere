@@ -104,7 +104,9 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
           <div className='flex flex-col gap-[4px] min-w-0'>
             <p className='text-sm font-regular text-gray-500 truncate'>
               {selectedSchedule
-                ? `${format(parseISO(selectedSchedule.date), 'M월 d일', { locale: ko })}, ${count}명`
+                ? `${format(new Date(selectedSchedule.date + 'T00:00:00+09:00'), 'M월 d일', {
+                    locale: ko,
+                  })}, ${count}명`
                 : '날짜, 인원 수'}
             </p>
             <p className='text-[2rem] font-semibold text-gray-800 truncate'>

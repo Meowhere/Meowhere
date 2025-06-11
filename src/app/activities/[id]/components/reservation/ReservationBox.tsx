@@ -10,11 +10,10 @@ interface ReservationBoxProps {
 }
 
 export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) {
-  const { isMobile, hasMounted } = useBreakpoint();
+  const { isMobile, isTablet, hasMounted } = useBreakpoint();
   const { openScheduleModal } = useModal();
 
-  // hasMounted가 false면 SSR 환경이므로 렌더하지 않음
-  if (typeof window === 'undefined' || !hasMounted) return null;
+  if (!hasMounted) return null;
 
   const handleOpenDateModal = () => {
     openScheduleModal({
@@ -23,8 +22,8 @@ export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) 
     });
   };
 
-  // 모바일일 때만 하단 예약 UI 표시
-  if (isMobile) {
+  // 모바일 또는 태블릿일 때만 하단 예약 UI 표시
+  if (isMobile || isTablet) {
     return (
       <ReservationMobileFooter
         pricePerPerson={pricePerPerson}

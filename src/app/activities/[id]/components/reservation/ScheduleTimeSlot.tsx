@@ -32,12 +32,17 @@ export default function ScheduleTimeSlot({
   price,
 }: ScheduleTimeSlotProps) {
   const { id, startTime, endTime } = schedule;
-  const inputId = `schedule-${date}-${id}`;
+  const inputId = `schedule-${date.replaceAll('-', '')}-${id}`;
 
-  const formattedStartTime = format(parse(startTime, 'HH:mm', new Date()), 'aa h:mm', {
+  const [startHour, startMinute] = startTime.split(':').map(Number);
+  const [endHour, endMinute] = endTime.split(':').map(Number);
+
+  const formattedStartTime = format(new Date(0, 0, 0, startHour, startMinute), 'aa h:mm', {
     locale: ko,
   });
-  const formattedEndTime = format(parse(endTime, 'HH:mm', new Date()), 'aa h:mm', { locale: ko });
+  const formattedEndTime = format(new Date(0, 0, 0, endHour, endMinute), 'aa h:mm', {
+    locale: ko,
+  });
 
   return (
     <label

@@ -19,20 +19,21 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
   const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return;
+
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+      (entries) => {
+        if (entries[0].isIntersecting) {
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }
+      { threshold: 0.1 }
     );
 
-    const current = observerRef.current;
-    if (current) observer.observe(current);
+    if (observerRef.current) observer.observe(observerRef.current);
 
     return () => {
-      if (current) observer.unobserve(current);
+      if (observerRef.current) observer.unobserve(observerRef.current);
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
@@ -46,7 +47,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
         </span>
         <div className='flex flex-row items-center gap-[4px]'>
           <StarFillIcon size={18} className='text-yellow-200' />
-          <span className='text-[2.2rem] font-semibold text-gray-800'>{rating.toFixed(1)}</span>
+          <span className='text-sm font-medium text-black'>{Number(rating).toFixed(1)}</span>
         </div>
       </div>
 

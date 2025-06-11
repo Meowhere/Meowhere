@@ -1,7 +1,5 @@
 'use client';
 
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale/ko';
 import { formatScheduleDate } from '@/src/utils/date';
 import { groupSchedulesByDate } from '@/src/utils/schedule';
 import CalendarButton from '../common/CalendarButton';
@@ -15,14 +13,6 @@ interface ScheduleListProps {
   price: number;
 }
 
-const styles = {
-  container: 'flex flex-col gap-[16px]',
-  header: 'flex items-center justify-between',
-  title: 'text-[2.2rem] font-semibold text-gray-800 mt-[16px]',
-  dateGroup: 'mb-[12px] text-lg font-semibold text-gray-800',
-  timeSlots: 'flex flex-col gap-[12px]',
-};
-
 export default function ScheduleList({
   schedules,
   selectedSchedule,
@@ -32,9 +22,9 @@ export default function ScheduleList({
   const groupedByDate = groupSchedulesByDate(schedules);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <p className={styles.title}>체험 날짜</p>
+    <div className='flex flex-col gap-[16px]'>
+      <div className='flex items-center justify-between'>
+        <p className='text-[2.2rem] font-semibold text-gray-800 mt-[16px]'>체험 날짜</p>
         <CalendarButton
           onClick={() => {
             console.log('캘린더 버튼 클릭됨');
@@ -44,18 +34,24 @@ export default function ScheduleList({
       </div>
       {Object.entries(groupedByDate).map(([date, timeSlots]) => (
         <div key={date}>
-          <p className={styles.dateGroup}>{formatScheduleDate(date)}</p>
-          <div className={styles.timeSlots}>
-            {timeSlots.map((schedule) => (
-              <ScheduleTimeSlot
-                key={`${date}-${schedule.id}`}
-                schedule={schedule}
-                date={date}
-                isSelected={selectedSchedule?.id === schedule.id}
-                onSelect={onScheduleSelect}
-                price={price}
-              />
-            ))}
+          <p className='mb-[12px] text-lg font-semibold text-gray-800'>
+            {formatScheduleDate(date)}
+          </p>
+          <div className='flex flex-col gap-[12px]'>
+            {timeSlots.map((schedule) => {
+              const uniqueKey = `${date}-${schedule.startTime}-${schedule.endTime}`;
+
+              return (
+                <ScheduleTimeSlot
+                  key={uniqueKey}
+                  schedule={schedule}
+                  date={date}
+                  isSelected={selectedSchedule?.id === schedule.id}
+                  onSelect={onScheduleSelect}
+                  price={price}
+                />
+              );
+            })}
           </div>
         </div>
       ))}

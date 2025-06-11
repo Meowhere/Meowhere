@@ -45,10 +45,10 @@ export default function ReviewCard({
       <div className='flex items-center gap-[8px]'>
         <Image
           src={profileImageUrl}
-          alt={nickname}
+          alt={`${nickname}의 프로필 이미지`}
           width={38}
           height={38}
-          className='rounded-full object-cover'
+          className='w-[38px] h-[38px] rounded-full object-cover'
         />
         <p className='text-xs font-medium text-black'>{nickname}</p>
       </div>
