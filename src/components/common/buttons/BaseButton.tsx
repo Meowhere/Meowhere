@@ -33,7 +33,7 @@ export default function BaseButton({
   const isSoft = variant === 'soft';
 
   const buttonClasses = clsx(
-    'px-4 py-3 text-center rounded-[0.625rem] font-semibold transition-colors duration-200',
+    'w-full px-4 py-3 text-center rounded-[10px] font-semibold transition-colors duration-200',
     disabled ? disabledClasses : isSoft ? softColors[color] : variantClasses[variant],
     className
   );
