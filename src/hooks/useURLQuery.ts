@@ -3,17 +3,18 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 interface QueryUpdater {
   updateQuery: (key: string, value: string) => void;
   removeQuery: (key: string) => void;
+  resetQueries: () => void;
   updateMultipleQueries: (updates: Record<string, string>) => void;
 }
 
-export function useQueryUpdate(): QueryUpdater {
+export function useURLQuery(): QueryUpdater {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
   // 공통 헬퍼
   const isValidKey = (key: string) => {
-    return key && key.trim() !== '' ? true : false;
+    return !!key?.trim();
   };
 
   // 현재 페이지의 쿼리 업데이트
@@ -47,5 +48,9 @@ export function useQueryUpdate(): QueryUpdater {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  return { updateQuery, removeQuery, updateMultipleQueries };
+  const resetQueries = () => {
+    router.push(`${pathname}`);
+  };
+
+  return { updateQuery, removeQuery, updateMultipleQueries, resetQueries };
 }

@@ -3,7 +3,8 @@ import { useGnbStore } from '../store/gnbStore';
 
 interface UseGnbProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
+  isSearching?: boolean;
   backAction?: () => void;
   rightButtons?: React.ReactNode[];
   resetOnUnmount?: boolean;
@@ -11,16 +12,19 @@ interface UseGnbProps {
 
 export function useGnb({
   title,
-  subtitle,
+  subtitle = '',
+  isSearching = false,
   backAction,
   rightButtons = [],
   resetOnUnmount = true,
 }: UseGnbProps) {
-  const { setTitle, setSubtitle, setBackAction, setRightButtons, resetGnb } = useGnbStore();
+  const { setTitle, setSubtitle, setBackAction, setIsSearching, setRightButtons, resetGnb } =
+    useGnbStore();
 
   useEffect(() => {
     setTitle(title);
     setSubtitle(subtitle);
+    setIsSearching(isSearching);
     setBackAction(backAction ?? null);
     setRightButtons(rightButtons);
 
