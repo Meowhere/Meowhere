@@ -116,10 +116,7 @@ export default function UserTestPage() {
       User Test Page
       <div>회원가입</div>
       {error && <div className='text-red-300'>{error}</div>}
-      <form
-        onSubmit={handleSubmit}
-        className='flex flex-col max-w-[200px] gap-2'
-      >
+      <form onSubmit={handleSubmit} className='flex flex-col max-w-[200px] gap-2'>
         <input
           className='border-2'
           name='email'
@@ -145,22 +142,14 @@ export default function UserTestPage() {
           onChange={handleInputChange}
         />
         <div>
-          <button
-            type='submit'
-            className='p-2 bg-primary-300 rounded-md text-white'
-          >
+          <button type='submit' className='p-2 bg-primary-300 rounded-md text-white'>
             회원가입
           </button>
         </div>
       </form>
       <div className='mt-10'>내 정보</div>
       {user.profileImageUrl && (
-        <Image
-          src={user.profileImageUrl}
-          alt='profile'
-          width={200}
-          height={200}
-        />
+        <Image src={user.profileImageUrl} alt='profile' width={200} height={200} />
       )}
       <div>이메일: {user.email}</div>
       <div>닉네임: {user.nickname}</div>
