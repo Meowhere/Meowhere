@@ -5,47 +5,44 @@ import Calendar from 'react-calendar';
 import { STATUS_STYLE_MAP } from '@/src/constants/calendar';
 import '@/src/styles/reservation-calendar.css';
 
-import type {
-  StatusData,
-  ReservationCalendarProps,
-  TileClassNameArgs,
-} from '@/src/types/my-reservation-calendar.types';
 import { useModal } from '@/src/hooks/useModal';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
+import { DropdownItemButton } from '@/src/types/dropdown-menu.types';
+import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 
 export default function ReservationCalendar() {
   const [currentDate, setCurrentDate] = useState<Date>(new Date('2025-12-05'));
   const { openReservationModal } = useModal();
-  const [selectedMyActivity, setSelectedMyActivity] = useState<MyActivity>({
-    id: 4276,
-    userId: 1899,
-    address: '서울특별시 강남구 테헤란로 427',
-    bannerImageUrl:
-      'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/a.png',
-    category: '투어',
-    createdAt: '2025-06-04T00:49:18.798Z',
-    description: '둠칫 둠칫 두둠칫',
-    price: 10000,
-    rating: 0,
-    reviewCount: 0,
-    title: '테스트 데이터',
-    updatedAt: '2025-06-04T00:49:18.798Z',
-  });
+  const [selectedMyActivity, setSelectedMyActivity] = useState<MyActivity | null>(null);
   const [myActivities, setMyActivities] = useState<MyActivity[]>([]); // 이걸 드롭다운 컴포넌트에 뿌려줘야 함
   const [myActivityReservationsByMonth, setMyActivityReservationsByMonth] =
     useState<MyActivityReservationsByMonth[]>();
+  const [dropdownItems, setDropdownItems] = useState<DropdownItemButton[]>([]);
 
   const getMyActivities = async () => {
     const res = await fetchFromClient('/my-activities');
     const json = await res.json();
     setMyActivities(json.activities);
+
+    if (!myActivities.length) {
+      const dropdownItemsResult: DropdownItemButton[] = json.activities.map(
+        (activity: MyActivity) => ({
+          label: activity.title,
+          onClick: () => {
+            setSelectedMyActivity(activity);
+            getMyActivityReservationsByMonth(activity.id, currentDate);
+          },
+        })
+      );
+      setDropdownItems(dropdownItemsResult);
+    }
   };
 
-  const getMyActivityReservationsByMonth = async () => {
-    const year = currentDate.getFullYear();
-    const month = `0${currentDate.getMonth() + 1}`.slice(-2);
+  const getMyActivityReservationsByMonth = async (activityId: number, date: Date) => {
+    const year = date.getFullYear();
+    const month = `0${date.getMonth() + 1}`.slice(-2);
     const res = await fetchFromClient(
-      `/my-activities/${selectedMyActivity.id}/reservation-dashboard?year=${year}&month=${month}`
+      `/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`
     );
     const json = await res.json();
     setMyActivityReservationsByMonth(json);
@@ -124,11 +121,17 @@ export default function ReservationCalendar() {
 
   useEffect(() => {
     getMyActivities();
-    getMyActivityReservationsByMonth();
   }, []);
 
   return (
     <div className='mx-auto min-w-[327px] w-full'>
+      <div className='mb-[64px]'>
+        <Dropdown
+          dropdownItems={dropdownItems}
+          triggerLabel='체험명'
+          selectedValue={selectedMyActivity ? selectedMyActivity.title : '체험을 선택해주세요'}
+        />
+      </div>
       <Calendar
         locale='ko-KR'
         calendarType='gregory'
@@ -143,7 +146,9 @@ export default function ReservationCalendar() {
         }}
         tileContent={tileContent}
         tileClassName={tileClassName}
-        onClickDay={(value) => handleReservation(selectedMyActivity.id, value)}
+        onClickDay={(value) =>
+          selectedMyActivity && handleReservation(selectedMyActivity.id, value)
+        }
       />
     </div>
   );

@@ -1,8 +1,6 @@
 import BaseButton from '@/src/components/common/buttons/BaseButton';
-import { useConfirmModal } from '@/src/hooks/useConfirmModal';
-import { LabelStyleMap } from '@/src/types/reservations-label.types';
 
-const LABEL_STYLE_MAP: LabelStyleMap = {
+const LABEL_STYLE_MAP = {
   '예약 완료': { bg: 'bg-green-100', text: 'text-green-200' },
   '예약 취소': { bg: 'bg-gray-100', text: 'text-gray-600' },
   '예약 거절': { bg: 'bg-red-100', text: 'text-red-300' },
@@ -12,6 +10,7 @@ const LABEL_STYLE_MAP: LabelStyleMap = {
 
 export default function MyReservationsModalCard({
   reservationInfo,
+  isLast,
   onDecline,
   onConfirm,
 }: MyReservationsModalCardProps) {
@@ -42,12 +41,14 @@ export default function MyReservationsModalCard({
           예약 승인
         </BaseButton>
       </section>
+      {!isLast && <div className='w-full h-[1px] bg-gray-200 mt-[20px]'></div>}
     </article>
   );
 }
 
 interface MyReservationsModalCardProps {
   reservationInfo: Reservation;
+  isLast: boolean;
   onDecline: () => void;
   onConfirm: () => void;
 }

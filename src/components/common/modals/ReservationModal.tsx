@@ -5,6 +5,8 @@ import BaseButton from '../buttons/BaseButton';
 import { useEffect, useState } from 'react';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 import MyReservationsModalCard from '@/src/app/profile/my-reservations/components/MyReservationsModalCard';
+import Dropdown from '../dropdowns/Dropdown';
+import { DropdownItemButton } from '@/src/types/dropdown-menu.types';
 
 interface ReservationModalProps {
   activityId: number;
@@ -25,39 +27,49 @@ interface ReservedScheduleByDay {
 // 모달 열림 -> activityId, date를 이용해 시간대별로 예약 내역 배열 형태로 조회 -> 받아온 데이터에서 scheduleId를 이용하여 해당 시간대에 어떤 사람들이 예약을 했는지 조회
 export default function ReservationModal({ activityId, date }: ReservationModalProps) {
   const { openConfirmModal, ConfirmModal } = useConfirmModal();
+  const [reservationStatus, setReservationStatus] = useState<'pending' | 'declined' | 'confirmed'>(
+    'pending'
+  );
   const [reservedSchedules, setReservedSchedules] = useState<ReservedSchedule[]>([]);
-  const [selectedSchedule, setSelectedSchedule] = useState<ReservedSchedule>({
-    scheduleId: 17489,
-    startTime: '13:00',
-    endTime: '17:00',
-    count: {
-      confirmed: 0,
-      declined: 0,
-      pending: 1,
-    },
-  });
+  const [dropdownItems, setDropdownItems] = useState<DropdownItemButton[]>([]);
+  const [selectedSchedule, setSelectedSchedule] = useState<ReservedSchedule | null>(null);
   const [reservationsByTime, setReservationsByTime] = useState<Reservation[]>([]);
   const reservationStatusCategory = ['예약 신청', '예약 승인', '예약 거절'];
 
-  const getReservedSchedule = async () => {
+  const getReservedSchedule = async (reservationStatus: 'pending' | 'declined' | 'confirmed') => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // 0-based month
     const day = String(date.getDate()).padStart(2, '0');
     const parsedDate = `${year}-${month}-${day}`;
+
     const res = await fetchFromClient(
       `/my-activities/${activityId}/reserved-schedule?date=${parsedDate}`
     );
     const json = await res.json();
+
     setReservedSchedules(json);
+
+    if (!json.length) setSelectedSchedule(json[0]); // 첫 스케쥴을 기본으로 설정
+
+    const dropdownItemsResult: DropdownItemButton[] = json.map((schedule: ReservedSchedule) => ({
+      label: `${schedule.startTime} ~ ${schedule.endTime}`,
+      onClick: () => {
+        setSelectedSchedule(schedule);
+        getReservationsByTime(schedule.scheduleId, reservationStatus);
+      },
+    }));
+    setDropdownItems(dropdownItemsResult);
   };
 
-  const getReservationsByTime = async (reservationStatus: 'pending' | 'declined' | 'confirmed') => {
+  const getReservationsByTime = async (
+    scheduleId: number,
+    reservationStatus: 'pending' | 'declined' | 'confirmed'
+  ) => {
     const res = await fetchFromClient(
-      `/my-activities/${activityId}/reservations?scheduleId=${selectedSchedule.scheduleId}&status=${reservationStatus}`
+      `/my-activities/${activityId}/reservations?scheduleId=${scheduleId}&status=${reservationStatus}`
     );
     const json = await res.json();
     setReservationsByTime(json.reservations);
-    console.log(json.reservations);
   };
 
   const handleDecline = (): void => {
@@ -83,13 +95,12 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
   };
 
   useEffect(() => {
-    getReservedSchedule();
-    getReservationsByTime('pending');
+    getReservedSchedule(reservationStatus);
   }, []);
 
   return (
-    <div>
-      <section className='flex items-center gap-[6px]'>
+    <div className='min-h-[400px]'>
+      <section className='flex items-center gap-[6px] py-[12px]'>
         {reservationStatusCategory.map((status) => (
           <div
             className='py-[10px] px-[14px] border border-gray-200 rounded-[20px] text-gray-600 font-semibold text-[1.3rem] leading-[1.2rem]'
@@ -99,19 +110,28 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
           </div>
         ))}
       </section>
-      <section>
+      <section className='mt-[24px]'>
         <div>
-          <p className='text-[22px] font-semibold text-gray-800'>{date.toLocaleDateString()}</p>
+          <p className='text-[22px] font-semibold text-gray-800'>{dateParsing(date)}</p>
         </div>
-        <div>
-          <div>드롭다운</div>
+        <div className='mt-[20px]'>
+          <Dropdown
+            dropdownItems={dropdownItems}
+            triggerLabel='체험 시간'
+            selectedValue={
+              selectedSchedule
+                ? `${selectedSchedule.startTime} ~ ${selectedSchedule.endTime}`
+                : '시간을 선택해주세요'
+            }
+          />
         </div>
       </section>
-      <section>
-        {reservationsByTime.map((reservation) => (
+      <section className='mt-[20px]'>
+        {reservationsByTime.map((reservation, index) => (
           <MyReservationsModalCard
             key={reservation.id}
             reservationInfo={reservation}
+            isLast={index === reservationsByTime.length - 1}
             onDecline={handleDecline}
             onConfirm={handleConfirm}
           />
@@ -120,6 +140,13 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       <ConfirmModal />
     </div>
   );
+}
+
+function dateParsing(date: Date): string {
+  const year = String(date.getFullYear()).slice(2);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}. ${month}. ${day}`;
 }
 
 interface ReservedSchedule {
