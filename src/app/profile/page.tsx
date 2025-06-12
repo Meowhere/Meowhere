@@ -1,10 +1,20 @@
 'use client';
+import { useRouter } from 'next/navigation';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { useEffect } from 'react';
 import ProfileItem from './components/ProfileItem';
 import ProfileMenuItem from './components/ProfileMenuItem';
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 export default function Profile() {
   const { isDesktop } = useBreakpoint();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isDesktop) {
+      router.replace('/profile/my-info');
+    }
+  }, [isDesktop, router]);
+
   return (
     <div className='flex flex-col gap-[48px] mx-[24px] mb-[600px] mt-[48px]'>
       {!isDesktop && (

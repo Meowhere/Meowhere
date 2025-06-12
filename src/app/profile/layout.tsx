@@ -6,7 +6,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const { isDesktop } = useBreakpoint();
 
   return (
-    <div className='flex gap-[128px] min-h-screen mt-[100px] max-w-[1200px] mx-auto w-full'>
+    <div className='flex gap-[128px] min-h-screen mt-[50px] max-w-[1200px] mx-auto w-full'>
       {isDesktop && (
         <div className='w-[328px]'>
           <Profile />
