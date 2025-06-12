@@ -32,8 +32,10 @@ export default function RootLayout({
     <html lang='ko' className={pretendard.className}>
       <body>
         <ClientLayout>
-          {children} <ModalProvider />
+          <ModalProvider />
+          {children}
         </ClientLayout>
+        {/* <ModalProvider /> */}
       </body>
     </html>
   );
