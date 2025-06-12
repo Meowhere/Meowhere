@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { usePopularActivities } from '../hooks/usePopularActivities';
+import { usePopularActivities } from '@/src/hooks/usePopularActivities';
 import RecommendList from './_components/RecommendList';
 
 export default function NotFound() {

@@ -4,7 +4,7 @@ import { PopularActivitiesResponse } from '../types/activity.types';
 
 export const usePopularActivities = (size: number) => {
   return useQuery<PopularActivitiesResponse>({
-    queryKey: ['popular-activities'],
+    queryKey: ['popular-activities', size],
     queryFn: async () => {
       const response = await fetchFromClient(
         `/activities?method=offset&page=1&size=${size}&sort=most_reviewed`
