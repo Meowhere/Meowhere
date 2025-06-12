@@ -1,13 +1,7 @@
-import { ReservationStatus } from './reservations-status.types';
+import { MyReservation } from './profile-reservation.types';
 
 export interface ReservationsCardProps {
-  imageUrl: string;
-  label: ReservationStatus;
-  title: string;
-  date: string;
-  time: string;
-  headCount: number;
-  price: number;
+  reservation: MyReservation;
   showCancel?: boolean;
   showReview?: boolean;
 }

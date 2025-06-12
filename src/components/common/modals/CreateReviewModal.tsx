@@ -11,12 +11,11 @@ export default function CreateReviewModal({
   schedule,
   headCount,
   price,
-  rating = 0,
   onConfirm,
 }: CreateReviewModalProps) {
   const { closeModal } = useModalStore();
   // schedule 포맷 필요
-  const [currentRating, setCurrentRating] = useState(rating);
+  const [currentRating, setCurrentRating] = useState(0);
   const [content, setContent] = useState('');
 
   const handleConfirm = () => {
