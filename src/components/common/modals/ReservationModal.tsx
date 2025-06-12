@@ -1,18 +1,13 @@
 'use client';
 
+import { useConfirmModal } from '@/src/hooks/useConfirmModal';
+import { useReservationModal } from '@/src/hooks/useReservationModal';
+import { formatDateDot } from '@/src/utils/date-format';
+import { MODAL_RESERVATION_STATUS_MAP } from '@/src/constants/reservation-modal';
+import { ModalReservationStatus, ReservationModalProps } from '@/src/types/reservation-modal.types';
+
 import Dropdown from '../dropdowns/Dropdown';
 import MyReservationsModalCard from '@/src/app/profile/my-reservations/components/MyReservationsModalCard';
-import { useConfirmModal } from '@/src/hooks/useConfirmModal';
-import {
-  MODAL_RESERVATION_STATUS_MAP,
-  ModalReservationStatus,
-  useReservationModal,
-} from '@/src/hooks/useReservationModal';
-
-interface ReservationModalProps {
-  activityId: number;
-  date: Date;
-}
 
 // 모달 열림 -> activityId, date를 이용해 시간대별로 예약 내역 배열 형태로 조회 -> 받아온 데이터에서 scheduleId를 이용하여 해당 시간대에 어떤 사람들이 예약을 했는지 조회
 export default function ReservationModal({ activityId, date }: ReservationModalProps) {
@@ -24,7 +19,6 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
     reservationsByTime,
     handleReservationStatus,
     handleReservationUpdate,
-    getReservationsByTime,
   } = useReservationModal(activityId, date);
 
   const getReservationStatusText = (status: ModalReservationStatus): string => {
@@ -37,8 +31,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       confirmText: '거절',
       cancelText: '아니요',
       onConfirm: () => {
-        handleReservationUpdate(activityId, reservationId, status);
-        getReservationsByTime(activityId, reservationStatus);
+        handleReservationUpdate(reservationId, status);
       },
     });
   };
@@ -49,8 +42,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       confirmText: '승인',
       cancelText: '아니요',
       onConfirm: () => {
-        handleReservationUpdate(activityId, reservationId, status);
-        getReservationsByTime(activityId, reservationStatus);
+        handleReservationUpdate(reservationId, status);
       },
     });
   };
@@ -65,7 +57,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
                 ? 'bg-primary-300 text-white'
                 : 'border border-gray-200 text-gray-600'
             }`}
-            onClick={() => handleReservationStatus(activityId, status)}
+            onClick={() => handleReservationStatus(status)}
             key={status}
           >
             {getReservationStatusText(status)}
@@ -74,7 +66,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       </section>
       <section className='mt-[24px]'>
         <div>
-          <p className='text-[22px] font-semibold text-gray-800'>{dateParsing(date)}</p>
+          <p className='text-[22px] font-semibold text-gray-800'>{formatDateDot(date)}</p>
         </div>
         <div className='mt-[20px]'>
           <Dropdown
@@ -102,11 +94,4 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       <ConfirmModal />
     </div>
   );
-}
-
-function dateParsing(date: Date): string {
-  const year = String(date.getFullYear()).slice(2);
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}. ${month}. ${day}`;
 }
