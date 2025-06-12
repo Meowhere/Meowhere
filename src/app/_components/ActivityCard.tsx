@@ -5,9 +5,16 @@ import LikeIcon from '../../components/common/icons/LikeIcon';
 import StarFillIcon from '../../components/common/icons/StarFillIcon';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useFavoritesStore } from '@/src/store/favoritesStore';
 
 export default function ActivityCard({ activity }: { activity: Activity }) {
   const router = useRouter();
+  const { toggleFavorite, isFavorite } = useFavoritesStore();
+
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleFavorite(activity);
+  };
 
   return (
     <article>
@@ -33,7 +40,9 @@ export default function ActivityCard({ activity }: { activity: Activity }) {
         </div>
         <LikeIcon
           showOverlay
-          className='absolute top-[16px] right-[16px] w-[32px] h-[32px] text-white'
+          isFilled={isFavorite(activity.id)}
+          onClick={handleLikeClick}
+          className='absolute top-[16px] right-[16px] w-[32px] h-[32px] text-white cursor-pointer'
         />
       </figure>
 

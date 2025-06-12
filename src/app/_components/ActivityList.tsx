@@ -37,7 +37,7 @@ export default function ActivityList({
 
       const response = await fetchFromClient(`/activities?${params.toString()}`);
 
-      const data = await response.json();
+      const data = await response!.json();
 
       const minPrice = Number(searchParams.get('min-price') || 0);
       const maxPrice = Number(searchParams.get('max-price') || Infinity);

@@ -12,12 +12,12 @@ const UserInitializer = () => {
     // 쿼리 성공 시 사용자 정보 확인
     if (isSuccess) {
       if (user && user.id) {
-        // 사용자 ID가 있으면 찜 목록 스토어 초기화
+        // 사용자 ID가 있으면 찜 목록 스토어 동기화
         initializeUser(user.id);
-      } else {
-        // 사용자 정보가 없으면 찜 목록 비우기
-        clearFavorites();
       }
+    } else {
+      // 사용자 정보가 없으면 찜 목록 비우기
+      clearFavorites();
     }
   }, [isSuccess, user, initializeUser, clearFavorites]);
 
