@@ -132,7 +132,7 @@ export const useUser = () => {
   const query = useQuery({
     queryKey: ['user'],
     queryFn: authApi.getMe,
-    retry: 1,
+    retry: 0,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
