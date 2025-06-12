@@ -5,7 +5,6 @@ import ToastCheckSvg from '@/public/assets/icons/toast-check.svg';
 
 interface CheckCircleIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
-  className?: string;
 }
 
 export default function CheckCircleIcon({

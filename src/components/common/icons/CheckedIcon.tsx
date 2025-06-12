@@ -6,7 +6,6 @@ import CheckedSvg from '@/public/assets/icons/ico-checked.svg';
 interface CheckedIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   stroke?: string;
-  className?: string;
 }
 
 export default function CheckedIcon({
