@@ -44,7 +44,7 @@ export default function RegisterCalendar() {
           <BaseButton
             variant='soft'
             color='blue'
-            className='md:w-[500px] sm:w-full px-[175px] py-[10px] text-md font-semibold'
+            className='md:w-[500px] sm:w-full md:px-[175px] py-[10px] text-md font-semibold'
             onClick={handleAddItem}
           >
             일정 추가
