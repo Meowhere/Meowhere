@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import ActivityCard from './ActivityCard';
 import { useEffect, useRef } from 'react';
 import { Activity } from '@/src/types/activity.types';
+import { useUser } from '@/src/hooks/auth/useAuth';
 
 export default function ActivityList({
   initialActivities,
@@ -15,6 +16,9 @@ export default function ActivityList({
   initialCursor: string | null;
 }) {
   const searchParams = useSearchParams();
+  const { data: userData } = useUser();
+  const showLikeButton = userData && Object.keys(userData).length > 0;
+
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
@@ -88,7 +92,7 @@ export default function ActivityList({
     <>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-[24px] lg:gap-x-[12px] lg:gap-y-[80px] mt-6 p-[24px] lg:px-[86px]'>
         {allActivities.map((item: Activity) => (
-          <ActivityCard key={item.id} activity={item} />
+          <ActivityCard key={item.id} activity={item} showLikeButton={showLikeButton} />
         ))}
       </div>
       {!hasNextPage && (
