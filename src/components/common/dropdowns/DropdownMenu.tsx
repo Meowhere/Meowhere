@@ -19,8 +19,8 @@ export default function DropdownMenu({
   if (isMobile) {
     return (
       <>
-        <div className='fixed inset-0 z-50 bg-black/40' onClick={onClose} />
-        <div className='fixed inset-x-0 bottom-0 z-60 px-[16px] pb-[20px]'>
+        <div className='fixed inset-0 z-40 bg-black/40' onClick={onClose} />
+        <div className='fixed inset-x-0 bottom-0 z-50 px-[16px] pb-[20px]'>
           <div className='w-full flex flex-col gap-[8px]' onClick={(e) => e.stopPropagation()}>
             <div className={wrapperClass}>
               {title && (
