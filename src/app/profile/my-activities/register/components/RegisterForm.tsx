@@ -4,6 +4,8 @@ import Textarea from '@/src/components/common/inputs/Textarea';
 import Category from './Category';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import PostAddress from './PostAddress';
+import { useState } from 'react';
 
 const formSchema = z.object({
   title: z.string().min(3, '3자 이상 입력하세요.'),
@@ -34,6 +36,7 @@ export default function RegisterForm() {
     alert(JSON.stringify(data, null, 2));
   };
 
+  const [address, setAddress] = useState('');
   return (
     <form className='flex flex-col gap-[20px]' onSubmit={handleSubmit(onSubmit)}>
       <Input
@@ -42,6 +45,7 @@ export default function RegisterForm() {
         {...register('title')}
         error={errors.title}
         watchValue={titleValue}
+        required
       />
       {/* <Category /> */}
       <Input
@@ -50,12 +54,18 @@ export default function RegisterForm() {
         {...register('price')}
         error={errors.price}
         watchValue={priceValue}
+        required
       />
-      {/* <Input name='location'/> */}
+      <PostAddress
+      // onChange={(value, data) => {
+      //   setAddress(value);
+      // }}
+      />
       <Textarea
         {...register('description')}
         error={errors.description}
         watchValue={descriptionValue}
+        required
       />
     </form>
   );
