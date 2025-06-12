@@ -1,10 +1,7 @@
 import { BASE_URL } from '@/src/constants/api';
 import { logger } from '@/src/utils/logger';
 
-export async function fetchFromClient(
-  path: string,
-  options: RequestInit = {}
-): Promise<Response | null> {
+export async function fetchFromClient(path: string, options: RequestInit = {}): Promise<Response> {
   try {
     const res = await fetch(`${BASE_URL}/api/${path}`, {
       ...options,
@@ -12,7 +9,7 @@ export async function fetchFromClient(
     });
     if (res.status === 401 || res.status === 403) {
       console.log(`인증 실패: ${res.status} ${res.statusText}`);
-      return null;
+      return new Response(null, { status: res.status, statusText: res.statusText });
     }
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
