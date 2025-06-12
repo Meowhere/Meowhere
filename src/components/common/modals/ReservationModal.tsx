@@ -77,6 +77,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
                 ? `${selectedSchedule.startTime} ~ ${selectedSchedule.endTime}`
                 : '시간을 선택해주세요'
             }
+            bottomSheetTitle='체험 시간'
           />
         </div>
       </section>

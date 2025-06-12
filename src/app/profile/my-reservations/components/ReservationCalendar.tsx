@@ -134,8 +134,9 @@ export default function ReservationCalendar() {
       <div className='mb-[64px]'>
         <Dropdown
           dropdownItems={dropdownItems}
-          triggerLabel='체험명'
           selectedValue={selectedMyActivity ? selectedMyActivity.title : '체험을 선택해주세요'}
+          bottomSheetTitle='체험명'
+          triggerLabel='체험명'
         />
       </div>
       <Calendar

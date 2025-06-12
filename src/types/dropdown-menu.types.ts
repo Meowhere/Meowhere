@@ -6,8 +6,8 @@ export interface DropdownItemButton {
 
 export interface DropdownMenuProps {
   items: DropdownItemButton[];
+  bottomSheetTitle: string;
   isMobile?: boolean;
-  title?: string;
   bottomButton?: DropdownItemButton; // 바텀 시트 취소 버튼
   onClose: () => void;
 }
