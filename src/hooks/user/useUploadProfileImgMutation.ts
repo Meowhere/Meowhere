@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchFromClient } from '../lib/fetch/fetchFromClient';
+import { fetchFromClient } from '../../lib/fetch/fetchFromClient';
 
 export const useUploadProfileImageMutation = () => {
   const queryClient = useQueryClient();

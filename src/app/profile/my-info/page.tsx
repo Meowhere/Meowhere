@@ -6,9 +6,8 @@ import { useEffect, useState } from 'react';
 import Input from '@/src/components/common/inputs/Input';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
-import { User } from '@/src/types/user.types';
-import { useMyInfoQuery } from '@/src/hooks/useMyInfoQuery';
-import { useUpdateMyInfoMutation } from '@/src/hooks/useUpdateMyInfoMutation';
+import { useMyInfoQuery, useUpdateMyInfoMutation } from '@/src/hooks/user';
+import { UpdateMyInfoPayload } from '@/src/types/user.types';
 
 const myInfoSchema = z
   .object({
@@ -16,12 +15,7 @@ const myInfoSchema = z
       .string()
       .min(2, '닉네임은 2자 이상 입력해주세요.')
       .max(10, '닉네임은 10자 이하로 입력해주세요.'),
-    bio: z
-      .string()
-      .max(700, '자기소개는 최대 700자까지 입력 가능합니다.')
-      .optional()
-      .or(z.literal('')),
-    password: z
+    newPassword: z
       .string()
       .min(8, '비밀번호는 8자 이상 입력해주세요.')
       .max(30, '비밀번호는 30자 이하로 입력해주세요.')
@@ -32,7 +26,7 @@ const myInfoSchema = z
   .refine(
     (data) => {
       // 비밀번호 입력 시, 확인 값이 일치하는지 검사
-      if (data.password && data.confirmPassword !== data.password) {
+      if (data.newPassword && data.confirmPassword !== data.newPassword) {
         return false;
       }
       return true;
@@ -47,7 +41,6 @@ type MyInfoForm = z.infer<typeof myInfoSchema>;
 
 export default function MyInfoPage() {
   const { isDesktop } = useBreakpoint();
-  // const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -61,41 +54,50 @@ export default function MyInfoPage() {
     handleSubmit,
     watch,
     reset,
+    getValues,
     formState: { errors, isDirty, isValid },
   } = useForm<MyInfoForm>({
     resolver: zodResolver(myInfoSchema),
     defaultValues: {
       nickname: '',
-      password: '',
+      newPassword: '',
       confirmPassword: '',
     },
     mode: 'onChange',
   });
 
   const nicknameValue = watch('nickname', '');
-  const pwValue = watch('password', '');
+  const pwValue = watch('newPassword', '');
   const pwConfirmValue = watch('confirmPassword', '');
 
   // user 데이터 받아오면 폼에 set
   useEffect(() => {
     if (user) {
-      reset({
-        nickname: user.nickname,
-        password: '',
-        confirmPassword: '',
-      });
+      const currentFormValues = getValues();
+      reset(
+        {
+          nickname: user.nickname,
+          newPassword:
+            isDirty && currentFormValues.newPassword ? currentFormValues.newPassword : '',
+          confirmPassword:
+            isDirty && currentFormValues.confirmPassword ? currentFormValues.confirmPassword : '',
+        },
+        {
+          keepDirtyValues: isDirty,
+        }
+      );
     }
-  }, [user, reset]);
+  }, [user, reset, getValues, isDirty]);
 
   const onSubmit = (data: MyInfoForm) => {
     // user가 없으면 아무 것도 보내지 않음
     if (!user) return;
 
-    const payload: any = {};
+    const payload: UpdateMyInfoPayload = {};
 
     // 비밀번호, 닉네임 중 변경된 값만 PATCH에 넘기기
     if (data.nickname !== user.nickname) payload.nickname = data.nickname;
-    if (data.password) payload.newPassword = data.password;
+    if (data.newPassword) payload.newPassword = data.newPassword;
 
     updateMyInfo(payload, {
       onSuccess: () => {
@@ -103,12 +105,21 @@ export default function MyInfoPage() {
         reset({
           ...user,
           nickname: data.nickname,
-          password: '',
+          newPassword: '',
           confirmPassword: '',
         });
       },
-      onError: (e: any) => {
-        alert(e?.message || '정보 수정 실패');
+      onError: (e: unknown) => {
+        let msg = '정보 수정 실패';
+        if (
+          e &&
+          typeof e === 'object' &&
+          'message' in e &&
+          typeof (e as { message: unknown }).message === 'string'
+        ) {
+          msg = (e as { message: string }).message;
+        }
+        alert(msg);
       },
     });
   };
@@ -149,9 +160,9 @@ export default function MyInfoPage() {
           <Input
             label='비밀번호'
             type='password'
-            {...register('password')}
+            {...register('newPassword')}
             watchValue={pwValue}
-            error={errors.password}
+            error={errors.newPassword}
             isPassword={true}
           />
           <Input

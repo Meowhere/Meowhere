@@ -3,9 +3,9 @@ import { useRef, useState } from 'react';
 import UploadImg from '@/public/assets/icons/account/upload-btn.svg';
 import defaultImg from '@/public/assets/icons/account/default-img.png';
 import Image from 'next/image';
-import { useMyInfoQuery } from '@/src/hooks/useMyInfoQuery';
-import { useUploadProfileImageMutation } from '@/src/hooks/useUploadProfileImgMutation';
-import { useUpdateMyInfoMutation } from '@/src/hooks/useUpdateMyInfoMutation';
+import { useMyInfoQuery } from '@/src/hooks/user/useMyInfoQuery';
+import { useUploadProfileImageMutation } from '@/src/hooks/user';
+import { useUpdateMyInfoMutation } from '@/src/hooks/user';
 
 export default function ProfileItem() {
   const { data: user, isLoading } = useMyInfoQuery();
@@ -43,8 +43,10 @@ export default function ProfileItem() {
 
       // 3. react-query가 알아서 useMyInfoQuery 쿼리 invalidate 함!
       setTimeout(() => setLocalPreview(null), 500); // 잠깐 프리뷰 보여주고 동기화
-    } catch (error: any) {
-      alert(error?.message || '이미지 업로드에 실패했습니다.');
+    } catch (error: unknown) {
+      let msg = '이미지 업로드에 실패했습니다.';
+      if (error instanceof Error) msg = error.message;
+      alert(msg);
       setLocalPreview(null);
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -132,14 +134,6 @@ export default function ProfileItem() {
               width={320}
               height={320}
               className='rounded-[20px]'
-            />
-            <Image
-              src='/assets/icons/delete/ico-delete-image.svg'
-              alt='닫기'
-              width={24}
-              height={24}
-              className='absolute top-[8px] right-[8px] cursor-pointer'
-              onClick={handlePreviewClose}
             />
           </div>
         </div>
