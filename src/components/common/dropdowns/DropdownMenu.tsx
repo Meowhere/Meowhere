@@ -1,11 +1,16 @@
+'use client';
+
+import { useEffect } from 'react';
+
 import { DropdownMenuProps } from '@/src/types/dropdown-menu.types';
+
 import DropdownItem from './DropdownItem';
 
 export default function DropdownMenu({
   items,
+  bottomSheetTitle,
   isMobile = false,
   onClose,
-  title,
   bottomButton,
 }: DropdownMenuProps) {
   const mobileShadow = 'shadow-[0_4px_40px_rgba(0,0,0,0.1)] backdrop-blur-[40px]';
@@ -16,19 +21,26 @@ export default function DropdownMenu({
         ${mobileShadow}
       `;
 
+  useEffect(() => {
+    if (isMobile) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [isMobile]);
+
   if (isMobile) {
     return (
       <>
-        <div className='fixed inset-0 z-50 bg-black/40' onClick={onClose} />
-        <div className='fixed inset-x-0 bottom-0 z-60 px-[16px] pb-[20px]'>
+        <div className='fixed inset-0 z-40 bg-black/40' onClick={onClose} />
+        <div className='fixed inset-x-0 bottom-0 z-50 px-[16px] pb-[20px]'>
           <div className='w-full flex flex-col gap-[8px]' onClick={(e) => e.stopPropagation()}>
             <div className={wrapperClass}>
-              {title && (
-                <div className='text-center text-xs text-gray-600 leading-[1.2rem] h-[36px] flex items-center justify-center border-b border-gray-100'>
-                  {title}
-                </div>
-              )}
-              <div className='divide-y divide-gray-100'>
+              <div className='text-center text-xs text-gray-600 leading-[1.2rem] h-[36px] flex items-center justify-center border-b border-gray-100'>
+                {bottomSheetTitle}
+              </div>
+              <div className='divide-y divide-gray-100 max-h-[400px] overflow-y-auto '>
                 {items.map((item, idx) => (
                   <DropdownItem
                     key={idx}
