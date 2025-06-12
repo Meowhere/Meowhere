@@ -18,7 +18,7 @@ export default function NotFound() {
             alt='empty logo'
             fill
             className='object-contain'
-            sizes='82px, (min-width: 1024px) 164px'
+            sizes='(min-width: 1024px) 164px, 82px'
           />
         </div>
         <h1 className='font-semibold text-gray-300 text-2xl lg:text-7xl'>준비 중인 공간</h1>
