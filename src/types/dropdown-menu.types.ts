@@ -1,22 +1,13 @@
-export type DropdownItemLink = {
-  type: 'link';
-  label: string;
-  href: string;
-  isDanger?: boolean;
-};
-
-export type DropdownItemButton = {
-  type: 'button';
+export interface DropdownItemButton {
   label: string;
   onClick: () => void;
   isDanger?: boolean;
-};
+}
 
-export type DropdownItemData = DropdownItemLink | DropdownItemButton;
-
-export type DropdownMenuProps = {
-  items: DropdownItemData[];
+export interface DropdownMenuProps {
+  items: DropdownItemButton[];
+  bottomSheetTitle: string;
   isMobile?: boolean;
-  title?: string;
-  bottomButton?: DropdownItemButton;
-};
+  bottomButton?: DropdownItemButton; // 바텀 시트 취소 버튼
+  onClose: () => void;
+}

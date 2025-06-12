@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   icons: {
     icon: '/assets/icons/ico-fav.svg',
   },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
 };
 
 const pretendard = localFont({
@@ -31,6 +37,7 @@ export default function RootLayout({
           <ModalProvider />
           <Toast />
         </ClientLayout>
+        {/* <ModalProvider /> */}
       </body>
     </html>
   );

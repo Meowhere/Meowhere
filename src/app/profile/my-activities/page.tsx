@@ -6,6 +6,9 @@ import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
+import { useInfiniteActivities } from '@/src/hooks/useInfiniteActivities';
+import SkeletonActivitiesList from './components/skeleton-ui/SkeletonActivitiesList';
 
 export default function MyActivitiesPage() {
   const router = useRouter();
@@ -25,71 +28,36 @@ export default function MyActivitiesPage() {
     ],
   });
 
-  // 더미 데이터
-  const activitiesData: any[] = [];
-  activitiesData.push(
-    {
-      id: 1,
-      title: '함께 배우면 즐거운 스트릿 댄스',
-      bannerImageUrl: '/assets/icons/test_img.png',
-      price: 148000,
-      rating: 3.8,
-    },
-    {
-      id: 2,
-      title: '함께 배우면 즐거운 스트릿 댄스',
-      bannerImageUrl: '/assets/icons/test_img.png',
-      price: 148000,
-      rating: 3.8,
-    },
-    {
-      id: 3,
-      title: '함께 배우면 즐거운 스트릿 댄스',
-      bannerImageUrl: '/assets/icons/test2_img.png',
-      price: 148000,
-      rating: 3.8,
-    },
-    {
-      id: 4,
-      title: '함께 배우면 즐거운 스트릿 댄스',
-      bannerImageUrl: '/assets/icons/test_img.png',
-      price: 148000,
-      rating: 3.8,
-    },
-    {
-      id: 5,
-      title: '함께 배우면 즐거운 스트릿 댄스',
-      bannerImageUrl: '/assets/icons/test2_img.png',
-      price: 148000,
-      rating: 3.8,
-    },
-    {
-      id: 6,
-      title: '함께 배우면 즐거운 스트릿 댄스',
-      bannerImageUrl: '/assets/icons/test_img.png',
-      price: 148000,
-      rating: 3.8,
-    },
-    {
-      id: 7,
-      title: '함께 배우면 즐거운 스트릿 댄스',
-      bannerImageUrl: '/assets/icons/test_img.png',
-      price: 148000,
-      rating: 3.8,
-    },
-    {
-      id: 8,
-      title: '함께 배우면 즐거운 스트릿 댄스',
-      bannerImageUrl: '/assets/icons/test_img.png',
-      price: 148000,
-      rating: 3.8,
-    }
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteActivities();
+
+  // 바닥 감지 ref
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!observerRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1 }
+    );
+    observer.observe(observerRef.current);
+
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // id 기준 중복 제거
+  const activities = data?.pages.flatMap((page) => page.activities) ?? [];
 
   // 실제 데이터는 API 호출 등을 통해 가져올 수 있습니다.
   return (
     <div className='relative flex flex-col mx-[24px] my-[112px]'>
-      {activitiesData.length === 0 ? (
+      {isLoading ? (
+        <SkeletonActivitiesList />
+      ) : activities.length === 0 ? (
         <NotFoundActivities />
       ) : (
         <div>
@@ -104,7 +72,21 @@ export default function MyActivitiesPage() {
               </BaseButton>
             </div>
           )}
-          <ManagementCards activities={activitiesData} />
+          <ManagementCards activities={activities} />
+
+          {/* 무한 스크롤 하단 */}
+          {isFetchingNextPage && (
+            <div className='flex flex-col items-center py-[24px] space-y-[8px]'>
+              <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+              <p className='text-sm text-gray-500 animate-pulse'>체험을 불러오는 중입니다...</p>
+            </div>
+          )}
+
+          {!hasNextPage && (
+            <p className='text-center text-sm text-gray-400 py-2'>모든 체험을 확인하셨습니다.</p>
+          )}
+
+          <div ref={observerRef} className='h-[4px]' />
         </div>
       )}
     </div>

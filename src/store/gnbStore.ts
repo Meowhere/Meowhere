@@ -16,14 +16,8 @@ export interface GnbStore {
   resetGnb: () => void;
 }
 
-const DEFAULT_BACK_ACTION = () => {
-  if (typeof window !== 'undefined') {
-    window.history.back();
-  }
-};
-
 export const useGnbStore = create<GnbStore>((set) => ({
-  backAction: DEFAULT_BACK_ACTION,
+  backAction: null,
   title: '어디가냥',
   isSearching: false,
   subtitle: '',
@@ -38,7 +32,7 @@ export const useGnbStore = create<GnbStore>((set) => ({
     set((state) => ({ rightButtons: [...state.rightButtons, button].slice(0, 2) })),
   resetGnb: () =>
     set({
-      backAction: DEFAULT_BACK_ACTION,
+      backAction: null,
       title: '어디가냥',
       isSearching: false,
       subtitle: '',
