@@ -13,14 +13,21 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const { isDesktop } = useBreakpoint();
   const { preventBodyScroll } = useUIStore();
 
-  const showFooter = isDesktop || !pathname.startsWith('/my-page');
+  const showFooter = isDesktop || !pathname.startsWith('/profile');
   const showBNB = !isDesktop && !pathname.startsWith('/activities');
+
+  const getGNBHeight = () => {
+    if (pathname === '/') {
+      return 'pt-[140px]'; // MainPageGNB (76px) + CategorySection (64px)
+    }
+    return 'pt-[48px]'; // SubPageGNB 높이
+  };
 
   return (
     <ReactQueryProvider>
       <div className={`${preventBodyScroll ? 'overflow-hidden' : ''} h-screen `}>
-        {children}
         <Navbar />
+        <main className={getGNBHeight()}>{children}</main>
 
         {showBNB && <BNB />}
         {showFooter && <Footer />}

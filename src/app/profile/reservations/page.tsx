@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ReservationsCard from './components/ReservationsCard';
 import type { DropdownItemButton } from '../../../types/dropdown-menu.types';
@@ -108,7 +108,6 @@ export default function ReservationsTestPage() {
       showReview: true,
     },
   ];
-
 
   const hasData = testData.length > 0;
 

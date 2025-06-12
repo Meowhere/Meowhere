@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Logo from '@/public/assets/icons/logo/ico-logo.svg';
 import Typography from '@/public/assets/icons/logo/ico-typography.svg';
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 export default function Footer() {
   return (
@@ -15,7 +14,7 @@ export default function Footer() {
           'lg:h-[48px] h-[36px] w-full bg-white rounded-bl-[100px] rounded-br-[100px] shadow-[0px_4px_48px_0px_rgba(0,0,0,0.10)]'
         }
       />
-      <Logo className={'lg:mt-[112px] mt-[80px] w-[78px] h-[114px]'} aria-label='어디가냥 로고' />
+      <Logo className='lg:mt-[112px] mt-[80px] w-[78px] h-[114px]' aria-label='어디가냥 로고' />
       <Typography className='mt-[18px] w-[198px] h-[28px]' aria-label='어디가냥 타이포그래피' />
       <p className='mt-[28px]'>
         코드잇 스프린트 <br />
