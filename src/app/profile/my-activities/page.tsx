@@ -8,7 +8,7 @@ import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useInfiniteActivities } from '@/src/hooks/useInfiniteActivities';
-import SkeletonActivities from './components/SkeletonActivities';
+import SkeletonActivitiesList from './components/skeleton-ui/SkeletonActivitiesList';
 
 export default function MyActivitiesPage() {
   const router = useRouter();
@@ -56,13 +56,7 @@ export default function MyActivitiesPage() {
   return (
     <div className='relative flex flex-col mx-[24px] my-[112px]'>
       {isLoading ? (
-        <div>
-          {[...Array(6)].map((_, idx) => (
-            <div key={idx}>
-              <SkeletonActivities />
-            </div>
-          ))}
-        </div>
+        <SkeletonActivitiesList />
       ) : activities.length === 0 ? (
         <NotFoundActivities />
       ) : (
