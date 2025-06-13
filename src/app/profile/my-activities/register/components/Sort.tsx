@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import DropdownItem from '@/src/components/common/dropdowns/DropdownItem';
-import SortIcon from '@/src/components/common/icons/SortIcon';
+import { SortIcon } from '@/src/components/common/icons/SortIcon';
+import { SortedIcon } from '@/src/components/common/icons/SortIcon';
 
 interface SortProps {
-  filtered?: boolean;
   onSortChange: (sort: 'registered' | 'latest' | 'oldest') => void;
 }
 
@@ -13,7 +13,7 @@ const SORT_OPTIONS = [
   { key: 'oldest', label: '과거순' },
 ] as const;
 
-export default function Sort({ filtered = false, onSortChange }: SortProps) {
+export default function Sort({ onSortChange }: SortProps) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<'registered' | 'latest' | 'oldest'>('registered');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,10 +35,13 @@ export default function Sort({ filtered = false, onSortChange }: SortProps) {
     setOpen(false);
     onSortChange?.(key);
   };
+
+  const filtered = selected !== 'registered';
+
   return (
-    <div ref={containerRef} className='relative inline-block'>
+    <div ref={containerRef} className=''>
       <button type='button' aria-label='필터 열기' onClick={() => setOpen((v) => !v)} className=''>
-        {filtered ? <SortIcon className='text-blue-200' /> : <SortIcon />}
+        {filtered ? <SortedIcon /> : <SortIcon />}
       </button>
       {open && (
         <div>
