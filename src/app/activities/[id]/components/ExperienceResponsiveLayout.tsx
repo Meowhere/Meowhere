@@ -2,17 +2,17 @@
 
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import { useRouter } from 'next/navigation';
-import ExperienceImageViewer from '../experience/ExperienceImageViewer';
-import ExperienceSummarySection from '../experience/ExperienceSummarySection';
-import ReservationBox from '../reservation/ReservationBox';
-import Divider from './Divider';
-import SectionTitle from './SectionTitle';
-import ExperienceLocationMap from '../experience/ExperienceLocationMap';
-import ExperienceDescription from '../experience/ExperienceDescription';
-import ReviewSection from '../review/ReviewSection';
-import { dummyReviews } from '../../data/dummyReviews';
-import ScheduleSidebar from '../reservation/ScheduleSidebar';
-import { dummySchedule } from '../../data/dummySchedule';
+import ExperienceImageViewer from './experience/ExperienceImageViewer';
+import ExperienceSummarySection from './experience/ExperienceSummarySection';
+import ReservationBox from './reservation/ReservationBox';
+import Divider from './common/Divider';
+import SectionTitle from './common/SectionTitle';
+import ExperienceLocationMap from './experience/ExperienceLocationMap';
+import ExperienceDescription from './experience/ExperienceDescription';
+import ReviewSection from './review/ReviewSection';
+import { dummyReviews } from './../data/dummyReviews';
+import ScheduleSidebar from './reservation/ScheduleSidebar';
+import { dummySchedule } from './../data/dummySchedule';
 import { useGnb } from '@/src/hooks/useGnb';
 import HeartButton from '@/src/components/common/buttons/HeartButton';
 
@@ -40,6 +40,7 @@ export default function ExperienceResponsiveLayout() {
 
   const router = useRouter();
 
+  // gnb 하트 찜 기능인 것 같아서 일단 상태 관리 미구현
   useGnb({
     title: dummyExperience.title,
     backAction: () => router.back(),

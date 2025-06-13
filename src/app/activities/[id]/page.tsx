@@ -1,4 +1,4 @@
-import ExperienceResponsiveLayout from './components/common/ExperienceResponsiveLayout';
+import ExperienceResponsiveLayout from './components/ExperienceResponsiveLayout';
 
 export default function ExperienceDetailPage() {
   return (
