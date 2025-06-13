@@ -17,12 +17,6 @@ export default async function Home({
   }>;
 }) {
   const searchParams = await searchParamsPromise;
-  const popularResponse = await fetchFromClient(
-    `/activities?method=offset&page=1&size=5&sort=most_reviewed`
-  );
-  const popularData = await popularResponse.json();
-  const popularActivities = popularData.activities;
-
   const category = searchParams.category || '';
   const keyword = searchParams.keyword || '';
 
@@ -48,7 +42,7 @@ export default async function Home({
 
   return (
     <div className='min-h-screen'>
-      <PopularActivitiesBanner popularActivities={popularActivities} />
+      <PopularActivitiesBanner />
       <DesktopSearchFilters isForPage />
       <DesktopCategorySection />
       <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
