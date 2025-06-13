@@ -10,7 +10,7 @@ interface ReservationBoxProps {
 }
 
 export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) {
-  const { isMobile, isTablet, hasMounted } = useBreakpoint();
+  const { isMobile, isTablet, isDesktop, hasMounted } = useBreakpoint();
   const { openScheduleModal } = useModal();
 
   if (!hasMounted) return null;
@@ -36,6 +36,23 @@ export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) 
           pricePerPerson={pricePerPerson}
           onClickDateSelect={handleOpenDateModal}
         />
+      )}
+
+      {isDesktop && (
+        <div className='w-full px-[8px] pt-[8px]'>
+          <div className='flex justify-between items-center'>
+            <p className='text-[18px] font-bold text-gray-900'>
+              ₩{pricePerPerson.toLocaleString()}{' '}
+              <span className='font-normal text-[16px]'>/ 인</span>
+            </p>
+            <button
+              onClick={handleOpenDateModal}
+              className='bg-orange-500 text-white px-[20px] py-[10px] rounded-full text-[14px] font-semibold hover:bg-orange-600 transition'
+            >
+              일정 선택
+            </button>
+          </div>
+        </div>
       )}
     </>
   );

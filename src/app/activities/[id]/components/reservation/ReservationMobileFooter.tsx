@@ -18,7 +18,7 @@ export default function ReservationMobileFooter({
 
   return (
     <div
-      className={`fixed ${bottomSpacing} left-0 w-full z-[9999] flex justify-center px-4 pb-4 pointer-events-none`}
+      className={`fixed ${bottomSpacing} left-0 w-full z-[50] flex justify-center px-4 pb-4 pointer-events-none`}
     >
       <div
         className={`
