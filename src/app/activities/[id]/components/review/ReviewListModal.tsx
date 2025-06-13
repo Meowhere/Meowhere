@@ -15,7 +15,6 @@ export interface ReviewListModalProps {
 
 export default function ReviewListModal({ activityId, reviewCount, rating }: ReviewListModalProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteReviews(activityId);
-
   const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,12 +39,12 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
   const reviews = data?.pages.flatMap((page) => page.reviews) ?? [];
 
   return (
-    <div className='overflow-y-auto px-[12px] scrollbar-hide'>
-      <div className='flex justify-between items-center pt-[24px] pb-[12px]'>
+    <div className='flex flex-col h-[70vh] max-h-[70vh] overflow-hidden'>
+      <div className='flex justify-between items-center px-[16px] pt-[24px] pb-[12px] shrink-0'>
         <span className='text-[2.2rem] font-semibold text-gray-800'>
           후기 {reviewCount.toLocaleString()}개
         </span>
-        <div className='flex flex-row items-center gap-[4px]'>
+        <div className='flex items-center gap-[4px]'>
           <StarFillIcon size={18} className='text-yellow-200' />
           <span className='text-[2.2rem] font-semibold text-gray-800'>
             {Number(rating).toFixed(1)}
@@ -53,32 +52,34 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
         </div>
       </div>
 
-      {reviews.map((review, idx) => (
-        <div key={review.id} className='pt-[12px]'>
-          <ReviewCard
-            nickname={review.user.nickname}
-            profileImageUrl={review.user.profileImageUrl}
-            createdAt={review.createdAt}
-            content={review.content}
-            rating={review.rating}
-            variant='list'
-          />
-          {idx !== reviews.length - 1 && <Divider className='my-[16px]' />}
-        </div>
-      ))}
+      <div className='flex-1 overflow-y-auto px-[16px] pt-[16px] scrollbar-hide'>
+        {reviews.map((review, idx) => (
+          <div key={review.id} className='pb-[16px]'>
+            <ReviewCard
+              nickname={review.user.nickname}
+              profileImageUrl={review.user.profileImageUrl}
+              createdAt={review.createdAt}
+              content={review.content}
+              rating={review.rating}
+              variant='list'
+            />
+            {idx !== reviews.length - 1 && <Divider className='my-[16px]' />}
+          </div>
+        ))}
 
-      {isFetchingNextPage && (
-        <div className='flex flex-col items-center py-[24px] space-y-[8px]'>
-          <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
-          <p className='text-sm text-gray-500 animate-pulse'>후기를 불러오는 중입니다...</p>
-        </div>
-      )}
+        {isFetchingNextPage && (
+          <div className='flex flex-col items-center py-[24px] space-y-[8px]'>
+            <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+            <p className='text-sm text-gray-500 animate-pulse'>후기를 불러오는 중입니다...</p>
+          </div>
+        )}
 
-      {!hasNextPage && (
-        <p className='text-center text-sm text-gray-400 py-2'>모든 후기를 확인하셨습니다.</p>
-      )}
+        {!hasNextPage && (
+          <p className='text-center text-sm text-gray-400 py-4'>모든 후기를 확인하셨습니다.</p>
+        )}
 
-      <div ref={observerRef} className='h-[4px]' />
+        <div ref={observerRef} className='h-[4px]' />
+      </div>
     </div>
   );
 }

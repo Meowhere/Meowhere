@@ -81,7 +81,8 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
 
   return (
     <>
-      <div className='flex max-h-[80vh] flex-col gap-[24px] overflow-y-scroll scrollbar-hide p-[12px] pb-[120px]'>
+      <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px]'>
+        {/* 인원 선택 */}
         <div className='flex flex-col gap-[24px] mb-[24px]'>
           <p className='text-[2.2rem] font-semibold text-gray-800'>인원</p>
           <div className='flex items-center justify-between'>
@@ -96,6 +97,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
           </div>
         </div>
 
+        {/* 날짜 선택 */}
         <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>
         <ReservationCalendarPicker
           selectedDate={selectedDate}
@@ -103,6 +105,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
           availableDates={availableDates}
         />
 
+        {/* 시간 선택 */}
         <ScheduleTimeList
           schedules={schedules}
           selectedDate={selectedDate}
@@ -110,29 +113,30 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
           onSelect={setSelectedSchedule}
           price={price}
         />
-      </div>
 
-      <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white border-t border-gray-100 z-50'>
-        <div className='flex items-center justify-between w-full gap-[12px]'>
-          <div className='flex flex-col gap-[4px] min-w-0'>
-            <p className='text-sm font-regular text-gray-500 truncate'>
-              {selectedSchedule
-                ? `${format(new Date(selectedSchedule.date + 'T00:00:00+09:00'), 'M월 d일', {
-                    locale: ko,
-                  })}, ${count}명`
-                : '날짜, 인원 수'}
-            </p>
-            <p className='text-[2rem] font-semibold text-gray-800 truncate'>
-              {(price * count).toLocaleString()}원
-            </p>
+        {/* 예약 요약 + 버튼 */}
+        <div className='mt-auto pt-[20px]'>
+          <div className='flex items-center justify-between w-full gap-[12px]'>
+            <div className='flex flex-col gap-[4px] min-w-0'>
+              <p className='text-sm font-regular text-gray-500 truncate'>
+                {selectedSchedule
+                  ? `${format(new Date(selectedSchedule.date + 'T00:00:00+09:00'), 'M월 d일', {
+                      locale: ko,
+                    })}, ${count}명`
+                  : '날짜, 인원 수'}
+              </p>
+              <p className='text-[2rem] font-semibold text-gray-800 truncate'>
+                {(price * count).toLocaleString()}원
+              </p>
+            </div>
+            <BaseButton
+              className='w-[175px] h-[42px] rounded-[10px]'
+              onClick={handleReserve}
+              disabled={!selectedSchedule}
+            >
+              예약하기
+            </BaseButton>
           </div>
-          <BaseButton
-            className='w-[128px] h-[42px] rounded-[10px]'
-            onClick={handleReserve}
-            disabled={!selectedSchedule}
-          >
-            예약하기
-          </BaseButton>
         </div>
       </div>
 

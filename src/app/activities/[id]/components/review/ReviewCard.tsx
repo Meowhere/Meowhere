@@ -2,6 +2,7 @@ import Image from 'next/image';
 import StarRating from '@/src/components/common/buttons/StarRating';
 import formatRelativeTime from '@/src/lib/formatRelativeTime';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import clsx from 'clsx';
 
 interface ReviewCardProps {
   nickname: string;
@@ -39,7 +40,14 @@ export default function ReviewCard({
         <p className='text-[#A4A1AA] text-xs font-regular'>{formattedDate}</p>
       </div>
 
-      <p className='text-sm font-regular text-gray-700 line-clamp-2 flex-grow'>{content}</p>
+      <p
+        className={clsx(
+          'text-sm font-regular text-gray-700 flex-grow',
+          variant === 'card' && 'line-clamp-4'
+        )}
+      >
+        {content}
+      </p>
 
       <div className='flex items-center gap-[8px] mt-auto'>
         <Image
