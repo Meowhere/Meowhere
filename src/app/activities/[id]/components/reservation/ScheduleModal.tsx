@@ -81,7 +81,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
 
   return (
     <>
-      <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px]'>
+      <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide'>
         {/* 인원 선택 */}
         <div className='flex flex-col gap-[24px] mb-[24px]'>
           <p className='text-[2.2rem] font-semibold text-gray-800'>인원</p>
