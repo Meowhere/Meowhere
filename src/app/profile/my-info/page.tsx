@@ -182,7 +182,7 @@ export default function MyInfoPage() {
             <BaseButton
               variant='primary'
               disabled={isPending || !isDirty || !isValid}
-              className='py-[12px] w-full'
+              className='py-[12px]'
             >
               변경하기
             </BaseButton>
