@@ -130,7 +130,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
               </p>
             </div>
             <BaseButton
-              className='w-[175px] h-[42px] rounded-[10px]'
+              className='max-w-[175px] h-[42px] rounded-[10px]'
               onClick={handleReserve}
               disabled={!selectedSchedule}
             >
