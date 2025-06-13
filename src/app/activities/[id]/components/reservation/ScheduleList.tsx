@@ -2,7 +2,6 @@
 
 import { formatScheduleDate } from '@/src/utils/date';
 import { groupSchedulesByDate } from '@/src/utils/schedule';
-import CalendarButton from '../common/CalendarButton';
 import ScheduleTimeSlot from './ScheduleTimeSlot';
 import { Schedule, SelectedSchedule } from '@/src/types/schedule.types';
 
@@ -25,12 +24,6 @@ export default function ScheduleList({
     <div className='flex flex-col gap-[16px]'>
       <div className='flex items-center justify-between'>
         <p className='text-[2.2rem] font-semibold text-gray-800 mt-[16px]'>체험 날짜</p>
-        <CalendarButton
-          onClick={() => {
-            console.log('캘린더 버튼 클릭됨');
-            /* TODO: 달력 UI 연동 기능 추가 */
-          }}
-        />
       </div>
       {Object.entries(groupedByDate).map(([date, timeSlots]) => (
         <div key={date}>
