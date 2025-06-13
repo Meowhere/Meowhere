@@ -25,6 +25,7 @@ export default function RegisterForm() {
   } = useForm<FormValues>({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
+    defaultValues: { price: '' },
   });
 
   const titleValue = watch('title', '');
@@ -51,7 +52,18 @@ export default function RegisterForm() {
       <Input
         label='가격'
         type='text'
-        {...register('price')}
+        {...register('price', {
+          onBlur: (e) => {
+            // 1. 입력값에서 콤마 모두 제거
+            const raw = e.target.value.replace(/,/g, '');
+            // 2. 값이 있으면 콤마 포맷해서 input에 직접 반영
+            if (raw && !isNaN(Number(raw))) {
+              e.target.value = Number(raw).toLocaleString('ko-KR');
+            }
+            // 3. return은 신경 안 써도 됨 (폼 값에는 영향 X)
+          },
+          setValueAs: (v) => v.replace(/,/g, ''), // 폼 데이터는 콤마 제거
+        })}
         error={errors.price}
         watchValue={priceValue}
         required
@@ -66,6 +78,8 @@ export default function RegisterForm() {
         error={errors.description}
         watchValue={descriptionValue}
         required
+        scrollable={false}
+        autoResize={true}
       />
     </form>
   );
