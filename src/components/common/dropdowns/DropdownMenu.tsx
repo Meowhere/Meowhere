@@ -13,6 +13,7 @@ export default function DropdownMenu({
   onClose,
   bottomButton,
 }: DropdownMenuProps) {
+  console.log(isMobile);
   const mobileShadow = 'shadow-[0_4px_40px_rgba(0,0,0,0.1)] backdrop-blur-[40px]';
   const desktopShadow = 'shadow-[0_0_20px_rgba(0,0,0,0.05)]';
 
@@ -25,7 +26,7 @@ export default function DropdownMenu({
     if (isMobile) {
       document.body.style.overflow = 'hidden';
       return () => {
-        document.body.style.overflow = '';
+        document.body.style.overflow = 'auto';
       };
     }
   }, [isMobile]);

@@ -48,22 +48,12 @@ export default function Dropdown({
             }}
           />
         )}
-        <div className='w-full absolute top-[70px] left-0 hidden lg:block'>
+        <div className='w-full absolute top-[70px] left-0'>
           {isOpen && (
             <DropdownMenu
               items={dropdownItems}
               bottomSheetTitle={bottomSheetTitle}
-              isMobile={false}
-              onClose={() => setIsOpen(false)}
-            />
-          )}
-        </div>
-        <div className='w-full absolute top-[70px] left-0 lg:hidden'>
-          {isOpen && (
-            <DropdownMenu
-              items={dropdownItems}
-              bottomSheetTitle={bottomSheetTitle}
-              isMobile={true}
+              isMobile={typeof window !== 'undefined' && window.innerWidth < 1024}
               onClose={() => setIsOpen(false)}
               bottomButton={{
                 label: '취소',
