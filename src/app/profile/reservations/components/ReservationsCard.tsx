@@ -7,13 +7,7 @@ import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { ReservationsCardProps } from '@/src/types/reservations-card.types';
 
 export default function ReservationsCard({
-  imageUrl,
-  label,
-  title,
-  date,
-  time,
-  headCount,
-  price,
+  reservation,
   showCancel = false,
   showReview = false,
 }: ReservationsCardProps) {
@@ -27,16 +21,15 @@ export default function ReservationsCard({
 
   const openReviewModal = () => {
     openCreateReviewModal({
-      title,
+      title: reservation.activity.title,
       schedule: {
-        id: 1,
-        date,
-        startTime: time.split(' - ')[0],
-        endTime: time.split(' - ')[1],
+        id: reservation.scheduleId,
+        date: reservation.date,
+        startTime: reservation.startTime,
+        endTime: reservation.endTime,
       },
-      headCount,
-      price,
-      rating: 3,
+      headCount: reservation.headCount,
+      price: reservation.totalPrice,
       onConfirm: () => {
         console.log('후기 작성 완료');
       },
@@ -48,18 +41,18 @@ export default function ReservationsCard({
       {/* 내용 */}
       <div className='flex gap-[10px] lg:gap-[14px]'>
         <img
-          src={imageUrl}
+          src={reservation.activity.bannerImageUrl}
           alt='체험 활동 메인 사진'
           className='w-[86px] h-[86px] rounded-[8px] object-cover lg:w-[98px] lg:h-[98px] lg:rounded-[10px]'
         />
         <div className='flex flex-col justify-between gap-[6px] lg:gap-[18px]'>
-          <ReservationsLabel status={label} />
+          <ReservationsLabel status={reservation.status} />
           <div className='flex flex-col gap-[4px] pl-[4px] lg:gap-[8px]'>
             <p className='text-[1.4rem] leading-[1.4rem] font-semibold text-gray-800 lg:text-[1.6rem]'>
-              {title}
+              {reservation.activity.title}
             </p>
-            <p className='text-[1.3rem] leading-[1.3rem] font-regular text-gray-600'>{`${date} · ${time}`}</p>
-            <p className='text-[1.3rem] leading-[1.3rem] font-regular text-gray-600'>{`${headCount}명, ₩${price.toLocaleString()}`}</p>
+            <p className='text-[1.3rem] leading-[1.3rem] font-regular text-gray-600'>{`${reservation.date} · ${reservation.startTime} - ${reservation.endTime}`}</p>
+            <p className='text-[1.3rem] leading-[1.3rem] font-regular text-gray-600'>{`${reservation.headCount}명, ₩${reservation.totalPrice.toLocaleString()}`}</p>
           </div>
         </div>
       </div>

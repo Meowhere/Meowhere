@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { DropdownMenuProps } from '@/src/types/dropdown-menu.types';
+import { DropdownItemButton } from '@/src/types/dropdown.types';
 
 import DropdownItem from './DropdownItem';
 
@@ -25,7 +25,7 @@ export default function DropdownMenu({
     if (isMobile) {
       document.body.style.overflow = 'hidden';
       return () => {
-        document.body.style.overflow = '';
+        document.body.style.overflow = 'auto';
       };
     }
   }, [isMobile]);
@@ -89,4 +89,12 @@ export default function DropdownMenu({
       ))}
     </div>
   );
+}
+
+interface DropdownMenuProps {
+  items: DropdownItemButton[];
+  bottomSheetTitle: string;
+  isMobile?: boolean;
+  bottomButton?: DropdownItemButton; // 바텀 시트 취소 버튼
+  onClose: () => void;
 }

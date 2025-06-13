@@ -1,5 +1,3 @@
-import { DropdownTriggerProps } from '@/src/types/dropdown-trigger.types';
-
 export default function DropdownTrigger({ label, text, isOpen, onClick }: DropdownTriggerProps) {
   return (
     <button
@@ -30,4 +28,11 @@ export default function DropdownTrigger({ label, text, isOpen, onClick }: Dropdo
       </div>
     </button>
   );
+}
+
+interface DropdownTriggerProps {
+  label: string;
+  text: string;
+  isOpen: boolean;
+  onClick: () => void;
 }

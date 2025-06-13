@@ -181,21 +181,21 @@ const Modal = () => {
     }
   }, [isDragging, dragStart, handleClose, modalProps?.type]);
 
-  useEffect(() => {
-    const preventScroll = (e: Event) => {
-      e.preventDefault();
-    };
+  // useEffect(() => {
+  //   const preventScroll = (e: Event) => {
+  //     e.preventDefault();
+  //   };
 
-    if (isOpen) {
-      document.addEventListener('wheel', preventScroll, { passive: false });
-      document.addEventListener('touchmove', preventScroll, { passive: false });
-    }
+  //   if (isOpen) {
+  //     document.addEventListener('wheel', preventScroll, { passive: false });
+  //     document.addEventListener('touchmove', preventScroll, { passive: false });
+  //   }
 
-    return () => {
-      document.removeEventListener('wheel', preventScroll);
-      document.removeEventListener('touchmove', preventScroll);
-    };
-  }, [isOpen]);
+  //   return () => {
+  //     document.removeEventListener('wheel', preventScroll);
+  //     document.removeEventListener('touchmove', preventScroll);
+  //   };
+  // }, [isOpen]);
 
   if ((!isOpen && !isClosing) || !modalProps) return null;
 
