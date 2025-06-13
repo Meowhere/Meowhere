@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { DropdownMenuProps } from '@/src/types/dropdown-menu.types';
+import { DropdownItemButton } from '@/src/types/dropdown.types';
 
 import DropdownItem from './DropdownItem';
 
@@ -13,7 +13,6 @@ export default function DropdownMenu({
   onClose,
   bottomButton,
 }: DropdownMenuProps) {
-  console.log(isMobile);
   const mobileShadow = 'shadow-[0_4px_40px_rgba(0,0,0,0.1)] backdrop-blur-[40px]';
   const desktopShadow = 'shadow-[0_0_20px_rgba(0,0,0,0.05)]';
 
@@ -90,4 +89,12 @@ export default function DropdownMenu({
       ))}
     </div>
   );
+}
+
+interface DropdownMenuProps {
+  items: DropdownItemButton[];
+  bottomSheetTitle: string;
+  isMobile?: boolean;
+  bottomButton?: DropdownItemButton; // 바텀 시트 취소 버튼
+  onClose: () => void;
 }

@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
+import { DropdownItemButton } from '@/src/types/dropdown.types';
+
 import DropdownMenu from './DropdownMenu';
 import DropdownTrigger from './DropdownTrigger';
-import { DropdownProps } from '@/src/types/dropdown.types';
 
 export default function Dropdown({
   dropdownItems,
@@ -65,4 +67,12 @@ export default function Dropdown({
       </div>
     </div>
   );
+}
+
+export interface DropdownProps {
+  dropdownItems: DropdownItemButton[];
+  selectedValue: string;
+  bottomSheetTitle: string;
+  trigger?: React.ReactNode;
+  triggerLabel?: string;
 }

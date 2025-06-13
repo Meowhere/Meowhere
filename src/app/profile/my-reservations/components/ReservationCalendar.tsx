@@ -7,7 +7,7 @@ import '@/src/styles/reservation-calendar.css';
 
 import { useModal } from '@/src/hooks/useModal';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
-import { DropdownItemButton } from '@/src/types/dropdown-menu.types';
+import { DropdownItemButton } from '@/src/types/dropdown.types';
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 
 export default function ReservationCalendar() {
