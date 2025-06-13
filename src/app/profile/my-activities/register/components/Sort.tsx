@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import DropdownItem from '@/src/components/common/dropdowns/DropdownItem';
-import { SortIcon } from '@/src/components/common/icons/SortIcon';
-import { SortedIcon } from '@/src/components/common/icons/SortIcon';
+import { SortIcon, SortedIcon } from '@/src/components/common/icons/SortIcon';
+import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
+import { DropdownItemButton } from '@/src/types/dropdown.types';
 
 interface SortProps {
   onSortChange: (sort: 'registered' | 'latest' | 'oldest') => void;
@@ -38,11 +38,27 @@ export default function Sort({ onSortChange }: SortProps) {
 
   const filtered = selected !== 'registered';
 
+  // 드롭다운 메뉴 데이터 만들기
+  const dropdownItems: DropdownItemButton[] = [
+    {
+      label: '등록순',
+      onClick: () => handleSelect('registered'),
+    },
+    {
+      label: '최신순',
+      onClick: () => handleSelect('latest'),
+    },
+    {
+      label: '과거순',
+      onClick: () => handleSelect('oldest'),
+    },
+  ];
+
   return (
-    <div ref={containerRef} className=''>
+    <div ref={containerRef} className='relative'>
       <button
         type='button'
-        aria-label='필터 열기'
+        aria-label='정렬 드롭다운 열기'
         onClick={() => setOpen((v) => !v)}
         className='cursor-pointer'
       >
@@ -50,16 +66,13 @@ export default function Sort({ onSortChange }: SortProps) {
       </button>
       {open && (
         <div>
-          {SORT_OPTIONS.map((option) => (
-            <DropdownItem
-              key={option.key}
-              label={option.label}
-              onClick={() => handleSelect(option.key)}
+          <div className='absolute right-0 top-[32px] z-10'>
+            <DropdownMenu
+              items={dropdownItems}
+              bottomSheetTitle='날짜 정렬'
               onClose={() => setOpen(false)}
-              isDanger={false}
-              disabled={false}
             />
-          ))}
+          </div>
         </div>
       )}
     </div>
