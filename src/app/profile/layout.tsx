@@ -6,11 +6,11 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const { isDesktop } = useBreakpoint();
 
   return (
-    <div className='flex gap-[128px] min-h-screen mt-[50px] max-w-[1200px] mx-auto w-full'>
+    <div className='flex relative gap-[128px] min-h-screen mt-[50px] max-w-[1200px] mx-auto'>
       {isDesktop && (
-        <div className='w-[328px]'>
+        <aside className='sticky w-[328px] h-fit top-[50px] self-start'>
           <Sidebar />
-        </div>
+        </aside>
       )}
       <main className='flex-1'>{children}</main>
     </div>
