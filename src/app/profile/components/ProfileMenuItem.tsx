@@ -2,13 +2,21 @@ import ArrowButton from '@/src/components/common/buttons/ArrowButton';
 import Link from 'next/link';
 import { ProfileMenuItemProps, ICONS } from '@/src/types/profile-menu.types';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 
 export default function ProfileMenuItem({ href, icon, title }: ProfileMenuItemProps) {
   const { isDesktop } = useBreakpoint();
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
   return (
     <Link
       href={href}
-      className='flex flex-row items-center justify-between px-[24px] py-[12px] rounded-[10px] hover:bg-gray-50 transition-colors duration-200 active:bg-gray-100 p-3'
+      className={clsx(
+        'flex flex-row items-center justify-between px-[24px] py-[12px] rounded-[10px] hover:bg-gray-50 transition-colors duration-200 p-3',
+        isActive && 'bg-gray-100'
+      )}
     >
       <div className='flex items-center gap-[14px]'>
         <img src={ICONS[icon]} alt={title} />

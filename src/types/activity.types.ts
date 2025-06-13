@@ -41,3 +41,7 @@ export interface ActivityFormData {
   subImageUrls: string[];
   schedules?: Omit<Schedule, 'id'>[];
 }
+
+export interface PopularActivitiesResponse {
+  activities: Activity[];
+}
