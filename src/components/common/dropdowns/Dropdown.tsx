@@ -1,11 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
+import { DropdownItemButton } from '@/src/types/dropdown.types';
+
 import DropdownMenu from './DropdownMenu';
 import DropdownTrigger from './DropdownTrigger';
-import { DropdownProps } from '@/src/types/dropdown.types';
 
-export default function Dropdown({ dropdownItems, triggerLabel, selectedValue }: DropdownProps) {
+export default function Dropdown({
+  dropdownItems,
+  selectedValue,
+  bottomSheetTitle,
+  trigger,
+  triggerLabel,
+}: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   // 드롭다운 메뉴 이외의 곳 클릭 시, trigger 닫히게 하는 로직
@@ -30,33 +38,41 @@ export default function Dropdown({ dropdownItems, triggerLabel, selectedValue }:
           e.stopPropagation(); // 내부 클릭일 경우 전파 차단
         }}
       >
-        <DropdownTrigger
-          label={triggerLabel}
-          text={selectedValue}
-          isOpen={isOpen}
-          onClick={() => {
-            setIsOpen((prev) => !prev);
-          }}
-        />
-        <div className='w-full absolute top-[70px] left-0 hidden lg:block'>
-          {isOpen && (
-            <DropdownMenu items={dropdownItems} onClose={() => setIsOpen(false)} isMobile={false} />
-          )}
-        </div>
-        <div className='w-full absolute top-[70px] left-0 lg:hidden'>
+        {trigger ? (
+          <button onClick={() => setIsOpen((prev) => !prev)}>{trigger}</button>
+        ) : (
+          <DropdownTrigger
+            label={triggerLabel ? triggerLabel : ''}
+            text={selectedValue}
+            isOpen={isOpen}
+            onClick={() => {
+              setIsOpen((prev) => !prev);
+            }}
+          />
+        )}
+        <div className='w-full absolute top-[70px] left-0'>
           {isOpen && (
             <DropdownMenu
               items={dropdownItems}
+              bottomSheetTitle={bottomSheetTitle}
+              isMobile={typeof window !== 'undefined' && window.innerWidth < 1024}
               onClose={() => setIsOpen(false)}
               bottomButton={{
                 label: '취소',
                 onClick: () => setIsOpen(false),
               }}
-              isMobile
             />
           )}
         </div>
       </div>
     </div>
   );
+}
+
+export interface DropdownProps {
+  dropdownItems: DropdownItemButton[];
+  selectedValue: string;
+  bottomSheetTitle: string;
+  trigger?: React.ReactNode;
+  triggerLabel?: string;
 }

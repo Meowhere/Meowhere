@@ -1,5 +1,4 @@
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
-
 import { Activity, Category } from '../types/activity.types';
 import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
 import ActivityList from './_components/ActivityList';
@@ -16,12 +15,6 @@ export default async function Home({
   }>;
 }) {
   const searchParams = await searchParamsPromise;
-  const popularResponse = await fetchFromClient(
-    `/activities?method=offset&page=1&size=5&sort=most_reviewed`
-  );
-  const popularData = await popularResponse.json();
-  const popularActivities = popularData.activities;
-
   const category = searchParams.category || '';
   const keyword = searchParams.keyword || '';
 
@@ -47,7 +40,7 @@ export default async function Home({
 
   return (
     <>
-      <PopularActivitiesBanner popularActivities={popularActivities} />
+      <PopularActivitiesBanner />
       <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
     </>
   );

@@ -1,14 +1,12 @@
-import { DropdownTriggerProps } from '@/src/types/dropdown-trigger.types';
-
 export default function DropdownTrigger({ label, text, isOpen, onClick }: DropdownTriggerProps) {
   return (
     <button
       onClick={onClick}
       type='button'
-      className='w-full h-[64px] rounded-[10px] border border-gray-200 bg-white hidden lg:inline-block'
+      className='w-full h-[64px] rounded-[10px] border border-gray-200 bg-white'
     >
       <div className='w-full flex items-center justify-between px-[20px] py-[8px]'>
-        <div className='flex flex-col items-start w-[100px]'>
+        <div className='flex flex-col items-start'>
           <span className='text-xs font-regular text-gray-500'>{label}</span>
           <div>
             <div className='text-md font-regular text-gray-800'>{text}</div>
@@ -30,4 +28,11 @@ export default function DropdownTrigger({ label, text, isOpen, onClick }: Dropdo
       </div>
     </button>
   );
+}
+
+interface DropdownTriggerProps {
+  label: string;
+  text: string;
+  isOpen: boolean;
+  onClick: () => void;
 }

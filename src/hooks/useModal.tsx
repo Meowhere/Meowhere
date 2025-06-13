@@ -4,6 +4,10 @@ import { ModalProps, CreateReviewModalProps } from '../types/modal.types';
 import CreateReviewModal from '../components/common/modals/CreateReviewModal';
 import AuthModal from '../components/common/modals/AuthModal';
 import ReservationModal from '../components/common/modals/ReservationModal';
+import ReviewListModal from '../app/activities/[id]/components/review/ReviewListModal';
+import { ReviewListModalProps } from '../app/activities/[id]/components/review/ReviewListModal';
+import ScheduleModal from '../app/activities/[id]/components/reservation/ScheduleModal';
+import { ScheduleModalProps } from '../app/activities/[id]/components/reservation/ScheduleModal';
 
 export const useModal = () => {
   const { openModal, closeModal } = useModalStore();
@@ -21,19 +25,19 @@ export const useModal = () => {
     });
   };
 
-  const openReviewModal = (props: any) => {
-    // 임시 프롭
+  const openReviewListModal = (props: ReviewListModalProps) => {
     openModal({
       header: '후기',
-      children: <></>,
+      children: <ReviewListModal {...props} />,
+      height: 'full',
     });
   };
 
-  const openScheduleModal = (props: any) => {
-    // 임시 프롭
+  const openScheduleModal = (props: ScheduleModalProps) => {
     openModal({
       header: '일정 선택',
-      children: <></>,
+      children: <ScheduleModal {...props} />,
+      height: 'full',
     });
   };
 
@@ -74,7 +78,7 @@ export const useModal = () => {
     openCreateReviewModal,
     openScheduleModal,
     openAlarmModal,
-    openReviewModal,
+    openReviewListModal,
     openBottomSheetModal,
     openReservationModal,
   };
