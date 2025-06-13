@@ -66,7 +66,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       </section>
       <section className='mt-[24px]'>
         <div>
-          <p className='text-[22px] font-semibold text-gray-800'>{formatDateDot(date)}</p>
+          <p className='text-[22px] font-semibold text-gray-800'>{formatDateDot(date, false)}</p>
         </div>
         <div className='mt-[20px]'>
           <Dropdown

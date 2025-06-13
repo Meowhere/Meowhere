@@ -26,5 +26,4 @@ export interface CreateReviewModalProps {
   schedule: Schedule;
   headCount: number;
   price: number;
-  onConfirm: () => void;
 }
