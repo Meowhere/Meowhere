@@ -1,101 +1,48 @@
-'use client';
-
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import LikeIcon from '../components/common/icons/LikeIcon';
-import StarFillIcon from '../components/common/icons/StarFillIcon';
-import { useGnbStore } from '../store/gnbStore';
-import { useURLQuery } from '../hooks/useURLQuery';
+import { Activity, Category } from '../types/activity.types';
+import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
+import ActivityList from './_components/ActivityList';
 
-export default function Home() {
-  const [activities, setActivities] = useState([]);
-  const searchParams = useSearchParams();
-  const { updateQuery } = useURLQuery();
-  const { setBackAction } = useGnbStore();
+export default async function Home({
+  searchParams: searchParamsPromise,
+}: {
+  searchParams: Promise<{
+    category: Category;
+    keyword: string;
+    'min-price': string;
+    'max-price': string;
+    address: string;
+  }>;
+}) {
+  const searchParams = await searchParamsPromise;
+  const category = searchParams.category || '';
+  const keyword = searchParams.keyword || '';
 
-  useEffect(() => {
-    setBackAction(null);
-    if (!searchParams.get('category')) {
-      updateQuery('category', '');
-    }
-  }, []);
+  const params = new URLSearchParams({
+    method: 'cursor',
+    size: '30',
+    ...(category && { category }),
+    ...(keyword && { keyword }),
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetchFromClient(
-        `/activities?method=offset&page=1&size=100&${
-          searchParams.get('category') ? 'category=' + searchParams.get('category') : ''
-        }&${searchParams.get('keyword') ? 'keyword=' + searchParams.get('keyword') : ''}`
-      );
-      const data = await response.json();
-      setActivities(
-        data.activities.filter(
-          (item: any) =>
-            item.price >= Number(searchParams.get('min-price') || 0) &&
-            item.price <= Number(searchParams.get('max-price') || Infinity) &&
-            item.address.includes(searchParams.get('address') || '')
-        )
-      );
-    };
-    fetchData();
-  }, [searchParams]);
+  const activitiesResponse = await fetchFromClient(`/activities?${params.toString()}`);
+
+  const activitiesData = await activitiesResponse.json();
+
+  const minPrice = Number(searchParams['min-price'] || 0);
+  const maxPrice = Number(searchParams['max-price'] || Infinity);
+  const address = searchParams.address || '';
+
+  const activities = activitiesData.activities.filter(
+    (item: Activity) =>
+      item.price >= minPrice && item.price <= maxPrice && item.address.includes(address)
+  );
 
   return (
-    <div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-[24px] mt-6 p-[24px]'>
-        {activities.map((item: any) => (
-          <article key={item.id}>
-            <figure className='relative'>
-              <img
-                src={item.bannerImageUrl}
-                alt={item.title}
-                className='w-full aspect-square object-cover rounded-[20px]'
-              />
-              <div className='absolute top-[16px] left-[16px] flex items-center text-sm text-gray-500'>
-                <div className='flex items-center justify-center gap-[4px] bg-white rounded-full w-[58px] h-[24px] font-medium'>
-                  <StarFillIcon size={14} className='text-yellow-200' /> {item.rating.toFixed(1)}
-                </div>
-              </div>
-              <LikeIcon
-                showOverlay
-                className='absolute top-[16px] right-[16px] w-[32px] h-[32px] text-white'
-              />
-            </figure>
-
-            <div className='p-[8px] gap-[6px] flex flex-col'>
-              <header>
-                <h2 className='leading-[1.4] text-sm font-semibold text-gray-800 line-clamp-2'>
-                  {item.title}
-                </h2>
-              </header>
-
-              <section>
-                <address className='text-xs leading-none text-gray-500 not-italic'>
-                  {item.address}
-                </address>
-              </section>
-
-              <footer className='leading-none flex justify-between items-center w-full text-[1.1rem] font-normal text-gray-500'>
-                <span>{item.price.toLocaleString()}원 / 인</span>
-                <span>{item.reviewCount}개의 후기</span>
-              </footer>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
+    <>
+      <PopularActivitiesBanner />
+      <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
+    </>
   );
 }
 

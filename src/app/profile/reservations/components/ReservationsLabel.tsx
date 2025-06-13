@@ -1,15 +1,14 @@
 'use client';
 
-import { reservationStatusMap } from '@/src/constants/reservations-status';
-
-type ReservationStatus = keyof typeof reservationStatusMap; // api에서 전송하는 상태(key)만 추출한 타입 정의
+import { MY_RESERVATION_STATUS_MAP } from '@/src/constants/my-reservation-status';
+import { MyReservationStatus } from '@/src/types/profile-reservation.types';
 
 interface ReservationsLabelProps {
-  status: ReservationStatus; // 해당 status 기반으로 UI에 보여줄 라벨 텍스트와 스타일을 추출해 사용
+  status: MyReservationStatus; // 해당 status 기반으로 UI에 보여줄 라벨 텍스트와 스타일을 추출해 사용
 }
 
 export default function ReservationsLabel({ status }: ReservationsLabelProps) {
-  const { label, bg, text } = reservationStatusMap[status];
+  const { label, bg, text } = MY_RESERVATION_STATUS_MAP[status];
 
   return (
     <span
