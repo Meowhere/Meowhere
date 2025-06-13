@@ -147,7 +147,7 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.removeQueries({ queryKey: ['user'] });
     },
     onError: (error) => {
       console.error('로그아웃 실패:', error);
