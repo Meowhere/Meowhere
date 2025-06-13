@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import StarRating from '@/src/components/common/buttons/StarRating';
 import formatRelativeTime from '@/src/lib/formatRelativeTime';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface ReviewCardProps {
   nickname: string;
@@ -23,10 +24,14 @@ export default function ReviewCard({
 
   const isList = variant === 'list';
 
+  const { isTablet } = useBreakpoint();
+
+  const contentMaxWidth = isList ? '' : isTablet ? 'max-w-[400px]' : 'max-w-[232px]';
+
   return (
     <div
       className={`flex flex-col items-start gap-[12px] ${
-        isList ? 'w-full p-0' : 'w-[256px] p-[12px] bg-white'
+        isList ? 'w-full p-0' : 'w-full p-[12px] bg-white'
       }`}
     >
       <div className='flex items-center gap-[8px]'>
@@ -34,11 +39,7 @@ export default function ReviewCard({
         <p className='text-[#A4A1AA] text-xs font-regular'>{formattedDate}</p>
       </div>
 
-      <p
-        className={`text-sm font-regular text-gray-700 ${
-          isList ? '' : 'line-clamp-4 max-w-[232px]'
-        }`}
-      >
+      <p className={`text-sm font-regular text-gray-700 ${contentMaxWidth} line-clamp-4`}>
         {content}
       </p>
 

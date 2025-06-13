@@ -7,6 +7,7 @@ import 'swiper/css';
 import { SubImage } from '@/src/types/activity.types';
 import { useGnbStore } from '@/src/store/gnbStore';
 import SubPageGNB from '@/src/components/layout/navbar/components/SubPageGNB';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface ExperienceImageViewerProps {
   bannerImageUrl: string;
@@ -21,6 +22,7 @@ export default function ExperienceImageViewer({
 }: ExperienceImageViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { isTablet, isDesktop } = useBreakpoint();
 
   const imageUrls = [bannerImageUrl, ...subImages.map((img) => img.imageUrl)] as string[];
 
@@ -55,7 +57,11 @@ export default function ExperienceImageViewer({
   return (
     <>
       <div className='overflow-hidden'>
-        <div className='grid grid-cols-2 gap-[5px] mt-4 mb-4 mx-auto rounded-[30px] overflow-hidden'>
+        <div
+          className={`
+            grid grid-cols-2 gap-[5px] mt-4 mb-4 mx-auto rounded-[30px] overflow-hidden
+          `}
+        >
           {imageUrls.map((url, index) => (
             <div
               key={index}

@@ -9,8 +9,6 @@ import ReservationBox from './components/reservation/ReservationBox';
 import ExperienceDescription from './components/experience/ExperienceDescription';
 import ReviewSection from './components/review/ReviewSection';
 import { dummyReviews } from './data/dummyReviews';
-import { useModal } from '@/src/hooks/useModal';
-import { getSatisfactionLabel } from '@/src/utils/getSatisfactionLabel';
 
 const dummyExperience = {
   id: 7,
@@ -31,11 +29,10 @@ const dummyExperience = {
 };
 
 export default function ExperienceDetailPage() {
-  const { openReviewListModal } = useModal();
-
   return (
-    <main className='min-h-screen pt-[56px] px-[24px]'>
-      <div className='max-w-4xl mx-auto'>
+    <main className='min-h-screen pt-[56px] pb-[160px] px-[16px] md:px-[24px]'>
+      {/* 이미지 + 요약 */}
+      <div className='w-full lg:max-w-4xl lg:mx-auto'>
         <ExperienceImageViewer
           bannerImageUrl={dummyExperience.bannerImageUrl}
           subImages={dummyExperience.subImages}
@@ -48,32 +45,33 @@ export default function ExperienceDetailPage() {
         />
         <Divider />
       </div>
-      <div className='max-w-4xl mx-auto'>
+
+      {/* 위치 */}
+      <div className='w-full lg:max-w-4xl lg:mx-auto'>
         <SectionTitle title='만나는 곳' subtitle={dummyExperience.address} />
         <ExperienceLocationMap address={dummyExperience.address} />
         <Divider />
       </div>
-      <div className='max-w-4xl mx-auto'>
+
+      {/* 설명 */}
+      <div className='w-full lg:max-w-4xl lg:mx-auto'>
         <SectionTitle title='체험 설명' />
         <ExperienceDescription description={dummyExperience.description} />
         <Divider />
       </div>
-      <div className='max-w-4xl mx-auto'>
+
+      {/* 후기 */}
+      <div className='w-full lg:max-w-4xl lg:mx-auto'>
         <SectionTitle title='후기' />
         <ReviewSection
+          activityId={dummyExperience.id}
           rating={dummyExperience.averageRating}
           reviewCount={dummyExperience.totalCount}
           reviews={dummyReviews}
-          onOpenModal={() =>
-            openReviewListModal({
-              activityId: dummyExperience.id,
-              rating: dummyExperience.averageRating,
-              reviewCount: dummyExperience.totalCount,
-              satisfactionLabel: getSatisfactionLabel(dummyExperience.averageRating),
-            })
-          }
         />
       </div>
+
+      {/* 예약 */}
       <ReservationBox pricePerPerson={dummyExperience.price} />
     </main>
   );

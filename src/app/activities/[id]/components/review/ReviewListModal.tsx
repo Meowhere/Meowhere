@@ -40,14 +40,16 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
   const reviews = data?.pages.flatMap((page) => page.reviews) ?? [];
 
   return (
-    <div className='h-[60vh] overflow-y-auto px-[12px] scrollbar-hide'>
+    <div className='overflow-y-auto px-[12px] scrollbar-hide'>
       <div className='flex justify-between items-center pt-[24px] pb-[12px]'>
         <span className='text-[2.2rem] font-semibold text-gray-800'>
           후기 {reviewCount.toLocaleString()}개
         </span>
         <div className='flex flex-row items-center gap-[4px]'>
           <StarFillIcon size={18} className='text-yellow-200' />
-          <span className='text-sm font-medium text-black'>{Number(rating).toFixed(1)}</span>
+          <span className='text-[2.2rem] font-semibold text-gray-800'>
+            {Number(rating).toFixed(1)}
+          </span>
         </div>
       </div>
 

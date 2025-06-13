@@ -22,15 +22,21 @@ export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) 
     });
   };
 
-  // 모바일 또는 태블릿일 때만 하단 예약 UI 표시
-  if (isMobile || isTablet) {
-    return (
-      <ReservationMobileFooter
-        pricePerPerson={pricePerPerson}
-        onClickDateSelect={handleOpenDateModal}
-      />
-    );
-  }
+  return (
+    <>
+      {isMobile && (
+        <ReservationMobileFooter
+          pricePerPerson={pricePerPerson}
+          onClickDateSelect={handleOpenDateModal}
+        />
+      )}
 
-  return null;
+      {isTablet && (
+        <ReservationMobileFooter
+          pricePerPerson={pricePerPerson}
+          onClickDateSelect={handleOpenDateModal}
+        />
+      )}
+    </>
+  );
 }
