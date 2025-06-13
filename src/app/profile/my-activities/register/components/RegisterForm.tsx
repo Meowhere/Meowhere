@@ -48,7 +48,7 @@ export default function RegisterForm() {
         watchValue={titleValue}
         required
       />
-      {/* <Category /> */}
+      <Category />
       <Input
         label='가격'
         type='text'

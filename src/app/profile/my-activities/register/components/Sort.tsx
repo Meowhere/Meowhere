@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { SortIcon, SortedIcon } from '@/src/components/common/icons/SortIcon';
 import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface SortProps {
   onSortChange: (sort: 'registered' | 'latest' | 'oldest') => void;
@@ -17,6 +18,7 @@ export default function Sort({ onSortChange }: SortProps) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<'registered' | 'latest' | 'oldest'>('registered');
   const containerRef = useRef<HTMLDivElement>(null);
+  const { isDesktop } = useBreakpoint();
 
   // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
@@ -71,6 +73,11 @@ export default function Sort({ onSortChange }: SortProps) {
               items={dropdownItems}
               bottomSheetTitle='날짜 정렬'
               onClose={() => setOpen(false)}
+              bottomButton={{
+                label: '취소',
+                onClick: () => setOpen(false),
+              }}
+              isMobile={!isDesktop}
             />
           </div>
         </div>
