@@ -12,7 +12,9 @@ export function useSearchFilters(keyword?: string) {
   const [selectedMaxPrice, setSelectedMaxPrice] = useState(0);
   const [selectedMinPrice, setSelectedMinPrice] = useState(0);
 
-  const [openedSearchSection, setOpenedSearchSection] = useState<'place' | 'price' | ''>('');
+  const [openedSearchSection, setOpenedSearchSection] = useState<
+    'place' | 'price' | 'keyword' | ''
+  >('');
   const [placeKeyword, setPlaceKeyword] = useState('');
 
   const debouncedPlaceKeyword = useDebouncedValue(placeKeyword, 150);

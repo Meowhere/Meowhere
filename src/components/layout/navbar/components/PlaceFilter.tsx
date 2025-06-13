@@ -14,8 +14,8 @@ export default function PlaceFilter({
   className,
   ...rest
 }: {
-  openedSearchSection: 'place' | 'price' | '';
-  setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price' | ''>>;
+  openedSearchSection: 'place' | 'price' | 'keyword' | '';
+  setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price' | 'keyword' | ''>>;
   placeKeyword: string;
   setPlaceKeyword: React.Dispatch<React.SetStateAction<string>>;
   filteredPlaces: [string, number][];
@@ -24,11 +24,11 @@ export default function PlaceFilter({
   const { removeQuery } = useURLQuery();
   const searchParams = useSearchParams();
   const address = searchParams.get('address');
-  const isDesktop = useBreakpoint();
+  const { isDesktop } = useBreakpoint();
 
   useEffect(() => {
     if (address) setPlaceKeyword(address);
-  }, []);
+  }, [address]);
 
   return (
     <FilterSection

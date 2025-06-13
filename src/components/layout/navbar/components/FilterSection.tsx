@@ -9,6 +9,7 @@ export default function FilterSection({
   value = '',
   handleReset,
   className,
+  onKeyDown,
   ...rest
 }: {
   children: React.ReactNode;
@@ -18,31 +19,11 @@ export default function FilterSection({
   onClick?: () => void;
   handleReset: () => void;
   className?: string;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }) {
   const { isDesktop } = useBreakpoint();
 
   return (
-    // isDesktop ? (
-    //   <motion.section
-    //     className={`${className} bg-white rounded-[40px] p-[32px] overflow-hidden gnb-shadow w-[380px] h-[480px] absolute top-0 left-0 z-[60]`}
-    //     onClick={(e) => {
-    //       e.stopPropagation();
-    //       onClick?.();
-    //     }}
-    //     animate={{
-    //       maxHeight: isOpen ? 480 : 0,
-    //       width: isOpen ? '380px' : '0px',
-    //       opacity: isOpen ? 1 : 0,
-    //     }}
-    //     transition={{
-    //       ease: [0, 1, 0, 1],
-    //       duration: 0.5,
-    //     }}
-    //     {...rest}
-    //   >
-    //     {children}
-    //   </motion.section>
-    // ) : (
     <motion.section
       className={`${className} ${isOpen ? '' : 'cursor-pointer'} bg-white lg:bg-none rounded-[8px] w-full h-fit px-[24px] overflow-hidden gnb-shadow lg:shadow-none`}
       onClick={(e) => {
@@ -74,6 +55,7 @@ export default function FilterSection({
           >
             <motion.span
               className={`leading-none font-semibold`}
+              initial={{ fontSize: '1.3rem' }}
               animate={{
                 fontSize: isOpen ? '2.2rem' : '1.3rem',
               }}

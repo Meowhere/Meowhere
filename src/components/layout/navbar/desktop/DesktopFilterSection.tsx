@@ -30,7 +30,7 @@ export default function DesktopFilterSection({
               : '',
         height:
           openedSearchSection == 'place' ? '' : openedSearchSection == 'price' ? '216px' : '0px',
-        width: openedSearchSection == '' ? '0px' : '',
+        width: openedSearchSection == '' || openedSearchSection == 'keyword' ? '0px' : '',
       }}
       transition={{
         duration: 0.5,

@@ -5,20 +5,26 @@ import LikeIcon from '../../components/common/icons/LikeIcon';
 import StarFillIcon from '../../components/common/icons/StarFillIcon';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export default function ActivityCard({ activity }: { activity: Activity }) {
   const router = useRouter();
+  const [imgSrc, setImgSrc] = useState(activity.bannerImageUrl);
 
   return (
     <article>
       <figure className='relative'>
         <Image
-          src={activity.bannerImageUrl}
+          src={imgSrc}
           alt={activity.title}
           width={375}
           height={375}
           className='w-full aspect-square object-cover rounded-[20px] cursor-pointer'
           onClick={() => router.push(`/activities/${activity.id}`)}
+          onError={() => {
+            setImgSrc('/assets/icons/logo/ico-image-loading.svg');
+          }}
+          blurDataURL={'/assets/icons/logo/ico-image-loading.svg'}
         />
         <div className='absolute top-[16px] left-[16px] flex items-center text-sm text-gray-500'>
           <div className='flex items-center justify-center gap-[4px] bg-white rounded-full w-[58px] h-[24px] font-medium'>
