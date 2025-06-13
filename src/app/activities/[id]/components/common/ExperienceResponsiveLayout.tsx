@@ -1,6 +1,7 @@
 'use client';
 
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { useRouter } from 'next/navigation';
 import ExperienceImageViewer from '../experience/ExperienceImageViewer';
 import ExperienceSummarySection from '../experience/ExperienceSummarySection';
 import ReservationBox from '../reservation/ReservationBox';
@@ -13,6 +14,7 @@ import { dummyReviews } from '../../data/dummyReviews';
 import ScheduleSidebar from '../reservation/ScheduleSidebar';
 import { dummySchedule } from '../../data/dummySchedule';
 import { useGnb } from '@/src/hooks/useGnb';
+import HeartButton from '@/src/components/common/buttons/HeartButton';
 
 const dummyExperience = {
   id: 7,
@@ -36,9 +38,25 @@ const dummyExperience = {
 export default function ExperienceResponsiveLayout() {
   const { isDesktop } = useBreakpoint();
 
+  const router = useRouter();
+
+  useGnb({
+    title: dummyExperience.title,
+    backAction: () => router.back(),
+    rightButtons: [
+      <HeartButton
+        key='heart'
+        isLiked={false}
+        onToggle={() => {}}
+        variant='black'
+        aria-label='찜하기'
+      />,
+    ],
+  });
+
   if (isDesktop) {
     return (
-      <div className='flex max-w-[1200px] mx-auto gap-[48px] mt-[64px] items-start'>
+      <div className='flex max-w-[1200px] mx-auto gap-[48px] items-start'>
         {/* 왼쪽 열 */}
         <div className='w-[960px] flex flex-col gap-[40px]'>
           <ExperienceImageViewer
