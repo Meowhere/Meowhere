@@ -2,6 +2,7 @@ import { useState } from 'react';
 import RegisterCalendarItem from './RegisterCalendarItem';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import Sort from '../Sort';
 
 export default function RegisterCalendar() {
   const { isDesktop } = useBreakpoint();
@@ -20,7 +21,10 @@ export default function RegisterCalendar() {
   return (
     <div className='flex flex-col gap-[20px]'>
       <div className='flex flex-row items-center justify-between'>
-        <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
+        <div>
+          <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
+          {/* <Sort filtered={false} onSortChange={}/> */}
+        </div>
         {isDesktop && (
           <div className='w-[176px]'>
             <BaseButton
