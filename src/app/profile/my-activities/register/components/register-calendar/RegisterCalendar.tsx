@@ -49,10 +49,13 @@ export default function RegisterCalendar() {
 
   return (
     <div className='flex flex-col gap-[20px]'>
-      <div className='flex flex-row items-center justify-between'>
-        <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
-        <Sort onSortChange={setSortKey} />
-        {isDesktop && (
+      {/* 계속 반응형으로 하려고 노력해봤는데 시간만 끌 것 같아서 그냥 이런식으로 작성했습니다. ㅜㅜ */}
+      {isDesktop ? (
+        <div className='flex flex-row items-center justify-between'>
+          <div className='flex flex-row items-center gap-[18px]'>
+            <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
+            <Sort onSortChange={setSortKey} />
+          </div>
           <div className='w-[176px]'>
             <BaseButton
               variant='soft'
@@ -63,8 +66,13 @@ export default function RegisterCalendar() {
               일정 추가
             </BaseButton>
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className='flex flex-row items-center justify-between'>
+          <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
+          <Sort onSortChange={setSortKey} />
+        </div>
+      )}
       <div className='flex flex-col gap-[20px]'>
         {sortedItems.map((item) => (
           <RegisterCalendarItem

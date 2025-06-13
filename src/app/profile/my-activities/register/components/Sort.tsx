@@ -40,7 +40,12 @@ export default function Sort({ onSortChange }: SortProps) {
 
   return (
     <div ref={containerRef} className=''>
-      <button type='button' aria-label='필터 열기' onClick={() => setOpen((v) => !v)} className=''>
+      <button
+        type='button'
+        aria-label='필터 열기'
+        onClick={() => setOpen((v) => !v)}
+        className='cursor-pointer'
+      >
         {filtered ? <SortedIcon /> : <SortIcon />}
       </button>
       {open && (

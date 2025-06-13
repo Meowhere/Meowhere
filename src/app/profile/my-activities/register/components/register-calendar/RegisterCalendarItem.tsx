@@ -19,7 +19,7 @@ export default function RegisterCalendarItem({
   onChange,
 }: RegisterCalendarItemProps) {
   return (
-    <div className='grid grid-cols-6 w-full items-center px-[18px] py-[12px] border border-gray-200 rounded-[10px]'>
+    <div className='grid grid-cols-5 md:grid-cols-6 w-full items-center px-[18px] py-[12px] border border-gray-200 rounded-[10px]'>
       <div className='flex justify-end md:col-span-2'>
         <CustomDatePicker
           value={date}
@@ -31,7 +31,7 @@ export default function RegisterCalendarItem({
       <div className='flex justify-center'>
         <p className='justify-center text-md font-regular text-gray-400'>|</p>
       </div>
-      <div className='flex justify-start col-span-3 md:col-span-2 min-[128px] md:col-span-2 gap-[4px] sm:gap-[20px] lg:gap-[34px]'>
+      <div className='flex justify-start col-span-2 gap-[4px] sm:gap-[20px] lg:gap-[34px] min-[128px]'>
         <CustomTimePicker
           value={startTime}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

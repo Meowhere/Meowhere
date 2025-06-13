@@ -33,15 +33,16 @@ export function CustomDatePicker({
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className='relative select-none' onClick={() => inputRef.current?.click()}>
-      <span className='text-md font-regular text-gray-800'>{formatDate(value)}</span>
+    <div className='relative select-none' onClick={() => inputRef.current?.showPicker()}>
+      <span className='text-md font-regular text-gray-800 pointer-events-none'>
+        {formatDate(value)}
+      </span>
       <input
         ref={inputRef}
         type='date'
         value={value}
         onChange={onChange}
         className='absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer'
-        tabIndex={-1}
       />
     </div>
   );
@@ -55,8 +56,8 @@ export function CustomTimePicker({
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className='relative select-none' onClick={() => inputRef.current?.click()}>
-      <span className='text-md font-regular text-gray-800 whiterspace-nowrap'>
+    <div className='relative select-none' onClick={() => inputRef.current?.showPicker()}>
+      <span className='text-md font-regular text-gray-800 pointer-events-none'>
         {formatTime(value)}
       </span>
       <input
@@ -65,7 +66,6 @@ export function CustomTimePicker({
         value={value}
         onChange={onChange}
         className='absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer'
-        tabIndex={-1}
       />
     </div>
   );
