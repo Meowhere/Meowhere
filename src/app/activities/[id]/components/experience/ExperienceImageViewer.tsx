@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { SubImage } from '@/src/types/activity.types';
 import { useGnbStore } from '@/src/store/gnbStore';
 import SubPageGNB from '@/src/components/layout/navbar/components/SubPageGNB';
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface ExperienceImageViewerProps {
   bannerImageUrl: string;
@@ -22,9 +22,9 @@ export default function ExperienceImageViewer({
 }: ExperienceImageViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { isTablet, isDesktop } = useBreakpoint();
 
   const imageUrls = [bannerImageUrl, ...subImages.map((img) => img.imageUrl)] as string[];
+  const router = useRouter();
 
   const { setTitle, setBackAction, resetGnb } = useGnbStore();
 

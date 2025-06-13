@@ -21,29 +21,27 @@ export default function ReviewCard({
   variant = 'card',
 }: ReviewCardProps) {
   const formattedDate = formatRelativeTime(createdAt);
-
   const isList = variant === 'list';
+  const { isDesktop, isTablet } = useBreakpoint();
 
-  const { isTablet } = useBreakpoint();
-
-  const contentMaxWidth = isList ? '' : isTablet ? 'max-w-[400px]' : 'max-w-[232px]';
+  const cardStyle = isList
+    ? 'w-full p-0'
+    : isDesktop
+      ? 'w-[346px] p-[8px] min-h-[216px] bg-white rounded-[16px]'
+      : isTablet
+        ? 'w-[288px] p-[24px] min-h-[240px] bg-white rounded-[16px]'
+        : 'w-[280px] p-[20px] min-h-[200px] bg-white rounded-[16px]';
 
   return (
-    <div
-      className={`flex flex-col items-start gap-[12px] ${
-        isList ? 'w-full p-0' : 'w-full p-[12px] bg-white'
-      }`}
-    >
+    <div className={`flex flex-col items-start gap-[16px] h-full ${cardStyle}`}>
       <div className='flex items-center gap-[8px]'>
         <StarRating value={rating} readOnly />
         <p className='text-[#A4A1AA] text-xs font-regular'>{formattedDate}</p>
       </div>
 
-      <p className={`text-sm font-regular text-gray-700 ${contentMaxWidth} line-clamp-4`}>
-        {content}
-      </p>
+      <p className='text-sm font-regular text-gray-700 line-clamp-2 flex-grow'>{content}</p>
 
-      <div className='flex items-center gap-[8px]'>
+      <div className='flex items-center gap-[8px] mt-auto'>
         <Image
           src={profileImageUrl}
           alt={`${nickname}의 프로필 이미지`}

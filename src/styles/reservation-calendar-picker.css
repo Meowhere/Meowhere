@@ -73,11 +73,6 @@
   color: #111827;
 }
 
-/* hover 효과 */
-.react-calendar__tile:hover:not(:disabled) abbr {
-  background: #f3f4f6;
-}
-
 /* 오늘 날짜 (선택되지 않은 상태) */
 .react-calendar__tile--now abbr {
   border: 2px solid #ffa67a;

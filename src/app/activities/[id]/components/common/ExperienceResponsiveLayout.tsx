@@ -10,6 +10,9 @@ import ExperienceLocationMap from '../experience/ExperienceLocationMap';
 import ExperienceDescription from '../experience/ExperienceDescription';
 import ReviewSection from '../review/ReviewSection';
 import { dummyReviews } from '../../data/dummyReviews';
+import ScheduleSidebar from '../reservation/ScheduleSidebar';
+import { dummySchedule } from '../../data/dummySchedule';
+import { useGnb } from '@/src/hooks/useGnb';
 
 const dummyExperience = {
   id: 7,
@@ -33,62 +36,103 @@ const dummyExperience = {
 export default function ExperienceResponsiveLayout() {
   const { isDesktop } = useBreakpoint();
 
-  return (
-    <>
-      {isDesktop ? (
-        <div className='flex items-center max-w-[960px] mx-auto mt-[64px] gap-[48px]'>
-          <div className='w-[600px]'>
-            <ExperienceImageViewer
-              bannerImageUrl={dummyExperience.bannerImageUrl}
-              subImages={dummyExperience.subImages}
-            />
-          </div>
-          <div className='w-1/2 flex flex-col gap-[8px] text-left'>
-            <div className='text-left mb-[48px]'>
-              <ExperienceSummarySection
-                category={dummyExperience.category}
-                title={dummyExperience.title}
-                rating={dummyExperience.averageRating.toFixed(1)}
-                reviewCount={dummyExperience.totalCount}
-                address={dummyExperience.address}
-              />
-            </div>
-            <Divider />
-            <ReservationBox pricePerPerson={dummyExperience.price} />
-          </div>
-        </div>
-      ) : (
-        <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
+  if (isDesktop) {
+    return (
+      <div className='flex max-w-[1200px] mx-auto gap-[48px] mt-[64px] items-start'>
+        {/* 왼쪽 열 */}
+        <div className='w-[960px] flex flex-col gap-[40px]'>
           <ExperienceImageViewer
             bannerImageUrl={dummyExperience.bannerImageUrl}
             subImages={dummyExperience.subImages}
           />
-          <ExperienceSummarySection
-            title={dummyExperience.title}
-            rating={dummyExperience.averageRating.toFixed(1)}
-            reviewCount={dummyExperience.totalCount}
-            address={dummyExperience.address}
-          />
-          <Divider />
-        </div>
-      )}
 
-      {/* 위치 */}
-      <div className='w-full lg:max-w-4xl lg:mx-auto'>
+          <div>
+            <Divider />
+          </div>
+
+          <div className='map-trigger-section'>
+            <SectionTitle title='만나는 곳' subtitle={dummyExperience.address} />
+            <ExperienceLocationMap address={dummyExperience.address} />
+            <Divider />
+          </div>
+
+          <div>
+            <SectionTitle title='체험 설명' />
+            <ExperienceDescription description={dummyExperience.description} />
+            <Divider />
+          </div>
+
+          <div>
+            <SectionTitle title='후기' />
+            <div className='mt-[8px]'>
+              <ReviewSection
+                activityId={dummyExperience.id}
+                rating={dummyExperience.averageRating}
+                reviewCount={dummyExperience.totalCount}
+                reviews={dummyReviews}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* 오른쪽 열 */}
+        <div className='w-1/2 relative pt-[180px]'>
+          {/* 상단 고정 영역 */}
+          <div className='mb-[48px]'>
+            <ExperienceSummarySection
+              category={dummyExperience.category}
+              title={dummyExperience.title}
+              rating={dummyExperience.averageRating.toFixed(1)}
+              reviewCount={dummyExperience.totalCount}
+              address={dummyExperience.address}
+            />
+          </div>
+
+          <Divider />
+
+          <div className='mb-[300px]'>
+            <ReservationBox pricePerPerson={dummyExperience.price} />
+          </div>
+
+          <div className='sticky top-[200px] self-start w-[400px]'>
+            <ScheduleSidebar price={dummyExperience.price} schedules={dummySchedule.schedules} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 모바일/태블릿 레이아웃
+  return (
+    <>
+      <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
+        <ExperienceImageViewer
+          bannerImageUrl={dummyExperience.bannerImageUrl}
+          subImages={dummyExperience.subImages}
+        />
+        <ExperienceSummarySection
+          category={dummyExperience.category}
+          title={dummyExperience.title}
+          rating={dummyExperience.averageRating.toFixed(1)}
+          reviewCount={dummyExperience.totalCount}
+          address={dummyExperience.address}
+        />
+        <Divider />
+      </div>
+
+      <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <SectionTitle title='만나는 곳' subtitle={dummyExperience.address} />
         <ExperienceLocationMap address={dummyExperience.address} />
         <Divider />
       </div>
 
-      {/* 설명 */}
-      <div className='w-full lg:max-w-4xl lg:mx-auto'>
+      <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <SectionTitle title='체험 설명' />
         <ExperienceDescription description={dummyExperience.description} />
         <Divider />
       </div>
 
-      {/* 후기 */}
-      <div className='w-full lg:max-w-4xl lg:mx-auto'>
+      <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <SectionTitle title='후기' />
         <ReviewSection
           activityId={dummyExperience.id}
@@ -98,8 +142,8 @@ export default function ExperienceResponsiveLayout() {
         />
       </div>
 
-      {/* 예약: 모바일/태블릿에서는 ReservationBox 내부에서 분기됨 */}
-      {!isDesktop && <ReservationBox pricePerPerson={dummyExperience.price} />}
+      {/* 모바일/태블릿 전용 예약 UI */}
+      <ReservationBox pricePerPerson={dummyExperience.price} />
     </>
   );
 }
