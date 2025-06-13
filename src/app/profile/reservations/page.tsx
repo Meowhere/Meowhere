@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useMyReservations } from '@/src/hooks/useMyReservations';
 import { MY_RESERVATION_STATUS_MAP } from '@/src/constants/my-reservation-status';
 import { MyReservationStatus } from '@/src/types/profile-reservation.types';
-import { DropdownItemButton } from '@/src/types/dropdown-menu.types';
+import { DropdownItemButton } from '@/src/types/dropdown.types';
 
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 import ReservationsCard from './components/ReservationsCard';
@@ -56,9 +56,9 @@ export default function ReservationsTestPage() {
   ];
 
   return (
-    <main className='bg-gray-50 min-h-screen flex flex-col items-center pt-[44px] lg:pt-[96px]'>
+    <main className='min-h-screen flex flex-col items-center pb-[88px]'>
       {/* 사이드바 추가 및 에러사항 없을 시에, 배경색 white로 */}
-      <div className='w-full flex flex-col h-[calc(100vh-136px)] lg:max-w-[720px] lg:mx-auto lg:h-[1130px] lg:pt-[96px]'>
+      <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>
         <div className='hidden lg:flex lg:justify-end'>
           <div className='w-[180px]'>
             <Dropdown
@@ -71,13 +71,13 @@ export default function ReservationsTestPage() {
         </div>
 
         {reservations && reservations.length ? (
-          <div className='flex flex-col gap-[16px] mt-[24px]'>
+          <div className='flex flex-col mt-[24px]'>
             {reservations.map((reservation) => (
               <ReservationsCard
                 key={reservation.id}
                 reservation={reservation}
                 showCancel={reservation.status === 'pending'}
-                showReview={reservation.status === 'completed'}
+                showReview={reservation.status === 'completed' && !reservation.reviewSubmitted}
               />
             ))}
           </div>
