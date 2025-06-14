@@ -46,98 +46,48 @@
 
 ```bash
 MEOWHERE/
-├── .github/
-├── node_modules/
+meowhere/
 ├── public/
-│   └── fonts/
-│       └── PretendardVariable.woff2
-│
 ├── src/
-│   ├── app/                            # App Router 구조
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── not-found.tsx
-│   │   ├── api/                        # API Routes
-│   │   │   ├── auth/
-│   │   │   ├── experiences/
-│   │   │   ├── reservations/
-│   │   │   ├── reviews/
-│   │   │   ├── notifications/
-│   │   │   ├── users/
-│   │   │   └── upload/
-│   │   │
-│   │   ├── main/                       # 메인 페이지
-│   │   │   ├── page.tsx
-│   │   │   └── components/
-│   │   │
-│   │   ├── account/
-│   │   │   └── page.tsx
-│   │   │
-│   │   ├── experiences/
-│   │   │   └── [id]/
-│   │   │       ├── page.tsx
-│   │   │       └── components/
-│   │   │
-│   │   ├── my-page/
-│   │   │   ├── page.tsx
-│   │   │   ├── components/
-│   │   │   ├── reservations/
-│   │   │   │   ├── page.tsx
-│   │   │   │   ├── edit/
-│   │   │   │   │   └── [id]/page.tsx
-│   │   │   │   └── components/
-│   │   │   ├── my-experiences/
-│   │   │   │   ├── page.tsx
-│   │   │   │   └── components/
-│   │   │   ├── favorites/
-│   │   │   │   ├── page.tsx
-│   │   │   │   └── components/
-│   │   │   └── notifications/
-│   │   │       ├── page.tsx
-│   │   │       └── components/
+│ ├── app/
+│     ├─ layout.tsx
+│     ├─ page.tsx                   # 메인 페이지
+│     ├─ not-found.tsx
+│     ├─ middleware.tsx
+│     ├─ account/                   # 로그인 페이지
+│     │   ├─ page.tsx
+│     │   └─ components/
+│     ├─ activities/               # 체험 상세 및 예약
+│     │   ├─ page.tsx
+│     │   └─ [id]//
+│     │       ├─ page.tsx
+│     │       └─ components/
+│     ├─ profile/                 # 사용자 정보 관리
+│     │   ├─ page.tsx
+│     │   ├─ components/
+│     │   ├─ my-info/
+│     │   └─ reservations/
+│     │   ├─ my-activities/
+│     │   ├─ favorites/
+│     │   ├─ notifications/
+│     │   └─ my-reservations/
+│     └─ api/
 │
-│   ├── components/                     # 공통 컴포넌트
-│   │   ├── layout/
-│   │   │   ├── navbar/
-│   │   │   │   ├── Navbar.tsx
-│   │   │   │   └── UserMenu.tsx
-│   │   │   └── Footer.tsx
-│   │   │
-│   │   ├── auth/
-│   │   │   └── AuthModal.tsx
-│   │   │
-│   │   └── common/
-│   │       ├── buttons/
-│   │       ├── inputs/
-│   │       ├── dropdowns/
-│   │       ├── chips/
-│   │       ├── filters/
-│   │       ├── pagination/
-│   │       └── modals/
+│ ├─ components/
+│     ├─ layout/
+│     │   ├─ navbar/
+│     │   └─ Footer.tsx
+│     └─ common/               # 공통 컴포넌트
 │
-│   ├── constants/                      # 라우트 상수 등
-│   │   └── routes.ts
-│
-│   ├── lib/                            # 유틸 및 라이브러리
-│   │   └── react-query/
-│   │       ├── queryClient.ts
-│   │       └── ReactQueryProvider.tsx
-│
-│   ├── services/                       # API 호출 함수
-│
-│   ├── store/                          # Zustand 상태 관리
-│   │   └── uiStore.ts
-│
-│   ├── hooks/                          # 커스텀 훅들
-│
-│   ├── styles/                         # 전역 스타일
-│
-│   ├── types/                          # 전역 타입 정의
-│   │   └── next-route.d.ts
-│
-│
-├── .vscode/
-│   └── settings.json                  # Prettier 설정 (optional)
+│ ├─ constants/
+│ ├─ providers/
+│ ├─ services/
+│ ├─ store/
+│ ├─ hooks/
+│ ├─ lib/
+│ ├─ types/
+│ ├─ utils/
+│ └─ styles/
 ├── .gitignore
 ├── .prettierrc
 ├── eslint.config.mjs
