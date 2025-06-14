@@ -1,9 +1,9 @@
 import { UseFormReturn } from 'react-hook-form';
-import Input from '../inputs/Input';
-import BaseButton from '../buttons/BaseButton';
-import KakaoLoginButton from '../buttons/KakaoLoginButton';
+import Input from '@/src/components/common/inputs/Input';
+import BaseButton from '@/src/components/common/buttons/BaseButton';
+import KakaoLoginButton from '@/src/components/common/buttons/KakaoLoginButton';
 import { useKakaoLogin, useLogin } from '@/src/hooks/auth/useAuth';
-import { LoginFormValues } from '../modals/AuthModal';
+import { LoginFormValues } from '@/src/components/common/modals/AuthModal';
 import { usePathname, useRouter } from 'next/navigation';
 import { useModal } from '@/src/hooks/useModal';
 

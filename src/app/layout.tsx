@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import '@/src/styles/globals.css';
 import localFont from 'next/font/local';
 import ClientLayout from './client-layout';
-import ModalProvider from '@/src/components/providers/ModalProvider';
+import ModalProvider from '@/src/providers/ModalProvider';
 import Toast from '../components/common/toast/Toast';
 
 export const metadata: Metadata = {
