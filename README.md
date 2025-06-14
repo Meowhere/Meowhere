@@ -46,7 +46,6 @@
 
 ```bash
 MEOWHERE/
-meowhere/
 ├── public/
 ├── src/
 │ ├── app/
