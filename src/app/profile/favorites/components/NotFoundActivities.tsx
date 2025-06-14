@@ -14,18 +14,20 @@ export default function NotFoundFavorites() {
         />
       </div>
 
-      <div className='flex flex-col lg:items-start'>
-        <h1 className='text-2lg font-semibold text-gray-400 lg:text-left'>등록된 체험이 없다냥</h1>
-        <div className='flex flex-col items-start gap-[46px] py-[22px]'>
-          <p className='text-md font-regular text-gray-400'>
-            문화, 액티비티, 힐링 서비스를 둘러봐. <br /> 예약이 있으면 여기에 표시돼!
+      <div className='flex flex-col items-center lg:items-start'>
+        <h1 className='text-2lg font-semibold text-gray-400 lg:text-left text-ellipsis'>
+          좋아요한 체험이 없다냥
+        </h1>
+        <div className='flex flex-col items-center lg:items-start gap-[46px] py-[22px]'>
+          <p className='text-md font-regular text-gray-400 text-ellipsis max-lg:hidden'>
+            문화, 액티비티, 힐링 서비스를 둘러봐. <br /> 좋아요한 체험이 있으면 여기에 표시돼!
           </p>
 
           <LinkButton
             href='/'
             variant='soft'
             color='red'
-            className='w-[180px] h-[48px] bg-primary-100 text-primary-300 text-md font-semibold'
+            className='w-[180px] h-[40px] lg:h-[48px] bg-primary-100 text-primary-300 text-md font-semibold'
           >
             체험 보러가기
           </LinkButton>
