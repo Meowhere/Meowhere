@@ -5,7 +5,7 @@ import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import { useConfirmModal } from '@/src/hooks/useConfirmModal';
-
+import { useDeleteActivity } from '@/src/hooks/useDeleteActivity';
 interface ManagementDropdownProps {
   title: string;
   activityId: number | string;
@@ -20,7 +20,9 @@ export default function ManagementDropdown({
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { isDesktop } = useBreakpoint();
+
   const { openConfirmModal, ConfirmModal } = useConfirmModal();
+  const { mutate } = useDeleteActivity();
 
   const items: DropdownItemButton[] = [
     {
@@ -36,9 +38,9 @@ export default function ManagementDropdown({
       onClick: () => {
         openConfirmModal({
           message: '삭제할까요?',
+          confirmText: '삭제',
           onConfirm: () => {
-            alert('삭제되었습니다.');
-            // 토스트 쓸 예정
+            mutate(activityId);
           },
         });
         setOpen(false);
