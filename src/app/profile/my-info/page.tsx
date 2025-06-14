@@ -13,12 +13,18 @@ const myInfoSchema = z
   .object({
     nickname: z
       .string()
-      .min(2, '닉네임은 2자 이상 입력해주세요.')
-      .max(10, '닉네임은 10자 이하로 입력해주세요.'),
+      .transform((val) => val.trim().replace(/\s+/g, ' '))
+      .pipe(
+        z
+          .string()
+          .min(1, '닉네임은 2자 이상 입력해주세요.')
+          .max(10, '닉네임은 10자 이하로 입력해주세요.')
+      ),
     newPassword: z
       .string()
       .min(8, '비밀번호는 8자 이상 입력해주세요.')
       .max(30, '비밀번호는 30자 이하로 입력해주세요.')
+      .refine((val) => !/\s/.test(val), '비밀번호에 공백을 포함할 수 없습니다.')
       .optional()
       .or(z.literal('')),
     confirmPassword: z.string().optional().or(z.literal('')),
@@ -66,7 +72,7 @@ export default function MyInfoPage() {
     mode: 'onChange',
   });
 
-  const nicknameValue = watch('nickname', '');
+  const nicknameValue = watch('nickname');
   const pwValue = watch('newPassword', '');
   const pwConfirmValue = watch('confirmPassword', '');
 
@@ -87,6 +93,7 @@ export default function MyInfoPage() {
         }
       );
     }
+    console.log(user);
   }, [user, reset, getValues, isDirty]);
 
   const onSubmit = (data: MyInfoForm) => {
