@@ -13,6 +13,7 @@ import Toast from '@/src/components/common/toast/Toast';
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 import ReservationsCard from './components/ReservationsCard';
 import { useInfiniteReservations } from '@/src/hooks/useInfiniteReservations';
+import SkeletonReservationsCard from './components/ReservationsSkeleton';
 
 const BOTTOM_SKELETON_COUNT = 3; // 하단 스켈레톤 개수
 
@@ -73,25 +74,7 @@ export default function ReservationsPage() {
       <main className='flex flex-col items-center pb-[88px]'>
         <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto mt-6'>
           {Array.from({ length: 5 }).map((_, idx) => (
-            <div
-              key={idx}
-              className='flex flex-col gap-[18px] bg-white px-[20px] py-[24px] border-b border-gray-200 animate-pulse lg:flex-row lg:justify-between lg:items-end rounded-[12px]'
-            >
-              <div className='w-[86px] h-[86px] lg:w-[98px] lg:h-[98px] bg-gray-200 rounded-[10px]' />
-
-              <div className='flex flex-col justify-between gap-[10px] flex-1'>
-                <div className='w-[64px] h-[20px] bg-gray-200 rounded-full' />
-                <div className='flex flex-col gap-[8px] pl-[4px]'>
-                  <div className='w-[70%] h-[20px] bg-gray-200 rounded-[6px]' />
-                  <div className='w-[50%] h-[18px] bg-gray-200 rounded-[6px]' />
-                  <div className='w-[40%] h-[18px] bg-gray-200 rounded-[6px]' />
-                </div>
-              </div>
-
-              <div className='w-full lg:w-[128px]'>
-                <div className='h-[42px] bg-gray-200 rounded-[10px]' />
-              </div>
-            </div>
+            <SkeletonReservationsCard key={idx} />
           ))}
         </div>
       </main>
@@ -127,25 +110,7 @@ export default function ReservationsPage() {
             {/* 추가 페이지 로딩 시 하단 스켈레톤 */}
             {isFetchingNextPage &&
               Array.from({ length: BOTTOM_SKELETON_COUNT }).map((_, idx) => (
-                <div
-                  key={`skeleton-bottom-${idx}`}
-                  className='flex flex-col gap-[18px] bg-white px-[20px] py-[24px] border-b border-gray-200 animate-pulse lg:flex-row lg:justify-between lg:items-end rounded-[12px]'
-                >
-                  <div className='w-[86px] h-[86px] lg:w-[98px] lg:h-[98px] bg-gray-200 rounded-[10px]' />
-
-                  <div className='flex flex-col justify-between gap-[10px] flex-1'>
-                    <div className='w-[64px] h-[20px] bg-gray-200 rounded-full' />
-                    <div className='flex flex-col gap-[8px] pl-[4px]'>
-                      <div className='w-[70%] h-[20px] bg-gray-200 rounded-[6px]' />
-                      <div className='w-[50%] h-[18px] bg-gray-200 rounded-[6px]' />
-                      <div className='w-[40%] h-[18px] bg-gray-200 rounded-[6px]' />
-                    </div>
-                  </div>
-
-                  <div className='w-full lg:w-[128px]'>
-                    <div className='h-[42px] bg-gray-200 rounded-[10px]' />
-                  </div>
-                </div>
+                <SkeletonReservationsCard key={`skeleton-bottom-${idx}`} />
               ))}
             {/* 마지막 요소 감지용 */}
             <div ref={sentinelRef} className='h-[1px]' />
