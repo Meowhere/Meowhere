@@ -1,14 +1,14 @@
 'use client';
 
+import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
-import Image from 'next/image';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
+import { Activity } from '@/src/types/activity.types';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
-import { Activity } from '@/src/types/activity.types';
 import { usePopularActivities } from '@/src/hooks/usePopularActivities';
 
 export default function PopularActivitiesBanner() {
@@ -61,6 +61,7 @@ export default function PopularActivitiesBanner() {
               alt={item.title}
               fill
               className='object-cover'
+              blurDataURL={'/assets/icons/logo/ico-image-loading.svg'}
             />
           </div>
         </SwiperSlide>
