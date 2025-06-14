@@ -16,8 +16,11 @@ export function useDeleteActivity() {
       queryClient.invalidateQueries({ queryKey: ['my-activities'] });
     },
 
-    onError: () => {
-      showToast('error', '삭제 실패했습니다');
+    onError: (error: Error) => {
+      const message = error?.message
+        ? `삭제 실패: ${error.message}`
+        : '삭제에 실패했습니다. 다시 시도해주세요.';
+      showToast('error', message);
     },
   });
 }

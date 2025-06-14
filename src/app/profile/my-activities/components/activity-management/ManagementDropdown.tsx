@@ -7,16 +7,11 @@ import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useDeleteActivity } from '@/src/hooks/useDeleteActivity';
 interface ManagementDropdownProps {
-  title: string;
-  activityId: number | string;
-  isMobile?: boolean;
+  title: string; // 체험 이름
+  activityId: number | string; // 체험 항목 id
 }
 
-export default function ManagementDropdown({
-  title,
-  activityId,
-  isMobile = false,
-}: ManagementDropdownProps) {
+export default function ManagementDropdown({ title, activityId }: ManagementDropdownProps) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { isDesktop } = useBreakpoint();
