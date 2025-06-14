@@ -1,26 +1,53 @@
 'use client';
 
+import { useToastStore } from '@/src/store/toastStore';
 import { useModal } from '@/src/hooks/useModal';
 import { useConfirmModal } from '@/src/hooks/useConfirmModal';
+import { useCancelReservation } from '@/src/hooks/useCancelReservation';
+import { MyReservation } from '@/src/types/profile-reservation.types';
+
+import Toast from '@/src/components/common/toast/Toast';
 import ReservationsLabel from './ReservationsLabel';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
-import { ReservationsCardProps } from '@/src/types/reservations-card.types';
 
 export default function ReservationsCard({
   reservation,
   showCancel = false,
   showReview = false,
 }: ReservationsCardProps) {
-  const { openConfirmModal } = useConfirmModal();
-  const { openCreateReviewModal } = useModal();
+  const { mutate: cancelReservation, isPending } = useCancelReservation();
+  const { openCreateReviewModal, closeModal } = useModal();
+  const { openConfirmModal, ConfirmModal } = useConfirmModal();
+  const { showToast } = useToastStore();
 
-  const cancelReservation = () => {
+  const handleCancelReservation = () => {
     // 실제 예약 취소 API 호출
-    console.log('예약 취소 로직 실행');
+    closeModal();
+    openConfirmModal({
+      message: '예약을 취소하시겠어요?',
+      cancelText: '아니요',
+      confirmText: '예약 취소',
+      onConfirm: () => {
+        cancelReservation(
+          { reservationId: reservation.id },
+          {
+            onSuccess: () => {
+              showToast('success', '예약이 성공적으로 취소되었습니다');
+              closeModal();
+            },
+            onError: () => {
+              showToast('error', '예약 취소에 실패하였습니다');
+              closeModal();
+            },
+          }
+        );
+      },
+    });
   };
 
   const openReviewModal = () => {
     openCreateReviewModal({
+      reservationId: reservation.id,
       title: reservation.activity.title,
       schedule: {
         id: reservation.scheduleId,
@@ -30,15 +57,14 @@ export default function ReservationsCard({
       },
       headCount: reservation.headCount,
       price: reservation.totalPrice,
-      onConfirm: () => {
-        console.log('후기 작성 완료');
-      },
     });
   };
 
   return (
     <div className='flex flex-col gap-[18px] bg-white px-[20px] py-[24px] border-b border-gray-200 last:border-none lg:flex-row lg:justify-between lg:items-end'>
       {/* 내용 */}
+      <Toast />
+      <ConfirmModal />
       <div className='flex gap-[10px] lg:gap-[14px]'>
         <img
           src={reservation.activity.bannerImageUrl}
@@ -64,9 +90,7 @@ export default function ReservationsCard({
             variant='soft'
             color='red'
             className='w-full text-[1.4rem] font-semibold hover:brightness-[0.95] lg:w-[128px] h-[42px] rounded-[10px]'
-            onClick={() => {
-              cancelReservation();
-            }}
+            onClick={handleCancelReservation}
           >
             예약 취소
           </BaseButton>
@@ -85,4 +109,10 @@ export default function ReservationsCard({
       </div>
     </div>
   );
+}
+
+export interface ReservationsCardProps {
+  reservation: MyReservation;
+  showCancel?: boolean;
+  showReview?: boolean;
 }
