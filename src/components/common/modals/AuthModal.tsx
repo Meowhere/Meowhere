@@ -7,9 +7,9 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import ArrowButton from '../buttons/ArrowButton';
 import { HEADER } from '@/src/constants/modal';
-import InitialForm from '../forms/InitialForm';
-import LoginForm from '../forms/LoginForm';
-import SignUpForm from '../forms/SignUpForm';
+import InitialForm from '@/src/app/account/components/forms/InitialForm';
+import LoginForm from '@/src/app/account/components/forms/LoginForm';
+import SignUpForm from '@/src/app/account/components/forms/SignUpForm';
 
 // zod 스키마
 const initialSchema = z.object({
