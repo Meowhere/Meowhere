@@ -97,7 +97,7 @@ export default function DesktopGNB() {
     },
     {
       type: 'theme',
-      label: theme === 'light' ? '다크모드' : '라이트모드',
+      label: theme === 'light' ? '다크 모드' : '라이트 모드',
       onClick: toggleTheme,
       onClose: handleClose,
     },
@@ -112,7 +112,7 @@ export default function DesktopGNB() {
   const dropdownItemsForLoggedOut = [
     {
       type: 'theme',
-      label: theme === 'light' ? '다크모드' : '라이트모드',
+      label: theme === 'light' ? '다크 모드' : '라이트 모드',
       onClick: toggleTheme,
       onClose: handleClose,
     },
@@ -136,7 +136,7 @@ export default function DesktopGNB() {
 
   return (
     <motion.nav
-      className={`${showScrollElements ? 'border-white' : 'border-gray-200'} fixed top-0 left-0 z-[90] w-full flex items-start justify-center bg-white border-b border-gray-200 px-[64px] pt-[28px]`}
+      className={`${showScrollElements ? 'border-white dark:border-black' : 'border-gray-200 dark:border-gray-700'} fixed top-0 left-0 z-[90] w-full flex items-start justify-center bg-white dark:bg-black border-b px-[64px] pt-[28px]`}
       initial={{
         height: '96px',
       }}
@@ -173,7 +173,9 @@ export default function DesktopGNB() {
             setShowDropdown((prev) => !prev);
           }}
         >
-          <span className='text-md text-gray-600'>{data?.nickname || '로그인'}</span>
+          <span className='text-md text-gray-600 dark:text-gray-300'>
+            {data?.nickname || '로그인'}
+          </span>
           <Image src={'/assets/icons/login-profile.svg'} alt='logo' width={40} height={40} />
           {showDropdown && (
             <div className='absolute top-[calc(100%+8px)] right-0'>

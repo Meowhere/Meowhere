@@ -55,15 +55,15 @@ export default function PlaceFilter({
         {filteredPlaces.map(([place, count]) => (
           <li
             key={place}
-            className='min-h-[48px] flex justify-between items-center w-full px-[4px] cursor-pointer'
+            className='min-h-[48px] flex justify-between items-center w-full px-[4px] cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-[8px]'
             onClick={(e) => {
               e.stopPropagation();
               setPlaceKeyword(place);
               setOpenedSearchSection('price');
             }}
           >
-            <span className='text-sm text-gray-700 font-medium'>{place}</span>
-            <span className='text-xs text-gray-500'>{count}개의 체험</span>
+            <span className='text-sm text-gray-700 dark:text-gray-300 font-medium'>{place}</span>
+            <span className='text-xs text-gray-500 dark:text-gray-400'>{count}개의 체험</span>
           </li>
         ))}
       </ul>

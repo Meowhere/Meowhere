@@ -19,7 +19,7 @@ export default function Profile() {
     <div className='flex flex-col gap-[48px] mx-[24px] mb-[600px] mt-[48px]'>
       {!isDesktop && (
         <header className='flex'>
-          <h1 className='text-3xl font-semibold text-gray-800'>프로필</h1>
+          <h1 className='text-3xl font-semibold text-gray-800 dark:text-gray-200'>프로필</h1>
         </header>
       )}
       <ProfileItem />

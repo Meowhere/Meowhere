@@ -4,10 +4,60 @@
 
 html {
   font-size: 62.5%;
+  background-color: white;
+}
+
+html.dark {
+  background-color: #1d1a17; /* black color from tailwind config */
 }
 
 body {
   font-family: 'Pretendard', sans-serif;
+  background-color: white;
+}
+
+body.dark {
+  background-color: #1d1a17; /* black color from tailwind config */
+}
+
+/* 스크롤바 스타일링 */
+/* Webkit 브라우저 (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* 스크롤바 배경 투명 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d2cdc9; /* 라이트모드 스크롤바 색상 (gray-300) */
+  border-radius: 9999px; /* rounded-full */
+  border: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b3a8a1; /* 라이트모드 호버 색상 (gray-400) */
+}
+
+/* 다크모드 스크롤바 */
+.dark ::-webkit-scrollbar-thumb {
+  background: #514942; /* 다크모드 스크롤바 색상 (gray-700) */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6e625a; /* 다크모드 호버 색상 (gray-600) */
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #d2cdc9 transparent; /* thumb track */
+}
+
+html.dark {
+  scrollbar-color: #514942 transparent; /* 다크모드 thumb track */
 }
 
 *,
@@ -62,4 +112,22 @@ textarea {
 
 .transition-hard {
   transition: all 0.2s cubic-bezier(0, 1, 0, 1);
+}
+
+.shimmer {
+  animation: shimmer 1.8s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
 }

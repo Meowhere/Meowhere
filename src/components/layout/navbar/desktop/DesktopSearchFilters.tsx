@@ -98,7 +98,7 @@ export default function DesktopSearchFilters({ isForPage = false }: { isForPage?
 
   return isForPage ? (
     <motion.div
-      className='hidden left-1/2 -translate-x-1/2 -translate-y-1/2 w-[814px] h-[64px] absolute z-50 lg:grid grid-cols-3 bg-gray-200 rounded-full border border-gray-200 gnb-shadow'
+      className='hidden left-1/2 -translate-x-1/2 -translate-y-1/2 w-[814px] h-[64px] absolute z-50 lg:grid grid-cols-3 bg-gray-200 dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 gnb-shadow'
       initial={{
         width: '814px',
         height: '64px',
@@ -129,7 +129,7 @@ export default function DesktopSearchFilters({ isForPage = false }: { isForPage?
     </motion.div>
   ) : (
     <motion.div
-      className='hidden left-1/2 -translate-x-1/2 w-[814px] h-[64px] absolute z-50 lg:grid grid-cols-3 bg-gray-200 rounded-full border border-gray-200 gnb-shadow'
+      className='hidden left-1/2 -translate-x-1/2 w-[814px] h-[64px] absolute z-50 lg:grid grid-cols-3 bg-gray-200 dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 gnb-shadow'
       initial={{
         width: '814px',
         height: '64px',
@@ -181,7 +181,7 @@ function SearchInput({
   selectedMinPrice,
   selectedMaxPrice,
   handleSearch,
-  openedSearchSection,
+  openedSearchSection: searchSection,
   filteredPlaces,
   GAP_OF_PRICE,
   setSelectedMinPrice,
@@ -242,7 +242,7 @@ function SearchInput({
   return (
     <>
       <DesktopFilterSection
-        openedSearchSection={openedSearchSection}
+        openedSearchSection={searchSection}
         setOpenedSearchSection={setOpenedSearchSection}
         placeKeyword={placeKeyword}
         setPlaceKeyword={setPlaceKeyword}
@@ -254,7 +254,7 @@ function SearchInput({
         setSelectedMinPrice={setSelectedMinPrice}
         setSelectedMaxPrice={setSelectedMaxPrice}
       />
-      {(isSearching || openedSearchSection) &&
+      {(isSearching || searchSection) &&
         mounted &&
         createPortal(
           <div
@@ -268,15 +268,15 @@ function SearchInput({
         )}
       <div className='absolute w-full h-full top-0 left-0 rounded-full overflow-hidden pointer-events-none'>
         <motion.div
-          className='absolute z-[-1] top-0 w-1/3 h-full bg-white gnb-shadow rounded-full'
+          className='absolute z-[-1] top-0 w-1/3 h-full bg-white dark:bg-gray-700 gnb-shadow rounded-full'
           initial={{ left: '0%', width: '100%' }}
           animate={{
             left:
-              (openedSearchSection === 'place' && '0%') ||
-              (openedSearchSection === 'price' && '33.33%') ||
-              (openedSearchSection === 'keyword' && '66.66%') ||
+              (searchSection === 'place' && '0%') ||
+              (searchSection === 'price' && '33.33%') ||
+              (searchSection === 'keyword' && '66.66%') ||
               '0%',
-            width: (openedSearchSection === '' && '100%') || '33.33%',
+            width: (searchSection === '' && '100%') || '33.33%',
           }}
           transition={{
             ease: [0, 1, 0, 1],
@@ -296,7 +296,7 @@ function SearchInput({
           }
           e.stopPropagation();
 
-          if (openedSearchSection === 'place') {
+          if (searchSection === 'place') {
             setOpenedSearchSection('');
             if (!isForPage) {
               setIsSearching(false);
@@ -314,12 +314,12 @@ function SearchInput({
         }}
       >
         {(isSearching || isForPage) && (
-          <span className='text-gray-800 text-xs font-medium'>지역</span>
+          <span className='text-gray-800 dark:text-gray-200 text-xs font-medium'>지역</span>
         )}
         <input
           type='text'
           id={`place-${componentId}`}
-          className='text-gray-600 text-xs'
+          className='text-gray-600 dark:text-gray-300 text-xs bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500'
           placeholder='체험할 지역 검색'
           readOnly={!isSearching && !isForPage}
           value={placeKeyword}
@@ -328,7 +328,7 @@ function SearchInput({
           ref={inputRef?.place}
         />
         {/* <div className='absolute bottom-[-8px] left-0 z-[60]'></div> */}
-        {openedSearchSection === 'place' && (
+        {searchSection === 'place' && (
           <CloseIcon
             size={18}
             className='absolute text-gray-500 right-[20px] top-1/2 -translate-y-1/2 cursor-pointer'
@@ -352,7 +352,7 @@ function SearchInput({
           }
           e.stopPropagation();
 
-          if (openedSearchSection === 'price') {
+          if (searchSection === 'price') {
             setOpenedSearchSection('');
             if (!isForPage) {
               setIsSearching(false);
@@ -363,16 +363,16 @@ function SearchInput({
         }}
       >
         {(isSearching || isForPage) && (
-          <span className='text-gray-800 text-xs font-medium'>가격</span>
+          <span className='text-gray-800 dark:text-gray-200 text-xs font-medium'>가격</span>
         )}
-        <span className='text-gray-600 text-xs'>
+        <span className='text-gray-600 dark:text-gray-300 text-xs'>
           {globalStats.priceRange.min === selectedMinPrice &&
           globalStats.priceRange.max === selectedMaxPrice
             ? '모든 가격'
             : `${selectedMinPrice.toLocaleString()}원 ~ ${selectedMaxPrice.toLocaleString()}원`}
         </span>
         <div className='absolute bottom-[-8px] left-0 z-[60]'></div>
-        {openedSearchSection === 'price' && (
+        {searchSection === 'price' && (
           <CloseIcon
             size={18}
             className='absolute right-[20px] text-gray-500 top-1/2 -translate-y-1/2 cursor-pointer'
@@ -397,7 +397,7 @@ function SearchInput({
           }
           e.stopPropagation();
 
-          if (openedSearchSection === 'keyword') {
+          if (searchSection === 'keyword') {
             setOpenedSearchSection('');
             if (!isForPage) {
               setIsSearching(false);
@@ -412,12 +412,12 @@ function SearchInput({
         }}
       >
         {(isSearching || isForPage) && (
-          <span className='text-gray-800 text-xs font-medium'>검색어</span>
+          <span className='text-gray-800 dark:text-gray-200 text-xs font-medium'>검색어</span>
         )}
         <input
           type='text'
           id={`keyword-${componentId}`}
-          className='text-gray-600 text-xs'
+          className='text-gray-600 dark:text-gray-300 text-xs bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500'
           placeholder='원하는 체험 검색'
           readOnly={!isSearching && !isForPage}
           ref={inputRef?.keyword}
@@ -431,7 +431,7 @@ function SearchInput({
             }
           }}
         />
-        {keyword && openedSearchSection === 'keyword' && (
+        {keyword && searchSection === 'keyword' && (
           <CloseIcon
             size={18}
             className='absolute right-[64px] text-gray-500 top-1/2 -translate-y-1/2 cursor-pointer'

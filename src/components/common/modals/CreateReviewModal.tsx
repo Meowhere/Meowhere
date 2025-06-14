@@ -36,9 +36,11 @@ export default function CreateReviewModal({
 
   return (
     <div className='flex flex-col flex-grow mt-[38px]'>
-      <h3 className='text-lg font-bold text-gray-900 text-center mb-[6px]'>{title}</h3>
+      <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100 text-center mb-[6px]'>
+        {title}
+      </h3>
 
-      <div className='w-[220px] mx-auto text-center text-[1.3rem] font-regular text-gray-500 mb-[32px] border-t border-t-[rgba(17,34,17,0.1)]'>
+      <div className='w-[220px] mx-auto text-center text-[1.3rem] font-regular text-gray-500 dark:text-gray-400 mb-[32px] border-t border-t-[rgba(17,34,17,0.1)] dark:border-t-gray-700'>
         <div className='flex justify-center mt-[6px] gap-[16px]'>
           <span>{`${formatDate(schedule.date)}`}</span>
           <span>{`${schedule.startTime} - ${schedule.endTime}`}</span>
@@ -72,7 +74,7 @@ export default function CreateReviewModal({
         placeholder='후기를 작성해주세요'
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className='w-full h-[143px] px-[20px] py-[12px] text-md font-regular text-gray-900 bg-white border border-red-500 rounded-[10px] resize-none'
+        className='w-full h-[143px] px-[20px] py-[12px] text-md font-regular text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 border border-red-500 dark:border-red-400 rounded-[10px] resize-none placeholder:text-gray-500 dark:placeholder:text-gray-400'
       />
 
       <div className='flex flex-col gap-[8px] pt-[32px]'>

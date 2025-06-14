@@ -16,12 +16,12 @@ interface ScheduleTimeSlotProps {
 const styles = {
   label: clsx(
     'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200',
-    'hover:border-primary-200 hover:bg-primary-25'
+    'hover:border-primary-200 hover:bg-primary-25 dark:hover:bg-primary-900/20'
   ),
-  selected: 'border-primary-500 bg-primary-50',
-  unselected: 'border-gray-200',
-  timeText: 'text-md font-medium text-gray-800',
-  priceText: 'text-sm font-regular text-gray-500',
+  selected: 'border-primary-500 bg-primary-50 dark:bg-primary-900/30',
+  unselected: 'border-gray-200 dark:border-gray-600',
+  timeText: 'text-md font-medium text-gray-800 dark:text-gray-200',
+  priceText: 'text-sm font-regular text-gray-500 dark:text-gray-400',
 };
 
 export default function ScheduleTimeSlot({

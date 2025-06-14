@@ -14,13 +14,13 @@ export default function ProfileMenuItem({ href, icon, title }: ProfileMenuItemPr
     <Link
       href={href}
       className={clsx(
-        'flex flex-row items-center justify-between px-[24px] py-[12px] rounded-[10px] hover:bg-gray-50 transition-colors duration-200 p-3',
-        isActive && 'bg-gray-100'
+        'flex flex-row items-center justify-between px-[24px] py-[12px] rounded-[10px] hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 p-3',
+        isActive && 'bg-gray-100 dark:bg-gray-700'
       )}
     >
       <div className='flex items-center gap-[14px]'>
         <img src={ICONS[icon]} alt={title} />
-        <span className='text-lg font-medium text-gray-700'>{title}</span>
+        <span className='text-lg font-medium text-gray-700 dark:text-gray-300'>{title}</span>
       </div>
       {!isDesktop && (
         <div>

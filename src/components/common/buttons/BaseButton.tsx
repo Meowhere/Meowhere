@@ -11,16 +11,18 @@ interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 
 const variantClasses = {
   primary: 'bg-primary-300 text-white',
-  outline: 'border border-gray-200 text-gray-500 bg-white',
-  ghost: 'text-gray-500 bg-transparent',
+  outline:
+    'border border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800',
+  ghost: 'text-gray-500 dark:text-gray-400 bg-transparent',
 };
 
 const softColors = {
-  blue: 'bg-blue-100 text-blue-200',
-  red: 'bg-red-100 text-red-300',
+  blue: 'bg-blue-100 dark:bg-blue-900 text-blue-200',
+  red: 'bg-red-100 dark:bg-red-900 text-red-300',
 };
 
-const disabledClasses = 'bg-gray-200 text-gray-500 cursor-not-allowed';
+const disabledClasses =
+  'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed';
 
 export default function BaseButton({
   variant = 'primary',
