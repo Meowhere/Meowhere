@@ -31,3 +31,22 @@ export interface ActivitiesPage {
   totalCount: number;
   cursorId: number | null;
 }
+
+// types/daum.d.ts
+
+export interface DaumPostcodeData {
+  roadAddress: string;
+  jibunAddress: string;
+  zonecode: string;
+  [key: string]: any; // 다른 필드도 허용 (문서 참고)
+}
+
+export interface DaumPostcode {
+  Postcode: new (options: { oncomplete: (data: DaumPostcodeData) => void }) => { open: () => void };
+}
+
+declare global {
+  interface Window {
+    daum?: DaumPostcode;
+  }
+}
