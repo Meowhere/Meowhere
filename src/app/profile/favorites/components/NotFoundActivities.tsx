@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function NotFoundFavorites() {
   return (
-    <div className='flex flex-col items-center justify-center gap-6 lg:flex-row lg:gap-[128px]'>
+    <div className='flex flex-col items-center justify-center gap-[24px] lg:flex-row lg:gap-[128px] my-[112px]'>
       <div className='relative w-[82px] h-[123px] lg:w-[282px] lg:h-[423px]'>
         <Image
           src='/assets/icons/logo/ico-empty-view-logo.svg'
