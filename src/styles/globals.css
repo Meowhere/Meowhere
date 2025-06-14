@@ -55,3 +55,11 @@ textarea {
   background-color: white !important;
   margin: 0 2px !important;
 }
+
+.transition-soft {
+  transition: all 0.2s cubic-bezier(0, 0.2, 0.8, 1);
+}
+
+.transition-hard {
+  transition: all 0.2s cubic-bezier(0, 1, 0, 1);
+}

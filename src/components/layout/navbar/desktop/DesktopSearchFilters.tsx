@@ -222,6 +222,11 @@ function SearchInput({
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
   componentId: string;
 }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -250,7 +255,7 @@ function SearchInput({
         setSelectedMaxPrice={setSelectedMaxPrice}
       />
       {(isSearching || openedSearchSection) &&
-        typeof window !== 'undefined' &&
+        mounted &&
         createPortal(
           <div
             className={`${!isForPage ? 'opacity-20' : 'opacity-0'} fixed top-0 left-0 w-screen h-screen z-[10] bg-black`}
