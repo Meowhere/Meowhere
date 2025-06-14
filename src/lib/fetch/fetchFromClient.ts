@@ -7,6 +7,10 @@ export async function fetchFromClient(path: string, options: RequestInit = {}): 
       ...options,
       credentials: 'include',
     });
+    if (res.status === 401 || res.status === 403) {
+      console.log(`인증 실패: ${res.status} ${res.statusText}`);
+      return new Response(null, { status: res.status, statusText: res.statusText });
+    }
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
       const error = new Error(errorData.message || `HTTP error: ${res.status}`);
@@ -15,8 +19,6 @@ export async function fetchFromClient(path: string, options: RequestInit = {}): 
     return res;
   } catch (error) {
     logger.error('fetchFromClient error:', error);
-    throw new Error(
-      error instanceof Error ? `${error.message}` : 'Unknown network error'
-    );
+    throw new Error(error instanceof Error ? `${error.message}` : 'Unknown network error');
   }
 }
