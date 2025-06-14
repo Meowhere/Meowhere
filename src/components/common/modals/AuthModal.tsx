@@ -24,8 +24,16 @@ const loginSchema = z.object({
 const signUpSchema = z
   .object({
     email: z.string().email('유효한 이메일을 입력해주세요.'),
-    nickname: z.string().min(1, '닉네임을 입력해주세요.'),
-    password: z.string().min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
+    nickname: z
+      .string()
+      .transform((val) => val.trim()) // 공백 제거
+      .pipe(
+        z.string().min(1, '닉네임을 입력해주세요.').max(10, '닉네임 10자 이내로 입력해주세요.')
+      ),
+    password: z
+      .string()
+      .min(8, '비밀번호는 최소 8자 이상이어야 합니다.')
+      .refine((val) => !/\s/.test(val), '비밀번호에 공백을 포함할 수 없습니다.'),
     passwordConfirm: z.string(),
     agreeTerms: z.boolean().refine((val) => val === true, '이용약관에 동의해주세요.'),
     agreePrivacy: z
