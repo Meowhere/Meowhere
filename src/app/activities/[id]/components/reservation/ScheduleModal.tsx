@@ -1,15 +1,17 @@
 'use client';
 
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { ko } from 'date-fns/locale/ko';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import CounterButton from '../common/CounterButton';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useModal } from '@/src/hooks/useModal';
 import { useRouter } from 'next/navigation';
-import ScheduleList from './ScheduleList';
+import ScheduleTimeList from './ScheduleTimeList';
 import { Schedule } from '@/src/types/schedule.types';
+import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 export interface ScheduleModalProps {
   price: number;
@@ -21,13 +23,16 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
   const [selectedSchedule, setSelectedSchedule] = useState<{ id: number; date: string } | null>(
     null
   );
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const { openConfirmModal, ConfirmModal } = useConfirmModal();
   const { closeModal } = useModal();
   const router = useRouter();
 
-  const handleScheduleSelect = (id: number, date: string) => {
-    setSelectedSchedule({ id, date });
-  };
+  const { isDesktop } = useBreakpoint();
+
+  const availableDates = useMemo(() => {
+    return schedules.map((schedule) => format(new Date(schedule.date), 'yyyy-MM-dd'));
+  }, [schedules]);
 
   const handleReserve = async () => {
     if (!selectedSchedule) {
@@ -76,8 +81,9 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
 
   return (
     <>
-      <div className='flex max-h-[80vh] flex-col gap-[24px] overflow-y-scroll scrollbar-hide p-[12px] pb-[120px]'>
-        <div className='flex flex-col gap-[24px]'>
+      <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide'>
+        {/* 인원 선택 */}
+        <div className='flex flex-col gap-[24px] mb-[24px]'>
           <p className='text-[2.2rem] font-semibold text-gray-800'>인원</p>
           <div className='flex items-center justify-between'>
             <span>{count}명</span>
@@ -91,35 +97,46 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
           </div>
         </div>
 
-        <ScheduleList
+        {/* 날짜 선택 */}
+        <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>
+        <ReservationCalendarPicker
+          selectedDate={selectedDate}
+          onChange={setSelectedDate}
+          availableDates={availableDates}
+        />
+
+        {/* 시간 선택 */}
+        <ScheduleTimeList
           schedules={schedules}
-          selectedSchedule={selectedSchedule}
-          onScheduleSelect={handleScheduleSelect}
+          selectedDate={selectedDate}
+          selectedScheduleId={selectedSchedule?.id ?? null}
+          onSelect={setSelectedSchedule}
           price={price}
         />
-      </div>
 
-      <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white border-t border-gray-100 z-50'>
-        <div className='flex items-center justify-between w-full gap-[12px]'>
-          <div className='flex flex-col gap-[4px] min-w-0'>
-            <p className='text-sm font-regular text-gray-500 truncate'>
-              {selectedSchedule
-                ? `${format(new Date(selectedSchedule.date + 'T00:00:00+09:00'), 'M월 d일', {
-                    locale: ko,
-                  })}, ${count}명`
-                : '날짜, 인원 수'}
-            </p>
-            <p className='text-[2rem] font-semibold text-gray-800 truncate'>
-              {(price * count).toLocaleString()}원
-            </p>
+        {/* 예약 요약 + 버튼 */}
+        <div className='mt-auto pt-[20px]'>
+          <div className='flex items-center justify-between w-full gap-[12px]'>
+            <div className='flex flex-col gap-[4px] min-w-0'>
+              <p className='text-sm font-regular text-gray-500 truncate'>
+                {selectedSchedule
+                  ? `${format(new Date(selectedSchedule.date + 'T00:00:00+09:00'), 'M월 d일', {
+                      locale: ko,
+                    })}, ${count}명`
+                  : '날짜, 인원 수'}
+              </p>
+              <p className='text-[2rem] font-semibold text-gray-800 truncate'>
+                {(price * count).toLocaleString()}원
+              </p>
+            </div>
+            <BaseButton
+              className='max-w-[175px] h-[42px] rounded-[10px]'
+              onClick={handleReserve}
+              disabled={!selectedSchedule}
+            >
+              예약하기
+            </BaseButton>
           </div>
-          <BaseButton
-            className='w-[128px] h-[42px] rounded-[10px]'
-            onClick={handleReserve}
-            disabled={!selectedSchedule}
-          >
-            예약하기
-          </BaseButton>
         </div>
       </div>
 
