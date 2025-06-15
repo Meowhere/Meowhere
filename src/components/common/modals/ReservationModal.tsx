@@ -8,6 +8,7 @@ import { ModalReservationStatus } from '@/src/types/reservation.types';
 
 import Dropdown from '../dropdowns/Dropdown';
 import MyReservationsModalCard from '@/src/app/profile/my-reservations/components/MyReservationsModalCard';
+import { useEffect } from 'react';
 
 // 모달 열림 -> activityId, date를 이용해 시간대별로 예약 내역 배열 형태로 조회 -> 받아온 데이터에서 scheduleId를 이용하여 해당 시간대에 어떤 사람들이 예약을 했는지 조회
 export default function ReservationModal({ activityId, date }: ReservationModalProps) {
@@ -46,6 +47,13 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       },
     });
   };
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   return (
     <div className='min-h-[400px]'>

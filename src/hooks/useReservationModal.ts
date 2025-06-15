@@ -35,7 +35,21 @@ export function useReservationModal(activityId: number, date: Date) {
     reservationId: number,
     status: 'confirmed' | 'declined'
   ) => {
-    updateReservation({ reservationId, status });
+    if (status == 'confirmed') {
+      const others = reservationsByTime.filter((reservation) => reservation.id !== reservationId);
+
+      // 1. 승인 요청부터 먼저 전송
+      updateReservation({ reservationId, status });
+
+      // 2. 나머지 declined 요청 병렬 처리
+      await Promise.all(
+        others.map((reservation) =>
+          updateReservation({ reservationId: reservation.id, status: 'declined' })
+        )
+      );
+    } else {
+      updateReservation({ reservationId, status });
+    }
   };
 
   useEffect(() => {

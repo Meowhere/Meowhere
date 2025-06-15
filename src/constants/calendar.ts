@@ -8,8 +8,8 @@ export const STATUS_STYLE_MAP = {
     label: '승인',
     colorClass: 'text-blue-200 bg-blue-100',
   },
-  declined: {
-    label: '거절',
+  completed: {
+    label: '완료',
     colorClass: 'text-gray-600 bg-gray-100',
   },
 };

@@ -1,52 +1,37 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Calendar, { OnArgs } from 'react-calendar';
-import { STATUS_STYLE_MAP } from '@/src/constants/calendar';
-import '@/src/styles/reservation-calendar.css';
 
 import { useModal } from '@/src/hooks/useModal';
-import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
+import { useMyActivities } from '@/src/hooks/useMyActivities';
+import { useMyActivityReservationByMonth } from '@/src/hooks/useMyActivityReservationByMonth';
+import { STATUS_STYLE_MAP } from '@/src/constants/calendar';
+import { MyActivity } from '@/src/types/my-activity-reservation.types';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
+
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 
+import '@/src/styles/reservation-calendar.css';
+
 export default function ReservationCalendar() {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const { openReservationModal } = useModal();
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedMyActivity, setSelectedMyActivity] = useState<MyActivity | null>(null);
-  const [myActivities, setMyActivities] = useState<MyActivity[]>([]); // 이걸 드롭다운 컴포넌트에 뿌려줘야 함
-  const [myActivityReservationsByMonth, setMyActivityReservationsByMonth] =
-    useState<MyActivityReservationsByMonth[]>();
-  const [dropdownItems, setDropdownItems] = useState<DropdownItemButton[]>([]);
-
-  const getMyActivities = async (date: Date) => {
-    const res = await fetchFromClient('/my-activities');
-    const json = await res.json();
-    setMyActivities(json.activities);
-
-    if (!myActivities.length) {
-      const dropdownItemsResult: DropdownItemButton[] = json.activities.map(
-        (activity: MyActivity) => ({
-          label: activity.title,
-          onClick: () => {
-            setSelectedMyActivity(activity);
-            getMyActivityReservationsByMonth(activity.id, date);
-          },
-        })
-      );
-      setDropdownItems(dropdownItemsResult);
-    }
-  };
-
-  const getMyActivityReservationsByMonth = async (activityId: number, date: Date) => {
-    const year = date.getFullYear();
-    const month = `0${date.getMonth() + 1}`.slice(-2);
-    const res = await fetchFromClient(
-      `/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`
-    );
-    const json = await res.json();
-    setMyActivityReservationsByMonth(json);
-  };
+  const { myActivities, isLoading } = useMyActivities(currentDate);
+  const { data: myActivityReservationsByMonth } = useMyActivityReservationByMonth(
+    selectedMyActivity?.id,
+    currentDate
+  );
+  const dropdownItems = useMemo<DropdownItemButton[]>(() => {
+    if (!myActivities || !myActivities.length) return [];
+    return myActivities.map((activity: MyActivity) => ({
+      label: activity.title,
+      onClick: () => {
+        setSelectedMyActivity(activity);
+      },
+    }));
+  }, [myActivities, currentDate]);
 
   const handleReservation = (activityId: number, date: Date) => {
     openReservationModal({
@@ -125,10 +110,6 @@ export default function ReservationCalendar() {
     return `${base} text-gray-600 dark:text-gray-400`;
   };
 
-  useEffect(() => {
-    getMyActivities(currentDate);
-  }, [currentDate]);
-
   return (
     <div className='mx-auto min-w-[327px] w-full'>
       <div className='mb-[64px]'>
@@ -160,28 +141,4 @@ export default function ReservationCalendar() {
       />
     </div>
   );
-}
-
-interface MyActivity {
-  id: number;
-  userId: number;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  address: string;
-  bannerImageUrl: string;
-  rating: number;
-  reviewCount: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface MyActivityReservationsByMonth {
-  date: string;
-  reservations: {
-    completed: number;
-    confirmed: number;
-    pending: number;
-  };
 }
