@@ -64,19 +64,19 @@ export default function ProfileItem() {
   // 로딩/에러 처리
   if (isLoading) {
     return (
-      <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-6 rounded-[20px] bg-white shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'>
-        <div className='w-[128px] h-[128px] bg-gray-200 rounded-full animate-pulse'></div>
+      <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-6 rounded-[20px] bg-white dark:bg-gray-800 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)] dark:shadow-[0px_4px_40px_0px_rgba(0,0,0,0.30)]'>
+        <div className='w-[128px] h-[128px] bg-gray-200 dark:bg-gray-600 rounded-full animate-pulse'></div>
         <div className='flex flex-col items-center justify-center gap-[8px]'>
-          <div className='w-[120px] h-[24px] bg-gray-200 rounded animate-pulse'></div>
-          <div className='w-[160px] h-[20px] bg-gray-200 rounded animate-pulse'></div>
+          <div className='w-[120px] h-[24px] bg-gray-200 dark:bg-gray-600 rounded animate-pulse'></div>
+          <div className='w-[160px] h-[20px] bg-gray-200 dark:bg-gray-600 rounded animate-pulse'></div>
         </div>
       </div>
     );
   }
   if (!user) {
     return (
-      <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-6 rounded-[20px] bg-white shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'>
-        <p className='text-red-600'>사용자 정보를 불러올 수 없습니다.</p>
+      <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-6 rounded-[20px] bg-white dark:bg-gray-800 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)] dark:shadow-[0px_4px_40px_0px_rgba(0,0,0,0.30)]'>
+        <p className='text-red-600 dark:text-red-400'>사용자 정보를 불러올 수 없습니다.</p>
       </div>
     );
   }
@@ -85,7 +85,7 @@ export default function ProfileItem() {
   const imgSrc = localPreview || user.profileImageUrl || defaultImg;
 
   return (
-    <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-[22px] rounded-[20px] bg-white shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'>
+    <div className='flex flex-col gap-[12px] items-center justify-center w-full px-8 py-[22px] rounded-[20px] bg-white dark:bg-gray-800 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)] dark:shadow-[0px_4px_40px_0px_rgba(0,0,0,0.30)]'>
       <div className='relative w-fit'>
         <Image
           src={imgSrc}
@@ -117,14 +117,18 @@ export default function ProfileItem() {
         />
       </div>
       <div className='flex flex-col items-center justify-center gap-[8px]'>
-        <span className='text-xl font-semibold text-gray-800 leading-none'>{user.nickname}</span>
-        <p className='text-lg font-regular text-gray-600 leading-none'>{user.email}</p>
+        <span className='text-xl font-semibold text-gray-800 dark:text-gray-200 leading-none'>
+          {user.nickname}
+        </span>
+        <p className='text-lg font-regular text-gray-600 dark:text-gray-400 leading-none'>
+          {user.email}
+        </p>
       </div>
 
       {/* 미리보기 모달 */}
       {previewOpen && imgSrc && (
         <div
-          className='fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50'
+          className='fixed inset-0 bg-black bg-opacity-60 dark:bg-black dark:bg-opacity-80 flex items-center justify-center z-50'
           onClick={handlePreviewClose}
         >
           <div className='relative' onClick={(e) => e.stopPropagation()}>

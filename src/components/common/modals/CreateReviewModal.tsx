@@ -87,8 +87,11 @@ export default function CreateReviewModal({
   return (
     <div className='flex flex-col flex-grow mt-[38px]'>
       <Toast />
-      <h3 className='text-lg font-bold text-gray-900 text-center mb-[6px]'>{title}</h3>
-      <div className='w-[220px] mx-auto text-center text-[1.3rem] font-regular text-gray-500 mb-[32px] border-t border-t-[rgba(17,34,17,0.1)]'>
+      <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100 text-center mb-[6px]'>
+        {title}
+      </h3>
+
+      <div className='w-[220px] mx-auto text-center text-[1.3rem] font-regular text-gray-500 dark:text-gray-400 mb-[32px] border-t border-t-[rgba(17,34,17,0.1)] dark:border-t-gray-700'>
         <div className='flex justify-center mt-[6px] gap-[16px]'>
           <span>{`${formatDateDot(new Date(schedule.date), true)}`}</span>
           <span>{`${schedule.startTime} - ${schedule.endTime}`}</span>

@@ -95,7 +95,7 @@ export default function AuthModal() {
         {mode !== 'initial' && (
           <ArrowButton size={24} onClick={handleBack} className='absolute left-0' />
         )}
-        <h2 className='text-md text-black'>{HEADER[mode]}</h2>
+        <h2 className='text-md text-black dark:text-gray-200'>{HEADER[mode]}</h2>
         {!isAccountPage && (
           <CloseButton size='md' onClick={closeModal} className='absolute right-0' />
         )}

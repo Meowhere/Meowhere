@@ -30,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ko' className={pretendard.className}>
-      <body>
+    <html lang='ko' className={`${pretendard.className} bg-white dark:bg-black`}>
+      <body className='bg-white dark:bg-black'>
         <ClientLayout>
           {children}
           <ModalProvider />

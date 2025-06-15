@@ -34,7 +34,7 @@ export default function SearchButton({
 
   return (
     <button
-      className='w-full h-full bg-white border border-gray-200 text-gray-800 rounded-full text-sm flex items-center justify-center gap-2 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'
+      className='w-full h-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-800 dark:text-gray-200 rounded-full text-sm flex items-center justify-center gap-2 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]'
       onClick={handleSearch}
     >
       {/* 검색 중 */}
@@ -42,7 +42,7 @@ export default function SearchButton({
         <input
           type='text'
           placeholder='여기에 검색어 입력'
-          className='w-full h-full text-sm text-gray-800 text-center px-[16px]'
+          className='w-full h-full text-sm text-gray-800 dark:text-gray-200 bg-transparent text-center px-[16px] placeholder:text-gray-400 dark:placeholder:text-gray-500'
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
@@ -56,7 +56,7 @@ export default function SearchButton({
             <span>{params.keyword}</span>
           </div>
           {(params.minPrice || params.maxPrice) && (
-            <div className='flex gap-2 text-gray-400'>
+            <div className='flex gap-2 text-gray-400 dark:text-gray-500'>
               {params.minPrice && <span>{Number(params.minPrice).toLocaleString()}원</span>}
               <span> ~ </span>
               {params.maxPrice && <span>{Number(params.maxPrice).toLocaleString()}원</span>}
