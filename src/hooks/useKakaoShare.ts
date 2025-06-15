@@ -1,6 +1,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import { Activity } from '../types/activity.types';
 import { KakaoSDK } from '../types/kakao.types';
+import { KAKAO_APP_KEY, KAKAO_SDK } from '../constants/api';
 
 declare global {
   interface Window {
@@ -11,7 +12,6 @@ declare global {
 interface KakaoShareOptions {
   activity: Activity;
   currentUrl?: string;
-  customMessage?: string;
 }
 
 // 카카오톡 공유 커스텀 훅
@@ -24,7 +24,7 @@ export const useKakaoShare = () => {
     const initKakao = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
         // 실제 카카오 앱 키로 교체 필요
-        window.Kakao.init('YOUR_KAKAO_APP_KEY');
+        window.Kakao.init(`${KAKAO_APP_KEY}`);
         setIsKakaoLoaded(true);
       } else if (window.Kakao && window.Kakao.isInitialized()) {
         setIsKakaoLoaded(true);
@@ -39,7 +39,7 @@ export const useKakaoShare = () => {
 
     // Kakao SDK 스크립트 동적 로드
     const script = document.createElement('script');
-    script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+    script.src = `${KAKAO_SDK}`;
     script.async = true;
     script.onload = initKakao;
     script.onerror = () => {
@@ -59,7 +59,7 @@ export const useKakaoShare = () => {
 
   // 카카오톡 공유 함수
   const shareToKakao = useCallback(
-    ({ activity, currentUrl, customMessage }: KakaoShareOptions) => {
+    ({ activity, currentUrl }: KakaoShareOptions) => {
       if (!isKakaoLoaded || !window.Kakao) {
         alert('카카오 SDK가 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요.');
         return false;
@@ -69,7 +69,7 @@ export const useKakaoShare = () => {
 
       try {
         const shareUrl = currentUrl || window.location.href;
-        const description = customMessage || `${activity.category} | ${activity.description}`;
+        const description = `${activity.category} | ${activity.description}`;
 
         window.Kakao.Share.sendDefault({
           objectType: 'feed',
