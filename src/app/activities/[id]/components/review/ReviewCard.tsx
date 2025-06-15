@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import StarRating from '@/src/components/common/buttons/StarRating';
 import formatRelativeTime from '@/src/lib/formatRelativeTime';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import clsx from 'clsx';
 
 interface ReviewCardProps {
   nickname: string;
@@ -20,8 +22,16 @@ export default function ReviewCard({
   variant = 'card',
 }: ReviewCardProps) {
   const formattedDate = formatRelativeTime(createdAt);
-
   const isList = variant === 'list';
+  const { isDesktop, isTablet } = useBreakpoint();
+
+  const cardStyle = isList
+    ? 'w-full p-0'
+    : isDesktop
+      ? 'w-[346px] p-[8px] min-h-[216px] bg-white rounded-[16px]'
+      : isTablet
+        ? 'w-[288px] p-[24px] min-h-[240px] bg-white rounded-[16px]'
+        : 'w-[280px] p-[20px] min-h-[200px] bg-white rounded-[16px]';
 
   return (
     <div
@@ -35,14 +45,15 @@ export default function ReviewCard({
       </div>
 
       <p
-        className={`text-sm font-regular text-gray-700 dark:text-gray-300 ${
-          isList ? '' : 'line-clamp-4 max-w-[232px]'
-        }`}
+        className={clsx(
+          'text-sm font-regular text-gray-700 dark:text-gray-300 flex-grow',
+          variant === 'card' && 'line-clamp-4'
+        )}
       >
         {content}
       </p>
 
-      <div className='flex items-center gap-[8px]'>
+      <div className='flex items-center gap-[8px] mt-auto'>
         <Image
           src={profileImageUrl}
           alt={`${nickname}의 프로필 이미지`}

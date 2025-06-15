@@ -127,3 +127,14 @@ textarea {
     background-color: rgba(165, 165, 165, 0.1);
   }
 }
+
+.sidebar-container {
+  position: sticky;
+  top: 24px;
+  transition: all 0.3s ease-out;
+}
+
+.map-trigger-section ~ * .sidebar-container {
+  position: sticky;
+  top: 24px;
+}
