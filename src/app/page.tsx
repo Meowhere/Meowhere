@@ -27,7 +27,22 @@ export default async function Home({
     ...(keyword && { keyword }),
   });
 
-  const activitiesResponse = await fetchFromClient(`/activities?${params.toString()}`);
+  // const activitiesResponse = await fetchFromClient(`/activities?${params.toString()}`);
+  const activitiesResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API_URL}/activities?${params.toString()}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      next: {
+        revalidate: 300,
+      },
+    }
+  );
+
+  if (!activitiesResponse.ok) {
+    throw new Error(`HTTP 에러: ${activitiesResponse.status}`);
+  }
 
   const activitiesData = await activitiesResponse.json();
 

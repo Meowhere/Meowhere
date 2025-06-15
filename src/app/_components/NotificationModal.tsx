@@ -17,7 +17,7 @@ export default function NotificationModal({ data }: { data: any }) {
             <>
               <li key={id} className='flex flex-col gap-[12px] relative'>
                 <div
-                  className={`${content.includes('승인') ? 'bg-blue-100 dark:bg-blue-900 text-blue-200' : 'bg-red-100 dark:bg-red-900 text-red-300'} flex items-center justify-center rounded-full px-[10px] py-[6px] w-fit h-fit`}
+                  className={`${content.includes('승인') ? 'bg-blue-100 dark:bg-dark-blue-200 text-dark-blue-100' : 'bg-red-100 dark:bg-dark-red-200 text-dark-red-100'} flex items-center justify-center rounded-full px-[10px] py-[6px] w-fit h-fit`}
                 >
                   <span className='leading-none text-xs font-medium'>
                     {content.includes('승인') ? '예약 승인' : '예약 거절'}

@@ -49,7 +49,7 @@ export default function PopularActivitiesBanner() {
       {data.activities.map((item: Activity) => (
         <SwiperSlide key={item.id}>
           <div className='lg:rounded-[24px] lg:h-[524px] w-full h-[200px] bg-gray-200 dark:bg-gray-800 cursor-pointer overflow-hidden relative'>
-            <div className='absolute top-0 left-0 pl-[8vw] w-full h-full flex flex-col justify-center items-start z-10 bg-gradient-to-r from-black/50 to-transparent'>
+            <div className='absolute top-0 left-0 pl-[8vw] w-full h-full flex flex-col justify-center items-start z-10 bg-gradient-to-r from-black/90 to-transparent'>
               <h2 className=' lg:text-[4.8rem] lg:max-w-[calc(50%)] text-white text-2xl font-semibold max-w-[calc(100%-64px)] break-keep leading-[1.25]'>
                 {item.title}
               </h2>

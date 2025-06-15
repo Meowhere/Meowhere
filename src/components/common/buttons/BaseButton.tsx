@@ -17,8 +17,8 @@ const variantClasses = {
 };
 
 const softColors = {
-  blue: 'bg-blue-100 dark:bg-blue-900 text-blue-200',
-  red: 'bg-red-100 dark:bg-red-900 text-red-300',
+  blue: 'bg-blue-100 dark:bg-dark-blue-200 text-dark-blue-100',
+  red: 'bg-red-100 dark:bg-dark-red-200 text-dark-red-100',
 };
 
 const disabledClasses =

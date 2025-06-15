@@ -1,8 +1,20 @@
 import Link from 'next/link';
 import Logo from '@/public/assets/icons/logo/ico-logo.svg';
 import Typography from '@/public/assets/icons/logo/ico-typography.svg';
+import { useModal } from '@/src/hooks/useModal';
 
 export default function Footer() {
+  const { openPrivacyPolicyModal, closeModal } = useModal();
+
+  const handlePrivacyPolicy = () => {
+    openPrivacyPolicyModal({
+      onConfirm: () => {
+        console.log('취소됨');
+        closeModal();
+      },
+    });
+  };
+
   return (
     <footer
       className={
@@ -28,9 +40,12 @@ export default function Footer() {
       >
         Github
       </a>
-      <Link href='/privacy-policy' className='underline mt-[8px] text-gray-400 dark:text-gray-500'>
+      <span
+        onClick={handlePrivacyPolicy}
+        className='underline mt-[8px] text-gray-400 dark:text-gray-500 cursor-pointer'
+      >
         개인정보처리방침
-      </Link>
+      </span>
     </footer>
   );
 }
