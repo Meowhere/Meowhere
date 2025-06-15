@@ -2,6 +2,7 @@ import { useEffect, useCallback, useState } from 'react';
 import { Activity } from '../types/activity.types';
 import { KakaoSDK } from '../types/kakao.types';
 import { KAKAO_APP_KEY, KAKAO_SDK } from '../constants/api';
+import { useToastStore } from '../store/toastStore';
 
 declare global {
   interface Window {
@@ -18,6 +19,7 @@ interface KakaoShareOptions {
 export const useKakaoShare = () => {
   const [isKakaoLoaded, setIsKakaoLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { showToast } = useToastStore();
 
   // Kakao SDK 초기화
   useEffect(() => {
@@ -113,8 +115,7 @@ export const useKakaoShare = () => {
         return true;
       } catch (error) {
         console.error('카카오톡 공유 실패:', error);
-        alert('공유하기에 실패했습니다. 다시 시도해주세요.');
-        setIsLoading(false);
+        showToast('error', '공유하기에 실패했습니다.');
         return false;
       }
     },
