@@ -11,19 +11,29 @@ import ExperienceLocationMap from './experience/ExperienceLocationMap';
 import ExperienceDescription from './experience/ExperienceDescription';
 import ReviewSection from './review/ReviewSection';
 import ScheduleSidebar from './reservation/ScheduleSidebar';
-import ScheduleModal from './reservation/ScheduleModal';
 import { useGnb } from '@/src/hooks/useGnb';
 import HeartButton from '@/src/components/common/buttons/HeartButton';
 import { Activity } from '@/src/types/activity.types';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import { useModal } from '@/src/hooks/useModal';
+import { Review } from '@/src/types/review.type';
 
 interface Props {
   activity: Activity;
   schedules: ScheduleWithTimes[];
+  reviews: Review[];
+  reviewStats: {
+    rating: number;
+    count: number;
+  };
 }
 
-export default function ExperienceResponsiveLayout({ activity, schedules }: Props) {
+export default function ExperienceResponsiveLayout({
+  activity,
+  schedules,
+  reviews,
+  reviewStats,
+}: Props) {
   const { isDesktop } = useBreakpoint();
   const { openScheduleModal } = useModal();
   const router = useRouter();
@@ -70,7 +80,7 @@ export default function ExperienceResponsiveLayout({ activity, schedules }: Prop
               activityId={activity.id}
               rating={activity.rating}
               reviewCount={activity.reviewCount}
-              reviews={[]}
+              reviews={reviews}
             />
           </div>
         </div>
@@ -135,15 +145,17 @@ export default function ExperienceResponsiveLayout({ activity, schedules }: Prop
         <SectionTitle title='후기' />
         <ReviewSection
           activityId={activity.id}
-          rating={activity.rating}
-          reviewCount={activity.reviewCount}
-          reviews={[]}
+          rating={reviewStats.rating}
+          reviewCount={reviewStats.count}
+          reviews={reviews}
         />
       </div>
 
       <ReservationBox
         pricePerPerson={activity.price}
-        onClick={() => openScheduleModal({ price: activity.price, schedules })}
+        onClick={() =>
+          openScheduleModal({ price: activity.price, schedules, activityId: activity.id })
+        }
       />
     </>
   );

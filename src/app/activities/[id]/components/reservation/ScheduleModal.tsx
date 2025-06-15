@@ -9,16 +9,17 @@ import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useModal } from '@/src/hooks/useModal';
 import { useRouter } from 'next/navigation';
 import ScheduleTimeList from './ScheduleTimeList';
-import { Schedule, ScheduleWithTimes } from '@/src/types/schedule.types';
+import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
+import { BASE_API_URL } from '@/src/constants/api';
 
 export interface ScheduleModalProps {
   price: number;
   schedules: ScheduleWithTimes[];
+  activityId: number;
 }
 
-export default function ScheduleModal({ price, schedules }: ScheduleModalProps) {
-  console.log(schedules);
+export default function ScheduleModal({ price, schedules, activityId }: ScheduleModalProps) {
   const [count, setCount] = useState(1);
   const [selectedSchedule, setSelectedSchedule] = useState<{ id: number; date: string } | null>(
     null
@@ -41,21 +42,19 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
     try {
       const reservationData = {
         scheduleId: selectedSchedule.id,
-        date: selectedSchedule.date,
         headCount: count,
-        totalPrice: price * count,
       };
 
-      // TODO: API 연동 시 아래 주석 해제
-      /*
-      const response = await fetch('/api/reservations', {
+      console.log('예약 요청 직전 데이터:', reservationData);
+
+      const response = await fetch(`${BASE_API_URL}/activities/${activityId}/reservations`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reservationData),
       });
 
+      console.log('응답 상태 코드:', response.status);
+
       if (!response.ok) throw new Error('예약 처리 중 오류가 발생했습니다.');
-      */
 
       openConfirmModal({
         message: '예약이 완료되었습니다.',
@@ -63,7 +62,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
         onConfirm: () => {
           console.log('예약 데이터:', reservationData);
           closeModal();
-          // router.push('/reservations');
+          // router.push('/my-reservations');
         },
       });
     } catch (error) {
