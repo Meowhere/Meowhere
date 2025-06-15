@@ -1,5 +1,6 @@
 import { Category } from './activity.types';
 import { Activity } from './activity.types';
+import { Schedule } from './activity.types';
 
 export interface RatingLabelProps {
   rating: number;
@@ -49,4 +50,18 @@ declare global {
   interface Window {
     daum?: DaumPostcode;
   }
+}
+
+// 수정하기 에서 받아올 데이터들
+export interface MyActivitiesFormData {
+  title: string;
+  description: string;
+  category: Category;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  // rating?: number;
+  // reviewCount?: number;
+  subImageUrls: string[];
+  schedules?: Omit<Schedule, 'id'>[];
 }

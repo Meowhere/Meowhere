@@ -3,13 +3,14 @@ import { useRef, useState, useEffect } from 'react';
 
 interface UploadImgProps {
   file?: File | null;
+  defaultImage?: string;
   onFileChange?: (file: File | null) => void;
 }
 
-export default function UploadImg({ file: fileProp, onFileChange }: UploadImgProps) {
+export default function UploadImg({ file: fileProp, defaultImage, onFileChange }: UploadImgProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(fileProp ?? null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(defaultImage ?? null);
 
   useEffect(() => {
     if (fileProp !== undefined) setFile(fileProp);

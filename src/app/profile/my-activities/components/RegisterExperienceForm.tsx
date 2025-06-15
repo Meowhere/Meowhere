@@ -5,17 +5,18 @@ import RegisterForm from '../components/register-form/RegisterForm';
 import RegisterCalendar from '../components/register-calendar/RegisterCalendar';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 
 interface RegisterExperienceFormProps {
   mode: 'edit' | 'create';
-  // defaultValues?: FormDataType;
+  defaultValues?: MyActivitiesFormData;
   onSubmit?: () => void;
   showSubmitButton?: boolean;
 }
 
 export default function RegisterExperienceForm({
   mode,
-  // defaultValues,
+  defaultValues,
   onSubmit,
   showSubmitButton = false,
 }: RegisterExperienceFormProps) {
@@ -26,22 +27,22 @@ export default function RegisterExperienceForm({
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
         <div className='w-[160px]'>
-          <UploadImg />
+          <UploadImg defaultImage={defaultValues?.bannerImageUrl} />
         </div>
       </div>
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
-        <UploadImgList />
+        <UploadImgList defaultImages={defaultValues?.subImageUrls} />
       </div>
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
-        <RegisterForm />
+        {/* <RegisterForm defaultValues={defaultValues} /> */}
       </div>
-      <RegisterCalendar />
+      {/* <RegisterCalendar defaultSchedules={defaultValues?.schedules} /> */}
       {isDesktop && (
         <div className='w-[128px] absolute right-[24px] top-full'>
           <BaseButton variant='primary' className='text-md font-semibold'>
-            등록 하기
+            {mode === 'edit' ? '수정 하기' : '등록 하기'}
           </BaseButton>
         </div>
       )}

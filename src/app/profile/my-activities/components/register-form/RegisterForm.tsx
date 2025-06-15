@@ -7,6 +7,16 @@ import PostAddress from './PostAddress';
 import { useState } from 'react';
 import RegisterCategory from './RegisterCategory';
 
+interface RegisterFormProps {
+  defaultValues?: {
+    title?: string;
+    price?: string;
+    category?: string;
+    description?: string;
+    address?: string;
+  };
+}
+
 const formSchema = z.object({
   title: z.string().min(3, '3자 이상 입력하세요.'),
   category: z.string().nonempty('카테고리를 선택해주세요'),
@@ -16,7 +26,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function RegisterForm() {
+export default function RegisterForm({ defaultValues }: RegisterFormProps) {
   const {
     register,
     handleSubmit,
@@ -25,7 +35,13 @@ export default function RegisterForm() {
   } = useForm<FormValues>({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
-    defaultValues: { price: '' },
+    defaultValues: {
+      title: defaultValues?.title ?? '',
+      price: defaultValues?.price ?? '',
+      category: defaultValues?.category ?? '',
+      description: defaultValues?.description ?? '',
+      // address: defaultValues?.address ?? '',
+    },
   });
 
   const titleValue = watch('title', '');

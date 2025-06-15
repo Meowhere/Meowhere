@@ -12,12 +12,18 @@ interface CalendarItem {
   endTime: string;
 }
 
-export default function RegisterCalendar() {
+interface RegisterCalendarProps {
+  defaultSchedules?: CalendarItem[];
+}
+
+export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarProps) {
   const { isDesktop } = useBreakpoint();
-  const [items, setItems] = useState<CalendarItem[]>([
-    { id: generateId(), date: '', startTime: '', endTime: '' },
-  ]);
-  const [nextId, setNextId] = useState(1);
+  const [items, setItems] = useState<CalendarItem[]>(
+    defaultSchedules?.length
+      ? defaultSchedules
+      : [{ id: generateId(), date: '', startTime: '', endTime: '' }]
+  );
+
   const [sortKey, setSortKey] = useState<'registered' | 'latest' | 'oldest'>('registered');
 
   const handleAddItem = () => {
