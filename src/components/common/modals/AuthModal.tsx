@@ -7,9 +7,9 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import ArrowButton from '../buttons/ArrowButton';
 import { HEADER } from '@/src/constants/modal';
-import InitialForm from '../forms/InitialForm';
-import LoginForm from '../forms/LoginForm';
-import SignUpForm from '../forms/SignUpForm';
+import InitialForm from '@/src/app/account/components/forms/InitialForm';
+import LoginForm from '@/src/app/account/components/forms/LoginForm';
+import SignUpForm from '@/src/app/account/components/forms/SignUpForm';
 
 // zod 스키마
 const initialSchema = z.object({
@@ -24,8 +24,17 @@ const loginSchema = z.object({
 const signUpSchema = z
   .object({
     email: z.string().email('유효한 이메일을 입력해주세요.'),
-    nickname: z.string().min(1, '닉네임을 입력해주세요.'),
-    password: z.string().min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
+    nickname: z
+      .string()
+      .transform((val) => val.trim().replace(/\s+/g, ' '))
+      .pipe(
+        z.string().min(1, '닉네임을 입력해주세요.').max(10, '닉네임 10자 이내로 입력해주세요.')
+      ),
+    password: z
+      .string()
+      .min(8, '비밀번호는 8자 이상 입력해주세요.')
+      .max(30, '비밀번호는 30자 이하로 입력해주세요.')
+      .refine((val) => !/\s/.test(val), '비밀번호에 공백을 포함할 수 없습니다.'),
     passwordConfirm: z.string(),
     agreeTerms: z.boolean().refine((val) => val === true, '이용약관에 동의해주세요.'),
     agreePrivacy: z
