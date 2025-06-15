@@ -14,6 +14,7 @@ export default function ReservationsCard({
   reservation,
   showCancel = false,
   showReview = false,
+  isLast = false,
 }: ReservationsCardProps) {
   const { mutate: cancelReservation, isPending } = useCancelReservation();
   const { openCreateReviewModal, closeModal } = useModal();
@@ -61,7 +62,9 @@ export default function ReservationsCard({
   };
 
   return (
-    <div className='flex flex-col gap-[18px] bg-white px-[20px] py-[24px] border-b border-gray-200 last:border-none lg:flex-row lg:justify-between lg:items-end'>
+    <div
+      className={`flex flex-col gap-[18px] bg-white px-[20px] py-[24px] ${isLast ? '' : 'border-b border-gray-200'} lg:flex-row lg:justify-between lg:items-end`}
+    >
       {/* 내용 */}
       <Toast />
       <ConfirmModal />
@@ -82,7 +85,6 @@ export default function ReservationsCard({
           </div>
         </div>
       </div>
-
       {/* 버튼은 항상 세로로 아래 정렬 (모바일/태블릿 공통) */}
       <div className='flex flex-col gap-[10px] lg:items-end'>
         {showCancel && (
@@ -115,4 +117,5 @@ export interface ReservationsCardProps {
   reservation: MyReservation;
   showCancel?: boolean;
   showReview?: boolean;
+  isLast?: boolean;
 }
