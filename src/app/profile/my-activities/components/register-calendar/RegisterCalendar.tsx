@@ -1,26 +1,31 @@
-import { useState } from 'react';
+'use client';
+import { useState, useEffect } from 'react';
 import RegisterCalendarItem from './RegisterCalendarItem';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Sort from '../register-form/Sort';
-
-const generateId = () => `${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-interface CalendarItem {
-  id: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-}
+import { CalendarItem } from '@/src/utils/my-activities-schedule';
+import {
+  covertSchedulesToCalendarItems,
+  generateId,
+  sortCalendarItems,
+  hasOverlappingSchedules,
+} from '@/src/utils/my-activities-schedule';
+import { Schedule } from '@/src/types/activity.types';
+import { useToastStore } from '@/src/store/toastStore';
 
 interface RegisterCalendarProps {
-  defaultSchedules?: CalendarItem[];
+  defaultSchedules?: Omit<Schedule, 'id'>[];
 }
 
 export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarProps) {
   const { isDesktop } = useBreakpoint();
+  const { showToast } = useToastStore();
+  const [hasShownToast, setHasShownToast] = useState(false);
+
   const [items, setItems] = useState<CalendarItem[]>(
     defaultSchedules?.length
-      ? defaultSchedules
+      ? covertSchedulesToCalendarItems(defaultSchedules)
       : [{ id: generateId(), date: '', startTime: '', endTime: '' }]
   );
 
@@ -38,20 +43,19 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
   };
 
-  // 정렬 로직
-  let sortedItems = [...items];
-  if (sortKey === 'latest') {
-    sortedItems.sort((a, b) => compareDateTime(b, a));
-  } else if (sortKey === 'oldest') {
-    sortedItems.sort((a, b) => compareDateTime(a, b));
-  }
-  // 날짜/시간 비교 유틸
-  function compareDateTime(a: CalendarItem, b: CalendarItem) {
-    // "2024-06-14" + "T" + "14:00" 식으로 합쳐서 Date 비교
-    const dateA = new Date(`${a.date}T${a.startTime}`);
-    const dateB = new Date(`${b.date}T${b.startTime}`);
-    return dateA.getTime() - dateB.getTime();
-  }
+  const sortedItems = sortCalendarItems(items, sortKey);
+
+  useEffect(() => {
+    if (hasOverlappingSchedules(items)) {
+      if (!hasShownToast) {
+        showToast('error', '동일한 날짜에 시간대가 겹치는 일정이 있습니다.');
+        setHasShownToast(true);
+      }
+    } else {
+      // 중복 없으면 토스트 다시 띄울 수 있도록 초기화
+      setHasShownToast(false);
+    }
+  }, [items, hasShownToast, showToast]);
 
   return (
     <div className='flex flex-col gap-[20px]'>

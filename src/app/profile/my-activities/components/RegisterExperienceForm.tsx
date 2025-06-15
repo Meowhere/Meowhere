@@ -38,7 +38,7 @@ export default function RegisterExperienceForm({
         <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
         {/* <RegisterForm defaultValues={defaultValues} /> */}
       </div>
-      {/* <RegisterCalendar defaultSchedules={defaultValues?.schedules} /> */}
+      <RegisterCalendar defaultSchedules={defaultValues?.schedules} />
       {isDesktop && (
         <div className='w-[128px] absolute right-[24px] top-full'>
           <BaseButton variant='primary' className='text-md font-semibold'>
