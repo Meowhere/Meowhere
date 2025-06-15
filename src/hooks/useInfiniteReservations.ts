@@ -17,7 +17,7 @@ export const useInfiniteReservations = (
   options?: UseInfiniteQueryOptions<MyReservationsResponse, Error>
 ) => {
   return useInfiniteQuery<MyReservationsResponse>({
-    queryKey: ['my-reservations', status],
+    queryKey: ['myReservations', status],
 
     queryFn: async ({ pageParam = 0 }) => {
       const query = new URLSearchParams();
