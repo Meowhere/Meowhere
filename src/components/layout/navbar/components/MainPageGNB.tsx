@@ -33,9 +33,9 @@ export default function MainPageGNB() {
   }, [isSearching]);
 
   return (
-    <nav className='fixed top-0 left-0 w-full border-b border-gray-200 bg-white z-30'>
+    <nav className='fixed top-0 left-0 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-black z-30'>
       {/* GNB 상단 */}
-      <div className='relative bg-white flex justify-center gap-[24px] w-full h-[76px] p-[14px] px-[24px] items-center z-40'>
+      <div className='relative bg-white dark:bg-black flex justify-center gap-[24px] w-full h-[76px] p-[14px] px-[24px] items-center z-40'>
         {/* 왼쪽 (뒤로가기 버튼) */}
         <div
           className={`${hasParams || rightButtons.length || backAction ? 'flex justify-start' : 'hidden'}`}
@@ -45,7 +45,7 @@ export default function MainPageGNB() {
             size={24}
             onClick={backAction || resetQueries}
             aria-label='뒤로가기'
-            className='cursor-pointer'
+            className='cursor-pointer text-gray-800 dark:text-gray-200'
           />
         </div>
 

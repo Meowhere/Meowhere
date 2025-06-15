@@ -6,12 +6,123 @@ import { useEffect, useState } from 'react';
 import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useModal } from '@/src/hooks/useModal';
+import { useLogout, useUser } from '@/src/hooks/auth/useAuth';
+import { useRouter } from 'next/navigation';
+import { useThemeStore } from '@/src/store/themeStore';
+// import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient'; forREAL
 
 export default function DesktopGNB() {
   const { isSearching } = useGnbStore();
   const [showScrollElements, setShowScrollElements] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const pathname = usePathname();
+  const { openAuthModal, openNotificationModal, closeModal } = useModal();
+  const { theme, toggleTheme } = useThemeStore();
+
+  // const notificationData = fetchFromClient('/my-notifications'); forREAL
+  const notificationData = {
+    cursorId: 0,
+    notifications: [
+      {
+        id: 1,
+        teamId: 'string',
+        userId: 0,
+        content: '무슨무슨 알림이 승인되었습니다',
+        createdAt: '2025-06-14T06:04:32.504Z',
+        updatedAt: '2025-06-14T06:04:32.504Z',
+        deletedAt: '2025-06-14T06:04:32.504Z',
+      },
+      {
+        id: 2,
+        teamId: 'string',
+        userId: 0,
+        content: '무슨무슨 알림이 거절되었습니다',
+        createdAt: '2025-06-14T06:14:32.504Z',
+        updatedAt: '2025-06-14T06:14:32.504Z',
+        deletedAt: '2025-06-14T06:14:32.504Z',
+      },
+    ],
+    totalCount: 2,
+  }; //forTEST
+
+  const logoutMutation = useLogout();
+  const router = useRouter();
+  const { data } = useUser();
+
+  const handleAuthModal = () => {
+    openAuthModal();
+  };
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+    router.push('/');
+  };
+
+  const handleNotification = () => {
+    openNotificationModal({
+      data: notificationData,
+      onConfirm: () => {
+        console.log('취소됨');
+        closeModal();
+      },
+    });
+  };
+
+  function handleClose() {
+    console.log('close');
+  }
+  const dropdownItemsForLoggedIn = [
+    {
+      type: 'profile',
+      label: '프로필',
+      onClick: () => {
+        router.push('/profile');
+      },
+      onClose: handleClose,
+    },
+    {
+      type: 'wishlist',
+      label: '찜목록',
+      onClick: () => {
+        router.push('/profile/favorites');
+      },
+      onClose: handleClose,
+    },
+    {
+      type: 'noti',
+      label: '알림',
+      onClick: handleNotification,
+      onClose: handleClose,
+    },
+    {
+      type: 'theme',
+      label: theme === 'light' ? '다크 모드' : '라이트 모드',
+      onClick: toggleTheme,
+      onClose: handleClose,
+    },
+    {
+      type: 'logout',
+      label: '로그아웃',
+      onClick: handleLogout,
+      onClose: handleClose,
+    },
+  ];
+
+  const dropdownItemsForLoggedOut = [
+    {
+      type: 'theme',
+      label: theme === 'light' ? '다크 모드' : '라이트 모드',
+      onClick: toggleTheme,
+      onClose: handleClose,
+    },
+    {
+      type: 'login',
+      label: '로그인',
+      onClick: handleAuthModal,
+      onClose: handleClose,
+    },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,7 +136,7 @@ export default function DesktopGNB() {
 
   return (
     <motion.nav
-      className={`${showScrollElements ? 'border-white' : 'border-gray-200'} fixed top-0 left-0 z-[90] w-full flex items-start justify-center bg-white border-b border-gray-200 px-[64px] pt-[28px]`}
+      className={`${showScrollElements ? 'border-white dark:border-black' : 'border-gray-200 dark:border-gray-700'} fixed top-0 left-0 z-[90] w-full flex items-start justify-center bg-white dark:bg-black border-b px-[64px] pt-[28px]`}
       initial={{
         height: '96px',
       }}
@@ -62,39 +173,15 @@ export default function DesktopGNB() {
             setShowDropdown((prev) => !prev);
           }}
         >
-          <span className='text-md text-gray-600'>로그인</span>
+          <span className='text-md text-gray-600 dark:text-gray-300'>
+            {data?.nickname || '로그인'}
+          </span>
           <Image src={'/assets/icons/login-profile.svg'} alt='logo' width={40} height={40} />
           {showDropdown && (
             <div className='absolute top-[calc(100%+8px)] right-0'>
               <DropdownMenu
                 isOpen={showDropdown}
-                items={[
-                  {
-                    type: 'profile',
-                    label: '프로필',
-                    onClick: () => {},
-                  },
-                  {
-                    type: 'wishlist',
-                    label: '찜목록',
-                    onClick: () => {},
-                  },
-                  {
-                    type: 'noti',
-                    label: '알림',
-                    onClick: () => {},
-                  },
-                  {
-                    type: 'theme',
-                    label: '다크모드',
-                    onClick: () => {},
-                  },
-                  {
-                    type: 'login',
-                    label: '로그인',
-                    onClick: () => {},
-                  },
-                ]}
+                items={data ? dropdownItemsForLoggedIn : dropdownItemsForLoggedOut}
                 triggerLabel='내 계정'
                 selectedValue={''}
               />

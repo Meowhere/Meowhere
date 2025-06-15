@@ -76,7 +76,7 @@ export default function PriceFilter({
                 (selectedMaxPrice >= (i + 1) * (maxPrice / GAP_OF_PRICE) ||
                   selectedMaxPrice === maxPrice)
                   ? 'bg-primary-300'
-                  : 'bg-gray-200'
+                  : 'bg-gray-200 dark:bg-gray-600'
               }`}
               initial={{ height: 0 }}
               animate={{
@@ -92,15 +92,15 @@ export default function PriceFilter({
 
       {/* 슬라이더 */}
       <div className='relative w-full h-[4px]'>
-        <div className='relative w-[calc(100%-16px)] h-full m-auto bg-gray-200'>
+        <div className='relative w-[calc(100%-16px)] h-full m-auto bg-gray-200 dark:bg-gray-600'>
           <div
-            className='w-[24px] h-[24px] bg-white shadow-xl z-10 border border-gray-200 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
+            className='w-[24px] h-[24px] bg-white dark:bg-gray-200 shadow-xl z-10 border border-gray-200 dark:border-gray-500 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
             style={{
               left: `${sliderThumbMin}%`,
             }}
           />
           <div
-            className='w-[24px] h-[24px] bg-white shadow-xl z-10 border border-gray-200 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
+            className='w-[24px] h-[24px] bg-white dark:bg-gray-200 shadow-xl z-10 border border-gray-200 dark:border-gray-500 rounded-full absolute top-0 translate-x-[-50%] translate-y-[-50%]'
             style={{
               left: `${sliderThumbMax}%`,
             }}
@@ -118,7 +118,7 @@ export default function PriceFilter({
           min={minPrice}
           max={maxPrice}
           value={selectedMinPrice}
-          className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb z-20'
+          className='w-full h-[4px] bg-gray-200 dark:bg-gray-600 rounded-[2px] absolute top-0 left-0 slider-thumb z-20'
           onChange={(e) => {
             Number(e.target.value) < selectedMaxPrice &&
               setSelectedMinPrice(Number(e.target.value));
@@ -129,7 +129,7 @@ export default function PriceFilter({
           min={minPrice}
           max={maxPrice}
           value={selectedMaxPrice}
-          className='w-full h-[4px] bg-gray-200 rounded-[2px] absolute top-0 left-0 slider-thumb z-20'
+          className='w-full h-[4px] bg-gray-200 dark:bg-gray-600 rounded-[2px] absolute top-0 left-0 slider-thumb z-20'
           onChange={(e) => {
             Number(e.target.value) > selectedMinPrice &&
               setSelectedMaxPrice(Number(e.target.value));
@@ -138,7 +138,7 @@ export default function PriceFilter({
       </div>
 
       {/* 가격 범위 */}
-      <div className='grid grid-cols-3 justify-between items-center w-full text-sm text-gray-500'>
+      <div className='grid grid-cols-3 justify-between items-center w-full text-sm text-gray-500 dark:text-gray-400'>
         <span className='text-left'>{selectedMinPrice.toLocaleString()}원</span>
         <span className='text-center'>~</span>
         <span className='text-right'>{selectedMaxPrice.toLocaleString()}원</span>

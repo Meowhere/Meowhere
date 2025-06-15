@@ -134,13 +134,13 @@ export default function MyInfoPage() {
   if (isLoading)
     return (
       <div className='flex justify-center items-center h-[400px]'>
-        <p className='text-gray-600'>사용자 정보를 불러오는 중...</p>
+        <p className='text-gray-600 dark:text-gray-400'>사용자 정보를 불러오는 중...</p>
       </div>
     );
   if (isError || !user)
     return (
       <div className='flex justify-center items-center h-[400px]'>
-        <p className='text-red-600'>사용자 정보를 불러올 수 없습니다.</p>
+        <p className='text-red-600 dark:text-red-400'>사용자 정보를 불러올 수 없습니다.</p>
       </div>
     );
 
@@ -150,7 +150,7 @@ export default function MyInfoPage() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className='flex flex-col gap-[16px]'>
-        <p className='text-xl font-semibold text-gray-800 '>닉네임 변경</p>
+        <p className='text-xl font-semibold text-gray-800 dark:text-gray-200'>닉네임 변경</p>
         <Input
           label='닉네임'
           type='text'
@@ -162,7 +162,7 @@ export default function MyInfoPage() {
       </div>
 
       <div className='flex flex-col gap-[16px]'>
-        <p className='text-xl font-semibold text-gray-800'>비밀번호 변경</p>
+        <p className='text-xl font-semibold text-gray-800 dark:text-gray-200'>비밀번호 변경</p>
         <div>
           <Input
             label='비밀번호'

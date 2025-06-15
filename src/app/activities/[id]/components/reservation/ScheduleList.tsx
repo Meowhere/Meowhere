@@ -24,7 +24,9 @@ export default function ScheduleList({
   return (
     <div className='flex flex-col gap-[16px]'>
       <div className='flex items-center justify-between'>
-        <p className='text-[2.2rem] font-semibold text-gray-800 mt-[16px]'>체험 날짜</p>
+        <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200 mt-[16px]'>
+          체험 날짜
+        </p>
         <CalendarButton
           onClick={() => {
             console.log('캘린더 버튼 클릭됨');
@@ -34,7 +36,7 @@ export default function ScheduleList({
       </div>
       {Object.entries(groupedByDate).map(([date, timeSlots]) => (
         <div key={date}>
-          <p className='mb-[12px] text-lg font-semibold text-gray-800'>
+          <p className='mb-[12px] text-lg font-semibold text-gray-800 dark:text-gray-200'>
             {formatScheduleDate(date)}
           </p>
           <div className='flex flex-col gap-[12px]'>

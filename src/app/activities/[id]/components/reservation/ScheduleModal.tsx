@@ -78,7 +78,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
     <>
       <div className='flex max-h-[80vh] flex-col gap-[24px] overflow-y-scroll scrollbar-hide p-[12px] pb-[120px]'>
         <div className='flex flex-col gap-[24px]'>
-          <p className='text-[2.2rem] font-semibold text-gray-800'>인원</p>
+          <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>인원</p>
           <div className='flex items-center justify-between'>
             <span>{count}명</span>
             <CounterButton
@@ -99,17 +99,17 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
         />
       </div>
 
-      <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white border-t border-gray-100 z-50'>
+      <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 z-50'>
         <div className='flex items-center justify-between w-full gap-[12px]'>
           <div className='flex flex-col gap-[4px] min-w-0'>
-            <p className='text-sm font-regular text-gray-500 truncate'>
+            <p className='text-sm font-regular text-gray-500 dark:text-gray-400 truncate'>
               {selectedSchedule
                 ? `${format(new Date(selectedSchedule.date + 'T00:00:00+09:00'), 'M월 d일', {
                     locale: ko,
                   })}, ${count}명`
                 : '날짜, 인원 수'}
             </p>
-            <p className='text-[2rem] font-semibold text-gray-800 truncate'>
+            <p className='text-[2rem] font-semibold text-gray-800 dark:text-gray-200 truncate'>
               {(price * count).toLocaleString()}원
             </p>
           </div>
