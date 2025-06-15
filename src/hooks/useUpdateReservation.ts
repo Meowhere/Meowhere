@@ -20,7 +20,7 @@ export function useUpdateReservation(activityId: number, scheduleId?: number) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['reservationsByTime', scheduleId, status],
+        queryKey: ['reservationsByTime', scheduleId],
       });
     },
   });
