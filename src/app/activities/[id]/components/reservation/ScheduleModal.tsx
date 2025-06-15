@@ -7,11 +7,11 @@ import CounterButton from '../common/CounterButton';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useModal } from '@/src/hooks/useModal';
-import { useRouter } from 'next/navigation';
 import ScheduleTimeList from './ScheduleTimeList';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
 import { BASE_API_URL } from '@/src/constants/api';
+import { useToastStore } from '@/src/store/toastStore';
 
 export interface ScheduleModalProps {
   price: number;
@@ -27,7 +27,7 @@ export default function ScheduleModal({ price, schedules, activityId }: Schedule
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const { openConfirmModal, ConfirmModal } = useConfirmModal();
   const { closeModal } = useModal();
-  const router = useRouter();
+  const { showToast } = useToastStore();
 
   const availableDates = useMemo(() => {
     return schedules.map((schedule) => format(parseISO(schedule.date), 'yyyy-MM-dd'));
@@ -62,11 +62,12 @@ export default function ScheduleModal({ price, schedules, activityId }: Schedule
         onConfirm: () => {
           console.log('예약 데이터:', reservationData);
           closeModal();
-          // router.push('/my-reservations');
+          showToast('success', '체험 등록이 완료되었습니다');
         },
       });
     } catch (error) {
-      alert('예약 중 오류가 발생했습니다.');
+      closeModal();
+      showToast('error', '체험 등록에 실패했습니다');
     }
   };
 

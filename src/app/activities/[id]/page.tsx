@@ -1,18 +1,22 @@
-import { BASE_URL } from '@/src/constants/api';
-import { cookies } from 'next/headers';
 import { fetchFromServer } from '@/src/lib/fetch/fetchFromServer';
 import ExperienceResponsiveLayout from './components/ExperienceResponsiveLayout';
 import { Activity } from '@/src/types/activity.types';
 
+// viewport metadata
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 interface Props {
-  params: { id: string };
+  params: Promise<{ id?: string }>;
 }
 
 export default async function ExperienceDetailPage({ params }: Props) {
-  const activityId = Number(params.id);
-  const cookieStore = await cookies();
+  const resolvedParams = await params;
+  const activityId = Number(resolvedParams.id);
 
-  // 체험 상세 데이터 호출
+  // 체험 상세 정보 가져오기
   const getActivityById = async (id: number): Promise<Activity> => {
     const res = await fetchFromServer(`/activities/${id}`);
     return res.json();
@@ -20,35 +24,25 @@ export default async function ExperienceDetailPage({ params }: Props) {
 
   const activity = await getActivityById(activityId);
 
-  // 체험 스케줄 데이터 호출
+  // 스케줄 정보 가져오기
   const getSchedule = async (id: number) => {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
 
-    const res = await fetch(
-      `${BASE_URL}/api/activities/${id}/available-schedule?year=${year}&month=${month}`,
-      {
-        method: 'GET',
-        headers: {
-          Cookie: cookieStore.toString(),
-        },
-      }
+    const res = await fetchFromServer(
+      `/activities/${id}/available-schedule?year=${year}&month=${month}`
     );
 
     return res.json();
   };
 
   const scheduleData = await getSchedule(activityId);
-  const schedules = Array.isArray(scheduleData) ? scheduleData : (scheduleData.schedules ?? []);
+  const schedules = Array.isArray(scheduleData) ? scheduleData : (scheduleData?.schedules ?? []);
 
+  // 리뷰 정보 가져오기
   const getReviews = async (id: number) => {
-    const res = await fetch(`${BASE_URL}/api/activities/${id}/reviews`, {
-      method: 'GET',
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
-    });
+    const res = await fetchFromServer(`/activities/${id}/reviews`);
     return res.json();
   };
 
