@@ -24,14 +24,8 @@ export default function DropdownItem({
   `;
 
   const handleItemClick = () => {
-    if (onClick) {
-      // onClick이 존재할 때만 실행
-      onClick();
-    }
-    if (onClose) {
-      // onClose가 존재할 때만 실행
-      onClose();
-    }
+    onClick();
+    onClose();
   };
 
   return (

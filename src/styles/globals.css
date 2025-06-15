@@ -8,7 +8,7 @@ html {
 }
 
 html.dark {
-  background-color: #1d1a17; /* black color from tailwind config */
+  background-color: #1d1a17;
 }
 
 body {
@@ -17,47 +17,43 @@ body {
 }
 
 body.dark {
-  background-color: #1d1a17; /* black color from tailwind config */
+  background-color: #1d1a17;
 }
 
-/* 스크롤바 스타일링 */
-/* Webkit 브라우저 (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent; /* 스크롤바 배경 투명 */
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d2cdc9; /* 라이트모드 스크롤바 색상 (gray-300) */
+  background: #d2cdc9; /* gray-300 */
   border-radius: 9999px; /* rounded-full */
   border: none;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #b3a8a1; /* 라이트모드 호버 색상 (gray-400) */
+  background: #b3a8a1; /* gray-400 */
 }
 
-/* 다크모드 스크롤바 */
 .dark ::-webkit-scrollbar-thumb {
-  background: #514942; /* 다크모드 스크롤바 색상 (gray-700) */
+  background: #514942; /* gray-700 */
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #6e625a; /* 다크모드 호버 색상 (gray-600) */
+  background: #6e625a; /* gray-600 */
 }
 
-/* Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: #d2cdc9 transparent; /* thumb track */
+  scrollbar-color: #d2cdc9 transparent;
 }
 
 html.dark {
-  scrollbar-color: #514942 transparent; /* 다크모드 thumb track */
+  scrollbar-color: #514942 transparent;
 }
 
 *,
