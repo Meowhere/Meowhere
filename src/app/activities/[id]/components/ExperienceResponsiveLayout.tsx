@@ -10,12 +10,12 @@ import SectionTitle from './common/SectionTitle';
 import ExperienceLocationMap from './experience/ExperienceLocationMap';
 import ExperienceDescription from './experience/ExperienceDescription';
 import ReviewSection from './review/ReviewSection';
-import ScheduleSidebar from './reservation/ScheduleSidebar';
-import ScheduleModal from './reservation/ScheduleModal';
 import { useGnb } from '@/src/hooks/useGnb';
 import HeartButton from '@/src/components/common/buttons/HeartButton';
 import { Activity } from '@/src/types/activity.types';
 import { Schedule } from '@/src/types/schedule.types';
+import ScheduleSidebar from './reservation/ScheduleSidebar';
+import { useModal } from '@/src/hooks/useModal';
 
 interface Props {
   activity: Activity;
@@ -25,6 +25,7 @@ interface Props {
 export default function ExperienceResponsiveLayout({ activity, schedules }: Props) {
   const { isDesktop } = useBreakpoint();
   const router = useRouter();
+  const { openScheduleModal } = useModal();
 
   useGnb({
     title: activity.title,
@@ -43,11 +44,10 @@ export default function ExperienceResponsiveLayout({ activity, schedules }: Prop
   if (isDesktop) {
     return (
       <div className='flex max-w-[1200px] mx-auto gap-[48px] items-start'>
-        {/* 왼쪽 열 */}
         <div className='w-[960px] flex flex-col gap-[40px]'>
           <ExperienceImageViewer
             bannerImageUrl={activity.bannerImageUrl}
-            subImages={activity.subImages}
+            subImages={activity.subImages ?? []}
           />
 
           <Divider />
@@ -73,7 +73,6 @@ export default function ExperienceResponsiveLayout({ activity, schedules }: Prop
           </div>
         </div>
 
-        {/* 오른쪽 열 */}
         <div className='w-1/2 relative pt-[180px]'>
           <div className='mb-[48px]'>
             <ExperienceSummarySection
@@ -139,8 +138,10 @@ export default function ExperienceResponsiveLayout({ activity, schedules }: Prop
         />
       </div>
 
-      <ReservationBox pricePerPerson={activity.price} />
-      <ScheduleModal price={activity.price} schedules={schedules} />
+      <ReservationBox
+        pricePerPerson={activity.price}
+        onClick={() => openScheduleModal({ price: activity.price, schedules })}
+      />
     </>
   );
 }

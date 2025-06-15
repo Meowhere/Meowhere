@@ -2,40 +2,21 @@
 
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import ReservationMobileFooter from './ReservationMobileFooter';
-import { useModal } from '@/src/hooks/useModal';
-import { dummySchedule } from '../../data/dummySchedule';
 
 interface ReservationBoxProps {
   pricePerPerson: number;
+  onClick?: () => void;
 }
 
-export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) {
+export default function ReservationBox({ pricePerPerson, onClick }: ReservationBoxProps) {
   const { isMobile, isTablet, isDesktop, hasMounted } = useBreakpoint();
-  const { openScheduleModal } = useModal();
 
   if (!hasMounted) return null;
 
-  const handleOpenDateModal = () => {
-    openScheduleModal({
-      price: dummySchedule.price,
-      schedules: dummySchedule.schedules,
-    });
-  };
-
   return (
     <>
-      {isMobile && (
-        <ReservationMobileFooter
-          pricePerPerson={pricePerPerson}
-          onClickDateSelect={handleOpenDateModal}
-        />
-      )}
-
-      {isTablet && (
-        <ReservationMobileFooter
-          pricePerPerson={pricePerPerson}
-          onClickDateSelect={handleOpenDateModal}
-        />
+      {(isMobile || isTablet) && (
+        <ReservationMobileFooter pricePerPerson={pricePerPerson} onClickDateSelect={onClick} />
       )}
 
       {isDesktop && (
@@ -49,8 +30,8 @@ export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) 
             </p>
 
             <button
-              onClick={handleOpenDateModal}
-              className='bg-orange-500 text-white px-[20px] py-[10px] rounded-full text-[14px] font-semibold hover:bg-orange-600 transition'
+              onClick={onClick}
+              className='bg-primary-300 text-white px-[20px] py-[10px] rounded-full text-md font-semibold'
             >
               일정 선택
             </button>
