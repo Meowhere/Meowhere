@@ -1,4 +1,4 @@
-import RegisterCategory from '@/src/app/profile/my-activities/register/components/RegisterCategory';
+import RegisterCategory from '@/src/app/profile/my-activities/register/components/register-form/RegisterCategory';
 
 export default function RegisterCategoryPage() {
   return (

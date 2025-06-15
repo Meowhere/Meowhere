@@ -1,10 +1,10 @@
 'use client';
-import UploadImg from './components/UploadImg';
-import UploadImgList from './components/UploadImgList';
+import UploadImg from './components/register-form/UploadImg';
+import UploadImgList from './components/register-form/UploadImgList';
 import { useGnb } from '@/src/hooks/useGnb';
 // import { useGnbStore } from '@/src/store/gnbStore';
 import { useRouter } from 'next/navigation';
-import RegisterForm from './components/RegisterForm';
+import RegisterForm from './components/register-form/RegisterForm';
 import RegisterCalendar from './components/register-calendar/RegisterCalendar';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import BaseButton from '@/src/components/common/buttons/BaseButton';

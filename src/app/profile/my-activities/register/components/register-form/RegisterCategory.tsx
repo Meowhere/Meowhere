@@ -29,7 +29,7 @@ export default function RegisterCategory() {
         label='카테고리'
         text={selected}
         isOpen={open}
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen((prev) => !prev)}
       />
       {open && (
         <DropdownMenu

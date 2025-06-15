@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 import Input from '@/src/components/common/inputs/Input';
 import Textarea from '@/src/components/common/inputs/Textarea';
-import Category from './Category';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import PostAddress from './PostAddress';
 import { useState } from 'react';
+import RegisterCategory from './RegisterCategory';
 
 const formSchema = z.object({
   title: z.string().min(3, '3자 이상 입력하세요.'),
@@ -48,7 +48,7 @@ export default function RegisterForm() {
         watchValue={titleValue}
         required
       />
-      <Category />
+      <RegisterCategory />
       <Input
         label='가격'
         type='text'

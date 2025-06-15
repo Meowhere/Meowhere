@@ -2,7 +2,7 @@ import { useState } from 'react';
 import RegisterCalendarItem from './RegisterCalendarItem';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
-import Sort from '../Sort';
+import Sort from '../register-form/Sort';
 
 const generateId = () => `${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
 interface CalendarItem {
