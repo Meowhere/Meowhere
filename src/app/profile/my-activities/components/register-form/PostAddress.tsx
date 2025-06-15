@@ -6,7 +6,7 @@ interface PostAddressProps {
   label?: string;
   name?: string;
   value?: string;
-  // onChange?: (value: string, data?: DaumPostcodeData) => void;
+  onChange?: (value: string, data?: DaumPostcodeData) => void;
   error?: string;
   required?: boolean;
   disabled?: boolean;
@@ -17,8 +17,8 @@ interface PostAddressProps {
 export default function PostAddress({
   label = '주소',
   name = 'address',
-  // value = '',
-  // onChange,
+  value = '',
+  onChange,
   error,
   required = true,
   disabled = false,
@@ -27,7 +27,7 @@ export default function PostAddress({
 }: PostAddressProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const shouldFloat = isFocused || !!inputRef.current?.value;
+  const shouldFloat = isFocused || !!value;
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !window.daum) {
@@ -47,8 +47,7 @@ export default function PostAddress({
     ) {
       new window.daum.Postcode({
         oncomplete: function (data: DaumPostcodeData) {
-          // if (onChange) onChange(data.roadAddress, data);
-          if (inputRef.current) inputRef.current.value = data.roadAddress;
+          onChange?.(data.roadAddress);
         },
       }).open();
     } else {
@@ -91,7 +90,8 @@ export default function PostAddress({
             ref={inputRef}
             id={name}
             name={name}
-            type='text'
+            // type='text'
+            value={value}
             className={clsx(
               'w-full bg-transparent border-none focus:outline-none text-md font-regular pt-2',
               shouldFloat ? 'pt-[20px]' : '',
@@ -99,12 +99,10 @@ export default function PostAddress({
               disabled && 'cursor-not-allowed text-gray-400'
             )}
             placeholder={placeholder}
-            // value={value}
             disabled={disabled}
             readOnly
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            // autoComplete='off'
           />
         </div>
         {error && <div className='text-xs text-red-400 mt-1 ml-2'>{error}</div>}

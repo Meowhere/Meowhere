@@ -36,7 +36,7 @@ export default function RegisterExperienceForm({
       </div>
       <div className='flex flex-col gap-[20px]'>
         <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
-        {/* <RegisterForm defaultValues={defaultValues} /> */}
+        <RegisterForm defaultValues={defaultValues} />
       </div>
       <RegisterCalendar defaultSchedules={defaultValues?.schedules} />
       {isDesktop && (
