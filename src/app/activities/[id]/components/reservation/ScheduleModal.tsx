@@ -27,10 +27,8 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
   const { closeModal } = useModal();
   const router = useRouter();
 
-  // const formatted = format(parseISO(schedule.date), 'M월 d일', { locale: ko });
-
   const availableDates = useMemo(() => {
-    return schedules.map((schedule) => format(new Date(schedule.date), 'yyyy-MM-dd'));
+    return schedules.map((schedule) => format(parseISO(schedule.date), 'yyyy-MM-dd'));
   }, [schedules]);
 
   const handleReserve = async () => {
@@ -40,7 +38,6 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
     }
 
     try {
-      // API 요청 데이터 준비
       const reservationData = {
         scheduleId: selectedSchedule.id,
         date: selectedSchedule.date,
@@ -48,29 +45,24 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
         totalPrice: price * count,
       };
 
-      // TODO: API 연동 시 아래 주석을 해제하고 사용
+      // TODO: API 연동 시 아래 주석 해제
       /*
       const response = await fetch('/api/reservations', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reservationData),
       });
 
-      if (!response.ok) {
-        throw new Error('예약 처리 중 오류가 발생했습니다.');
-      }
+      if (!response.ok) throw new Error('예약 처리 중 오류가 발생했습니다.');
       */
 
       openConfirmModal({
         message: '예약이 완료되었습니다.',
         confirmText: '확인',
         onConfirm: () => {
-          // TODO: API 연동 시 아래 주석을 해제하고 사용
-          // router.push('/reservations');
           console.log('예약 데이터:', reservationData);
           closeModal();
+          // router.push('/reservations');
         },
       });
     } catch (error) {
@@ -78,12 +70,18 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
     }
   };
 
+  const formattedSummary = selectedSchedule
+    ? `${format(parseISO(selectedSchedule.date), 'M월 d일', { locale: ko })}, ${count}명`
+    : '날짜, 인원 수';
+
+  const formattedPrice = (price * count).toLocaleString();
+
   return (
     <>
-      <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide'>
+      <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide pb-[120px]'>
         {/* 인원 선택 */}
         <div className='flex flex-col gap-[24px] mb-[24px]'>
-          <p className='text-[2.2rem] font-semibold text-gray-800'>인원</p>
+          <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>인원</p>
           <div className='flex items-center justify-between'>
             <span>{count}명</span>
             <CounterButton
@@ -112,28 +110,26 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
           onSelect={setSelectedSchedule}
           price={price}
         />
+      </div>
 
-        {/* 예약 요약 + 버튼 */}
-        <div className='mt-auto pt-[20px]'>
-          <div className='flex items-center justify-between w-full gap-[12px]'>
-            <div className='flex flex-col gap-[4px] min-w-0'>
-              <p className='text-sm font-regular text-gray-500 truncate'>
-                {selectedSchedule
-                  ? `${format(parseISO(selectedSchedule.date), 'M월 d일', { locale: ko })}, ${count}명`
-                  : '날짜, 인원 수'}
-              </p>
-              <p className='text-[2rem] font-semibold text-gray-800 truncate'>
-                {(price * count).toLocaleString()}원
-              </p>
-            </div>
-            <BaseButton
-              className='max-w-[175px] h-[42px] rounded-[10px]'
-              onClick={handleReserve}
-              disabled={!selectedSchedule}
-            >
-              예약하기
-            </BaseButton>
+      {/* 예약 요약 + 예약 버튼 */}
+      <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 z-50'>
+        <div className='flex items-center justify-between w-full gap-[12px]'>
+          <div className='flex flex-col gap-[4px] min-w-0'>
+            <p className='text-sm font-regular text-gray-500 dark:text-gray-400 truncate'>
+              {formattedSummary}
+            </p>
+            <p className='text-[2rem] font-semibold text-gray-800 dark:text-gray-200 truncate'>
+              {formattedPrice}원
+            </p>
           </div>
+          <BaseButton
+            className='w-[128px] h-[42px] rounded-[10px]'
+            onClick={handleReserve}
+            disabled={!selectedSchedule}
+          >
+            예약하기
+          </BaseButton>
         </div>
       </div>
 

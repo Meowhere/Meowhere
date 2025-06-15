@@ -4,10 +4,56 @@
 
 html {
   font-size: 62.5%;
+  background-color: white;
+}
+
+html.dark {
+  background-color: #1d1a17;
 }
 
 body {
   font-family: 'Pretendard', sans-serif;
+  background-color: white;
+}
+
+body.dark {
+  background-color: #1d1a17;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d2cdc9; /* gray-300 */
+  border-radius: 9999px; /* rounded-full */
+  border: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b3a8a1; /* gray-400 */
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #514942; /* gray-700 */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6e625a; /* gray-600 */
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #d2cdc9 transparent;
+}
+
+html.dark {
+  scrollbar-color: #514942 transparent;
 }
 
 *,
@@ -54,6 +100,32 @@ textarea {
 .swiper .swiper-pagination-bullet {
   background-color: white !important;
   margin: 0 2px !important;
+}
+
+.transition-soft {
+  transition: all 0.2s cubic-bezier(0, 0.2, 0.8, 1);
+}
+
+.transition-hard {
+  transition: all 0.2s cubic-bezier(0, 1, 0, 1);
+}
+
+.shimmer {
+  animation: shimmer 1.8s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
 }
 
 .sidebar-container {

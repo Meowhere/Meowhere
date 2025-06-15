@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import '@/src/styles/globals.css';
 import localFont from 'next/font/local';
 import ClientLayout from './client-layout';
-import ModalProvider from '@/src/components/providers/ModalProvider';
+import ModalProvider from '@/src/providers/ModalProvider';
 import Toast from '../components/common/toast/Toast';
 
 export const metadata: Metadata = {
@@ -30,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ko' className={pretendard.className}>
-      <body>
+    <html lang='ko' className={`${pretendard.className} bg-white dark:bg-black`}>
+      <body className='bg-white dark:bg-black'>
         <ClientLayout>
           {children}
           <ModalProvider />

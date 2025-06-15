@@ -1,14 +1,21 @@
 import React from 'react';
+import { usePathname } from 'next/navigation';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import DesktopGNB from './desktop/DesktopGNB';
 import SubPageGNB from './components/SubPageGNB';
 import MainPageGNB from './components/MainPageGNB';
-import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { isDesktop } = useBreakpoint();
 
-  if (pathname === '/') {
-    return <MainPageGNB />;
+  if (isDesktop) {
+    return <DesktopGNB />;
   } else {
-    return <SubPageGNB />;
+    if (pathname === '/') {
+      return <MainPageGNB />;
+    } else {
+      return <SubPageGNB />;
+    }
   }
 }

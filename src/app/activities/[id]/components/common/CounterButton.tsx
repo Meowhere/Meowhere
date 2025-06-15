@@ -29,20 +29,26 @@ export default function CounterButton({
         className='disabled:cursor-not-allowed'
       >
         <MinusIcon
-          className={isMinusDisabled ? 'text-gray-300' : 'text-gray-600'}
+          className={
+            isMinusDisabled
+              ? 'text-gray-300 dark:text-gray-600'
+              : 'text-gray-600 dark:text-gray-400'
+          }
           width={18}
           height={18}
           fill='currentColor'
         />
       </button>
-      <span className='text-gray-800 text-md font-regular'>{count}</span>
+      <span className='text-gray-800 dark:text-gray-200 text-md font-regular'>{count}</span>
       <button
         onClick={onIncrease}
         disabled={isPlusDisabled}
         className='disabled:cursor-not-allowed'
       >
         <PlusIcon
-          className={isPlusDisabled ? 'text-gray-300' : 'text-gray-600'}
+          className={
+            isPlusDisabled ? 'text-gray-300 dark:text-gray-600' : 'text-gray-600 dark:text-gray-400'
+          }
           width={18}
           height={18}
           fill='currentColor'

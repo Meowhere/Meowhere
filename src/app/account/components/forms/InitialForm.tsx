@@ -1,7 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
-import Input from '../inputs/Input';
-import BaseButton from '../buttons/BaseButton';
-import KakaoLoginButton from '../buttons/KakaoLoginButton';
+import Input from '@/src/components/common/inputs/Input';
+import BaseButton from '@/src/components/common/buttons/BaseButton';
+import KakaoLoginButton from '@/src/components/common/buttons/KakaoLoginButton';
 import { checkEmailExistence } from '@/src/utils/checkEmailExistence';
 import { useKakaoLogin } from '@/src/hooks/auth/useAuth';
 import {
@@ -9,7 +9,7 @@ import {
   InitialFormValues,
   LoginFormValues,
   SignUpFormValues,
-} from '../modals/AuthModal';
+} from '@/src/components/common/modals/AuthModal';
 
 interface InitialFormProps {
   setMode: React.Dispatch<React.SetStateAction<AuthMode>>;
