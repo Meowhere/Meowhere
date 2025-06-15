@@ -5,7 +5,7 @@ import BaseButton from '@/src/components/common/buttons/BaseButton';
 
 interface ReservationMobileFooterProps {
   pricePerPerson: number;
-  onClickDateSelect: () => void;
+  onClickDateSelect?: () => void;
 }
 
 export default function ReservationMobileFooter({

@@ -7,20 +7,17 @@ import clsx from 'clsx';
 
 interface ScheduleTimeItemProps {
   schedule: Schedule;
-  date?: string;
   isSelected: boolean;
-  onSelect: (id: number, date: string) => void;
+  onSelect: (schedule: Schedule) => void;
 }
 
 export default function ScheduleTimeItem({
   schedule,
-  date,
   isSelected,
   onSelect,
 }: ScheduleTimeItemProps) {
-  const { id, startTime = '', endTime = '' } = schedule;
+  const { id, date, startTime = '', endTime = '' } = schedule;
 
-  // date가 없으면 렌더링하지 않음
   if (!date) return null;
 
   const safeDate = date.replaceAll('-', '');
@@ -42,9 +39,8 @@ export default function ScheduleTimeItem({
     <div>
       <button
         type='button'
-        id={inputId}
         name='schedule-selection'
-        onClick={() => onSelect(id, date)}
+        onClick={() => onSelect(schedule)}
         className={clsx(
           'w-full text-left rounded-[10px] border p-[14px] transition-all duration-200',
           isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200',

@@ -1,17 +1,29 @@
 import Link from 'next/link';
 import Logo from '@/public/assets/icons/logo/ico-logo.svg';
 import Typography from '@/public/assets/icons/logo/ico-typography.svg';
+import { useModal } from '@/src/hooks/useModal';
 
 export default function Footer() {
+  const { openPrivacyPolicyModal, closeModal } = useModal();
+
+  const handlePrivacyPolicy = () => {
+    openPrivacyPolicyModal({
+      onConfirm: () => {
+        console.log('취소됨');
+        closeModal();
+      },
+    });
+  };
+
   return (
     <footer
       className={
-        'lg:h-[540px] h-[556px] w-full flex flex-col items-center justify-start bg-[#F5F2EC] text-gray-500 overflow-hidden text-xs text-center'
+        'lg:h-[540px] h-[556px] w-full flex flex-col items-center justify-start bg-[#F5F2EC] dark:bg-gray-900 text-gray-500 dark:text-gray-400 overflow-hidden text-xs text-center'
       }
     >
       <div
         className={
-          'lg:h-[48px] h-[36px] w-full bg-white rounded-bl-[100px] rounded-br-[100px] shadow-[0px_4px_48px_0px_rgba(0,0,0,0.10)]'
+          'lg:h-[48px] h-[36px] w-full bg-white dark:bg-black rounded-bl-[100px] rounded-br-[100px] shadow-[0px_4px_48px_0px_rgba(0,0,0,0.10)]'
         }
       />
       <Logo className='lg:mt-[112px] mt-[80px] w-[78px] h-[114px]' aria-label='어디가냥 로고' />
@@ -23,14 +35,17 @@ export default function Footer() {
       <a
         href='https://github.com/Meowhere/Meowhere'
         target='_blank'
-        className='mt-[48px] underline text-gray-400'
+        className='mt-[48px] underline text-gray-400 dark:text-gray-500'
         rel='noreferrer noopener'
       >
         Github
       </a>
-      <Link href='/privacy-policy' className='underline mt-[8px] text-gray-400'>
+      <span
+        onClick={handlePrivacyPolicy}
+        className='underline mt-[8px] text-gray-400 dark:text-gray-500 cursor-pointer'
+      >
         개인정보처리방침
-      </Link>
+      </span>
     </footer>
   );
 }

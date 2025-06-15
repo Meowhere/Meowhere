@@ -21,8 +21,7 @@ export function useReservationModal(activityId: number, date: Date) {
 
   const { mutate: updateReservation } = useUpdateReservation(
     activityId,
-    selectedSchedule?.scheduleId,
-    reservationStatus
+    selectedSchedule?.scheduleId
   );
 
   // 예약 상태 종류 버튼을 클릭했을 때 실행되는 함수

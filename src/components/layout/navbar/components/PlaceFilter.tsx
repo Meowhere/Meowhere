@@ -3,6 +3,7 @@ import FilterSection from './FilterSection';
 import { useURLQuery } from '@/src/hooks/useURLQuery';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 export default function PlaceFilter({
   openedSearchSection,
@@ -10,25 +11,29 @@ export default function PlaceFilter({
   placeKeyword,
   setPlaceKeyword,
   filteredPlaces,
+  className,
+  ...rest
 }: {
-  openedSearchSection: 'place' | 'price';
-  setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price'>>;
+  openedSearchSection: 'place' | 'price' | 'keyword' | '';
+  setOpenedSearchSection: React.Dispatch<React.SetStateAction<'place' | 'price' | 'keyword' | ''>>;
   placeKeyword: string;
   setPlaceKeyword: React.Dispatch<React.SetStateAction<string>>;
   filteredPlaces: [string, number][];
+  className?: string;
 }) {
   const { removeQuery } = useURLQuery();
   const searchParams = useSearchParams();
   const address = searchParams.get('address');
+  const { isDesktop } = useBreakpoint();
 
   useEffect(() => {
     if (address) setPlaceKeyword(address);
-  }, []);
+  }, [address]);
 
   return (
     <FilterSection
       title='지역'
-      isOpen={openedSearchSection === 'place'}
+      isOpen={isDesktop ? true : openedSearchSection === 'place'}
       onClick={() => setOpenedSearchSection('place')}
       value={placeKeyword}
       handleReset={() => {
@@ -36,11 +41,12 @@ export default function PlaceFilter({
         setPlaceKeyword('');
         setOpenedSearchSection('price');
       }}
-      className='h-full'
+      className={`h-full ${className}`}
+      {...rest}
     >
       <Input
         label='어디로 갈까요?'
-        className='w-full h-[42px] text-md font-medium rounded-[10px]'
+        className='lg:hidden w-full h-[42px] text-md font-medium rounded-[10px]'
         type='text'
         value={placeKeyword}
         onChange={(e) => setPlaceKeyword(e.target.value)}
@@ -49,15 +55,15 @@ export default function PlaceFilter({
         {filteredPlaces.map(([place, count]) => (
           <li
             key={place}
-            className='min-h-[48px] flex justify-between items-center w-full px-[4px] cursor-pointer'
+            className='min-h-[48px] flex justify-between items-center w-full px-[4px] cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-[8px]'
             onClick={(e) => {
               e.stopPropagation();
               setPlaceKeyword(place);
               setOpenedSearchSection('price');
             }}
           >
-            <span className='text-sm text-gray-700 font-medium'>{place}</span>
-            <span className='text-xs text-gray-500'>{count}개의 체험</span>
+            <span className='text-sm text-gray-700 dark:text-gray-300 font-medium'>{place}</span>
+            <span className='text-xs text-gray-500 dark:text-gray-400'>{count}개의 체험</span>
           </li>
         ))}
       </ul>

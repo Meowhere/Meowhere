@@ -1,4 +1,4 @@
-import { CheckboxProps } from '@/src/types/form.types';
+import { CheckboxProps } from '@/src/types/input.types';
 import CheckIcon from '../icons/CheckIcon';
 import CheckedIcon from '../icons/CheckedIcon';
 

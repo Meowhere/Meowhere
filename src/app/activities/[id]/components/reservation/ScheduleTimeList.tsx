@@ -30,8 +30,7 @@ export default function ScheduleTimeList({
           key={schedule.id}
           schedule={schedule}
           isSelected={selectedScheduleId === schedule.id}
-          onSelect={(id, date) => onSelect(schedule)}
-          date={selectedDateStr}
+          onSelect={onSelect}
         />
       ))}
     </div>

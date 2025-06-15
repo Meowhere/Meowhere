@@ -26,7 +26,6 @@ export default function ExperienceLocationMap({ address }: ExperienceLocationMap
     }
   }, [address]);
 
-  // Kakao Map API 스크립트를 동적으로 로드하는 함수
   const loadKakaoMapScript = () => {
     if (document.querySelector(`script[src*="dapi.kakao.com"]`)) return;
 
@@ -39,7 +38,6 @@ export default function ExperienceLocationMap({ address }: ExperienceLocationMap
     document.head.appendChild(script);
   };
 
-  // 실제 지도를 생성하는 함수
   const createMap = () => {
     const container = mapRef.current;
     if (!container || !window.kakao?.maps?.services) return;
@@ -47,13 +45,18 @@ export default function ExperienceLocationMap({ address }: ExperienceLocationMap
     const places = new window.kakao.maps.services.Places();
 
     places.keywordSearch(address, (data: KakaoPlace, status: KakaoStatus) => {
-      if (status !== 'OK' || data.length === 0) {
-        console.error('검색 실패:', address);
-        return;
-      }
+      let coords;
+      let placeName;
 
-      const place = data[0];
-      const coords = new window.kakao.maps.LatLng(place.y, place.x);
+      if (status === 'OK' && data.length > 0) {
+        const place = data[0];
+        coords = new window.kakao.maps.LatLng(place.y, place.x);
+        placeName = place.place_name;
+      } else {
+        console.warn(`주소 검색 실패: "${address}". 기본 위치로 대체합니다.`);
+        coords = new window.kakao.maps.LatLng(37.501274, 127.028104);
+        placeName = '위워크 역삼점';
+      }
 
       const map = new window.kakao.maps.Map(container, {
         center: coords,
@@ -64,9 +67,7 @@ export default function ExperienceLocationMap({ address }: ExperienceLocationMap
         map.relayout();
       }, 0);
 
-      const overlayHTML = ReactDOMServer.renderToString(
-        <OverlayContent placeName={place.place_name} />
-      );
+      const overlayHTML = ReactDOMServer.renderToString(<OverlayContent placeName={placeName} />);
 
       const overlayContent = document.createElement('div');
       overlayContent.innerHTML = overlayHTML;

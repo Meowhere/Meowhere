@@ -2,25 +2,28 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 
-export function useUpdateReservation(activityId: number, scheduleId?: number, status?: string) {
+export function usePostReview() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
       reservationId,
-      status,
+      rating,
+      content,
     }: {
       reservationId: number;
-      status: 'confirmed' | 'declined';
+      rating: number;
+      content: string;
     }) => {
-      return await fetchFromClient(`/my-activities/${activityId}/reservations/${reservationId}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status }),
+      return await fetchFromClient(`/my-reservations/${reservationId}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating, content }),
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['reservationsByTime', scheduleId, status],
+        queryKey: ['myReservations'],
       });
     },
   });

@@ -57,7 +57,7 @@ export default function ExperienceImageViewer({
     return () => {
       if (isOpen) resetGnb();
     };
-  }, [isOpen]);
+  }, []);
 
   return (
     <>

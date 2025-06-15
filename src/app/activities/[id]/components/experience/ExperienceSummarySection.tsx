@@ -21,11 +21,9 @@ export default function ExperienceSummarySection({
   const { isDesktop } = useBreakpoint();
 
   return (
-    <section
-      className={`p-4 max-w-4xl mx-auto flex flex-col ${isDesktop ? 'text-left' : 'text-center'}`}
-    >
+    <section className={`p-4 flex flex-col ${isDesktop ? 'text-left' : 'text-center'}`}>
       <div className='flex flex-col'>
-        <span className='text-[1.4rem] font-medium text-gray-600 mb-[12px]'>{category}</span>
+        <span className='text-md font-medium text-gray-600 mb-[12px]'>{category}</span>
 
         <h2 className='text-2xl font-bold mb-[16px]'>{title}</h2>
 

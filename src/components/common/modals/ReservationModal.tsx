@@ -55,7 +55,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
             className={`py-[10px] px-[14px] font-semibold text-[1.3rem] leading-[1.2rem] rounded-[20px] ${
               status === reservationStatus
                 ? 'bg-primary-300 text-white'
-                : 'border border-gray-200 text-gray-600'
+                : 'border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400'
             }`}
             onClick={() => handleReservationStatus(status)}
             key={status}
@@ -66,7 +66,9 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       </section>
       <section className='mt-[24px]'>
         <div>
-          <p className='text-[22px] font-semibold text-gray-800'>{formatDateDot(date, false)}</p>
+          <p className='text-[22px] font-semibold text-gray-800 dark:text-gray-200'>
+            {formatDateDot(date, false)}
+          </p>
         </div>
         <div className='mt-[20px]'>
           <Dropdown

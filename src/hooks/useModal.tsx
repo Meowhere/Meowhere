@@ -8,6 +8,8 @@ import ReviewListModal from '../app/activities/[id]/components/review/ReviewList
 import { ReviewListModalProps } from '../app/activities/[id]/components/review/ReviewListModal';
 import ScheduleModal from '../app/activities/[id]/components/reservation/ScheduleModal';
 import { ScheduleModalProps } from '../app/activities/[id]/components/reservation/ScheduleModal';
+import NotificationModal from '../app/_components/NotificationModal';
+import PrivacyPolicyModal from '../components/layout/navbar/components/PrivacyPolicyModal';
 
 export const useModal = () => {
   const { openModal, closeModal } = useModalStore();
@@ -65,6 +67,20 @@ export const useModal = () => {
     });
   };
 
+  const openNotificationModal = (props: any) => {
+    openModal({
+      header: '알림',
+      children: <NotificationModal {...props} />,
+    });
+  };
+
+  const openPrivacyPolicyModal = (props: any) => {
+    openModal({
+      header: '개인정보 처리방침',
+      children: <PrivacyPolicyModal {...props} />,
+    });
+  };
+
   const openBottomSheetModal = (props: Omit<ModalProps, 'type'>) => {
     openModal({
       ...props,
@@ -81,5 +97,7 @@ export const useModal = () => {
     openReviewListModal,
     openBottomSheetModal,
     openReservationModal,
+    openNotificationModal,
+    openPrivacyPolicyModal,
   };
 };

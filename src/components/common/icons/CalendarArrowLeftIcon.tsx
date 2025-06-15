@@ -5,7 +5,6 @@ import CalendarArrowLeftSvg from '@/public/assets/icons/calendar/ico-carendar-ar
 
 interface CalendarArrowLeftIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
-  className?: string;
 }
 
 export default function CalendarArrowLeftIcon({

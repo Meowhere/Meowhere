@@ -1,22 +1,50 @@
 import Image from 'next/image';
+import { CustomDatePicker, CustomTimePicker } from './DateTimePicker';
 
 interface RegisterCalendarItemProps {
+  id: string;
+  date: string;
+  startTime: string;
+  endTime: string;
   onDelete: () => void;
+  onChange: (id: string, field: 'date' | 'startTime' | 'endTime', value: string) => void;
 }
 
-export default function RegisterCalendarItem({ onDelete }: RegisterCalendarItemProps) {
+export default function RegisterCalendarItem({
+  id,
+  date,
+  startTime,
+  endTime,
+  onDelete,
+  onChange,
+}: RegisterCalendarItemProps) {
   return (
-    <div className='grid grid-cols-5 w-full items-center px-[18px] py-[12px] border border-gray-200 rounded-[10px]'>
-      <div className='flex justify-center col-span-2'>
-        <p className='text-md font-regular text-gray-800'>2025/05/27</p>
+    <div className='grid grid-cols-[2fr_auto_2fr_1fr] md:grid-cols-6 w-full items-center px-[18px] py-[12px] border border-gray-200 rounded-[10px]'>
+      <div className='flex justify-center md:justify-end md:col-span-2'>
+        <CustomDatePicker
+          value={date}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange(id, 'date', e.target.value)
+          }
+        />
       </div>
       <div className='flex justify-center'>
         <p className='justify-center text-md font-regular text-gray-400'>|</p>
       </div>
-      <div className='flex justify-center gap-[20px] lg:gap-[34px]'>
-        <p className='text-md font-regular text-gray-800'>10:24</p>
+      <div className='flex justify-center md:justify-start md:col-span-2 gap-[4px] sm:gap-[20px] lg:gap-[34px] min-w-[128px]'>
+        <CustomTimePicker
+          value={startTime}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange(id, 'startTime', e.target.value)
+          }
+        />
         <span className='text-md font-regular text-gray-400'>~</span>
-        <p className='text-md font-regular text-gray-800'>10:24</p>
+        <CustomTimePicker
+          value={endTime}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange(id, 'endTime', e.target.value)
+          }
+        />
       </div>
       <div className='flex justify-end'>
         <Image
