@@ -4,8 +4,9 @@ import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Sort from '../Sort';
 
+const generateId = () => `${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
 interface CalendarItem {
-  id: number;
+  id: string;
   date: string;
   startTime: string;
   endTime: string;
@@ -14,21 +15,20 @@ interface CalendarItem {
 export default function RegisterCalendar() {
   const { isDesktop } = useBreakpoint();
   const [items, setItems] = useState<CalendarItem[]>([
-    { id: 0, date: '', startTime: '', endTime: '' },
+    { id: generateId(), date: '', startTime: '', endTime: '' },
   ]);
   const [nextId, setNextId] = useState(1);
   const [sortKey, setSortKey] = useState<'registered' | 'latest' | 'oldest'>('registered');
 
   const handleAddItem = () => {
-    setItems((prev) => [...prev, { id: nextId, date: '', startTime: '', endTime: '' }]);
-    setNextId((prev) => prev + 1);
+    setItems((prev) => [...prev, { id: generateId(), date: '', startTime: '', endTime: '' }]);
   };
 
-  const handleDeleteItem = (id: number) => {
+  const handleDeleteItem = (id: string) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
   };
   // 하위 아이템의 값이 바뀔 때 업데이트
-  const handleItemChange = (id: number, field: 'date' | 'startTime' | 'endTime', value: string) => {
+  const handleItemChange = (id: string, field: 'date' | 'startTime' | 'endTime', value: string) => {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
   };
 

@@ -5,7 +5,7 @@ import ProfileMenuItem from './ProfileMenuItem';
 export default function Sidebar() {
   const { isDesktop } = useBreakpoint();
   return (
-    <div className='flex flex-col gap-[48px] mx-[24px] mt-[48px] mb-[48px]'>
+    <div className='flex flex-col gap-[48px] mx-[24px] my-[48px]'>
       {!isDesktop && (
         <header className='flex'>
           <h1 className='text-3xl font-semibold text-gray-800'>프로필</h1>

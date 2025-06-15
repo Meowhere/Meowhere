@@ -2,12 +2,12 @@ import Image from 'next/image';
 import { CustomDatePicker, CustomTimePicker } from './DateTimePicker';
 
 interface RegisterCalendarItemProps {
-  id: number;
+  id: string;
   date: string;
   startTime: string;
   endTime: string;
   onDelete: () => void;
-  onChange: (id: number, field: 'date' | 'startTime' | 'endTime', value: string) => void;
+  onChange: (id: string, field: 'date' | 'startTime' | 'endTime', value: string) => void;
 }
 
 export default function RegisterCalendarItem({
@@ -31,7 +31,7 @@ export default function RegisterCalendarItem({
       <div className='flex justify-center'>
         <p className='justify-center text-md font-regular text-gray-400'>|</p>
       </div>
-      <div className='flex justify-center md:justify-start md:col-span-2 gap-[4px] sm:gap-[20px] lg:gap-[34px] min-[128px]'>
+      <div className='flex justify-center md:justify-start md:col-span-2 gap-[4px] sm:gap-[20px] lg:gap-[34px] min-w-[128px]'>
         <CustomTimePicker
           value={startTime}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

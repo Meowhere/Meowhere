@@ -8,9 +8,13 @@ interface SortIconProps extends SVGProps<SVGAElement> {
   className?: string;
 }
 export function SortIcon({ className = '', size = 24, ...props }: SortIconProps) {
-  return <FilterSvg fill='currentColor' className={className} width={size} height={size} />;
+  return (
+    <FilterSvg fill='currentColor' className={className} width={size} height={size} {...props} />
+  );
 }
 
 export function SortedIcon({ className = '', size = 24, ...props }: SortIconProps) {
-  return <FilteredSvg fill='currentColor' className={className} width={size} height={size} />;
+  return (
+    <FilteredSvg fill='currentColor' className={className} width={size} height={size} {...props} />
+  );
 }

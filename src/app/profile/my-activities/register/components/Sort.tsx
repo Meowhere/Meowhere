@@ -67,19 +67,17 @@ export default function Sort({ onSortChange }: SortProps) {
         {filtered ? <SortedIcon /> : <SortIcon />}
       </button>
       {open && (
-        <div>
-          <div className='absolute right-0 top-[32px] z-10'>
-            <DropdownMenu
-              items={dropdownItems}
-              bottomSheetTitle='날짜 정렬'
-              onClose={() => setOpen(false)}
-              bottomButton={{
-                label: '취소',
-                onClick: () => setOpen(false),
-              }}
-              isMobile={!isDesktop}
-            />
-          </div>
+        <div className='absolute right-0 top-[32px] z-10'>
+          <DropdownMenu
+            items={dropdownItems}
+            bottomSheetTitle='날짜 정렬'
+            onClose={() => setOpen(false)}
+            bottomButton={{
+              label: '취소',
+              onClick: () => setOpen(false),
+            }}
+            isMobile={!isDesktop}
+          />
         </div>
       )}
     </div>

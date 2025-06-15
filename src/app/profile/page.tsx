@@ -8,11 +8,10 @@ export default function Profile() {
   const { isDesktop } = useBreakpoint();
   const router = useRouter();
 
-  useEffect(() => {
-    if (isDesktop) {
-      router.replace('/profile/my-info');
-    }
-  }, [isDesktop, router]);
+  if (typeof window !== 'undefined' && isDesktop) {
+    router.replace('/profile/my-info');
+    return null;
+  }
 
   return <Sidebar />;
 }
