@@ -128,25 +128,6 @@ export default function CreateReviewModal({
           watchValue={watch('content')}
           error={errors.content}
         />
-
-<<<<<<< HEAD
-      {/* Textarea 수정 이후 반영 예정 */}
-      <textarea
-        placeholder='후기를 작성해주세요'
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        className='w-full h-[143px] px-[20px] py-[12px] text-md font-regular text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 border border-red-500 dark:border-red-400 rounded-[10px] resize-none placeholder:text-gray-500 dark:placeholder:text-gray-400'
-      />
-
-      <div className='flex flex-col gap-[8px] pt-[32px]'>
-        <BaseButton onClick={handleConfirm} className='h-[48px] text-md'>
-          작성하기
-        </BaseButton>
-        <BaseButton variant='outline' onClick={closeModal} className='h-[48px] text-md'>
-          취소하기
-        </BaseButton>
-      </div>
-=======
         <div className='flex flex-col gap-[8px] pt-[32px]'>
           <BaseButton type='submit' className='h-[48px] text-md' disabled={!isValid}>
             작성하기
@@ -156,7 +137,6 @@ export default function CreateReviewModal({
           </BaseButton>
         </div>
       </form>
->>>>>>> develop
     </div>
   );
 }
