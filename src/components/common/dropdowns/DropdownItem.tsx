@@ -1,5 +1,3 @@
-import { DropdownItemProps } from '@/src/types/dropdown-item.types';
-
 export default function DropdownItem({
   label,
   isMobile = false,
@@ -49,4 +47,13 @@ export default function DropdownItem({
       </button>
     </div>
   );
+}
+
+interface DropdownItemProps {
+  label: string;
+  isMobile?: boolean;
+  isDanger?: boolean;
+  disabled?: boolean;
+  onClick: () => void;
+  onClose: () => void;
 }

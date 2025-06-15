@@ -21,11 +21,10 @@ export interface ModalState {
 }
 
 export interface CreateReviewModalProps {
-  header?: string;
+  reservationId: number;
   title: string;
   schedule: Schedule;
   headCount: number;
   price: number;
-  rating: number;
-  onConfirm: () => void;
+  header?: string;
 }

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchFromClient } from '../lib/fetch/fetchFromClient';
-import { ModalReservationStatus, Reservation } from '../types/reservation-modal.types';
+import { ModalReservationStatus, Reservation } from '../types/reservation.types';
 
 export function useReservationsByTime(
   activityId: number,

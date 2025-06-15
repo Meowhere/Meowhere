@@ -4,7 +4,7 @@ import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useReservationModal } from '@/src/hooks/useReservationModal';
 import { formatDateDot } from '@/src/utils/date-format';
 import { MODAL_RESERVATION_STATUS_MAP } from '@/src/constants/reservation-modal';
-import { ModalReservationStatus, ReservationModalProps } from '@/src/types/reservation-modal.types';
+import { ModalReservationStatus } from '@/src/types/reservation.types';
 
 import Dropdown from '../dropdowns/Dropdown';
 import MyReservationsModalCard from '@/src/app/profile/my-reservations/components/MyReservationsModalCard';
@@ -67,7 +67,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       <section className='mt-[24px]'>
         <div>
           <p className='text-[22px] font-semibold text-gray-800 dark:text-gray-200'>
-            {formatDateDot(date)}
+            {formatDateDot(date, false)}
           </p>
         </div>
         <div className='mt-[20px]'>
@@ -97,4 +97,9 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       <ConfirmModal />
     </div>
   );
+}
+
+export interface ReservationModalProps {
+  activityId: number;
+  date: Date;
 }
