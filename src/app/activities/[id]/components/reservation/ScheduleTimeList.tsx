@@ -1,11 +1,11 @@
 'use client';
 
-import { Schedule } from '@/src/types/schedule.types';
+import { Schedule, ScheduleWithTimes } from '@/src/types/schedule.types';
 import ScheduleTimeItem from './ScheduleTimeItem';
 import { format } from 'date-fns';
 
 interface ScheduleTimeListProps {
-  schedules: Schedule[];
+  schedules: ScheduleWithTimes[];
   selectedDate: Date | null;
   selectedScheduleId: number | null;
   onSelect: (schedule: Schedule) => void;
@@ -25,15 +25,17 @@ export default function ScheduleTimeList({
 
   return (
     <div className='flex flex-col gap-[12px]'>
-      {filtered.map((schedule) => (
-        <ScheduleTimeItem
-          key={schedule.id}
-          schedule={schedule}
-          isSelected={selectedScheduleId === schedule.id}
-          onSelect={(id, date) => onSelect(schedule)}
-          date={selectedDateStr}
-        />
-      ))}
+      {filtered.flatMap((schedule) =>
+        schedule.times.map((time) => (
+          <ScheduleTimeItem
+            key={`${schedule.date}-${time.id}`}
+            schedule={{ ...time, date: schedule.date }}
+            isSelected={selectedScheduleId === time.id}
+            onSelect={(id, date) => onSelect({ ...time, date })}
+            date={schedule.date}
+          />
+        ))
+      )}
     </div>
   );
 }

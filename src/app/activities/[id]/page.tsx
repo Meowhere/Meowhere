@@ -22,7 +22,7 @@ export default async function ExperienceDetailPage({ params }: Props) {
   const getSchedule = async (id: number) => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = today.getMonth() + 1;
+    const month = String(today.getMonth() + 1).padStart(2, '0');
 
     const res = await fetch(
       `${BASE_URL}/api/activities/${id}/available-schedule?year=${year}&month=${month}`,

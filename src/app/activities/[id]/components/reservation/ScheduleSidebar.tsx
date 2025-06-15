@@ -4,12 +4,12 @@ import { useState, useMemo } from 'react';
 import { format } from 'date-fns';
 import ReservationBox from '../reservation/ReservationBox';
 import ScheduleTimeList from './ScheduleTimeList';
-import { Schedule } from '@/src/types/schedule.types';
+import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
 
 interface ScheduleSidebarProps {
   price: number;
-  schedules: Schedule[];
+  schedules: ScheduleWithTimes[];
 }
 
 export default function ScheduleSidebar({ price, schedules }: ScheduleSidebarProps) {

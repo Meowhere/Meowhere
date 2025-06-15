@@ -9,15 +9,16 @@ import { useConfirmModal } from '@/src/hooks/useConfirmModal';
 import { useModal } from '@/src/hooks/useModal';
 import { useRouter } from 'next/navigation';
 import ScheduleTimeList from './ScheduleTimeList';
-import { Schedule } from '@/src/types/schedule.types';
+import { Schedule, ScheduleWithTimes } from '@/src/types/schedule.types';
 import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
 
 export interface ScheduleModalProps {
   price: number;
-  schedules: Schedule[];
+  schedules: ScheduleWithTimes[];
 }
 
 export default function ScheduleModal({ price, schedules }: ScheduleModalProps) {
+  console.log(schedules);
   const [count, setCount] = useState(1);
   const [selectedSchedule, setSelectedSchedule] = useState<{ id: number; date: string } | null>(
     null
@@ -115,7 +116,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
       {/* 예약 요약 + 예약 버튼 */}
       <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 z-50'>
         <div className='flex items-center justify-between w-full gap-[12px]'>
-          <div className='flex flex-col gap-[4px] min-w-0'>
+          <div className='flex flex-col gap-[4px]'>
             <p className='text-sm font-regular text-gray-500 dark:text-gray-400 truncate'>
               {formattedSummary}
             </p>
@@ -124,7 +125,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
             </p>
           </div>
           <BaseButton
-            className='w-[128px] h-[42px] rounded-[10px]'
+            className='max-w-[128px] w-[128px] h-[42px] rounded-[10px]'
             onClick={handleReserve}
             disabled={!selectedSchedule}
           >
