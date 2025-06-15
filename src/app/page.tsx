@@ -2,6 +2,8 @@ import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 import { Activity, Category } from '../types/activity.types';
 import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
 import ActivityList from './_components/ActivityList';
+import DesktopSearchFilters from '../components/layout/navbar/desktop/DesktopSearchFilters';
+import DesktopCategorySection from '../components/layout/navbar/desktop/DesktopCategorySection';
 
 export default async function Home({
   searchParams: searchParamsPromise,
@@ -39,10 +41,12 @@ export default async function Home({
   );
 
   return (
-    <>
+    <div className='min-h-screen'>
       <PopularActivitiesBanner />
+      <DesktopSearchFilters isForPage />
+      <DesktopCategorySection />
       <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
-    </>
+    </div>
   );
 }
 
