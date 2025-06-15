@@ -3,6 +3,7 @@
 import { Activity } from '@/src/types/activity.types';
 import { useKakaoShare } from '@/src/hooks/useKakaoShare';
 import ShareIcon from '../icons/ShareIcon';
+import { BASE_URL } from '@/src/constants/api';
 
 interface KebabButtonProps {
   activity: Activity;
@@ -18,8 +19,10 @@ export default function KakaoShareButton({
 }: KebabButtonProps) {
   const { shareToKakao, isKakaoLoaded, isLoading } = useKakaoShare();
 
+  const currentUrl = `${BASE_URL}/activities/${activity.id}`;
+
   const handleShare = () => {
-    shareToKakao({ activity });
+    shareToKakao({ activity, currentUrl });
   };
 
   if (!isKakaoLoaded) return null;

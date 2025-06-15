@@ -69,7 +69,7 @@ export const useKakaoShare = () => {
 
       try {
         const shareUrl = currentUrl || window.location.href;
-        const description = `${activity.category} | ${activity.description}`;
+        const description = `${activity.description}`;
 
         window.Kakao.Share.sendDefault({
           objectType: 'feed',
@@ -83,7 +83,7 @@ export const useKakaoShare = () => {
             },
           },
           itemContent: {
-            profileText: '액티비티 예약',
+            profileText: activity.title,
             profileImageUrl: activity.bannerImageUrl,
             titleImageUrl: activity.bannerImageUrl,
             titleImageText: activity.category,
