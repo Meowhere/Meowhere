@@ -5,7 +5,7 @@ import { useKakaoShare } from '@/src/hooks/useKakaoShare';
 import ShareIcon from '../icons/ShareIcon';
 import { BASE_URL } from '@/src/constants/api';
 
-interface KebabButtonProps {
+interface KakaoShareButtonProps {
   activity: Activity;
   className?: string;
   size?: number;
@@ -16,7 +16,7 @@ export default function KakaoShareButton({
   className,
   size = 16,
   ...rest
-}: KebabButtonProps) {
+}: KakaoShareButtonProps) {
   const { shareToKakao, isKakaoLoaded, isLoading } = useKakaoShare();
 
   const currentUrl = `${BASE_URL}/activities/${activity.id}`;
