@@ -11,7 +11,7 @@ export interface Activity {
   rating: number;
   reviewCount: number;
   userId: number;
-  subImageUrls: SubImage[];
+  subImages: SubImage[];
   schedules: Schedule[];
   createdAt: string;
   updatedAt: string;

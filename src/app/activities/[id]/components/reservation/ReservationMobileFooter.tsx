@@ -31,7 +31,9 @@ export default function ReservationMobileFooter({
         `}
       >
         <p className='text-lg font-semibold px-[24px] text-gray-800'>
-          ₩ {pricePerPerson.toLocaleString()} <span>/ 인</span>
+          {typeof pricePerPerson === 'number'
+            ? `₩ ${pricePerPerson.toLocaleString()} / 인`
+            : '가격 정보 없음'}
         </p>
         <div className='ml-auto'>
           <BaseButton

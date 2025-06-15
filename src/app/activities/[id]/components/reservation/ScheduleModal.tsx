@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 import ScheduleTimeList from './ScheduleTimeList';
 import { Schedule } from '@/src/types/schedule.types';
 import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 export interface ScheduleModalProps {
   price: number;
@@ -19,6 +18,7 @@ export interface ScheduleModalProps {
 }
 
 export default function ScheduleModal({ price, schedules }: ScheduleModalProps) {
+  console.log('🔍 받은 schedule 데이터:', schedules);
   const [count, setCount] = useState(1);
   const [selectedSchedule, setSelectedSchedule] = useState<{ id: number; date: string } | null>(
     null
@@ -27,8 +27,6 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
   const { openConfirmModal, ConfirmModal } = useConfirmModal();
   const { closeModal } = useModal();
   const router = useRouter();
-
-  const { isDesktop } = useBreakpoint();
 
   const availableDates = useMemo(() => {
     return schedules.map((schedule) => format(new Date(schedule.date), 'yyyy-MM-dd'));
