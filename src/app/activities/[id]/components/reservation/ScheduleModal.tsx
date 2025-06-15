@@ -1,6 +1,6 @@
 'use client';
 
-import { format } from 'date-fns';
+import { parseISO, format } from 'date-fns';
 import { ko } from 'date-fns/locale/ko';
 import { useState, useMemo } from 'react';
 import CounterButton from '../common/CounterButton';
@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 import ScheduleTimeList from './ScheduleTimeList';
 import { Schedule } from '@/src/types/schedule.types';
 import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 export interface ScheduleModalProps {
   price: number;
@@ -28,7 +27,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
   const { closeModal } = useModal();
   const router = useRouter();
 
-  const { isDesktop } = useBreakpoint();
+  // const formatted = format(parseISO(schedule.date), 'M월 d일', { locale: ko });
 
   const availableDates = useMemo(() => {
     return schedules.map((schedule) => format(new Date(schedule.date), 'yyyy-MM-dd'));
@@ -120,9 +119,7 @@ export default function ScheduleModal({ price, schedules }: ScheduleModalProps) 
             <div className='flex flex-col gap-[4px] min-w-0'>
               <p className='text-sm font-regular text-gray-500 truncate'>
                 {selectedSchedule
-                  ? `${format(new Date(selectedSchedule.date + 'T00:00:00+09:00'), 'M월 d일', {
-                      locale: ko,
-                    })}, ${count}명`
+                  ? `${format(parseISO(selectedSchedule.date), 'M월 d일', { locale: ko })}, ${count}명`
                   : '날짜, 인원 수'}
               </p>
               <p className='text-[2rem] font-semibold text-gray-800 truncate'>

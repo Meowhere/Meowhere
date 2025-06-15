@@ -10,11 +10,13 @@ import SectionTitle from './common/SectionTitle';
 import ExperienceLocationMap from './experience/ExperienceLocationMap';
 import ExperienceDescription from './experience/ExperienceDescription';
 import ReviewSection from './review/ReviewSection';
-import { dummyReviews } from './../data/dummyReviews';
-import ScheduleSidebar from './reservation/ScheduleSidebar';
-import { dummySchedule } from './../data/dummySchedule';
 import { useGnb } from '@/src/hooks/useGnb';
 import HeartButton from '@/src/components/common/buttons/HeartButton';
+import { Activity } from '@/src/types/activity.types';
+import { Schedule } from '@/src/types/schedule.types';
+import ScheduleSidebar from './reservation/ScheduleSidebar';
+import { dummyReviews } from '../data/dummyReviews';
+import { dummySchedule } from '../data/dummySchedule';
 
 const dummyExperience = {
   id: 7,
@@ -57,9 +59,9 @@ export default function ExperienceResponsiveLayout() {
 
   if (isDesktop) {
     return (
-      <div className='flex max-w-[1200px] mx-auto gap-[48px] items-start'>
+      <div className='flex max-w-[1200px] mx-auto gap-[48px] items-start px-4'>
         {/* 왼쪽 열 */}
-        <div className='w-[960px] flex flex-col gap-[40px]'>
+        <div className='flex-1 flex flex-col gap-[40px]'>
           <ExperienceImageViewer
             bannerImageUrl={dummyExperience.bannerImageUrl}
             subImages={dummyExperience.subImages}
@@ -95,8 +97,7 @@ export default function ExperienceResponsiveLayout() {
         </div>
 
         {/* 오른쪽 열 */}
-        <div className='w-1/2 relative pt-[180px]'>
-          {/* 상단 고정 영역 */}
+        <div className='w-[400px] shrink-0 pt-[180px]'>
           <div className='mb-[48px]'>
             <ExperienceSummarySection
               category={dummyExperience.category}
@@ -113,7 +114,7 @@ export default function ExperienceResponsiveLayout() {
             <ReservationBox pricePerPerson={dummyExperience.price} />
           </div>
 
-          <div className='sticky top-[200px] self-start w-[400px]'>
+          <div className='sticky top-[200px]'>
             <ScheduleSidebar price={dummyExperience.price} schedules={dummySchedule.schedules} />
           </div>
         </div>

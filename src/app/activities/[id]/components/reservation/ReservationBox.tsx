@@ -24,14 +24,7 @@ export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) 
 
   return (
     <>
-      {isMobile && (
-        <ReservationMobileFooter
-          pricePerPerson={pricePerPerson}
-          onClickDateSelect={handleOpenDateModal}
-        />
-      )}
-
-      {isTablet && (
+      {(isMobile || isTablet) && (
         <ReservationMobileFooter
           pricePerPerson={pricePerPerson}
           onClickDateSelect={handleOpenDateModal}
@@ -47,7 +40,7 @@ export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) 
             </p>
             <button
               onClick={handleOpenDateModal}
-              className='bg-orange-500 text-white px-[20px] py-[10px] rounded-full text-[14px] font-semibold hover:bg-orange-600 transition'
+              className='bg-primary-300 text-white px-[20px] py-[10px] rounded-full text-md font-semibold'
             >
               일정 선택
             </button>
