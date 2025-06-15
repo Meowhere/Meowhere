@@ -23,7 +23,6 @@ export const useKakaoShare = () => {
   useEffect(() => {
     const initKakao = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
-        // 실제 카카오 앱 키로 교체 필요
         window.Kakao.init(`${KAKAO_APP_KEY}`);
         setIsKakaoLoaded(true);
       } else if (window.Kakao && window.Kakao.isInitialized()) {
