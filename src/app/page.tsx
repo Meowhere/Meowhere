@@ -1,9 +1,19 @@
-import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 import { Activity, Category } from '../types/activity.types';
 import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
 import ActivityList from './_components/ActivityList';
 import DesktopSearchFilters from '../components/layout/navbar/desktop/DesktopSearchFilters';
 import DesktopCategorySection from '../components/layout/navbar/desktop/DesktopCategorySection';
+
+export async function generateStaticParams() {
+  const categories: Category[] = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
+
+  return [
+    {},
+    ...categories.map((category) => ({
+      category,
+    })),
+  ];
+}
 
 export default async function Home({
   searchParams: searchParamsPromise,
@@ -27,17 +37,22 @@ export default async function Home({
     ...(keyword && { keyword }),
   });
 
-  // const activitiesResponse = await fetchFromClient(`/activities?${params.toString()}`);
+  const fetchOptions: RequestInit = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  if (!keyword) {
+    fetchOptions.next = {
+      revalidate: 300,
+      tags: [`activities-${category || 'all'}`],
+    };
+  }
+
   const activitiesResponse = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_API_URL}/activities?${params.toString()}`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      next: {
-        revalidate: 300,
-      },
-    }
+    fetchOptions
   );
 
   if (!activitiesResponse.ok) {

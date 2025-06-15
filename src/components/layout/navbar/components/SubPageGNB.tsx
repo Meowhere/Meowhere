@@ -19,7 +19,9 @@ export default function SubPageGNB() {
           </div>
         )}
         <div className='flex flex-col justify-center items-center flex-1 gap-[4px]'>
-          <span className='text-md leading-none text-gray-800 dark:text-gray-200'>{title}</span>
+          <span className='text-md leading-none text-gray-800 dark:text-gray-200  text-ellipsis overflow-hidden whitespace-nowrap max-w-[280px]'>
+            {title}
+          </span>
           {subtitle && (
             <span className='text-xs leading-none text-gray-500 dark:text-gray-400'>
               {subtitle}
