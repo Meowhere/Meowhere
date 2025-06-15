@@ -16,6 +16,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   const showFooter = isDesktop || !pathname.startsWith('/profile');
   const showBNB = !isDesktop && !pathname.startsWith('/activities');
+  const showNavbar = pathname !== '/profile';
 
   const getGNBHeight = () => {
     if (pathname === '/') {
@@ -28,7 +29,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <ReactQueryProvider>
       <ThemeProvider>
         <div className={`${preventBodyScroll ? 'overflow-hidden' : ''} h-screen `}>
-          <Navbar />
+          {showNavbar && <Navbar />}
           <main className={getGNBHeight()}>{children}</main>
 
           {showBNB && <BNB />}
