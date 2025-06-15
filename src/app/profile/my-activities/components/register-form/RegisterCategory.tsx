@@ -24,7 +24,7 @@ export default function RegisterCategory() {
   }));
 
   return (
-    <div>
+    <div className='relative'>
       <DropdownTrigger
         label='카테고리'
         text={selected}
@@ -32,16 +32,18 @@ export default function RegisterCategory() {
         onClick={() => setOpen((prev) => !prev)}
       />
       {open && (
-        <DropdownMenu
-          items={items}
-          bottomSheetTitle='카테고리 선택'
-          isMobile={!isDesktop}
-          bottomButton={{
-            label: '취소',
-            onClick: () => setOpen(false),
-          }}
-          onClose={() => setOpen(false)}
-        />
+        <div className='absolute w-full top-[70px] z-10'>
+          <DropdownMenu
+            items={items}
+            bottomSheetTitle='카테고리 선택'
+            isMobile={!isDesktop}
+            onClose={() => setOpen(false)}
+            bottomButton={{
+              label: '취소',
+              onClick: () => setOpen(false),
+            }}
+          />
+        </div>
       )}
     </div>
   );

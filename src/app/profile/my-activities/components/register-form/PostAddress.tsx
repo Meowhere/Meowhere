@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import clsx from 'clsx';
-import type { DaumPostcodeData } from '../../../../../../types/my-activities.types';
+import type { DaumPostcodeData } from '@/src/types/my-activities.types';
 
 interface PostAddressProps {
   label?: string;
