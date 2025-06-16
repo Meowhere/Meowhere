@@ -25,8 +25,6 @@ export default function ScheduleSidebar({ price, schedules }: ScheduleSidebarPro
   return (
     <aside className='w-full max-w-[380px] bg-white shadow-xl rounded-[16px] border border-gray-200 px-[24px] py-[24px]'>
       <div className='flex flex-col gap-[24px]'>
-        <ReservationBox pricePerPerson={price} />
-
         {/* 날짜 선택 */}
         <div className='flex flex-col gap-[16px]'>
           <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>

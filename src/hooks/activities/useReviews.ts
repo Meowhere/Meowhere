@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 
-export function useReviews(id: number) {
+export function useReviews(activityId: number) {
   return useQuery({
-    queryKey: ['reviews', id],
+    queryKey: ['reviews', activityId],
     queryFn: async () => {
-      const res = await fetchFromClient(`/activities/${id}/reviews`);
+      const res = await fetchFromClient(`/activities/${activityId}/reviews`);
       const data = await res.json();
       return {
         reviews: Array.isArray(data.reviews) ? data.reviews : [],
@@ -15,6 +15,6 @@ export function useReviews(id: number) {
         },
       };
     },
-    enabled: !!id,
+    enabled: !!activityId,
   });
 }

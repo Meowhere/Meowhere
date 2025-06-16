@@ -11,6 +11,7 @@ import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 import { useToastStore } from '@/src/store/toastStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 export interface ScheduleModalProps {
   price: number;
@@ -27,13 +28,18 @@ export default function ScheduleModal({ price, schedules, activityId }: Schedule
   const { closeModal } = useModal();
   const { showToast } = useToastStore();
 
+  const queryClient = useQueryClient();
+
   const availableDates = useMemo(() => {
     return schedules.map((schedule) => format(parseISO(schedule.date), 'yyyy-MM-dd'));
   }, [schedules]);
 
   const handleReserve = async () => {
     if (!selectedSchedule) {
-      showToast('error', '예약할 날짜를 선택해주세요.');
+      closeModal();
+      setTimeout(() => {
+        showToast('error', '예약할 날짜를 선택해주세요.');
+      }, 100);
       return;
     }
 
@@ -51,11 +57,22 @@ export default function ScheduleModal({ price, schedules, activityId }: Schedule
         },
       });
 
+      queryClient.invalidateQueries({ queryKey: ['schedule', activityId] });
+
       closeModal();
-      showToast('success', '예약이 완료되었습니다');
-    } catch (error) {
+      setTimeout(() => {
+        showToast('success', '체험 등록이 완료되었습니다');
+      }, 100);
+    } catch (error: any) {
+      const errorMessage =
+        typeof error?.message === 'string' && error.message.includes('이미 예약한 일정입니다')
+          ? '이미 예약한 일정이에요.'
+          : '체험 등록에 실패했습니다';
+
       closeModal();
-      showToast('error', '체험 등록에 실패했습니다');
+      setTimeout(() => {
+        showToast('error', errorMessage);
+      }, 100);
     }
   };
 
@@ -68,39 +85,37 @@ export default function ScheduleModal({ price, schedules, activityId }: Schedule
   return (
     <>
       <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide pb-[120px]'>
-        <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide pb-[120px]'>
-          {/* 인원 선택 */}
-          <div className='flex flex-col gap-[24px] mb-[24px]'>
-            <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>인원</p>
-            <div className='flex items-center justify-between'>
-              <span>{count}명</span>
-              <CounterButton
-                count={count}
-                onIncrease={() => setCount((prev) => Math.min(prev + 1, 10))}
-                onDecrease={() => setCount((prev) => Math.max(prev - 1, 1))}
-                min={1}
-                max={10}
-              />
-            </div>
+        {/* 인원 선택 */}
+        <div className='flex flex-col gap-[24px] mb-[24px]'>
+          <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>인원</p>
+          <div className='flex items-center justify-between'>
+            <span>{count}명</span>
+            <CounterButton
+              count={count}
+              onIncrease={() => setCount((prev) => Math.min(prev + 1, 10))}
+              onDecrease={() => setCount((prev) => Math.max(prev - 1, 1))}
+              min={1}
+              max={10}
+            />
           </div>
-
-          {/* 날짜 선택 */}
-          <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>
-          <ReservationCalendarPicker
-            selectedDate={selectedDate}
-            onChange={setSelectedDate}
-            availableDates={availableDates}
-          />
-
-          {/* 시간 선택 */}
-          <ScheduleTimeList
-            schedules={schedules}
-            selectedDate={selectedDate}
-            selectedScheduleId={selectedSchedule?.id ?? null}
-            onSelect={setSelectedSchedule}
-            price={price}
-          />
         </div>
+
+        {/* 날짜 선택 */}
+        <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>
+        <ReservationCalendarPicker
+          selectedDate={selectedDate}
+          onChange={setSelectedDate}
+          availableDates={availableDates}
+        />
+
+        {/* 시간 선택 */}
+        <ScheduleTimeList
+          schedules={schedules}
+          selectedDate={selectedDate}
+          selectedScheduleId={selectedSchedule?.id ?? null}
+          onSelect={setSelectedSchedule}
+          price={price}
+        />
       </div>
 
       {/* 예약 요약 + 예약 버튼 */}
