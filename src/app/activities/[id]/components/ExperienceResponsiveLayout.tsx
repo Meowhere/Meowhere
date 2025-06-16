@@ -98,34 +98,15 @@ export default function ExperienceResponsiveLayout({ activity, schedules, review
 
   if (isDesktop) {
     return (
-      <div className='flex max-w-[1200px] mx-auto gap-[48px] items-start px-4'>
-        <div className='flex-1 flex flex-col gap-[40px]'>
-          <ExperienceImageViewer
-            bannerImageUrl={activity.bannerImageUrl}
-            subImages={activity.subImages}
-          />
-          <Divider />
-          <div className='map-trigger-section'>
-            <SectionTitle title='만나는 곳' subtitle={activity.address} />
-            <ExperienceLocationMap address={activity.address} />
-            <Divider />
-          </div>
-          <SectionTitle title='체험 설명' />
-          <ExperienceDescription description={activity.description} />
-          <Divider />
-          <SectionTitle title='후기' />
-          <div className='mt-[8px]'>
-            <ReviewSection
-              activityId={activity.id}
-              rating={activity.rating}
-              reviewCount={activity.reviewCount}
-              reviews={reviews}
+      <>
+        <div className='max-w-[1200px] mx-auto flex gap-[48px] px-4 mt-[64px] justify-center items-center'>
+          <div className='flex-[1.2]'>
+            <ExperienceImageViewer
+              bannerImageUrl={activity.bannerImageUrl}
+              subImages={activity.subImages}
             />
           </div>
-        </div>
-
-        <div className='w-1/2 relative pt-[180px]'>
-          <div className='mb-[48px] relative'>
+          <div className='flex-1 relative'>
             {isOwner && (
               <div className='absolute top-[2px] right-[2px] z-10 cursor-pointer'>
                 <ActivityDropdown
@@ -142,20 +123,45 @@ export default function ExperienceResponsiveLayout({ activity, schedules, review
               reviewCount={activity.reviewCount}
               address={activity.address}
             />
+            {user && user.id !== activity.userId && (
+              <>
+                <Divider />
+                <ReservationBox
+                  pricePerPerson={activity.price}
+                  onClick={() =>
+                    openScheduleModal({ price: activity.price, schedules, activityId: activity.id })
+                  }
+                />
+              </>
+            )}
           </div>
-          <Divider />
-          {user && user.id !== activity.userId && (
-            <div className='mb-[300px]'>
-              <ReservationBox pricePerPerson={activity.price} />
-            </div>
-          )}
-          {user && user.id !== activity.userId && (
-            <div className='sticky top-[200px] self-start w-[400px]'>
-              <ScheduleSidebar price={activity.price} schedules={schedules} />
-            </div>
-          )}
         </div>
-      </div>
+
+        {/* 하단 섹션들 */}
+        <div className='max-w-[1200px] mx-auto px-4 flex flex-col gap-[48px] mt-[80px]'>
+          <Divider />
+
+          <div>
+            <SectionTitle title='만나는 곳' subtitle={activity.address} />
+            <ExperienceLocationMap address={activity.address} />
+          </div>
+
+          <div>
+            <SectionTitle title='체험 설명' />
+            <ExperienceDescription description={activity.description} />
+          </div>
+
+          <div>
+            <SectionTitle title='후기' />
+            <ReviewSection
+              activityId={activity.id}
+              rating={activity.rating}
+              reviewCount={activity.reviewCount}
+              reviews={reviews}
+            />
+          </div>
+        </div>
+      </>
     );
   }
 
