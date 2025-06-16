@@ -31,7 +31,7 @@ export default function ScheduleTimeList({
             key={`${schedule.date}-${time.id}`}
             schedule={{ ...time, date: schedule.date }}
             isSelected={selectedScheduleId === time.id}
-            onSelect={(id, date) => onSelect({ ...time, date })}
+            onSelect={(schedule) => onSelect(schedule)}
             date={schedule.date}
           />
         ))

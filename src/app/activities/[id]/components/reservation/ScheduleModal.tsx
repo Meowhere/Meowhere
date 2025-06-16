@@ -77,37 +77,40 @@ export default function ScheduleModal({ price, schedules, activityId }: Schedule
   return (
     <>
       <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide pb-[120px]'>
-        {/* 인원 선택 */}
-        <div className='flex flex-col gap-[24px] mb-[24px]'>
-          <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>인원</p>
-          <div className='flex items-center justify-between'>
-            <span>{count}명</span>
-            <CounterButton
-              count={count}
-              onIncrease={() => setCount((prev) => Math.min(prev + 1, 10))}
-              onDecrease={() => setCount((prev) => Math.max(prev - 1, 1))}
-              min={1}
-              max={10}
-            />
+        <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide pb-[120px]'>
+          {/* 인원 선택 */}
+          <div className='flex flex-col gap-[24px] mb-[24px]'>
+            <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>인원</p>
+            <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>인원</p>
+            <div className='flex items-center justify-between'>
+              <span>{count}명</span>
+              <CounterButton
+                count={count}
+                onIncrease={() => setCount((prev) => Math.min(prev + 1, 10))}
+                onDecrease={() => setCount((prev) => Math.max(prev - 1, 1))}
+                min={1}
+                max={10}
+              />
+            </div>
           </div>
+
+          {/* 날짜 선택 */}
+          <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>
+          <ReservationCalendarPicker
+            selectedDate={selectedDate}
+            onChange={setSelectedDate}
+            availableDates={availableDates}
+          />
+
+          {/* 시간 선택 */}
+          <ScheduleTimeList
+            schedules={schedules}
+            selectedDate={selectedDate}
+            selectedScheduleId={selectedSchedule?.id ?? null}
+            onSelect={setSelectedSchedule}
+            price={price}
+          />
         </div>
-
-        {/* 날짜 선택 */}
-        <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>
-        <ReservationCalendarPicker
-          selectedDate={selectedDate}
-          onChange={setSelectedDate}
-          availableDates={availableDates}
-        />
-
-        {/* 시간 선택 */}
-        <ScheduleTimeList
-          schedules={schedules}
-          selectedDate={selectedDate}
-          selectedScheduleId={selectedSchedule?.id ?? null}
-          onSelect={setSelectedSchedule}
-          price={price}
-        />
       </div>
 
       {/* 예약 요약 + 예약 버튼 */}

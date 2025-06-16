@@ -19,7 +19,7 @@ export default function ManagementCard({
   const { isDesktop } = useBreakpoint();
 
   return (
-    <div className='flex justify-between border-b border-gray-200 last:border-b-0 py-[24px] w-full'>
+    <div className='flex justify-between border-b border-gray-200 dark:border-gray-700 last:border-b-0 py-[24px] w-full'>
       <div className='flex flex-row items-center justify-center gap-[10px] lg:gap-[14px]'>
         <Image
           src={bannerImageUrl}
@@ -31,8 +31,10 @@ export default function ManagementCard({
         <div className='flex flex-col gap-[12px] lg:gap-[18px] lg:h-[98px]'>
           <RatingLabel rating={rating} />
           <div className='flex flex-col justify-between gap-[12px]'>
-            <p className='text-lg font-semibold text-gray-800 leading-none'>{title}</p>
-            <span className='text-sm font-regular text-gray-600 leading-none'>
+            <p className='text-lg font-semibold text-gray-800 dark:text-gray-200 leading-none'>
+              {title}
+            </p>
+            <span className='text-sm font-regular text-gray-600 dark:text-gray-400 leading-none'>
               ₩{price.toLocaleString()} /인
             </span>
           </div>

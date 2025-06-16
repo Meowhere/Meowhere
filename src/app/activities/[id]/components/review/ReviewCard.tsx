@@ -34,15 +34,19 @@ export default function ReviewCard({
         : 'w-[280px] p-[20px] min-h-[200px] bg-white rounded-[16px]';
 
   return (
-    <div className={`flex flex-col items-start gap-[16px] h-full ${cardStyle}`}>
+    <div
+      className={`flex flex-col items-start gap-[12px] ${
+        isList ? 'w-full p-0' : 'w-[256px] p-[12px] bg-white dark:bg-gray-800'
+      }`}
+    >
       <div className='flex items-center gap-[8px]'>
         <StarRating value={rating} readOnly />
-        <p className='text-[#A4A1AA] text-xs font-regular'>{formattedDate}</p>
+        <p className='text-[#A4A1AA] dark:text-gray-500 text-xs font-regular'>{formattedDate}</p>
       </div>
 
       <p
         className={clsx(
-          'text-sm font-regular text-gray-700 flex-grow',
+          'text-sm font-regular text-gray-700 dark:text-gray-300 flex-grow',
           variant === 'card' && 'line-clamp-4'
         )}
       >
@@ -57,7 +61,7 @@ export default function ReviewCard({
           height={38}
           className='w-[38px] h-[38px] rounded-full object-cover'
         />
-        <p className='text-xs font-medium text-black'>{nickname}</p>
+        <p className='text-xs font-medium text-black dark:text-gray-200'>{nickname}</p>
       </div>
     </div>
   );

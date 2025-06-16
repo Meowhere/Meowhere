@@ -54,9 +54,9 @@ export default function ExperienceResponsiveLayout({
 
   if (isDesktop) {
     return (
-      <div className='flex max-w-[1200px] mx-auto gap-[48px] items-start'>
+      <div className='flex max-w-[1200px] mx-auto gap-[48px] items-start px-4'>
         {/* 왼쪽 열 */}
-        <div className='w-[960px] flex flex-col gap-[40px]'>
+        <div className='flex-1 flex flex-col gap-[40px]'>
           <ExperienceImageViewer
             bannerImageUrl={activity.bannerImageUrl}
             subImages={activity.subImages}
