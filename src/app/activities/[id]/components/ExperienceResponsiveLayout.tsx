@@ -19,7 +19,7 @@ import ExperienceLocationMap from './experience/ExperienceLocationMap';
 import ExperienceDescription from './experience/ExperienceDescription';
 import ReviewSection from './review/ReviewSection';
 import ReservationBox from './reservation/ReservationBox';
-import ScheduleSidebar from './reservation/ScheduleSidebar';
+import KakaoShareButton from '@/src/components/common/buttons/KakaoShareButton';
 
 import { DROPDOWN_ITEM_TYPES, POST_ACTION_LABELS } from '@/src/constants/dropdown';
 import { deleteActivity } from '@/src/services/myActivityService';
@@ -28,6 +28,7 @@ import { Activity } from '@/src/types/activity.types';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import { Review } from '@/src/types/review.type';
 import { useToastStore } from '@/src/store/toastStore';
+import { useKakaoShare } from '@/src/hooks/useKakaoShare';
 
 interface Props {
   activity: Activity;
@@ -82,6 +83,7 @@ export default function ExperienceResponsiveLayout({ activity, schedules, review
         isLiked={false}
         onToggle={() => {}}
         variant='black'
+        size={24}
         aria-label='찜하기'
       />,
       !isDesktop && isOwner && (
@@ -107,15 +109,16 @@ export default function ExperienceResponsiveLayout({ activity, schedules, review
             />
           </div>
           <div className='flex-1 relative'>
-            {isOwner && (
-              <div className='absolute top-[2px] right-[2px] z-10 cursor-pointer'>
+            <div className='flex flex-row gap-[8px] absolute top-[2px] right-[2px] z-10 cursor-pointer'>
+              <KakaoShareButton size={24} activity={activity} />
+              {isOwner && (
                 <ActivityDropdown
                   dropdownItems={dropdownItems}
                   bottomSheetTitle='게시물 관리'
                   trigger={<KebabIcon size={24} className='text-[#79747E]' />}
                 />
-              </div>
-            )}
+              )}
+            </div>
             <ExperienceSummarySection
               category={activity.category}
               title={activity.title}
@@ -153,12 +156,27 @@ export default function ExperienceResponsiveLayout({ activity, schedules, review
 
           <div>
             <SectionTitle title='후기' />
-            <ReviewSection
-              activityId={activity.id}
-              rating={activity.rating}
-              reviewCount={activity.reviewCount}
-              reviews={reviews}
-            />
+            <div className='mt-[8px]'>
+              {reviews.length === 0 ? (
+                <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
+                  <Image
+                    src='/assets/icons/logo/ico-empty-view-logo.svg'
+                    alt='empty icon'
+                    width={72}
+                    height={72}
+                    className='mb-6'
+                  />
+                  <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+                </div>
+              ) : (
+                <ReviewSection
+                  activityId={activity.id}
+                  rating={activity.rating}
+                  reviewCount={activity.reviewCount}
+                  reviews={reviews}
+                />
+              )}
+            </div>
           </div>
         </div>
       </>
@@ -173,6 +191,9 @@ export default function ExperienceResponsiveLayout({ activity, schedules, review
           bannerImageUrl={activity.bannerImageUrl}
           subImages={activity.subImages}
         />
+        <div className='flex flex-row mt-[8px] gap-[8px] justify-end'>
+          <KakaoShareButton size={24} activity={activity} />
+        </div>
         <ExperienceSummarySection
           category={activity.category}
           title={activity.title}
@@ -210,12 +231,27 @@ export default function ExperienceResponsiveLayout({ activity, schedules, review
               <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
             </div>
           ) : (
-            <ReviewSection
-              activityId={activity.id}
-              rating={activity.rating}
-              reviewCount={activity.reviewCount}
-              reviews={reviews}
-            />
+            <div className='mt-[8px]'>
+              {reviews.length === 0 ? (
+                <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
+                  <Image
+                    src='/assets/icons/logo/ico-empty-view-logo.svg'
+                    alt='empty icon'
+                    width={72}
+                    height={72}
+                    className='mb-6'
+                  />
+                  <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+                </div>
+              ) : (
+                <ReviewSection
+                  activityId={activity.id}
+                  rating={activity.rating}
+                  reviewCount={activity.reviewCount}
+                  reviews={reviews}
+                />
+              )}
+            </div>
           )}
         </div>
       </div>

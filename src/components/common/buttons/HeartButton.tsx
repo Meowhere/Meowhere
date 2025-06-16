@@ -6,6 +6,7 @@ interface HeartButtonProps {
   isLiked: boolean;
   onToggle: () => void;
   variant?: 'white' | 'black';
+  size?: number;
   className?: string;
 }
 
@@ -13,6 +14,7 @@ export default function HeartButton({
   isLiked,
   onToggle,
   variant = 'white',
+  size = 24,
   className = '',
   ...rest
 }: HeartButtonProps) {
