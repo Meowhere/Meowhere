@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';
 import { useUIStore } from '../store/uiStore';
+import UserInitializer from './_components/UserInitializer';
 import ThemeProvider from './activities/[id]/components/common/ThemeProvider';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
@@ -27,11 +28,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <ReactQueryProvider>
+      <UserInitializer />
       <ThemeProvider>
         <div className={`${preventBodyScroll ? 'overflow-hidden' : ''} h-screen `}>
           {showNavbar && <Navbar />}
           <main className={getGNBHeight()}>{children}</main>
-
           {showBNB && <BNB />}
           {showFooter && <Footer />}
         </div>
