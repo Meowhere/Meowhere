@@ -10,7 +10,7 @@ interface KebabButtonProps {
 
 export default function KebabButton({
   onToggle,
-  className = 'text=[#79747E',
+  className = 'text=[#79747E]',
   size = 16,
   ...rest
 }: KebabButtonProps) {
