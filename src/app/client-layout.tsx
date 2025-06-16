@@ -8,6 +8,7 @@ import { useBreakpoint } from '../hooks/useBreakpoint';
 import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';
 import { useUIStore } from '../store/uiStore';
 import UserInitializer from './_components/UserInitializer';
+import ThemeProvider from './activities/[id]/components/common/ThemeProvider';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,6 +17,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   const showFooter = isDesktop || !pathname.startsWith('/profile');
   const showBNB = !isDesktop && !pathname.startsWith('/activities');
+  const showNavbar = pathname !== '/profile';
 
   const getGNBHeight = () => {
     if (pathname === '/') {
@@ -27,13 +29,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <ReactQueryProvider>
       <UserInitializer />
-      <div className={`${preventBodyScroll ? 'overflow-hidden' : ''} h-screen `}>
-        <Navbar />
-        <main className={getGNBHeight()}>{children}</main>
-
-        {showBNB && <BNB />}
-        {showFooter && <Footer />}
-      </div>
+      <ThemeProvider>
+        <div className={`${preventBodyScroll ? 'overflow-hidden' : ''} h-screen `}>
+          {showNavbar && <Navbar />}
+          <main className={getGNBHeight()}>{children}</main>
+          {showBNB && <BNB />}
+          {showFooter && <Footer />}
+        </div>
+      </ThemeProvider>
     </ReactQueryProvider>
   );
 }

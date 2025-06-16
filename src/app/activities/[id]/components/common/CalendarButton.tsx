@@ -19,7 +19,7 @@ export default function CalendarButton({
 }: CalendarButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button type='button' onClick={onClick} className={className} style={style} {...rest}>
-      <CalendarIcon width={size} height={size} className='text-gray-800' />
+      <CalendarIcon width={size} height={size} className='text-gray-800 dark:text-gray-200' />
     </button>
   );
 }
