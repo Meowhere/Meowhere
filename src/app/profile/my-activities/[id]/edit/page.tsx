@@ -1,7 +1,7 @@
 'use client';
 import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter } from 'next/navigation';
-import RegisterExperienceForm from '../components/RegisterExperienceForm';
+import RegisterExperienceForm from '../../components/RegisterExperienceForm';
 import { useCreateActivityMutation } from '@/src/hooks/useCreateActivityMutation';
 import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 
@@ -18,13 +18,13 @@ export default function RegisterPage() {
   };
 
   useGnb({
-    title: '내 체험 등록',
+    title: '내 체험 수정',
     subtitle: '',
     backAction: () => router.back(),
     rightButtons: [
       <button
         key='submit'
-        form='register-form'
+        form='edit-form'
         type='submit'
         className='text-md font-semibold text-primary-300'
       >
@@ -33,5 +33,5 @@ export default function RegisterPage() {
     ],
   });
 
-  return <RegisterExperienceForm mode='create' onSubmit={handleSubmit} />;
+  return <RegisterExperienceForm mode='edit' onSubmit={handleSubmit} />;
 }
