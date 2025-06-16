@@ -10,7 +10,7 @@ import { useModal } from '@/src/hooks/useModal';
 import ScheduleTimeList from './ScheduleTimeList';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import ReservationCalendarPicker from '@/src/components/common/calendar/ReservationCalendarPicker';
-import { BASE_API_URL } from '@/src/constants/api';
+import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 import { useToastStore } from '@/src/store/toastStore';
 
 export interface ScheduleModalProps {
@@ -35,7 +35,7 @@ export default function ScheduleModal({ price, schedules, activityId }: Schedule
 
   const handleReserve = async () => {
     if (!selectedSchedule) {
-      alert('예약할 날짜를 선택해주세요.');
+      showToast('error', '예약할 날짜를 선택해주세요.');
       return;
     }
 
@@ -45,16 +45,13 @@ export default function ScheduleModal({ price, schedules, activityId }: Schedule
         headCount: count,
       };
 
-      console.log('예약 요청 직전 데이터:', reservationData);
-
-      const response = await fetch(`${BASE_API_URL}/activities/${activityId}/reservations`, {
+      await fetchFromClient(`activities/${activityId}/reservations`, {
         method: 'POST',
         body: JSON.stringify(reservationData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-
-      console.log('응답 상태 코드:', response.status);
-
-      if (!response.ok) throw new Error('예약 처리 중 오류가 발생했습니다.');
 
       openConfirmModal({
         message: '예약이 완료되었습니다.',
