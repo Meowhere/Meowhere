@@ -70,7 +70,7 @@ export default function ExperienceImageViewer({
               onClick={() => openImageViewer(index)}
             >
               <Image
-                src={url || '/assets/placeholder.png'}
+                src={url}
                 alt={`체험 이미지 ${index + 1}`}
                 width={161}
                 height={161}
