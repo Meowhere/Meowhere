@@ -98,7 +98,7 @@ export default function ExperienceImageViewer({
                   <div className='w-full h-full flex items-center justify-center'>
                     <div className='relative w-full h-full max-h-[calc(100vh-56px)] flex items-center justify-center'>
                       <Image
-                        src={url || '/assets/placeholder.png'}
+                        src={url}
                         alt={`확대 이미지 ${index + 1}`}
                         fill
                         className='object-contain'
