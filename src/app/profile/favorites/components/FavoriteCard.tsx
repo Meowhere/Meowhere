@@ -16,7 +16,7 @@ export default function FavoriteCard({ activity }: { activity: Activity }) {
 
   return (
     <Link href={`/activities/${activity.id}`}>
-      <div className='flex justify-between border-b border-gray-200 last:border-b-0 py-[24px] w-full'>
+      <div className='flex justify-between border-b border-gray-200 last:border-b-0 w-full mb-[24px]'>
         <div className='flex flex-row items-center justify-center gap-[10px] lg:gap-[14px]'>
           <div className='relative w-[84px] h-[84px] lg:w-[96px] lg:h-[96px]'>
             <Image
@@ -28,7 +28,7 @@ export default function FavoriteCard({ activity }: { activity: Activity }) {
             />
           </div>
 
-          <div className='flex flex-col gap-[12px] lg:gap-[18px] lg:h-[98px]'>
+          <div className='flex flex-col gap-[12px] lg:gap-[18px] lg:h-[98px] justify-center'>
             <RatingLabel rating={activity.rating} />
             <div className='flex flex-col justify-between gap-[12px]'>
               <p className='text-lg font-semibold text-gray-800 leading-none'>{activity.title}</p>

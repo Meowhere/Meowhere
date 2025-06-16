@@ -12,9 +12,12 @@ export default function FavoritesList() {
   if (myFavorites.length === 0) return <NotFoundFavorites />;
 
   return (
-    <div className='flex flex-col w-full lg:mt-[64px]'>
+    <div className='flex flex-col w-full lg:mt-[50px] gap-[24px]'>
       {myFavorites.map((fav, index) => (
-        <div key={fav.id} className={index > 0 ? 'border-t border-gray-200' : ''}>
+        <div
+          key={fav.id}
+          className={index < myFavorites.length - 1 ? 'border-b border-gray-200' : ''}
+        >
           <FavoriteCard activity={fav} />
         </div>
       ))}
