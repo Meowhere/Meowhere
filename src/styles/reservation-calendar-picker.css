@@ -92,7 +92,7 @@
 
 /* 오늘 + 선택됨 */
 .react-calendar__tile--now.react-calendar__tile--active abbr {
-  background: #3b82f6 !important;
+  background: #ff5500 !important;
   color: white !important;
 }
 
