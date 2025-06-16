@@ -1,12 +1,14 @@
 'use client';
 
 import StarFillIcon from '@/src/components/common/icons/StarFillIcon';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface ExperienceSummarySectionProps {
   title: string;
   rating: string;
   reviewCount: number;
   address: string;
+  category?: string;
 }
 
 export default function ExperienceSummarySection({
@@ -14,19 +16,30 @@ export default function ExperienceSummarySection({
   rating,
   reviewCount,
   address,
+  category,
 }: ExperienceSummarySectionProps) {
+  const { isDesktop } = useBreakpoint();
+
   return (
-    <section className='p-4 max-w-4xl mx-auto'>
-      <div className='text-center gap-8'>
-        <h2 className='text-2xl font-bold'>{title}</h2>
-        <div className='flex items-center justify-center gap-4 mt-1 text-md text-gray-600'>
+    <section className={`p-4 flex flex-col ${isDesktop ? 'text-left' : 'text-center'}`}>
+      <div className='flex flex-col'>
+        <span className='text-md font-medium text-gray-600 mb-[12px]'>{category}</span>
+
+        <h2 className='text-2xl font-bold mb-[16px]'>{title}</h2>
+
+        <div
+          className={`flex items-center gap-[6px] text-md text-gray-600 ${
+            isDesktop ? 'justify-start' : 'justify-center'
+          } mb-[12px]`}
+        >
           <StarFillIcon className='w-[16px] h-[16px] text-yellow-200' />
-          <div className='flex items-baseline gap-4 mt-1'>
+          <div className='flex items-baseline gap-[6px]'>
             <span className='text-[1.4rem] font-medium text-gray-600'>{rating}</span>
             <span className='text-[1.2rem] font-regular text-gray-500'>{reviewCount}개의 후기</span>
           </div>
         </div>
-        <p className='mt-1 text-md font-regular text-gray-600'>{address}</p>
+
+        <p className='text-md font-regular text-gray-600'>{address}</p>
       </div>
     </section>
   );

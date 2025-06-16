@@ -43,6 +43,7 @@ export default function ManagementDropdown({ title, activityId }: ManagementDrop
     },
   ];
 
+
   return (
     <div className='relative'>
       <KebabButton size={24} onToggle={() => setOpen((prev) => !prev)} />
@@ -63,6 +64,7 @@ export default function ManagementDropdown({ title, activityId }: ManagementDrop
         </div>
       )}
       <ConfirmModal />
+
     </div>
   );
 }

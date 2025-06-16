@@ -28,3 +28,11 @@ export interface TextareaProps {
   scrollable?: boolean; // 스크롤 허용 여부
   maxHeight?: string; // 최대 높이 (autoResize 사용시)
 }
+
+export interface CheckboxProps {
+  id: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  label: string;
+  error?: string;
+}

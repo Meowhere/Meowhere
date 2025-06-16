@@ -19,9 +19,9 @@ const styles = {
     'hover:border-primary-200 hover:bg-primary-25'
   ),
   selected: 'border-primary-500 bg-primary-50',
-  unselected: 'border-gray-200',
-  timeText: 'text-md font-medium text-gray-800',
-  priceText: 'text-sm font-regular text-gray-500',
+  unselected: 'border-gray-200 dark:border-gray-600',
+  timeText: 'text-md font-medium text-gray-800 dark:text-gray-200',
+  priceText: 'text-sm font-regular text-gray-500 dark:text-gray-400',
 };
 
 export default function ScheduleTimeSlot({

@@ -17,7 +17,7 @@ export default function DropdownMenu({
   const desktopShadow = 'shadow-[0_0_20px_rgba(0,0,0,0.05)]';
 
   const wrapperClass = `
-        w-full rounded-[12px] overflow-hidden bg-white border border-gray-100
+        w-full rounded-[12px] overflow-hidden bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700
         ${mobileShadow}
       `;
 
@@ -37,10 +37,10 @@ export default function DropdownMenu({
         <div className='fixed inset-x-0 bottom-0 z-50 px-[16px] pb-[20px]'>
           <div className='w-full flex flex-col gap-[8px]' onClick={(e) => e.stopPropagation()}>
             <div className={wrapperClass}>
-              <div className='text-center text-xs text-gray-600 leading-[1.2rem] h-[36px] flex items-center justify-center border-b border-gray-100'>
+              <div className='text-center text-xs text-gray-600 dark:text-gray-300 leading-[1.2rem] h-[36px] flex items-center justify-center border-b border-gray-100 dark:border-gray-700'>
                 {bottomSheetTitle}
               </div>
-              <div className='divide-y divide-gray-100 max-h-[400px] overflow-y-auto '>
+              <div className='divide-y divide-gray-100 dark:divide-gray-700 max-h-[400px] overflow-y-auto '>
                 {items.map((item, idx) => (
                   <DropdownItem
                     key={idx}
@@ -73,7 +73,7 @@ export default function DropdownMenu({
   return (
     <div
       className={`
-            rounded-[12px] border border-gray-100 bg-white overflow-hidden min-w-[160px] animate-fade-down animate-duration-900 animate-ease-in-out
+            rounded-[12px] border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden min-w-[160px] animate-fade-down animate-duration-200 animate-ease-out
             ${desktopShadow}
               `}
     >
