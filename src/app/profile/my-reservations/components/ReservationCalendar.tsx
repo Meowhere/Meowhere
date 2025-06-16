@@ -105,13 +105,13 @@ export default function ReservationCalendar() {
     const base = 'flex flex-col min-h-[86px] pt-[10px] pb-[8px] text-[1.1rem] font-semibold';
 
     if (!isSameMonth) return `${base} text-gray-300 dark:text-gray-600`;
-    if (day === 0) return `${base} text-red-300`;
-    if (day === 6) return `${base} text-blue-300`;
+    if (day === 0) return `${base} sunday`;
+    if (day === 6) return `${base} saturday`;
     return `${base} text-gray-600 dark:text-gray-400`;
   };
 
   return (
-    <div className='mx-auto min-w-[327px] w-full'>
+    <div className='mx-auto min-w-[327px] w-full react-calendar-wrapper'>
       <div className='mb-[64px]'>
         <Dropdown
           dropdownItems={dropdownItems}
@@ -121,6 +121,7 @@ export default function ReservationCalendar() {
         />
       </div>
       <Calendar
+        className='reservation-calendar-wrapper'
         locale='ko-KR'
         calendarType='gregory'
         formatDay={(_, date) => String(date.getDate())}
