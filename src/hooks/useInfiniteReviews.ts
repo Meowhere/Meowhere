@@ -13,16 +13,29 @@ export const useInfiniteReviews = (activityId: number) => {
       const res = await fetchFromClient(
         `/activities/${activityId}/reviews?page=${page}&size=${PAGE_SIZE}`
       );
-      const data: GetReviewsResponse = await res.json();
+
+      const data: GetReviewsResponse = await res.json().catch(() => ({
+        reviews: [],
+        totalCount: 0,
+      }));
 
       const hasNext = page * PAGE_SIZE < data.totalCount;
 
       return {
         reviews: data.reviews,
-        nextCursor: hasNext ? pageParam + 1 : undefined,
+        nextPage: hasNext ? pageParam + 1 : undefined,
+        hasMore: hasNext,
       };
     },
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || !lastPage.reviews) {
+        return undefined;
+      }
+      return lastPage.nextPage;
+    },
     initialPageParam: 0,
+    retry: (failureCount, error) => {
+      return failureCount < 3;
+    },
   });
 };

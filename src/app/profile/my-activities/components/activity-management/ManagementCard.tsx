@@ -1,21 +1,18 @@
 'use client';
 import RatingLabel from './RatingLabel';
 import { MyActivitiesProps } from '@/src/types/my-activities.types';
-import KebabButton from '@/src/components/common/buttons/KebabButton';
-import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
-import { useState } from 'react';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Image from 'next/image';
-import { DROPDOWN_ITEM_TYPES, POST_ACTION_LABELS } from '@/src/constants/dropdown';
+import ManagementDropdown from './ManagementDropdown';
 
 export default function ManagementCard({
+  id,
   title,
   bannerImageUrl,
   price,
   rating,
   ...rest
 }: MyActivitiesProps) {
-  const [open, setOpen] = useState(false);
   const { isDesktop } = useBreakpoint();
 
   return (
@@ -40,37 +37,7 @@ export default function ManagementCard({
           </div>
         </div>
       </div>
-      <div className='relative'>
-        <KebabButton size={24} onToggle={() => setOpen((prev) => !prev)} />
-        {open && (
-          <div className='absolute left-[-140px] top-[-20px] z-10'>
-            <DropdownMenu
-              isOpen={open}
-              isMobile={!isDesktop}
-              title={title}
-              items={[
-                {
-                  type: DROPDOWN_ITEM_TYPES.LINK,
-                  label: POST_ACTION_LABELS.EDIT,
-                  href: '/',
-                },
-                {
-                  type: DROPDOWN_ITEM_TYPES.BUTTON,
-                  label: POST_ACTION_LABELS.DELETE,
-                  onClick: () => {},
-                  isDanger: true,
-                },
-              ]}
-              bottomButton={{
-                type: DROPDOWN_ITEM_TYPES.BUTTON,
-                label: POST_ACTION_LABELS.CANCEL,
-                onClick: () => setOpen(false),
-              }}
-              onClose={() => setOpen(false)}
-            />
-          </div>
-        )}
-      </div>
+      <ManagementDropdown title={title} activityId={id} />
     </div>
   );
 }

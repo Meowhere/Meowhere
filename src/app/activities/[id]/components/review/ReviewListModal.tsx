@@ -36,7 +36,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const reviews = data?.pages.flatMap((page) => page.reviews) ?? [];
+  const reviews = data?.pages?.flatMap((page) => page?.reviews || []) ?? [];
 
   return (
     <div className='flex flex-col h-[70vh] max-h-[70vh] overflow-hidden'>

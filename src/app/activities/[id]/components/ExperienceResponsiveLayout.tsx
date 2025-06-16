@@ -1,29 +1,33 @@
 'use client';
 
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import ExperienceImageViewer from './experience/ExperienceImageViewer';
-import ExperienceSummarySection from './experience/ExperienceSummarySection';
-import ReservationBox from './reservation/ReservationBox';
+import Image from 'next/image';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { useGnb } from '@/src/hooks/useGnb';
+import { useUser } from '@/src/hooks/auth/useAuth';
+import { useModal } from '@/src/hooks/useModal';
+
+import HeartButton from '@/src/components/common/buttons/HeartButton';
+import ActivityDropdown from './common/ActivityDropdown';
+import KebabIcon from '@/src/components/common/icons/KebabIcon';
 import Divider from './common/Divider';
 import SectionTitle from './common/SectionTitle';
+import ExperienceImageViewer from './experience/ExperienceImageViewer';
+import ExperienceSummarySection from './experience/ExperienceSummarySection';
 import ExperienceLocationMap from './experience/ExperienceLocationMap';
 import ExperienceDescription from './experience/ExperienceDescription';
 import ReviewSection from './review/ReviewSection';
+import ReservationBox from './reservation/ReservationBox';
 import ScheduleSidebar from './reservation/ScheduleSidebar';
-import { useGnb } from '@/src/hooks/useGnb';
-import HeartButton from '@/src/components/common/buttons/HeartButton';
+
+import { DROPDOWN_ITEM_TYPES, POST_ACTION_LABELS } from '@/src/constants/dropdown';
+import { deleteActivity } from '@/src/services/myActivityService';
+
 import { Activity } from '@/src/types/activity.types';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
-import { useModal } from '@/src/hooks/useModal';
 import { Review } from '@/src/types/review.type';
-import { useUser } from '@/src/hooks/auth/useAuth';
-import { deleteActivity } from '@/src/services/myActivityService';
 import { useToastStore } from '@/src/store/toastStore';
-import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
-import KebabIcon from '@/src/components/common/icons/KebabIcon';
-import { useState } from 'react';
-import { DROPDOWN_ITEM_TYPES, POST_ACTION_LABELS } from '@/src/constants/dropdown';
 
 interface Props {
   activity: Activity;
@@ -35,43 +39,39 @@ interface Props {
   };
 }
 
-export default function ExperienceResponsiveLayout({
-  activity,
-  schedules,
-  reviews,
-  reviewStats,
-}: Props) {
+export default function ExperienceResponsiveLayout({ activity, schedules, reviews }: Props) {
   const { isDesktop } = useBreakpoint();
-  const { openScheduleModal } = useModal();
-  const router = useRouter();
   const { data: user } = useUser();
-  const isOwner = user && user.id === activity.userId;
+  const router = useRouter();
   const { showToast } = useToastStore();
-  const [showDropdown, setShowDropdown] = useState(false);
+  const { openScheduleModal } = useModal();
 
-  const handleDelete = async () => {
-    try {
-      await deleteActivity(activity.id);
-      showToast('success', '체험이 삭제되었습니다');
-      router.push('/');
-    } catch (error) {
-      showToast('error', '체험 삭제에 실패했습니다');
-    }
-  };
+  const isOwner = user?.id === activity.userId;
 
-  const dropdownItems = [
-    {
-      type: DROPDOWN_ITEM_TYPES.LINK,
-      label: POST_ACTION_LABELS.EDIT,
-      href: `/activities/${activity.id}/edit`,
-    },
-    {
-      type: DROPDOWN_ITEM_TYPES.BUTTON,
-      label: POST_ACTION_LABELS.DELETE,
-      onClick: handleDelete,
-      isDanger: true,
-    },
-  ];
+  const dropdownItems = useMemo(
+    () => [
+      {
+        type: DROPDOWN_ITEM_TYPES.BUTTON,
+        label: POST_ACTION_LABELS.EDIT,
+        onClick: () => router.push(`/activities/edit/${activity.id}`),
+      },
+      {
+        type: DROPDOWN_ITEM_TYPES.BUTTON,
+        label: POST_ACTION_LABELS.DELETE,
+        isDanger: true,
+        onClick: async () => {
+          try {
+            await deleteActivity(activity.id);
+            showToast('success', '삭제되었습니다.');
+            router.push('/');
+          } catch {
+            showToast('error', '삭제에 실패했습니다.');
+          }
+        },
+      },
+    ],
+    [activity.id, router, showToast]
+  );
 
   useGnb({
     title: activity.title,
@@ -86,23 +86,11 @@ export default function ExperienceResponsiveLayout({
       />,
       !isDesktop && isOwner && (
         <div key='kebab-mobile' className='relative'>
-          <div className='cursor-pointer' onClick={() => setShowDropdown(true)}>
-            <KebabIcon size={24} className='text-[#79747E]' />
-          </div>
-
-          {showDropdown && (
-            <DropdownMenu
-              isMobile
-              title='게시물 관리'
-              items={dropdownItems}
-              onClose={() => setShowDropdown(false)}
-              bottomButton={{
-                type: DROPDOWN_ITEM_TYPES.BUTTON,
-                label: POST_ACTION_LABELS.CANCEL,
-                onClick: () => setShowDropdown(false),
-              }}
-            />
-          )}
+          <ActivityDropdown
+            dropdownItems={dropdownItems}
+            bottomSheetTitle='게시물 관리'
+            trigger={<KebabIcon size={24} className='text-[#79747E]' />}
+          />
         </div>
       ),
     ].filter(Boolean),
@@ -139,25 +127,12 @@ export default function ExperienceResponsiveLayout({
         <div className='w-1/2 relative pt-[180px]'>
           <div className='mb-[48px] relative'>
             {isOwner && (
-              <div
-                className='absolute top-[2px] right-[2px] z-10 cursor-pointer'
-                onClick={() => setShowDropdown((prev) => !prev)}
-              >
-                <KebabIcon size={24} className='text-[#79747E]' />
-                {showDropdown && (
-                  <div className='absolute top-full mt-[8px] right-0'>
-                    <DropdownMenu
-                      title='옵션'
-                      items={dropdownItems}
-                      onClose={() => setShowDropdown(false)}
-                      bottomButton={{
-                        type: DROPDOWN_ITEM_TYPES.BUTTON,
-                        label: POST_ACTION_LABELS.CANCEL,
-                        onClick: () => setShowDropdown(false),
-                      }}
-                    />
-                  </div>
-                )}
+              <div className='absolute top-[2px] right-[2px] z-10 cursor-pointer'>
+                <ActivityDropdown
+                  dropdownItems={dropdownItems}
+                  bottomSheetTitle='게시물 관리'
+                  trigger={<KebabIcon size={24} className='text-[#79747E]' />}
+                />
               </div>
             )}
             <ExperienceSummarySection
@@ -184,14 +159,14 @@ export default function ExperienceResponsiveLayout({
     );
   }
 
+  // 모바일 & 태블릿
   return (
     <>
       <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <ExperienceImageViewer
           bannerImageUrl={activity.bannerImageUrl}
-          subImages={activity.subImages ?? []}
+          subImages={activity.subImages}
         />
-
         <ExperienceSummarySection
           category={activity.category}
           title={activity.title}
@@ -199,7 +174,6 @@ export default function ExperienceResponsiveLayout({
           reviewCount={activity.reviewCount}
           address={activity.address}
         />
-
         <Divider />
       </div>
 
@@ -217,12 +191,27 @@ export default function ExperienceResponsiveLayout({
 
       <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <SectionTitle title='후기' />
-        <ReviewSection
-          activityId={activity.id}
-          rating={reviewStats.rating}
-          reviewCount={reviewStats.count}
-          reviews={reviews}
-        />
+        <div className='mt-[8px]'>
+          {reviews.length === 0 ? (
+            <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
+              <Image
+                src='/assets/icons/logo/ico-empty-view-logo.svg'
+                alt='empty icon'
+                width={72}
+                height={72}
+                className='mb-6'
+              />
+              <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+            </div>
+          ) : (
+            <ReviewSection
+              activityId={activity.id}
+              rating={activity.rating}
+              reviewCount={activity.reviewCount}
+              reviews={reviews}
+            />
+          )}
+        </div>
       </div>
 
       {user && user.id !== activity.userId && (
