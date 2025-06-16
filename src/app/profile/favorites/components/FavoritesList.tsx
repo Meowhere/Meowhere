@@ -13,8 +13,10 @@ export default function FavoritesList() {
 
   return (
     <div className='flex flex-col w-full lg:mt-[64px]'>
-      {myFavorites.map((fav) => (
-        <FavoriteCard activity={fav} />
+      {myFavorites.map((fav, index) => (
+        <div key={fav.id} className={index > 0 ? 'border-t border-gray-200' : ''}>
+          <FavoriteCard activity={fav} />
+        </div>
       ))}
     </div>
   );
