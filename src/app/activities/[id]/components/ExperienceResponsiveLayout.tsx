@@ -17,6 +17,7 @@ import { Activity } from '@/src/types/activity.types';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import { useModal } from '@/src/hooks/useModal';
 import { Review } from '@/src/types/review.type';
+import Image from 'next/image';
 
 interface Props {
   activity: Activity;
@@ -76,12 +77,25 @@ export default function ExperienceResponsiveLayout({
 
           <SectionTitle title='후기' />
           <div className='mt-[8px]'>
-            <ReviewSection
-              activityId={activity.id}
-              rating={activity.rating}
-              reviewCount={activity.reviewCount}
-              reviews={reviews}
-            />
+            {reviews.length === 0 ? (
+              <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
+                <Image
+                  src='/assets/icons/logo/ico-empty-view-logo.svg'
+                  alt='empty icon'
+                  width={72}
+                  height={72}
+                  className='mb-6'
+                />
+                <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+              </div>
+            ) : (
+              <ReviewSection
+                activityId={activity.id}
+                rating={activity.rating}
+                reviewCount={activity.reviewCount}
+                reviews={reviews}
+              />
+            )}
           </div>
         </div>
 
@@ -100,7 +114,12 @@ export default function ExperienceResponsiveLayout({
           <Divider />
 
           <div className='mb-[300px]'>
-            <ReservationBox pricePerPerson={activity.price} />
+            <ReservationBox
+              pricePerPerson={activity.price}
+              onClick={() =>
+                openScheduleModal({ price: activity.price, schedules, activityId: activity.id })
+              }
+            />
           </div>
 
           <div className='sticky top-[200px] self-start w-[400px]'>
@@ -143,12 +162,27 @@ export default function ExperienceResponsiveLayout({
 
       <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <SectionTitle title='후기' />
-        <ReviewSection
-          activityId={activity.id}
-          rating={reviewStats.rating}
-          reviewCount={reviewStats.count}
-          reviews={reviews}
-        />
+        <div className='mt-[8px]'>
+          {reviews.length === 0 ? (
+            <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
+              <Image
+                src='/assets/icons/logo/ico-empty-view-logo.svg'
+                alt='empty icon'
+                width={72}
+                height={72}
+                className='mb-6'
+              />
+              <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+            </div>
+          ) : (
+            <ReviewSection
+              activityId={activity.id}
+              rating={activity.rating}
+              reviewCount={activity.reviewCount}
+              reviews={reviews}
+            />
+          )}
+        </div>
       </div>
 
       <ReservationBox
