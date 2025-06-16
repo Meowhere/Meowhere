@@ -10,7 +10,7 @@ export default function FavoriteCard({ activity }: { activity: Activity }) {
   const { toggleFavorite, isFavorite } = useFavoritesStore();
 
   const handleLikeClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.preventDefault();
     toggleFavorite(activity);
   };
 
