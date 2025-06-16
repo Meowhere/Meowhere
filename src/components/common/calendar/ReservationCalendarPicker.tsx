@@ -47,7 +47,7 @@ export default function ReservationCalendar({
   };
 
   return (
-    <div className='w-full'>
+    <div className='w-full reservation-calendar-picker'>
       <div className='relative flex items-center justify-center mb-4'>
         <div className='absolute left-0'>
           <ArrowButton onClick={handlePrevMonth} direction='left' size={24} />
