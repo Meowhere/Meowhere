@@ -1,20 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
-import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 import { useToastStore } from '../store/toastStore';
 
-export function useUpdateMyActivityMutation(activityId: number) {
+export function useUpdateMyActivityMutation(activityId?: number) {
   const queryClient = useQueryClient();
   const { showToast } = useToastStore();
 
   return useMutation({
-    mutationFn: async (formData: MyActivitiesFormData) => {
+    mutationFn: async (payload: unknown) => {
       const res = await fetchFromClient(`my-activities/${activityId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       return res.json(); // 성공 시 데이터 반환
     },

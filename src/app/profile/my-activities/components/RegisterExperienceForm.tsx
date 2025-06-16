@@ -5,47 +5,93 @@ import RegisterForm from '../components/register-form/RegisterForm';
 import RegisterCalendar from '../components/register-calendar/RegisterCalendar';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
-import { MyActivitiesFormData } from '@/src/types/my-activities.types';
-
+import { MyActivitiesFormData, CreateScheduleBody } from '@/src/types/my-activities.types';
+import { useForm, FormProvider } from 'react-hook-form';
+import { mapToApiPayload } from '@/src/utils/my-activities';
+import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
+import { useCreateActivityMutation } from '@/src/hooks/useCreateActivityMutation';
+import { useState } from 'react';
 interface RegisterExperienceFormProps {
   mode: 'edit' | 'create';
   defaultValues?: MyActivitiesFormData;
-  onSubmit?: () => void;
-  showSubmitButton?: boolean;
+  onSubmit?: (formData: MyActivitiesFormData) => void;
+  activityId?: number;
 }
 
 export default function RegisterExperienceForm({
   mode,
   defaultValues,
   onSubmit,
-  showSubmitButton = false,
+  activityId,
 }: RegisterExperienceFormProps) {
   const { isDesktop } = useBreakpoint();
 
+  // 만약 삭제/추가 id를 폼 내부에서 따로 관리한다면 useState로 선언해야 함!
+  const [subImageIdsToRemove, setSubImageIdsToRemove] = useState<number[]>([]);
+  const [scheduleIdsToRemove, setScheduleIdsToRemove] = useState<number[]>([]);
+  const [schedulesToAdd, setSchedulesToAdd] = useState<CreateScheduleBody[]>([]);
+
+  const updateMyActivityMutation = useUpdateMyActivityMutation(activityId);
+  const createActivityMutation = useCreateActivityMutation();
+
+  const methods = useForm<MyActivitiesFormData>({
+    mode: 'onChange',
+    defaultValues,
+  });
+
+  const {
+    handleSubmit,
+    formState: { isValid },
+  } = methods;
+
+  const handleForSubmit = (formData: MyActivitiesFormData) => {
+    const apiPayload = mapToApiPayload(formData, mode, {
+      subImageIdsToRemove,
+      scheduleIdsToRemove,
+      schedulesToAdd,
+    });
+    if (mode === 'edit') {
+      updateMyActivityMutation.mutate(apiPayload);
+    } else {
+      createActivityMutation.mutate(formData);
+    }
+  };
+
   return (
-    <div className='relative flex flex-col gap-[48px] lg:gap-[64px] px-[24px] py-[96px] mb-[300px]'>
-      <div className='flex flex-col gap-[20px]'>
-        <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
-        <div className='w-[160px]'>
-          <UploadImg defaultImage={defaultValues?.bannerImageUrl} />
+    <FormProvider {...methods}>
+      <form
+        id='register-form'
+        onSubmit={handleSubmit(handleForSubmit)}
+        className='relative flex flex-col gap-[48px] lg:gap-[64px] px-[24px] py-[96px] mb-[300px]'
+      >
+        <div className='flex flex-col gap-[20px]'>
+          <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
+          <div className='w-[160px]'>
+            <UploadImg defaultImage={defaultValues?.bannerImageUrl} />
+          </div>
         </div>
-      </div>
-      <div className='flex flex-col gap-[20px]'>
-        <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
-        <UploadImgList defaultImages={defaultValues?.subImageUrls} />
-      </div>
-      <div className='flex flex-col gap-[20px]'>
-        <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
-        <RegisterForm defaultValues={defaultValues} />
-      </div>
-      <RegisterCalendar defaultSchedules={defaultValues?.schedules} />
-      {isDesktop && (
-        <div className='w-[128px] absolute right-[24px] top-full'>
-          <BaseButton variant='primary' className='text-md font-semibold'>
-            {mode === 'edit' ? '수정 하기' : '등록 하기'}
-          </BaseButton>
+        <div className='flex flex-col gap-[20px]'>
+          <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
+          <UploadImgList defaultImages={defaultValues?.subImageUrls} />
         </div>
-      )}
-    </div>
+        <div className='flex flex-col gap-[20px]'>
+          <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
+          <RegisterForm defaultValues={defaultValues} />
+        </div>
+        <RegisterCalendar defaultSchedules={defaultValues?.schedules} />
+        {isDesktop && (
+          <div className='w-[128px] absolute right-[24px] top-full'>
+            <BaseButton
+              type='submit'
+              variant='primary'
+              className='text-md font-semibold'
+              disabled={!isValid}
+            >
+              {mode === 'edit' ? '수정 하기' : '등록 하기'}
+            </BaseButton>
+          </div>
+        )}
+      </form>
+    </FormProvider>
   );
 }

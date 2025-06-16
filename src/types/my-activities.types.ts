@@ -15,17 +15,11 @@ export interface MyActivitiesProps extends RatingLabelProps {
   price: number;
   address?: string;
   bannerImageUrl: string;
+  subImageUrl: string[];
   reviewCount?: number;
   createdAt?: string;
   updatedAt?: string;
 }
-
-// export interface ManagementDropdownProps {
-//   isOpen: boolean;
-//   onToggle: () => void;
-//   onEdit: () => void;
-//   onDelete: () => void;
-// }
 
 export interface ActivitiesPage {
   activities: Activity[];
@@ -64,4 +58,25 @@ export interface MyActivitiesFormData {
   // reviewCount?: number;
   subImageUrls: string[];
   schedules?: Omit<Schedule, 'id'>[];
+}
+
+// PATCH API payload
+export interface UpdateMyActivityPayload {
+  title: string;
+  description: string;
+  category: Category;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  subImageUrlsToAdd: string[];
+  subImageIdsToRemove: number[];
+  schedulesToAdd: CreateScheduleBody[];
+  scheduleIdsToRemove: number[];
+}
+
+// 스케줄 추가용 타입
+export interface CreateScheduleBody {
+  date: string;
+  startTime: string;
+  endTime: string;
 }

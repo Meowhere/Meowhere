@@ -1,8 +1,8 @@
-import { useForm } from 'react-hook-form';
-import Input from '@/src/components/common/inputs/Input';
-import Textarea from '@/src/components/common/inputs/Textarea';
+import { useForm, useFormContext } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Input from '@/src/components/common/inputs/Input';
+import Textarea from '@/src/components/common/inputs/Textarea';
 import PostAddress from './PostAddress';
 import RegisterCategory from './RegisterCategory';
 import { DaumPostcodeData } from '@/src/types/my-activities.types';
@@ -57,7 +57,7 @@ export default function RegisterForm({ defaultValues }: RegisterFormProps) {
   };
 
   return (
-    <form className='flex flex-col gap-[20px]' onSubmit={handleSubmit(onSubmit)}>
+    <div className='flex flex-col gap-[20px]' onSubmit={handleSubmit(onSubmit)}>
       <Input
         label='제목'
         type='text'
@@ -100,6 +100,6 @@ export default function RegisterForm({ defaultValues }: RegisterFormProps) {
         scrollable={false}
         autoResize={true}
       />
-    </form>
+    </div>
   );
 }
