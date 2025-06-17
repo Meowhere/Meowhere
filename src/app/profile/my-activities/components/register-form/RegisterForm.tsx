@@ -1,68 +1,32 @@
 import { useForm, useFormContext } from 'react-hook-form';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+// import * as z from 'zod';
+// import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '@/src/components/common/inputs/Input';
 import Textarea from '@/src/components/common/inputs/Textarea';
 import PostAddress from './PostAddress';
 import RegisterCategory from './RegisterCategory';
 import { DaumPostcodeData } from '@/src/types/my-activities.types';
 
-interface RegisterFormProps {
-  defaultValues?: {
-    title?: string;
-    price?: number;
-    category?: string;
-    description?: string;
-    address?: string;
-  };
-}
-
-const formSchema = z.object({
-  title: z.string().min(3, '3자 이상 입력하세요.'),
-  category: z.string().nonempty('카테고리를 선택해주세요'),
-  price: z.string().regex(/^\d+$/, '숫자만 입력 가능합니다.').nonempty('가격을 입력해주세요'),
-  description: z.string().min(10, '10자 이상 입력하세요.').max(700, '700자 이하로 입력하세요.'),
-  address: z.string().nonempty('주소를 입력하세요'),
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
-export default function RegisterForm({ defaultValues }: RegisterFormProps) {
+export default function RegisterForm() {
   const {
     register,
-    handleSubmit,
     watch,
     setValue,
     formState: { errors },
-  } = useForm<FormValues>({
-    mode: 'onChange',
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: defaultValues?.title ?? '',
-      price: defaultValues?.price ? String(defaultValues.price) : '',
-      category: defaultValues?.category ?? '',
-      description: defaultValues?.description ?? '',
-      address: defaultValues?.address ?? '',
-    },
-  });
+  } = useFormContext();
 
   const titleValue = watch('title', '');
   const priceValue = watch('price', '');
   const descriptionValue = watch('description', '');
   const addressValue = watch('address');
 
-  // 폼 제출 핸들러
-  const onSubmit = (data: FormValues) => {
-    alert(JSON.stringify(data, null, 2));
-  };
-
   return (
-    <div className='flex flex-col gap-[20px]' onSubmit={handleSubmit(onSubmit)}>
+    <div className='flex flex-col gap-[20px]'>
       <Input
         label='제목'
         type='text'
         {...register('title')}
-        error={errors.title}
+        error={errors.title as any} // type error 계속 발생. 추후 해결
         watchValue={titleValue}
         required
       />
@@ -82,7 +46,7 @@ export default function RegisterForm({ defaultValues }: RegisterFormProps) {
           },
           setValueAs: (v) => v.replace(/,/g, ''), // 폼 데이터는 콤마 제거
         })}
-        error={errors.price}
+        error={errors.price as any}
         watchValue={priceValue ? priceValue?.toLocaleString() : ''}
         required
       />
@@ -90,11 +54,11 @@ export default function RegisterForm({ defaultValues }: RegisterFormProps) {
         name='address'
         value={addressValue}
         onChange={(value: string, data?: DaumPostcodeData) => setValue('address', value)}
-        error={errors.address?.message}
+        error={errors.address?.message as any}
       />
       <Textarea
         {...register('description')}
-        error={errors.description}
+        error={errors.description as any}
         watchValue={descriptionValue}
         required
         scrollable={false}

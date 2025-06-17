@@ -80,3 +80,14 @@ export interface CreateScheduleBody {
   startTime: string;
   endTime: string;
 }
+
+export interface ActivityFormValues {
+  title: string;
+  description: string;
+  category: string; // 사용자는 문자열로 선택함!
+  price: string; // 사용자는 문자열로 입력!
+  address: string;
+  bannerImageUrl: string;
+  subImageUrls: string[];
+  schedules?: Omit<Schedule, 'id'>[];
+}

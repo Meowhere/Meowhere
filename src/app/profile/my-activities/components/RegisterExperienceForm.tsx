@@ -11,6 +11,22 @@ import { mapToApiPayload } from '@/src/utils/my-activities';
 import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
 import { useCreateActivityMutation } from '@/src/hooks/useCreateActivityMutation';
 import { useState } from 'react';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Category } from '@/src/types/activity.types';
+
+const formSchema = z.object({
+  title: z.string().min(3, '3자 이상 입력하세요.'),
+  category: z.string().nonempty('카테고리를 선택해주세요'),
+  price: z.string().regex(/^\d+$/, '숫자만 입력 가능합니다.').nonempty('가격을 입력해주세요'),
+  description: z.string().min(10, '10자 이상 입력하세요.').max(700, '700자 이하로 입력하세요.'),
+  address: z.string().nonempty('주소를 입력하세요'),
+  bannerImageUrl: z.string().url('이미지 URL이 필요합니다.').optional(),
+  subImageUrls: z.array(z.string().url('이미지 URL이 필요합니다.')).optional(),
+  schedules: z.array(z.any()).optional(),
+});
+
+type ActivityFormValues = z.infer<typeof formSchema>;
 interface RegisterExperienceFormProps {
   mode: 'edit' | 'create';
   defaultValues?: MyActivitiesFormData;
@@ -34,9 +50,19 @@ export default function RegisterExperienceForm({
   const updateMyActivityMutation = useUpdateMyActivityMutation(activityId);
   const createActivityMutation = useCreateActivityMutation();
 
-  const methods = useForm<MyActivitiesFormData>({
+  const methods = useForm<ActivityFormValues>({
     mode: 'onChange',
-    defaultValues,
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: defaultValues?.title ?? '',
+      price: defaultValues?.price ? String(defaultValues.price) : '',
+      category: defaultValues?.category ?? '문화 · 예술',
+      description: defaultValues?.description ?? '',
+      address: defaultValues?.address ?? '',
+      bannerImageUrl: defaultValues?.bannerImageUrl ?? '',
+      subImageUrls: defaultValues?.subImageUrls ?? [],
+      schedules: defaultValues?.schedules ?? [],
+    },
   });
 
   const {
@@ -44,8 +70,17 @@ export default function RegisterExperienceForm({
     formState: { isValid },
   } = methods;
 
-  const handleForSubmit = (formData: MyActivitiesFormData) => {
-    const apiPayload = mapToApiPayload(formData, mode, {
+  const Submit = (formData: ActivityFormValues) => {
+    alert(JSON.stringify(formData, null, 2));
+    const baseForm: MyActivitiesFormData = {
+      ...formData,
+      price: Number(formData.price),
+      category: formData.category as Category,
+      bannerImageUrl: formData.bannerImageUrl ?? '',
+      subImageUrls: formData.subImageUrls ?? [],
+      schedules: formData.schedules ?? [],
+    };
+    const apiPayload = mapToApiPayload(baseForm, mode, {
       subImageIdsToRemove,
       scheduleIdsToRemove,
       schedulesToAdd,
@@ -53,7 +88,7 @@ export default function RegisterExperienceForm({
     if (mode === 'edit') {
       updateMyActivityMutation.mutate(apiPayload);
     } else {
-      createActivityMutation.mutate(formData);
+      createActivityMutation.mutate(baseForm);
     }
   };
 
@@ -61,7 +96,7 @@ export default function RegisterExperienceForm({
     <FormProvider {...methods}>
       <form
         id='register-form'
-        onSubmit={handleSubmit(handleForSubmit)}
+        onSubmit={handleSubmit(Submit)}
         className='relative flex flex-col gap-[48px] lg:gap-[64px] px-[24px] py-[96px] mb-[300px]'
       >
         <div className='flex flex-col gap-[20px]'>
@@ -76,7 +111,7 @@ export default function RegisterExperienceForm({
         </div>
         <div className='flex flex-col gap-[20px]'>
           <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
-          <RegisterForm defaultValues={defaultValues} />
+          <RegisterForm />
         </div>
         <RegisterCalendar defaultSchedules={defaultValues?.schedules} />
         {isDesktop && (
@@ -85,7 +120,7 @@ export default function RegisterExperienceForm({
               type='submit'
               variant='primary'
               className='text-md font-semibold'
-              disabled={!isValid}
+              // disabled={!isValid}
             >
               {mode === 'edit' ? '수정 하기' : '등록 하기'}
             </BaseButton>

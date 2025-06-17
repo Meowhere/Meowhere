@@ -32,7 +32,7 @@ export interface SubImage {
 export interface ActivityFormData {
   title: string;
   description: string;
-  category: string;
+  category: Category;
   price: number;
   address: string;
   bannerImageUrl: string;
