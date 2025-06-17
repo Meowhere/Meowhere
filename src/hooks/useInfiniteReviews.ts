@@ -1,41 +1,56 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchFromClient } from '../lib/fetch/fetchFromClient';
-import { GetReviewsResponse } from '../types/review.type';
+import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
+import { Review } from '@/src/types/review.type';
 
-const PAGE_SIZE = 4;
+interface InfiniteReviewsPage {
+  reviews: Review[];
+  averageRating: number;
+  totalCount: number;
+  hasNext: boolean;
+  page: number;
+  size: number;
+}
 
-export const useInfiniteReviews = (activityId: number) => {
+interface UseInfiniteReviewsParams {
+  size?: number;
+}
+
+export function useInfiniteReviews(activityId: number, params: UseInfiniteReviewsParams = {}) {
+  const { size = 10 } = params;
+
   return useInfiniteQuery({
-    queryKey: ['reviews', activityId],
+    queryKey: ['reviews', 'infinite', activityId, size],
     queryFn: async ({ pageParam = 0 }) => {
-      const page = pageParam + 1;
+      const searchParams = new URLSearchParams({
+        page: pageParam.toString(),
+        size: size.toString(),
+      });
 
       const res = await fetchFromClient(
-        `/activities/${activityId}/reviews?page=${page}&size=${PAGE_SIZE}`
+        `/activities/${activityId}/reviews?${searchParams.toString()}`
       );
 
-      const data: GetReviewsResponse = await res.json().catch(() => ({
-        reviews: [],
-        totalCount: 0,
-      }));
+      if (!res.ok) {
+        throw new Error('Failed to fetch reviews');
+      }
 
-      const hasNext = page * PAGE_SIZE < data.totalCount;
+      const data = await res.json();
 
       return {
-        reviews: data.reviews,
-        nextPage: hasNext ? pageParam + 1 : undefined,
-        hasMore: hasNext,
-      };
+        reviews: Array.isArray(data.reviews) ? data.reviews : [],
+        averageRating: data.averageRating ?? 0,
+        totalCount: data.totalCount ?? 0,
+        hasNext: data.hasNext ?? false,
+        page: pageParam,
+        size: size,
+      } as InfiniteReviewsPage;
     },
     getNextPageParam: (lastPage) => {
-      if (!lastPage || !lastPage.reviews) {
-        return undefined;
-      }
-      return lastPage.nextPage;
+      return lastPage.hasNext ? lastPage.page + 1 : undefined;
     },
     initialPageParam: 0,
-    retry: (failureCount, error) => {
-      return failureCount < 3;
-    },
+    enabled: !!activityId,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
-};
+}
