@@ -23,7 +23,6 @@ import ReviewSection from './review/ReviewSection';
 import ReservationBox from './reservation/ReservationBox';
 import KakaoShareButton from '@/src/components/common/buttons/KakaoShareButton';
 
-
 import { DROPDOWN_ITEM_TYPES, POST_ACTION_LABELS } from '@/src/constants/dropdown';
 import { deleteActivity } from '@/src/services/myActivityService';
 
@@ -32,7 +31,6 @@ import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import { Review } from '@/src/types/review.type';
 import { useToastStore } from '@/src/store/toastStore';
 import { fadeInUp, slideLeft, slideRight } from '@/src/lib/animation/variants';
-
 
 interface Props {
   activity: Activity;
@@ -44,7 +42,6 @@ interface Props {
   };
   showLikeButton?: boolean;
 }
-
 
 export default function ExperienceResponsiveLayout({
   activity,
@@ -222,7 +219,7 @@ export default function ExperienceResponsiveLayout({
   // 모바일 & 태블릿
   return (
     <motion.div
-      className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'
+      className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px] flex flex-col gap-[48px]'
       variants={fadeInUp}
       initial='initial'
       animate='animate'
@@ -231,32 +228,47 @@ export default function ExperienceResponsiveLayout({
         bannerImageUrl={activity.bannerImageUrl}
         subImages={activity.subImages}
       />
-      <ExperienceSummarySection
-        category={activity.category}
-        title={activity.title}
-        rating={activity.rating?.toFixed(1) ?? '0.0'}
-        reviewCount={activity.reviewCount}
-        address={activity.address}
-      />
-      <div className='flex flex-row gap-[24px] items-center justify-center top-[2px] right-[2px] cursor-pointer'>
-        <KakaoShareButton size={22} activity={activity} />
-        {showLikeButton && (
-          <HeartButton
-            isLiked={isFavorite(activity.id)}
-            onToggle={() => toggleFavorite(activity)}
-            className='w-[22px] h-[22px] cursor-pointer text-gray-600'
-          />
-        )}
+
+      <div className='flex flex-col gap-[24px]'>
+        <ExperienceSummarySection
+          category={activity.category}
+          title={activity.title}
+          rating={activity.rating?.toFixed(1) ?? '0.0'}
+          reviewCount={activity.reviewCount}
+          address={activity.address}
+        />
+        <div className='flex flex-row gap-[24px] items-center justify-center top-[2px] right-[2px] cursor-pointer'>
+          <KakaoShareButton size={22} activity={activity} />
+          {showLikeButton && (
+            <HeartButton
+              isLiked={isFavorite(activity.id)}
+              onToggle={() => toggleFavorite(activity)}
+              className='w-[22px] h-[22px] cursor-pointer text-gray-600'
+            />
+          )}
+        </div>
       </div>
+
       <Divider />
-      <SectionTitle title='만나는 곳' subtitle={activity.address} />
-      <ExperienceLocationMap address={activity.address} />
+
+      <div className='flex flex-col gap-[24px]'>
+        <SectionTitle title='만나는 곳' subtitle={activity.address} />
+        <ExperienceLocationMap address={activity.address} />
+      </div>
+
       <Divider />
-      <SectionTitle title='체험 설명' />
-      <ExperienceDescription description={activity.description} />
+
+      <div className='flex flex-col gap-[24px]'>
+        <SectionTitle title='체험 설명' />
+        <ExperienceDescription description={activity.description} />
+      </div>
+
       <Divider />
-      <SectionTitle title='후기' />
-      {renderReviewSection}
+
+      <div className='flex flex-col gap-[24px]'>
+        <SectionTitle title='후기' />
+        {renderReviewSection}
+      </div>
 
       {user && user.id !== activity.userId && (
         <ReservationBox
