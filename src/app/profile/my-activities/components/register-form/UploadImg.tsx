@@ -1,16 +1,26 @@
+import { useUploadActivityImageMutation } from '@/src/hooks/useUploadActivityImageMutation';
 import Image from 'next/image';
 import { useRef, useState, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 interface UploadImgProps {
   file?: File | null;
   defaultImage?: string;
+  isBanner?: boolean;
   onFileChange?: (file: File | null) => void;
 }
 
-export default function UploadImg({ file: fileProp, defaultImage, onFileChange }: UploadImgProps) {
+export default function UploadImg({
+  file: fileProp,
+  defaultImage,
+  isBanner = false,
+  onFileChange,
+}: UploadImgProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(fileProp ?? null);
   const [preview, setPreview] = useState<string | null>(defaultImage ?? null);
+  const uploadActivityImage = useUploadActivityImageMutation();
+  const { setValue } = useFormContext();
 
   useEffect(() => {
     if (fileProp !== undefined) setFile(fileProp);
@@ -22,9 +32,9 @@ export default function UploadImg({ file: fileProp, defaultImage, onFileChange }
       reader.onloadend = () => setPreview(reader.result as string);
       reader.readAsDataURL(file);
     } else {
-      setPreview(null);
+      setPreview(defaultImage ?? null);
     }
-  }, [file]);
+  }, [file, defaultImage]);
 
   const handleDivClick = () => {
     inputRef.current?.click();
@@ -32,8 +42,29 @@ export default function UploadImg({ file: fileProp, defaultImage, onFileChange }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFile = e.target.files?.[0] ?? null;
-    if (onFileChange) onFileChange(newFile);
-    else setFile(newFile);
+    setFile(newFile);
+    onFileChange?.(newFile);
+
+    if (newFile && isBanner) {
+      uploadActivityImage.mutate(
+        { file: newFile },
+        {
+          onSuccess: (url) => {
+            setValue('bannerImageUrl', url);
+            setPreview(url);
+          },
+        }
+      );
+    }
+  };
+
+  const handleDelete = () => {
+    setFile(null);
+    setPreview(null);
+    onFileChange?.(null);
+    if (isBanner) {
+      setValue('bannerImageUrl', '');
+    }
   };
 
   return (
@@ -52,11 +83,7 @@ export default function UploadImg({ file: fileProp, defaultImage, onFileChange }
             width={24}
             height={24}
             className='absolute top-[8px] right-[8px] cursor-pointer'
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onFileChange) onFileChange(null);
-              else setFile(null);
-            }}
+            onClick={handleDelete}
           />
         </div>
       ) : (

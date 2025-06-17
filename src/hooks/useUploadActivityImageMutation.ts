@@ -8,25 +8,37 @@ async function uploadActivityImage({ file }: { file: File }) {
   const formData = new FormData();
   formData.append('image', file);
 
-  // teamId를 path에 포함 (swagger 기준)
   const res = await fetchFromClient(`/activities/image`, {
     method: 'POST',
     body: formData,
-    // fetchFromClient가 content-type을 자동 설정하지 않도록 header X
-    // 인증 필요하면 credentials: 'include' 옵션 활용
   });
 
-  // 응답 json 파싱
-  const data = await res.json();
-  if (!data.activityImgUrl) {
-    throw new Error('activityImgUrl이 응답에 없습니다');
+  if (!res.ok) {
+    throw new Error('이미지 업로드에 실패했습니다.');
   }
-  return data.activityImgUrl as string;
+
+  const data = await res.json();
+
+  // 응답 구조 로깅 (개발 환경에서만)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('이미지 업로드 응답:', data);
+  }
+
+  // API 응답의 activityImageUrl 키를 사용
+  const imageUrl = data.activityImageUrl;
+  if (!imageUrl) {
+    throw new Error('이미지 URL을 받아올 수 없습니다.');
+  }
+
+  return imageUrl;
 }
 
 // 커스텀 뮤테이션 훅
 export function useUploadActivityImageMutation() {
   return useMutation({
     mutationFn: uploadActivityImage,
+    onError: (error: Error) => {
+      console.error('이미지 업로드 에러:', error);
+    },
   });
 }
