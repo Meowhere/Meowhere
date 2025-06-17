@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
@@ -50,7 +50,7 @@ export default function ExperienceResponsiveLayout({
   activity,
   schedules,
   reviews,
-  showLikeButton,
+  showLikeButton = true,
 }: Props) {
   const { isDesktop } = useBreakpoint();
   const { data: user } = useUser();
@@ -95,14 +95,6 @@ export default function ExperienceResponsiveLayout({
     title: activity.title,
     backAction: () => router.back(),
     rightButtons: [
-      !!showLikeButton && (
-        <LikeIcon
-          showOverlay
-          isFilled={isFavorite(activity.id)}
-          onClick={handleLikeClick}
-          className='w-[32px] h-[32px] text-white cursor-pointer'
-        />
-      ),
       !isDesktop && isOwner && (
         <div key='kebab-mobile' className='relative'>
           <ActivityDropdown
@@ -160,7 +152,14 @@ export default function ExperienceResponsiveLayout({
             initial='initial'
             animate='animate'
           >
-            <div className='flex flex-row gap-[8px] absolute top-[2px] right-[2px] z-10 cursor-pointer'>
+            <div className='flex flex-row gap-[8px] absolute items-center justify-center top-[2px] right-[2px] z-10 cursor-pointer'>
+              {showLikeButton && (
+                <HeartButton
+                  isLiked={isFavorite(activity.id)}
+                  onToggle={() => toggleFavorite(activity)}
+                  className='w-[32px] h-[32px] cursor-pointer text-gray-600'
+                />
+              )}
               <KakaoShareButton size={24} activity={activity} />
               {isOwner && (
                 <ActivityDropdown
@@ -231,9 +230,6 @@ export default function ExperienceResponsiveLayout({
         bannerImageUrl={activity.bannerImageUrl}
         subImages={activity.subImages}
       />
-      <div className='flex flex-row mt-[8px] gap-[8px] justify-end'>
-        <KakaoShareButton size={24} activity={activity} />
-      </div>
       <ExperienceSummarySection
         category={activity.category}
         title={activity.title}
@@ -241,6 +237,16 @@ export default function ExperienceResponsiveLayout({
         reviewCount={activity.reviewCount}
         address={activity.address}
       />
+      <div className='flex flex-row gap-[24px] items-center justify-center top-[2px] right-[2px] cursor-pointer'>
+        <KakaoShareButton size={22} activity={activity} />
+        {showLikeButton && (
+          <HeartButton
+            isLiked={isFavorite(activity.id)}
+            onToggle={() => toggleFavorite(activity)}
+            className='w-[22px] h-[22px] cursor-pointer text-gray-600'
+          />
+        )}
+      </div>
       <Divider />
       <SectionTitle title='만나는 곳' subtitle={activity.address} />
       <ExperienceLocationMap address={activity.address} />
