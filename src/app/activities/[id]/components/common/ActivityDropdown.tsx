@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface Props {
   dropdownItems: DropdownItemButton[];
@@ -13,14 +14,13 @@ interface Props {
 
 export default function ActivityDropdown({ dropdownItems, bottomSheetTitle, trigger }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const { isMobile } = useBreakpoint();
 
   useEffect(() => {
     const close = () => setIsOpen(false);
     if (isOpen) document.addEventListener('click', close);
     return () => document.removeEventListener('click', close);
   }, [isOpen]);
-
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
 
   return (
     <div className='relative z-50' onClick={(e) => e.stopPropagation()}>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useMemo, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
@@ -65,6 +65,15 @@ export default function ExperienceResponsiveLayout({
   const handleLikeClick = () => {
     toggleFavorite(activity);
   };
+  const handleDeleteActivity = useCallback(async () => {
+    try {
+      await deleteActivity(activity.id);
+      showToast('success', '삭제되었습니다.');
+      router.push('/');
+    } catch {
+      showToast('error', '삭제에 실패했습니다.');
+    }
+  }, [activity.id, router, showToast]);
 
   const dropdownItems = useMemo(
     () => [
@@ -77,15 +86,7 @@ export default function ExperienceResponsiveLayout({
         type: DROPDOWN_ITEM_TYPES.BUTTON,
         label: POST_ACTION_LABELS.DELETE,
         isDanger: true,
-        onClick: async () => {
-          try {
-            await deleteActivity(activity.id);
-            showToast('success', '삭제되었습니다.');
-            router.push('/');
-          } catch {
-            showToast('error', '삭제에 실패했습니다.');
-          }
-        },
+        onClick: handleDeleteActivity,
       },
     ],
     [activity.id, router, showToast]
