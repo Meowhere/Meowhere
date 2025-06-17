@@ -12,7 +12,7 @@ export default function Toast() {
   return (
     <AnimatePresence>
       {isVisible && (
-        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-start mt-[10px] z-[102] pointer-events-none'>
+        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-start mt-[10px] z-[999] pointer-events-none'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
