@@ -30,6 +30,7 @@ import { Activity } from '@/src/types/activity.types';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import { Review } from '@/src/types/review.type';
 import { useToastStore } from '@/src/store/toastStore';
+import { fadeInUp, slideLeft, slideRight } from '@/src/lib/animation/variants';
 
 interface Props {
   activity: Activity;
@@ -41,21 +42,6 @@ interface Props {
   };
   showLikeButton?: boolean;
 }
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 40 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-const slideLeft = {
-  initial: { opacity: 0, x: -40 },
-  animate: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-};
-
-const slideRight = {
-  initial: { opacity: 0, x: 40 },
-  animate: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-};
 
 export default function ExperienceResponsiveLayout({
   activity,
