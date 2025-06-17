@@ -10,7 +10,7 @@ interface Props {
   trigger: React.ReactNode;
 }
 
-export default function DropdownRightAligned({ dropdownItems, bottomSheetTitle, trigger }: Props) {
+export default function ActivityDropdown({ dropdownItems, bottomSheetTitle, trigger }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
