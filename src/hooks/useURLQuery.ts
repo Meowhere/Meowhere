@@ -23,7 +23,7 @@ export function useURLQuery(): QueryUpdater {
 
     const params = new URLSearchParams(searchParams.toString());
     params.set(key, value);
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   // 현재 페이지의 특정 쿼리 제거
@@ -32,7 +32,7 @@ export function useURLQuery(): QueryUpdater {
 
     const params = new URLSearchParams(searchParams.toString());
     params.delete(key);
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   // 여러 쿼리 동시 업데이트
@@ -45,11 +45,11 @@ export function useURLQuery(): QueryUpdater {
 
       params.set(key, value);
     });
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const resetQueries = () => {
-    router.push(`${pathname}`);
+    router.push(`${pathname}`, { scroll: false });
   };
 
   return { updateQuery, removeQuery, updateMultipleQueries, resetQueries };

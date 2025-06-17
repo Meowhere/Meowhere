@@ -1,9 +1,20 @@
-import { fetchFromClient } from '../lib/fetch/fetchFromClient';
 import { Activity, Category } from '../types/activity.types';
 import PopularActivitiesBanner from './_components/PopularActivitiesBanner';
 import ActivityList from './_components/ActivityList';
 import DesktopSearchFilters from '../components/layout/navbar/desktop/DesktopSearchFilters';
 import DesktopCategorySection from '../components/layout/navbar/desktop/DesktopCategorySection';
+import { Suspense } from 'react';
+
+export async function generateStaticParams() {
+  const categories: Category[] = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
+
+  return [
+    {},
+    ...categories.map((category) => ({
+      category,
+    })),
+  ];
+}
 
 export default async function Home({
   searchParams: searchParamsPromise,
@@ -27,7 +38,27 @@ export default async function Home({
     ...(keyword && { keyword }),
   });
 
-  const activitiesResponse = await fetchFromClient(`/activities?${params.toString()}`);
+  const fetchOptions: RequestInit = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  if (!keyword) {
+    fetchOptions.next = {
+      revalidate: 300,
+      tags: [`activities-${category || 'all'}`],
+    };
+  }
+
+  const activitiesResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API_URL}/activities?${params.toString()}`,
+    fetchOptions
+  );
+
+  if (!activitiesResponse.ok) {
+    throw new Error(`HTTP 에러: ${activitiesResponse.status}`);
+  }
 
   const activitiesData = await activitiesResponse.json();
 
@@ -41,26 +72,37 @@ export default async function Home({
   );
 
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen bg-white dark:bg-black'>
       <PopularActivitiesBanner />
-      <DesktopSearchFilters isForPage />
-      <DesktopCategorySection />
-      <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
+      <Suspense
+        fallback={
+          <div className='w-full h-[72px] flex justify-center items-center'>
+            <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+          </div>
+        }
+      >
+        <DesktopSearchFilters isForPage />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className='w-full h-[72px] flex justify-center items-center'>
+            <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+          </div>
+        }
+      >
+        <DesktopCategorySection />
+      </Suspense>
+
+      <Suspense
+        fallback={
+          <div className='w-full h-[72px] flex justify-center items-center'>
+            <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+          </div>
+        }
+      >
+        <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
+      </Suspense>
     </div>
   );
 }
-
-// {
-//   "id": 4256,
-//   "userId": 1899,
-//   "title": "테스트 데이터",
-//   "description": "둠칫 둠칫 두둠칫",
-//   "category": "투어",
-//   "price": 10000,
-//   "address": "서울특별시 강남구 테헤란로 427",
-//   "bannerImageUrl": "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/a.png",
-//   "rating": 0,
-//   "reviewCount": 0,
-//   "createdAt": "2025-06-02T23:28:17.145Z",
-//   "updatedAt": "2025-06-02T23:28:17.145Z"
-// },

@@ -5,7 +5,7 @@ import RegisterExperienceForm from '../../components/RegisterExperienceForm';
 import { useCreateActivityMutation } from '@/src/hooks/useCreateActivityMutation';
 import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 
-export default function RegisterPage() {
+export default function EditActivityPage() {
   const router = useRouter();
   const { mutate } = useCreateActivityMutation();
 

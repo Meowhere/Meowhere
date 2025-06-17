@@ -1,21 +1,39 @@
 'use client';
 
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 
 interface ReservationMobileFooterProps {
   pricePerPerson: number;
-  onClickDateSelect: () => void;
+  onClickDateSelect?: () => void;
 }
 
 export default function ReservationMobileFooter({
   pricePerPerson,
   onClickDateSelect,
 }: ReservationMobileFooterProps) {
+  const { isTablet } = useBreakpoint();
+
+  const bottomSpacing = isTablet ? 'bottom-[40px]' : 'bottom-[24px]';
+
   return (
-    <div className='fixed flex justify-center bottom-[24px] left-0 w-full px-4 pb-4 z-50 bg-transparent'>
-      <div className='w-[327px] h-[64px] py-[16px] px-[8px] bg-white rounded-full border border-gray-200 shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)] backdrop-blur-md flex items-center'>
+    <div
+      className={`fixed ${bottomSpacing} left-0 w-full z-[50] flex justify-center px-4 pb-4 pointer-events-none`}
+    >
+      <div
+        className={`
+          pointer-events-auto
+          w-[327px] md:w-[640px]
+          h-[64px] py-[16px] px-[8px]
+          bg-white rounded-full border border-gray-200
+          shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]
+          backdrop-blur-md flex items-center
+        `}
+      >
         <p className='text-lg font-semibold px-[24px] text-gray-800'>
-          ₩ {pricePerPerson.toLocaleString()} <span>/ 인</span>
+          {typeof pricePerPerson === 'number'
+            ? `₩ ${pricePerPerson.toLocaleString()} / 인`
+            : '가격 정보 없음'}
         </p>
         <div className='ml-auto'>
           <BaseButton

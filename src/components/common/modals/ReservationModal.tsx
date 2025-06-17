@@ -8,6 +8,7 @@ import { ModalReservationStatus } from '@/src/types/reservation.types';
 
 import Dropdown from '../dropdowns/Dropdown';
 import MyReservationsModalCard from '@/src/app/profile/my-reservations/components/MyReservationsModalCard';
+import { useEffect } from 'react';
 
 // 모달 열림 -> activityId, date를 이용해 시간대별로 예약 내역 배열 형태로 조회 -> 받아온 데이터에서 scheduleId를 이용하여 해당 시간대에 어떤 사람들이 예약을 했는지 조회
 export default function ReservationModal({ activityId, date }: ReservationModalProps) {
@@ -47,6 +48,13 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
     });
   };
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   return (
     <div className='min-h-[400px]'>
       <section className='flex items-center gap-[6px] py-[12px]'>
@@ -55,7 +63,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
             className={`py-[10px] px-[14px] font-semibold text-[1.3rem] leading-[1.2rem] rounded-[20px] ${
               status === reservationStatus
                 ? 'bg-primary-300 text-white'
-                : 'border border-gray-200 text-gray-600'
+                : 'border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400'
             }`}
             onClick={() => handleReservationStatus(status)}
             key={status}
@@ -66,7 +74,9 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       </section>
       <section className='mt-[24px]'>
         <div>
-          <p className='text-[22px] font-semibold text-gray-800'>{formatDateDot(date, false)}</p>
+          <p className='text-[22px] font-semibold text-gray-800 dark:text-gray-200'>
+            {formatDateDot(date, false)}
+          </p>
         </div>
         <div className='mt-[20px]'>
           <Dropdown

@@ -2,35 +2,42 @@
 
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import ReservationMobileFooter from './ReservationMobileFooter';
-import { useModal } from '@/src/hooks/useModal';
-import { dummySchedule } from '../../data/dummySchedule';
 
 interface ReservationBoxProps {
   pricePerPerson: number;
+  onClick?: () => void;
 }
 
-export default function ReservationBox({ pricePerPerson }: ReservationBoxProps) {
-  const { isMobile, isTablet, hasMounted } = useBreakpoint();
-  const { openScheduleModal } = useModal();
+export default function ReservationBox({ pricePerPerson, onClick }: ReservationBoxProps) {
+  const { isMobile, isTablet, isDesktop, hasMounted } = useBreakpoint();
 
   if (!hasMounted) return null;
 
-  const handleOpenDateModal = () => {
-    openScheduleModal({
-      price: dummySchedule.price,
-      schedules: dummySchedule.schedules,
-    });
-  };
+  return (
+    <>
+      {(isMobile || isTablet) && (
+        <ReservationMobileFooter pricePerPerson={pricePerPerson} onClickDateSelect={onClick} />
+      )}
 
-  // 모바일 또는 태블릿일 때만 하단 예약 UI 표시
-  if (isMobile || isTablet) {
-    return (
-      <ReservationMobileFooter
-        pricePerPerson={pricePerPerson}
-        onClickDateSelect={handleOpenDateModal}
-      />
-    );
-  }
+      {isDesktop && (
+        <div className='w-full px-[8px] pt-[8px]'>
+          <div className='flex justify-between items-center'>
+            <p className='text-[18px] font-bold text-gray-900'>
+              {typeof pricePerPerson === 'number'
+                ? `₩${pricePerPerson.toLocaleString()}`
+                : '가격 정보 없음'}
+              <span className='font-normal text-[16px]'>/ 인</span>
+            </p>
 
-  return null;
+            <button
+              onClick={onClick}
+              className='bg-primary-300 text-white px-[20px] py-[10px] rounded-full text-md font-semibold'
+            >
+              일정 선택
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }

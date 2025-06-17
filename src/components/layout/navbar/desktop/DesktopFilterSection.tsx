@@ -1,6 +1,6 @@
+import { motion } from 'framer-motion';
 import PlaceFilter from '../components/PlaceFilter';
 import PriceFilter from '../components/PriceFilter';
-import { motion } from 'framer-motion';
 
 export default function DesktopFilterSection({
   openedSearchSection,
@@ -19,8 +19,8 @@ export default function DesktopFilterSection({
 
   return (
     <motion.div
-      className='absolute w-[512px] origin-center overflow-hidden rounded-[40px] top-[72px] gnb-shadow bg-white'
-      initial={{ x: '-50%' }}
+      className='absolute w-[512px] origin-center overflow-hidden rounded-[40px] top-[72px] gnb-shadow bg-white dark:bg-gray-800'
+      initial={{ x: '-50%', width: '0px', height: '0px' }}
       animate={{
         x:
           openedSearchSection == 'place'

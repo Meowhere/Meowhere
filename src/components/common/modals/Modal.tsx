@@ -206,7 +206,8 @@ const Modal = () => {
     return createPortal(
       <div
         className={clsx(
-          'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-[96px] lg:pt-0',
+          'fixed inset-0 z-[101] flex items-center justify-center bg-black/50 backdrop-blur-sm pt-[96px] lg:pt-0',
+          'dark:bg-black/70',
           isClosing ? 'animate-out fade-out-0 duration-300' : 'animate-in fade-in-0 duration-300'
         )}
         onClick={handleBackdropClick}
@@ -215,7 +216,7 @@ const Modal = () => {
         <div
           className={clsx(
             'relative w-full h-full flex flex-col lg:max-w-[480px] lg:h-auto lg:rounded-[20px] focus:outline-none',
-            'rounded-t-[20px] bg-white p-[24px] shadow-lg text-lg',
+            'rounded-t-[20px] bg-white dark:bg-gray-800 p-[24px] shadow-lg text-lg',
             isDragging ? 'transition-none' : 'transition-transform',
             isClosing
               ? 'animate-out max-lg:slide-out-to-bottom duration-300 lg:fade-out-0 lg:zoom-out-95'
@@ -240,7 +241,10 @@ const Modal = () => {
               onTouchStart={handleDragHandleTouchStart}
               onMouseDown={handleDragHandleMouseDown}
             >
-              <h2 id={modalTitleId} className='font-medium text-lg text-gray-800'>
+              <h2
+                id={modalTitleId}
+                className='font-medium text-lg text-gray-800 dark:text-gray-200'
+              >
                 {modalProps.header}
               </h2>
               <CloseButton onClick={handleClose} className='absolute right-0' size='sm' />
@@ -250,7 +254,7 @@ const Modal = () => {
           {/* Content */}
           <div
             id={modalId}
-            className='flex flex-col text-gray-700 flex-grow overflow-auto'
+            className='flex flex-col text-gray-700 dark:text-gray-300 flex-grow overflow-auto'
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
@@ -279,7 +283,7 @@ const Modal = () => {
         className={clsx(
           'fixed bottom-0 left-0 right-0 w-full focus:outline-none text-lg',
           'animate-in slide-in-from-bottom duration-300',
-          'rounded-t-[12px] bg-white/70 backdrop-blur-xl rounded-[12px] border border-white/20 shadow-2xl',
+          'rounded-t-[12px] bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-[12px] border border-white/20 dark:border-gray-700/20 shadow-2xl',
           getHeightClasses(modalProps.height),
           isDragging ? 'transition-none' : 'transition-transform'
         )}
@@ -302,7 +306,7 @@ const Modal = () => {
           role='button'
           tabIndex={0}
         >
-          <div className='h-1 w-[90px] rounded-full bg-white' />
+          <div className='h-1 w-[90px] rounded-full bg-white dark:bg-gray-400' />
         </div>
 
         {/* Header */}
@@ -313,7 +317,7 @@ const Modal = () => {
             </h2>
             <button
               onClick={handleClose}
-              className='rounded-sm p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='rounded-sm p-1 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
               aria-label='시트 닫기'
               type='button'
             >
@@ -325,7 +329,7 @@ const Modal = () => {
         {/* Content */}
         <div
           id={modalId}
-          className='px-[24px] pb-[24px] text-gray-700 overflow-y-auto'
+          className='px-[24px] pb-[24px] text-gray-700 dark:text-gray-300 overflow-y-auto'
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >

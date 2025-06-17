@@ -1,62 +1,70 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import KebabButton from '@/src/components/common/buttons/KebabButton';
+import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
+import { DropdownItemButton } from '@/src/types/dropdown.types';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { useConfirmModal } from '@/src/hooks/useConfirmModal';
+import { useDeleteActivity } from '@/src/hooks/useDeleteActivity';
 interface ManagementDropdownProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onEdit: () => void;
-  onDelete: () => void;
-  isDesktop?: boolean;
+  title: string; // 체험 이름
+  activityId: number | string; // 체험 항목 id
 }
 
-export default function ManagementDropdown({
-  isOpen,
-  onClose,
-  onEdit,
-  onDelete,
-  isDesktop,
-}: ManagementDropdownProps) {
-  if (!isOpen) return null;
+export default function ManagementDropdown({ title, activityId }: ManagementDropdownProps) {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const { isDesktop } = useBreakpoint();
 
-  // 데스크탑: 드롭다운, 모바일: 모달 등 분기
-  if (isDesktop) {
-    return (
-      <div className='absolute top-full right-0 mt-2 w-32 bg-white border border-gray-200 rounded-xl shadow-xl z-30 overflow-hidden'>
-        <button
-          className='w-full text-sm text-gray-800 px-4 py-3 text-center hover:bg-gray-100'
-          onClick={onEdit}
-        >
-          수정하기
-        </button>
-        <button
-          className='w-full text-sm text-red-500 px-4 py-3 text-center hover:bg-gray-100'
-          onClick={onDelete}
-        >
-          삭제
-        </button>
-      </div>
-    );
-  }
+  const { openConfirmModal, ConfirmModal } = useConfirmModal();
+  const { mutate } = useDeleteActivity();
 
-  // 모바일: 모달(예시)
+  const items: DropdownItemButton[] = [
+    {
+      label: '수정하기',
+      onClick: () => {
+        router.push(`/profile/my-activities/${activityId}/edit`);
+        setOpen(false);
+      },
+    },
+    {
+      label: '삭제',
+      isDanger: true,
+      onClick: () => {
+        openConfirmModal({
+          message: '삭제할까요?',
+          confirmText: '삭제',
+          onConfirm: () => {
+            mutate(activityId);
+          },
+        });
+        setOpen(false);
+      },
+    },
+  ];
+
+
   return (
-    <div className='fixed inset-0 z-50 flex items-end bg-black/30' onClick={onClose}>
-      <div className='w-full bg-white rounded-t-xl p-4' onClick={(e) => e.stopPropagation()}>
-        <button
-          className='w-full text-sm text-gray-800 px-4 py-3 text-center hover:bg-gray-100'
-          onClick={onEdit}
-        >
-          수정하기
-        </button>
-        <button
-          className='w-full text-sm text-red-500 px-4 py-3 text-center hover:bg-gray-100'
-          onClick={onDelete}
-        >
-          삭제
-        </button>
-        <button className='w-full text-sm text-gray-500 px-4 py-3 text-center' onClick={onClose}>
-          닫기
-        </button>
-      </div>
+    <div className='relative'>
+      <KebabButton size={24} onToggle={() => setOpen((prev) => !prev)} />
+      {open && (
+        <div className='absolute right-0 top-[24px] z-10'>
+          <DropdownMenu
+            items={items}
+            bottomSheetTitle={title}
+            isMobile={!isDesktop}
+            onClose={() => setOpen(false)}
+            bottomButton={{
+              label: '취소',
+              onClick: () => {
+                setOpen(false);
+              },
+            }}
+          />
+        </div>
+      )}
+      <ConfirmModal />
+
     </div>
   );
 }

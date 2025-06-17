@@ -1,0 +1,126 @@
+.reservation-calendar-picker .react-calendar {
+  width: 100%;
+  border: none;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #1f2937;
+}
+
+/* 요일 (일~토) */
+.reservation-calendar-picker .react-calendar__month-view__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.reservation-calendar-picker .react-calendar__month-view__weekdays__weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.reservation-calendar-picker .react-calendar__month-view__weekdays abbr {
+  text-decoration: none;
+}
+
+/* 일요일: 빨간색 */
+.reservation-calendar-picker .react-calendar__month-view__weekdays__weekday:nth-child(1) abbr {
+  color: red;
+}
+/* 토요일: 파란색 */
+.reservation-calendar-picker .react-calendar__month-view__weekdays__weekday:nth-child(7) abbr {
+  color: blue;
+}
+
+/* 날짜 그리드 */
+.reservation-calendar-picker .react-calendar__month-view__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+/* 날짜 셀 */
+.reservation-calendar-picker .react-calendar__tile {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  transition: none;
+}
+
+/* 날짜 텍스트 */
+.reservation-calendar-picker .react-calendar__tile abbr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #111827;
+}
+
+/* 오늘 날짜 (선택되지 않은 상태) */
+.reservation-calendar-picker .react-calendar__tile--now abbr {
+  border: 2px solid #ffa67a;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+/* 선택된 날짜 */
+.reservation-calendar-picker .react-calendar__tile--active {
+  background: transparent !important;
+}
+.reservation-calendar-picker .react-calendar__tile--active abbr {
+  background: #ff5500 !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+/* 오늘 + 선택됨 */
+.reservation-calendar-picker .react-calendar__tile--now.react-calendar__tile--active abbr {
+  background: #ff5500 !important;
+  color: white !important;
+}
+
+/* 선택된 범위 일부 */
+.reservation-calendar-picker .react-calendar__tile--hasActive abbr {
+  background: #93c5fd !important;
+  color: white;
+  font-weight: 600;
+}
+
+/* 이웃 월 날짜 */
+.reservation-calendar-picker .react-calendar__month-view__days__day--neighboringMonth abbr {
+  color: #d1d5db !important;
+  background: transparent !important;
+  font-weight: normal;
+}
+
+/* 비활성 날짜 */
+.reservation-calendar-picker .react-calendar__tile:disabled {
+  background: transparent !important;
+}
+.reservation-calendar-picker .react-calendar__tile:disabled abbr {
+  background: transparent !important;
+  color: #d1d5db !important;
+  pointer-events: none;
+}
+
+/* 포커스 제거 */
+.reservation-calendar-picker .react-calendar__tile:focus {
+  outline: none;
+}

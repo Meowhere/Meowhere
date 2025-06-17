@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
-import { useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 
 export default function Profile() {
