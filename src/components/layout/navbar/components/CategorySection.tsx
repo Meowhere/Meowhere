@@ -37,13 +37,11 @@ export default function CategorySection() {
       onHoverStart={() => {
         if (!isDesktop) return;
         setIsHovering(true);
-        console.log('onHoverStart');
       }}
       onHoverEnd={() => {
         if (!isDesktop) return;
         setIsHovering(false);
         setCurrentHeight(categoryHeightDesktop.get()); // 호버 종료 시 현재 스크롤 기반 높이로 복구
-        console.log('onHoverEnd');
       }}
       transition={{
         ease: [0, 0.9, 0.1, 1],

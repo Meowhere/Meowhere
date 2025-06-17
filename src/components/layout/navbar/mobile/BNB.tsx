@@ -57,7 +57,7 @@ export default function BNB() {
   return (
     <nav
       aria-label='페이지 네비게이션'
-      className='fixed bottom-0 left-0 h-[88px] w-full bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700 flex items-start justify-center text-xs py-6 px-[64px] z-30'
+      className='fixed bottom-0 left-0 h-[88px] w-full bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700 flex items-start justify-center text-xs py-6 px-[64px] z-20'
     >
       {data ? (
         <div className='flex justify-between w-full max-w-[500px] min-w-[128px]'>
