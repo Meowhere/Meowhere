@@ -11,7 +11,6 @@
 | [@tansxx](https://github.com/tansxx)                                           | [@K0seoyoung](https://github.com/K0seoyoung)                                   | [@KingsMinn](https://github.com/KingsMinn)                                     | [@numi8462](https://github.com/numi8462)                                       | [@huiseong29](https://github.com/huiseong29)                                   |
 | <img src="https://avatars.githubusercontent.com/u/159680008?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134926158?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/134246428?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/135202559?v=4" width="100"/> | <img src="https://avatars.githubusercontent.com/u/175691313?v=4" width="100"/> |
 
-
 ---
 
 ## 🔗 배포 주소
@@ -46,19 +45,57 @@
 ## 📁 폴더 구조
 
 ```bash
-Meowhere/
-├── app/                 # App Router 전용 폴더
-│   ├── api/             # api route
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/          # 공통 UI 컴포넌트
-├── features/            # 도메인 단위 기능
-├── hooks/               # 커스텀 훅
-├── libs/                # Zustand, API 클라이언트 등
-├── public/              # 정적 리소스
-├── styles/              # Tailwind config, global styles
-├── services/            # API 호출
-└── utils/               # 유틸 함수 모음
+MEOWHERE/
+├── public/
+├── src/
+│ ├── app/
+│     ├─ layout.tsx
+│     ├─ page.tsx                   # 메인 페이지
+│     ├─ not-found.tsx
+│     ├─ middleware.tsx
+│     ├─ account/                   # 로그인 페이지
+│     │   ├─ page.tsx
+│     │   └─ components/
+│     ├─ activities/               # 체험 상세 및 예약
+│     │   ├─ page.tsx
+│     │   └─ [id]//
+│     │       ├─ page.tsx
+│     │       └─ components/
+│     ├─ profile/                 # 사용자 정보 관리
+│     │   ├─ page.tsx
+│     │   ├─ components/
+│     │   ├─ my-info/
+│     │   └─ reservations/
+│     │   ├─ my-activities/
+│     │   ├─ favorites/
+│     │   ├─ notifications/
+│     │   └─ my-reservations/
+│     └─ api/
+│
+│ ├─ components/
+│     ├─ layout/
+│     │   ├─ navbar/
+│     │   └─ Footer.tsx
+│     └─ common/               # 공통 컴포넌트
+│
+│ ├─ constants/
+│ ├─ providers/
+│ ├─ services/
+│ ├─ store/
+│ ├─ hooks/
+│ ├─ lib/
+│ ├─ types/
+│ ├─ utils/
+│ └─ styles/
+├── .gitignore
+├── .prettierrc
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js
+├── tsconfig.json
+└── README.md
 ```
 
 ---
@@ -115,7 +152,7 @@ Meowhere/
 ### 예시
 
 ```bash
-✨ Feat: 위키 카드 컴포넌트 생성
+✨ Feat: 버튼 컴포넌트 생성
 ```
 
 ---
