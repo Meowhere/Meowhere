@@ -1,8 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import Calendar, { OnArgs } from 'react-calendar';
 
+import { useGnbStore } from '@/src/store/gnbStore';
+
+import { useGnb } from '@/src/hooks/useGnb';
 import { useModal } from '@/src/hooks/useModal';
 import { useMyActivities } from '@/src/hooks/useMyActivities';
 import { useMyActivityReservationByMonth } from '@/src/hooks/useMyActivityReservationByMonth';
@@ -15,6 +19,8 @@ import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 import '@/src/styles/reservation-calendar.css';
 
 export default function ReservationCalendar() {
+  const router = useRouter();
+  const { setSubtitle } = useGnbStore();
   const { openReservationModal } = useModal();
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedMyActivity, setSelectedMyActivity] = useState<MyActivity | null>(null);
@@ -29,9 +35,16 @@ export default function ReservationCalendar() {
       label: activity.title,
       onClick: () => {
         setSelectedMyActivity(activity);
+        setSubtitle(activity.title);
       },
     }));
   }, [myActivities, currentDate]);
+
+  useGnb({
+    title: '내 체험 예약 관리',
+    subtitle: '',
+    backAction: () => router.back(),
+  });
 
   const handleReservation = (activityId: number, date: Date) => {
     openReservationModal({
