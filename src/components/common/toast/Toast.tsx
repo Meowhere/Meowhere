@@ -12,12 +12,12 @@ export default function Toast() {
   return (
     <AnimatePresence>
       {isVisible && (
-        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-start pt-[16px] z-50 pointer-events-none'>
+        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-start mt-[10px] z-[999] pointer-events-none'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className='border px-[32px] py-[18px] rounded-[40px] shadow flex items-center gap-[20px] bg-white'
+            className='border px-[32px] py-[16px] rounded-[40px] shadow flex items-center gap-[20px] bg-white'
           >
             {icon}
             <span className='text-gray-800 text-xl font-semibold'>{message}</span>

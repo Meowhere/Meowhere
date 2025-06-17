@@ -206,7 +206,7 @@ const Modal = () => {
     return createPortal(
       <div
         className={clsx(
-          'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm pt-[96px] lg:pt-0',
+          'fixed inset-0 z-[101] flex items-center justify-center bg-black/50 backdrop-blur-sm pt-[96px] lg:pt-0',
           'dark:bg-black/70',
           isClosing ? 'animate-out fade-out-0 duration-300' : 'animate-in fade-in-0 duration-300'
         )}

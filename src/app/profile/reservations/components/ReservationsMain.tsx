@@ -1,10 +1,13 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { useToastStore } from '@/src/store/toastStore';
+import { useGnbStore } from '@/src/store/gnbStore';
 
+import { useGnb } from '@/src/hooks/useGnb';
 import { MY_RESERVATION_STATUS_MAP } from '@/src/constants/my-reservation-status';
 import { MyReservationStatus } from '@/src/types/profile-reservation.types';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
@@ -17,7 +20,9 @@ import SkeletonReservationsCard from './ReservationsSkeleton';
 
 const BOTTOM_SKELETON_COUNT = 3; // 하단 스켈레톤 개수
 
-export default function ReservationsMain() {
+export default function ReservationsPage() {
+  const router = useRouter();
+  const { setRightButtons } = useGnbStore();
   const { showToast } = useToastStore();
   const [selectedStatus, setSelectedStatus] = useState<MyReservationStatus>('all');
   const {
@@ -30,6 +35,39 @@ export default function ReservationsMain() {
   } = useInfiniteReservations(selectedStatus);
   const myReservations = myReservationsResponse?.pages.flatMap((page) => page.reservations) ?? [];
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  // 드롭다운 메뉴 아이템 데이터
+  const reservationStatusItems: DropdownItemButton[] = [
+    { label: '모든 예약', onClick: () => setSelectedStatus('all') },
+    { label: '예약 완료', onClick: () => setSelectedStatus('pending') },
+    { label: '예약 승인', onClick: () => setSelectedStatus('confirmed') },
+    { label: '예약 취소', onClick: () => setSelectedStatus('canceled') },
+    { label: '예약 거절', onClick: () => setSelectedStatus('declined') },
+    { label: '체험 완료', onClick: () => setSelectedStatus('completed') },
+  ];
+
+  useGnb({
+    title: '예약 내역',
+    backAction: () => router.back(),
+    rightButtons: [
+      <div key='icon-filter'>
+        <Dropdown
+          dropdownItems={reservationStatusItems}
+          selectedValue={selectedStatus}
+          bottomSheetTitle='체험 상태'
+          trigger={
+            <Image
+              className='fill-black'
+              src='/assets/icons/ico-filter.svg'
+              width={24}
+              height={24}
+              alt='필터 아이콘'
+            />
+          }
+        />
+      </div>,
+    ],
+  });
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -57,16 +95,6 @@ export default function ReservationsMain() {
       showToast('error', '예약 목록 조회 중 에러가 발생했습니다. 다시 시도해주세요.');
     }
   }, [isError, showToast]);
-
-  // 드롭다운 메뉴 아이템 데이터
-  const reservationStatusItems: DropdownItemButton[] = [
-    { label: '모든 예약', onClick: () => setSelectedStatus('all') },
-    { label: '예약 완료', onClick: () => setSelectedStatus('pending') },
-    { label: '예약 승인', onClick: () => setSelectedStatus('confirmed') },
-    { label: '예약 취소', onClick: () => setSelectedStatus('canceled') },
-    { label: '예약 거절', onClick: () => setSelectedStatus('declined') },
-    { label: '체험 완료', onClick: () => setSelectedStatus('completed') },
-  ];
 
   // 초기 로딩 시 스켈레톤 UI
   if (isLoading) {

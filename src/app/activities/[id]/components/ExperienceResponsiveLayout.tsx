@@ -10,7 +10,7 @@ import { useUser } from '@/src/hooks/auth/useAuth';
 import { useModal } from '@/src/hooks/useModal';
 import { useFavoritesStore } from '@/src/store/favoritesStore';
 
-import LikeIcon from '@/src/components/common/icons/LikeIcon';
+import HeartButton from '@/src/components/common/buttons/HeartButton';
 import ActivityDropdown from './common/ActivityDropdown';
 import KebabIcon from '@/src/components/common/icons/KebabIcon';
 import Divider from './common/Divider';
@@ -23,6 +23,7 @@ import ReviewSection from './review/ReviewSection';
 import ReservationBox from './reservation/ReservationBox';
 import KakaoShareButton from '@/src/components/common/buttons/KakaoShareButton';
 
+
 import { DROPDOWN_ITEM_TYPES, POST_ACTION_LABELS } from '@/src/constants/dropdown';
 import { deleteActivity } from '@/src/services/myActivityService';
 
@@ -31,6 +32,7 @@ import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import { Review } from '@/src/types/review.type';
 import { useToastStore } from '@/src/store/toastStore';
 import { fadeInUp, slideLeft, slideRight } from '@/src/lib/animation/variants';
+
 
 interface Props {
   activity: Activity;
@@ -43,6 +45,7 @@ interface Props {
   showLikeButton?: boolean;
 }
 
+
 export default function ExperienceResponsiveLayout({
   activity,
   schedules,
@@ -54,6 +57,7 @@ export default function ExperienceResponsiveLayout({
   const router = useRouter();
   const { showToast } = useToastStore();
   const { openScheduleModal } = useModal();
+
   const { toggleFavorite, isFavorite } = useFavoritesStore();
 
   const isOwner = user?.id === activity.userId;
@@ -215,6 +219,7 @@ export default function ExperienceResponsiveLayout({
     );
   }
 
+  // 모바일 & 태블릿
   return (
     <motion.div
       className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'
@@ -245,6 +250,7 @@ export default function ExperienceResponsiveLayout({
       <Divider />
       <SectionTitle title='후기' />
       {renderReviewSection}
+
       {user && user.id !== activity.userId && (
         <ReservationBox
           pricePerPerson={activity.price}
