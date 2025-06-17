@@ -4,8 +4,8 @@ import RegisterCalendarItem from './RegisterCalendarItem';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Sort from '../register-form/Sort';
-import { CalendarItem } from '@/src/utils/my-activities-schedule';
 import {
+  CalendarItem,
   covertSchedulesToCalendarItems,
   generateId,
   sortCalendarItems,
