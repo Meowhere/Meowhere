@@ -77,8 +77,6 @@ export default function ExperienceLocationMap({ address }: ExperienceLocationMap
       level: 3,
     });
 
-    setTimeout(() => map.relayout(), 0);
-
     const overlayHTML = ReactDOMServer.renderToString(<OverlayContent placeName={placeName} />);
 
     const overlayContent = document.createElement('div');
