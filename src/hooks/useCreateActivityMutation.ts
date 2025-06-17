@@ -15,16 +15,23 @@ export function useCreateActivityMutation() {
         },
         body: JSON.stringify(formData),
       });
-      return res.json(); // 성공 시 데이터 반환
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || '체험 등록에 실패했습니다.');
+      }
+
+      return res.json();
     },
     onSuccess: () => {
       showToast('success', '등록이 완료되었습니다');
     },
     onError: (error: Error) => {
       const message = error?.message
-        ? `등록 실패: ${error.message}`
-        : `등록에 실패했습니다. 다시 시도해주세요.`;
+        ? `체험 등록 실패: ${error.message}`
+        : '체험 등록에 실패했습니다. 입력하신 내용을 확인하고 다시 시도해주세요.';
       showToast('error', message);
+      console.error('체험 등록 에러:', error);
     },
   });
 }

@@ -10,10 +10,11 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { mapToApiPayload } from '@/src/utils/my-activities';
 import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
 import { useCreateActivityMutation } from '@/src/hooks/useCreateActivityMutation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Category } from '@/src/types/activity.types';
+import { useToastStore } from '@/src/store/toastStore';
 
 const formSchema = z.object({
   title: z.string().min(3, '3자 이상 입력하세요.'),
@@ -21,9 +22,17 @@ const formSchema = z.object({
   price: z.string().regex(/^\d+$/, '숫자만 입력 가능합니다.').nonempty('가격을 입력해주세요'),
   description: z.string().min(10, '10자 이상 입력하세요.').max(700, '700자 이하로 입력하세요.'),
   address: z.string().nonempty('주소를 입력하세요'),
-  bannerImageUrl: z.string().url('이미지 URL이 필요합니다.').optional(),
-  subImageUrls: z.array(z.string().url('이미지 URL이 필요합니다.')).optional(),
-  schedules: z.array(z.any()).optional(),
+  bannerImageUrl: z.string().nonempty('메인 이미지를 업로드해주세요.'),
+  subImageUrls: z.array(z.string()).optional(),
+  schedules: z
+    .array(
+      z.object({
+        date: z.string(),
+        startTime: z.string(),
+        endTime: z.string(),
+      })
+    )
+    .optional(),
 });
 
 type ActivityFormValues = z.infer<typeof formSchema>;
@@ -41,8 +50,9 @@ export default function RegisterExperienceForm({
   activityId,
 }: RegisterExperienceFormProps) {
   const { isDesktop } = useBreakpoint();
+  const { showToast } = useToastStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 만약 삭제/추가 id를 폼 내부에서 따로 관리한다면 useState로 선언해야 함!
   const [subImageIdsToRemove, setSubImageIdsToRemove] = useState<number[]>([]);
   const [scheduleIdsToRemove, setScheduleIdsToRemove] = useState<number[]>([]);
   const [schedulesToAdd, setSchedulesToAdd] = useState<CreateScheduleBody[]>([]);
@@ -51,7 +61,8 @@ export default function RegisterExperienceForm({
   const createActivityMutation = useCreateActivityMutation();
 
   const methods = useForm<ActivityFormValues>({
-    mode: 'onChange',
+    mode: 'all',
+    reValidateMode: 'onChange',
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: defaultValues?.title ?? '',
@@ -67,28 +78,53 @@ export default function RegisterExperienceForm({
 
   const {
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors, isDirty },
+    setValue,
+    watch,
   } = methods;
 
-  const Submit = (formData: ActivityFormValues) => {
-    alert(JSON.stringify(formData, null, 2));
-    const baseForm: MyActivitiesFormData = {
-      ...formData,
-      price: Number(formData.price),
-      category: formData.category as Category,
-      bannerImageUrl: formData.bannerImageUrl ?? '',
-      subImageUrls: formData.subImageUrls ?? [],
-      schedules: formData.schedules ?? [],
-    };
-    const apiPayload = mapToApiPayload(baseForm, mode, {
-      subImageIdsToRemove,
-      scheduleIdsToRemove,
-      schedulesToAdd,
-    });
-    if (mode === 'edit') {
-      updateMyActivityMutation.mutate(apiPayload);
-    } else {
-      createActivityMutation.mutate(baseForm);
+  // 개발 환경에서만 form 상태 로깅
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Form Data:', watch());
+      console.log('Is Valid:', isValid);
+      console.log('Is Dirty:', isDirty);
+      console.log('Errors:', errors);
+    }
+  }, [watch, isValid, isDirty, errors]);
+
+  const Submit = async (formData: ActivityFormValues) => {
+    if (isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+      console.log('Submitting form data:', formData);
+
+      const baseForm: MyActivitiesFormData = {
+        ...formData,
+        price: Number(formData.price),
+        category: formData.category as Category,
+        bannerImageUrl: formData.bannerImageUrl ?? '',
+        subImageUrls: formData.subImageUrls ?? [],
+        schedules: formData.schedules ?? [],
+      };
+
+      if (mode === 'edit' && activityId) {
+        const apiPayload = mapToApiPayload(baseForm, mode, {
+          subImageIdsToRemove,
+          scheduleIdsToRemove,
+          schedulesToAdd,
+        });
+        await updateMyActivityMutation.mutateAsync(apiPayload);
+      } else {
+        await createActivityMutation.mutateAsync(baseForm);
+      }
+      onSubmit?.(baseForm);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      showToast('error', '체험 등록에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -102,12 +138,21 @@ export default function RegisterExperienceForm({
         <div className='flex flex-col gap-[20px]'>
           <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
           <div className='w-[160px]'>
-            <UploadImg defaultImage={defaultValues?.bannerImageUrl} />
+            <UploadImg defaultImage={defaultValues?.bannerImageUrl} isBanner={true} />
           </div>
+          {errors.bannerImageUrl && (
+            <p className='text-sm text-red-500'>{errors.bannerImageUrl.message}</p>
+          )}
         </div>
         <div className='flex flex-col gap-[20px]'>
           <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
-          <UploadImgList defaultImages={defaultValues?.subImageUrls} />
+          <UploadImgList
+            defaultImages={defaultValues?.subImageUrls}
+            onUrlsChange={(urls) => setValue('subImageUrls', urls)}
+          />
+          {errors.subImageUrls && (
+            <p className='text-sm text-red-500'>{errors.subImageUrls.message}</p>
+          )}
         </div>
         <div className='flex flex-col gap-[20px]'>
           <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
@@ -120,9 +165,9 @@ export default function RegisterExperienceForm({
               type='submit'
               variant='primary'
               className='text-md font-semibold'
-              // disabled={!isValid}
+              disabled={!isDirty || !isValid || isSubmitting}
             >
-              {mode === 'edit' ? '수정 하기' : '등록 하기'}
+              {isSubmitting ? '처리 중...' : mode === 'edit' ? '수정 하기' : '등록 하기'}
             </BaseButton>
           </div>
         )}

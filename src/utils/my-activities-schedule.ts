@@ -27,6 +27,39 @@ export function compareDateTime(a: CalendarItem, b: CalendarItem) {
   const dateB = new Date(`${b.date}T${b.startTime}`);
   return dateA.getTime() - dateB.getTime();
 }
+
+// 스케줄 유효성 검사
+export function isValidSchedule(item: CalendarItem): boolean {
+  // 모든 필드가 비어있지 않은지 확인
+  if (!item.date || !item.startTime || !item.endTime) {
+    return false;
+  }
+
+  try {
+    // 날짜 형식이 올바른지 확인 (YYYY-MM-DD)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(item.date)) {
+      return false;
+    }
+
+    // 시간 형식이 올바른지 확인 (HH:mm)
+    if (!/^\d{2}:\d{2}$/.test(item.startTime) || !/^\d{2}:\d{2}$/.test(item.endTime)) {
+      return false;
+    }
+
+    // 시작 시간이 종료 시간보다 이전인지 확인
+    const start = new Date(`${item.date}T${item.startTime}`);
+    const end = new Date(`${item.date}T${item.endTime}`);
+
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      return false;
+    }
+
+    return start < end;
+  } catch (error) {
+    return false;
+  }
+}
+
 // 정렬 로직
 export function sortCalendarItems(
   items: CalendarItem[],

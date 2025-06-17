@@ -7,12 +7,12 @@ import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { mutate } = useCreateActivityMutation();
+  const { mutate, isPending } = useCreateActivityMutation();
 
   const handleSubmit = (formData: MyActivitiesFormData) => {
     mutate(formData, {
       onSuccess: () => {
-        router.push('my-activities');
+        router.push('/profile/my-activities');
       },
     });
   };
@@ -27,8 +27,9 @@ export default function RegisterPage() {
         form='register-form'
         type='submit'
         className='text-md font-semibold text-primary-300'
+        disabled={isPending}
       >
-        등록
+        {isPending ? '등록 중...' : '등록'}
       </button>,
     ],
   });
