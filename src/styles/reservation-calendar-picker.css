@@ -1,4 +1,4 @@
-.react-calendar {
+.reservation-calendar-picker .react-calendar {
   width: 100%;
   border: none;
   font-family: 'Pretendard', sans-serif;
@@ -8,7 +8,7 @@
 }
 
 /* 요일 (일~토) */
-.react-calendar__month-view__weekdays {
+.reservation-calendar-picker .react-calendar__month-view__weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
@@ -18,7 +18,7 @@
   margin-bottom: 8px;
 }
 
-.react-calendar__month-view__weekdays__weekday {
+.reservation-calendar-picker .react-calendar__month-view__weekdays__weekday {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,28 +28,28 @@
   color: #333;
 }
 
-.react-calendar__month-view__weekdays abbr {
+.reservation-calendar-picker .react-calendar__month-view__weekdays abbr {
   text-decoration: none;
 }
 
 /* 일요일: 빨간색 */
-.react-calendar__month-view__weekdays__weekday:nth-child(1) abbr {
+.reservation-calendar-picker .react-calendar__month-view__weekdays__weekday:nth-child(1) abbr {
   color: red;
 }
 /* 토요일: 파란색 */
-.react-calendar__month-view__weekdays__weekday:nth-child(7) abbr {
+.reservation-calendar-picker .react-calendar__month-view__weekdays__weekday:nth-child(7) abbr {
   color: blue;
 }
 
 /* 날짜 그리드 */
-.react-calendar__month-view__days {
+.reservation-calendar-picker .react-calendar__month-view__days {
   display: grid !important;
   grid-template-columns: repeat(7, 1fr);
   gap: 6px;
 }
 
 /* 날짜 셀 */
-.react-calendar__tile {
+.reservation-calendar-picker .react-calendar__tile {
   width: 100%;
   padding: 0;
   display: flex;
@@ -61,7 +61,7 @@
 }
 
 /* 날짜 텍스트 */
-.react-calendar__tile abbr {
+.reservation-calendar-picker .react-calendar__tile abbr {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,53 +74,53 @@
 }
 
 /* 오늘 날짜 (선택되지 않은 상태) */
-.react-calendar__tile--now abbr {
+.reservation-calendar-picker .react-calendar__tile--now abbr {
   border: 2px solid #ffa67a;
   font-weight: 600;
   box-sizing: border-box;
 }
 
 /* 선택된 날짜 */
-.react-calendar__tile--active {
+.reservation-calendar-picker .react-calendar__tile--active {
   background: transparent !important;
 }
-.react-calendar__tile--active abbr {
+.reservation-calendar-picker .react-calendar__tile--active abbr {
   background: #ff5500 !important;
   color: white !important;
   font-weight: 600;
 }
 
 /* 오늘 + 선택됨 */
-.react-calendar__tile--now.react-calendar__tile--active abbr {
+.reservation-calendar-picker .react-calendar__tile--now.react-calendar__tile--active abbr {
   background: #ff5500 !important;
   color: white !important;
 }
 
 /* 선택된 범위 일부 */
-.react-calendar__tile--hasActive abbr {
+.reservation-calendar-picker .react-calendar__tile--hasActive abbr {
   background: #93c5fd !important;
   color: white;
   font-weight: 600;
 }
 
 /* 이웃 월 날짜 */
-.react-calendar__month-view__days__day--neighboringMonth abbr {
+.reservation-calendar-picker .react-calendar__month-view__days__day--neighboringMonth abbr {
   color: #d1d5db !important;
   background: transparent !important;
   font-weight: normal;
 }
 
 /* 비활성 날짜 */
-.react-calendar__tile:disabled {
+.reservation-calendar-picker .react-calendar__tile:disabled {
   background: transparent !important;
 }
-.react-calendar__tile:disabled abbr {
+.reservation-calendar-picker .react-calendar__tile:disabled abbr {
   background: transparent !important;
   color: #d1d5db !important;
   pointer-events: none;
 }
 
 /* 포커스 제거 */
-.react-calendar__tile:focus {
+.reservation-calendar-picker .react-calendar__tile:focus {
   outline: none;
 }
