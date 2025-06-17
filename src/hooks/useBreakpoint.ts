@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 export function useBreakpoint() {
-  const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState(1920);
   const [hasMounted, setHasMounted] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     function handleResize() {
       setWidth(window.innerWidth);
     }

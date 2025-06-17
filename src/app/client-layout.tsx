@@ -9,6 +9,7 @@ import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';
 import { useUIStore } from '../store/uiStore';
 import UserInitializer from './_components/UserInitializer';
 import ThemeProvider from './activities/[id]/components/common/ThemeProvider';
+import { Suspense } from 'react';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -31,7 +32,17 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <UserInitializer />
       <ThemeProvider>
         <div className={`${preventBodyScroll ? 'overflow-hidden' : ''} h-screen `}>
-          {showNavbar && <Navbar />}
+          {showNavbar && (
+            <Suspense
+              fallback={
+                <div className='w-full h-[72px] flex justify-center items-center'>
+                  <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+                </div>
+              }
+            >
+              <Navbar />
+            </Suspense>
+          )}
           <main className={getGNBHeight()}>{children}</main>
           {showBNB && <BNB />}
           {showFooter && <Footer />}

@@ -1,4 +1,3 @@
-import Input from '@/src/components/common/inputs/Input';
 import FilterSection from './FilterSection';
 import { useURLQuery } from '@/src/hooks/useURLQuery';
 import { useEffect } from 'react';
@@ -44,13 +43,20 @@ export default function PlaceFilter({
       className={`h-full ${className}`}
       {...rest}
     >
-      <Input
-        label='어디로 갈까요?'
-        className='lg:hidden w-full h-[42px] text-md font-medium rounded-[10px]'
-        type='text'
-        value={placeKeyword}
-        onChange={(e) => setPlaceKeyword(e.target.value)}
-      />
+      <div className='flex w-full h-[72px] relative items-center px-[20px] py-[6px] rounded-2xl border bg-white dark:bg-gray-800'>
+        <label
+          htmlFor='place-keyword'
+          className='top-[6px] absolute w-full text-xs font-regular text-gray-500 dark:text-gray-400'
+        >
+          어디로 갈까요?
+          <input
+            className='lg:hidden w-full h-[28px] text-md font-regular rounded-[10px] focus:outline-none text-gray-800 dark:text-gray-200'
+            type='text'
+            value={placeKeyword}
+            onChange={(e) => setPlaceKeyword(e.target.value)}
+          />
+        </label>
+      </div>
       <ul className='flex flex-col justify-start items-start w-full gap-[4px] h-full overflow-y-scroll'>
         {filteredPlaces.map(([place, count]) => (
           <li
