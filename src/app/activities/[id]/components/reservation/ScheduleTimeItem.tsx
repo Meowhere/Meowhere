@@ -6,7 +6,13 @@ import { ko } from 'date-fns/locale';
 import clsx from 'clsx';
 
 interface ScheduleTimeItemProps {
-  schedule: Schedule;
+  schedule: {
+    id: number;
+    startTime: string;
+    endTime: string;
+    date: string;
+  };
+  date?: string;
   isSelected: boolean;
   onSelect: (schedule: Schedule) => void;
 }

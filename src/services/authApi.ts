@@ -24,7 +24,6 @@ export const authApi = {
       method: 'GET',
       credentials: 'include',
     });
-
     return res.json();
   },
 

@@ -36,7 +36,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const reviews = data?.pages.flatMap((page) => page.reviews) ?? [];
+  const reviews = data?.pages?.flatMap((page) => page?.reviews || []) ?? [];
 
   return (
     <div className='flex flex-col h-[70vh] max-h-[70vh] overflow-hidden'>
@@ -46,9 +46,6 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
         </span>
         <div className='flex items-center gap-[4px]'>
           <StarFillIcon size={18} className='text-yellow-200' />
-          <span className='text-sm font-medium text-black dark:text-gray-200'>
-            {Number(rating).toFixed(1)}
-          </span>
           <span className='text-[2.2rem] font-semibold text-gray-800'>
             {Number(rating).toFixed(1)}
           </span>

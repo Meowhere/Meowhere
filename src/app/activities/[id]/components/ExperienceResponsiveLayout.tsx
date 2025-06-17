@@ -10,41 +10,37 @@ import SectionTitle from './common/SectionTitle';
 import ExperienceLocationMap from './experience/ExperienceLocationMap';
 import ExperienceDescription from './experience/ExperienceDescription';
 import ReviewSection from './review/ReviewSection';
+import ScheduleSidebar from './reservation/ScheduleSidebar';
 import { useGnb } from '@/src/hooks/useGnb';
 import HeartButton from '@/src/components/common/buttons/HeartButton';
 import { Activity } from '@/src/types/activity.types';
-import { Schedule } from '@/src/types/schedule.types';
-import ScheduleSidebar from './reservation/ScheduleSidebar';
-import { dummyReviews } from '../data/dummyReviews';
-import { dummySchedule } from '../data/dummySchedule';
+import { ScheduleWithTimes } from '@/src/types/schedule.types';
+import { useModal } from '@/src/hooks/useModal';
+import { Review } from '@/src/types/review.type';
+import Image from 'next/image';
 
-const dummyExperience = {
-  id: 7,
-  title:
-    '함께 배우면 정말정말정말 즐거운 스트릿 댄스인데 제목을 길게 적으면 어떻게 될 지 한번 테스트를 해보기',
-  description:
-    '안녕하세요! 저희 스트릿 댄스 체험을 소개합니다. 저희는 신나고 재미있는 스트릿 댄스 스타일을 가르칩니다. 크럼프는 세계적으로 인기 있는 댄스 스타일로, 어디서든 춤출 수 있습니다. 저희 체험에서는 새로운 스타일을 접할 수 있고, 즐거운 시간을 보낼 수 있습니다. 저희는 초보자부터 전문가까지 어떤 수준의 춤추는 사람도 가르칠 수 있도록 준비해놓았습니다. 저희와 함께 즐길 수 있는 시간을 기대해주세요! 각종 음악에 적합한 스타일로, 저희는 크럼프 외에도 전통적인 스트릿 댄스 스타일과 최신 스트릿 댄스 스타일까지 가르칠 수 있습니다. 저희 체험에서는 전문가가 직접 강사로 참여하기 때문에, 저희가 제공하는 코스는 어떤 수준의 춤추는 사람도 쉽게 이해할 수 있도록 준비해놓았습니다. 저희 체험을 참가하게 된다면, 즐거운 시간 뿐만 아니라 새로운 스타일을 접할 수 있을 것입니다.',
-  category: '투어',
-  price: 10000,
-  address: '서울특별시 강남구 테헤란로 427',
-  bannerImageUrl: '/assets/icons/test/img-main.jpg',
-  subImages: [
-    { id: 1, imageUrl: '/assets/icons/test/img-sub1.jpg' },
-    { id: 2, imageUrl: '/assets/icons/test/img-sub2.jpg' },
-    { id: 3, imageUrl: '/assets/icons/test/img-sub3.jpg' },
-  ],
-  totalCount: 1300,
-  averageRating: 4.74,
-};
+interface Props {
+  activity: Activity;
+  schedules: ScheduleWithTimes[];
+  reviews: Review[];
+  reviewStats: {
+    rating: number;
+    count: number;
+  };
+}
 
-export default function ExperienceResponsiveLayout() {
+export default function ExperienceResponsiveLayout({
+  activity,
+  schedules,
+  reviews,
+  reviewStats,
+}: Props) {
   const { isDesktop } = useBreakpoint();
-
+  const { openScheduleModal } = useModal();
   const router = useRouter();
 
-  // gnb 하트 찜 기능인 것 같아서 일단 상태 관리 미구현
   useGnb({
-    title: dummyExperience.title,
+    title: activity.title,
     backAction: () => router.back(),
     rightButtons: [
       <HeartButton
@@ -63,107 +59,138 @@ export default function ExperienceResponsiveLayout() {
         {/* 왼쪽 열 */}
         <div className='flex-1 flex flex-col gap-[40px]'>
           <ExperienceImageViewer
-            bannerImageUrl={dummyExperience.bannerImageUrl}
-            subImages={dummyExperience.subImages}
+            bannerImageUrl={activity.bannerImageUrl}
+            subImages={activity.subImages}
           />
 
-          <div>
-            <Divider />
-          </div>
+          <Divider />
 
           <div className='map-trigger-section'>
-            <SectionTitle title='만나는 곳' subtitle={dummyExperience.address} />
-            <ExperienceLocationMap address={dummyExperience.address} />
+            <SectionTitle title='만나는 곳' subtitle={activity.address} />
+            <ExperienceLocationMap address={activity.address} />
             <Divider />
           </div>
 
-          <div>
-            <SectionTitle title='체험 설명' />
-            <ExperienceDescription description={dummyExperience.description} />
-            <Divider />
-          </div>
+          <SectionTitle title='체험 설명' />
+          <ExperienceDescription description={activity.description} />
+          <Divider />
 
-          <div>
-            <SectionTitle title='후기' />
-            <div className='mt-[8px]'>
+          <SectionTitle title='후기' />
+          <div className='mt-[8px]'>
+            {reviews.length === 0 ? (
+              <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
+                <Image
+                  src='/assets/icons/logo/ico-empty-view-logo.svg'
+                  alt='empty icon'
+                  width={72}
+                  height={72}
+                  className='mb-6'
+                />
+                <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+              </div>
+            ) : (
               <ReviewSection
-                activityId={dummyExperience.id}
-                rating={dummyExperience.averageRating}
-                reviewCount={dummyExperience.totalCount}
-                reviews={dummyReviews}
+                activityId={activity.id}
+                rating={activity.rating}
+                reviewCount={activity.reviewCount}
+                reviews={reviews}
               />
-            </div>
+            )}
           </div>
         </div>
 
         {/* 오른쪽 열 */}
-        <div className='w-[400px] shrink-0 pt-[180px]'>
+        <div className='w-1/2 relative pt-[180px]'>
           <div className='mb-[48px]'>
             <ExperienceSummarySection
-              category={dummyExperience.category}
-              title={dummyExperience.title}
-              rating={dummyExperience.averageRating.toFixed(1)}
-              reviewCount={dummyExperience.totalCount}
-              address={dummyExperience.address}
+              category={activity.category}
+              title={activity.title}
+              rating={activity.rating?.toFixed(1) ?? '0.0'}
+              reviewCount={activity.reviewCount}
+              address={activity.address}
             />
           </div>
 
           <Divider />
 
           <div className='mb-[300px]'>
-            <ReservationBox pricePerPerson={dummyExperience.price} />
+            <ReservationBox
+              pricePerPerson={activity.price}
+              onClick={() =>
+                openScheduleModal({ price: activity.price, schedules, activityId: activity.id })
+              }
+            />
           </div>
 
-          <div className='sticky top-[200px]'>
-            <ScheduleSidebar price={dummyExperience.price} schedules={dummySchedule.schedules} />
+          <div className='sticky top-[200px] self-start w-[400px]'>
+            <ScheduleSidebar price={activity.price} schedules={schedules} />
           </div>
         </div>
       </div>
     );
   }
 
-  // 모바일/태블릿 레이아웃
   return (
     <>
       <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <ExperienceImageViewer
-          bannerImageUrl={dummyExperience.bannerImageUrl}
-          subImages={dummyExperience.subImages}
+          bannerImageUrl={activity.bannerImageUrl}
+          subImages={activity.subImages ?? []}
         />
+
         <ExperienceSummarySection
-          category={dummyExperience.category}
-          title={dummyExperience.title}
-          rating={dummyExperience.averageRating.toFixed(1)}
-          reviewCount={dummyExperience.totalCount}
-          address={dummyExperience.address}
+          category={activity.category}
+          title={activity.title}
+          rating={activity.rating?.toFixed(1) ?? '0.0'}
+          reviewCount={activity.reviewCount}
+          address={activity.address}
         />
         <Divider />
       </div>
 
       <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
-        <SectionTitle title='만나는 곳' subtitle={dummyExperience.address} />
-        <ExperienceLocationMap address={dummyExperience.address} />
+        <SectionTitle title='만나는 곳' subtitle={activity.address} />
+        <ExperienceLocationMap address={activity.address} />
         <Divider />
       </div>
 
       <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <SectionTitle title='체험 설명' />
-        <ExperienceDescription description={dummyExperience.description} />
+        <ExperienceDescription description={activity.description} />
         <Divider />
       </div>
 
       <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px]'>
         <SectionTitle title='후기' />
-        <ReviewSection
-          activityId={dummyExperience.id}
-          rating={dummyExperience.averageRating}
-          reviewCount={dummyExperience.totalCount}
-          reviews={dummyReviews}
-        />
+        <div className='mt-[8px]'>
+          {reviews.length === 0 ? (
+            <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
+              <Image
+                src='/assets/icons/logo/ico-empty-view-logo.svg'
+                alt='empty icon'
+                width={72}
+                height={72}
+                className='mb-6'
+              />
+              <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+            </div>
+          ) : (
+            <ReviewSection
+              activityId={activity.id}
+              rating={activity.rating}
+              reviewCount={activity.reviewCount}
+              reviews={reviews}
+            />
+          )}
+        </div>
       </div>
 
-      {/* 모바일/태블릿 전용 예약 UI */}
-      <ReservationBox pricePerPerson={dummyExperience.price} />
+      <ReservationBox
+        pricePerPerson={activity.price}
+        onClick={() =>
+          openScheduleModal({ price: activity.price, schedules, activityId: activity.id })
+        }
+      />
     </>
   );
 }
