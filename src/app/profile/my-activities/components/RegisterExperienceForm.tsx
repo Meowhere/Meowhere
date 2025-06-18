@@ -93,7 +93,7 @@ export default function RegisterExperienceForm({
     }
   }, [watch, isValid, isDirty, errors]);
 
-  const Submit = async (formData: ActivityFormValues) => {
+  const submitForm = async (formData: ActivityFormValues) => {
     if (isSubmitting) return;
 
     try {
@@ -132,7 +132,7 @@ export default function RegisterExperienceForm({
     <FormProvider {...methods}>
       <form
         id='register-form'
-        onSubmit={handleSubmit(Submit)}
+        onSubmit={handleSubmit(submitForm)}
         className='relative flex flex-col gap-[48px] lg:gap-[64px] px-[24px] py-[96px] mb-[300px]'
       >
         <div className='flex flex-col gap-[20px]'>

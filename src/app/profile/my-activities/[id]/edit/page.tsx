@@ -24,11 +24,11 @@ export default function EditActivityPage() {
     rightButtons: [
       <button
         key='submit'
-        form='edit-form'
+        form='register-form'
         type='submit'
         className='text-md font-semibold text-primary-300'
       >
-        등록
+        수정
       </button>,
     ],
   });

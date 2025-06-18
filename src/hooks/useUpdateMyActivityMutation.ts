@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 import { useToastStore } from '../store/toastStore';
+import { UpdateMyActivityPayload } from '../types/my-activities.types';
 
 export function useUpdateMyActivityMutation(activityId?: number) {
   const queryClient = useQueryClient();
   const { showToast } = useToastStore();
 
   return useMutation({
-    mutationFn: async (payload: unknown) => {
+    mutationFn: async (payload: UpdateMyActivityPayload) => {
       const res = await fetchFromClient(`my-activities/${activityId}`, {
         method: 'PATCH',
         headers: {
