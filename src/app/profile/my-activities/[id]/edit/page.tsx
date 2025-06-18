@@ -2,15 +2,19 @@
 import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter } from 'next/navigation';
 import RegisterExperienceForm from '../../components/RegisterExperienceForm';
-import { useCreateActivityMutation } from '@/src/hooks/useCreateActivityMutation';
-import { MyActivitiesFormData } from '@/src/types/my-activities.types';
+import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
+import { MyActivitiesFormData, UpdateMyActivityPayload } from '@/src/types/my-activities.types';
+import { mapToApiPayload } from '@/src/utils/my-activities';
 
 export default function EditActivityPage() {
   const router = useRouter();
-  const { mutate } = useCreateActivityMutation();
+  const { mutate } = useUpdateMyActivityMutation();
 
   const handleSubmit = (formData: MyActivitiesFormData) => {
-    mutate(formData, {
+    // formData를 UpdateMyActivityPayload 형식으로 변환
+    const payload = mapToApiPayload(formData, 'edit') as UpdateMyActivityPayload;
+
+    mutate(payload, {
       onSuccess: () => {
         router.push('/profile/my-activities');
       },

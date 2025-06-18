@@ -64,8 +64,9 @@ export default function RegisterExperienceForm({
   const [scheduleIdsToRemove, setScheduleIdsToRemove] = useState<number[]>([]);
   const [schedulesToAdd, setSchedulesToAdd] = useState<CreateScheduleBody[]>([]);
 
-  const updateMyActivityMutation = useUpdateMyActivityMutation(activityId);
-  const createActivityMutation = useCreateActivityMutation();
+  // mode에 따라 필요한 mutation hook만 사용
+  const updateMyActivityMutation = mode === 'edit' ? useUpdateMyActivityMutation(activityId) : null;
+  const createActivityMutation = mode === 'create' ? useCreateActivityMutation() : null;
 
   const methods = useForm<ActivityFormValues>({
     mode: 'all',
@@ -74,7 +75,7 @@ export default function RegisterExperienceForm({
     defaultValues: {
       title: defaultValues?.title ?? '',
       price: defaultValues?.price ? String(defaultValues.price) : '',
-      category: defaultValues?.category ?? '문화 · 예술',
+      category: defaultValues?.category ?? CATEGORY_LIST[0], // 기본값 설정
       description: defaultValues?.description ?? '',
       address: defaultValues?.address ?? '',
       bannerImageUrl: defaultValues?.bannerImageUrl ?? '',
@@ -100,6 +101,11 @@ export default function RegisterExperienceForm({
     }
   }, [watch, isValid, isDirty, errors]);
 
+  // 초기 마운트 시 카테고리 값 설정
+  useEffect(() => {
+    setValue('category', defaultValues?.category ?? CATEGORY_LIST[0], { shouldValidate: true });
+  }, [setValue, defaultValues?.category]);
+
   const submitForm = async (formData: ActivityFormValues) => {
     if (isSubmitting) return;
 
@@ -118,14 +124,14 @@ export default function RegisterExperienceForm({
         schedules: formData.schedules ?? [],
       };
 
-      if (mode === 'edit' && activityId) {
+      if (mode === 'edit' && activityId && updateMyActivityMutation) {
         const apiPayload = mapToApiPayload(baseForm, mode, {
           subImageIdsToRemove,
           scheduleIdsToRemove,
           schedulesToAdd,
         });
         await updateMyActivityMutation.mutateAsync(apiPayload as UpdateMyActivityPayload);
-      } else {
+      } else if (mode === 'create' && createActivityMutation) {
         const apiPayload = mapToApiPayload(baseForm, 'create');
         await createActivityMutation.mutateAsync(apiPayload as MyActivitiesFormData);
       }

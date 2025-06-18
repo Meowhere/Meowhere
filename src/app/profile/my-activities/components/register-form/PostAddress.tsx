@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import clsx from 'clsx';
 import type { DaumPostcodeData } from '@/src/types/my-activities.types';
+import { useToastStore } from '@/src/store/toastStore';
 
 interface PostAddressProps {
   label?: string;
@@ -28,6 +29,7 @@ export default function PostAddress({
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const shouldFloat = isFocused || !!value;
+  const { showToast } = useToastStore();
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !window.daum) {
@@ -51,7 +53,7 @@ export default function PostAddress({
         },
       }).open();
     } else {
-      alert('카카오 주소 API가 준비되지 않았어요!');
+      showToast('error', '카카오 주소 API가 준비되지 않았어요!');
     }
   };
 
