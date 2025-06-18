@@ -25,6 +25,7 @@
     "swiper": "^11.2.8",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-animated": "^2.0.0",
+    "uuid": "^11.1.0",
     "zod": "^3.25.57",
     "zustand": "^5.0.5"
   },
