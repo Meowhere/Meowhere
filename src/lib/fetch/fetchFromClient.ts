@@ -5,6 +5,7 @@ export async function fetchFromClient(path: string, options: RequestInit = {}): 
   try {
     const res = await fetch(`${BASE_URL}/api${path}`, {
       ...options,
+      mode: 'cors',
       credentials: 'include',
     });
     if (res.status === 401 || res.status === 403) {
