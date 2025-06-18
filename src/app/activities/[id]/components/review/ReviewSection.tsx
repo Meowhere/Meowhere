@@ -28,9 +28,6 @@ export default function ReviewSection({
       {/* 데스크탑 */}
       {isDesktop && (
         <div className='w-full flex flex-col items-start px-0'>
-          {/* 타이틀은 상위에서 제공하므로 생략 */}
-
-          {/* 공통 wrapper로 좌측 정렬 통일 */}
           <div className='w-full mx-0 gap-[24px]'>
             {/* 요약 */}
             <div>
@@ -41,7 +38,6 @@ export default function ReviewSection({
               />
             </div>
 
-            {/* 카드 그리드 */}
             <div className='grid grid-cols-2 w-full gap-[16px]'>
               {reviews.slice(0, 4).map((review) => (
                 <ReviewCard
@@ -55,20 +51,21 @@ export default function ReviewSection({
               ))}
             </div>
 
-            {/* 버튼 */}
-            <button
-              className='mt-[32px] px-6 py-[12px] w-full text-sm text-gray-800 bg-gray-100 rounded-full hover:bg-gray-200 transition'
-              onClick={() =>
-                openReviewListModal({
-                  activityId,
-                  rating,
-                  reviewCount,
-                  satisfactionLabel: getSatisfactionLabel(rating),
-                })
-              }
-            >
-              모든 후기 보기
-            </button>
+            <div className='w-full flex justify-center mt-[32px]'>
+              <button
+                className='px-6 py-[12px] w-full max-w-[500px] text-sm text-gray-800 bg-gray-100 rounded-full hover:bg-gray-200 transition'
+                onClick={() =>
+                  openReviewListModal({
+                    activityId,
+                    rating,
+                    reviewCount,
+                    satisfactionLabel: getSatisfactionLabel(rating),
+                  })
+                }
+              >
+                모든 후기 보기
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -98,19 +95,21 @@ export default function ReviewSection({
             ))}
           </div>
 
-          <button
-            className='mt-[24px] w-full px-0 py-[12px] text-sm text-gray-800 bg-gray-100 rounded-[14px] text-center'
-            onClick={() =>
-              openReviewListModal({
-                activityId,
-                rating,
-                reviewCount,
-                satisfactionLabel: getSatisfactionLabel(rating),
-              })
-            }
-          >
-            모든 후기 보기
-          </button>
+          <div className='w-full flex justify-center mt-[32px]'>
+            <button
+              className='w-full max-w-[500px] px-6 py-[12px] text-sm text-gray-800 bg-gray-100 rounded-full hover:bg-gray-200 transition'
+              onClick={() =>
+                openReviewListModal({
+                  activityId,
+                  rating,
+                  reviewCount,
+                  satisfactionLabel: getSatisfactionLabel(rating),
+                })
+              }
+            >
+              모든 후기 보기
+            </button>
+          </div>
         </>
       )}
 
