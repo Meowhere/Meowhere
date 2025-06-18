@@ -12,9 +12,13 @@ import CheckedInCircle from '@/src/components/common/icons/CheckedInCircle';
 export default function ActivityList({
   initialActivities,
   initialCursor,
+  onActivitiesUpdate,
+  isSearching = false,
 }: {
   initialActivities: Activity[];
   initialCursor: string | null;
+  onActivitiesUpdate?: (activities: Activity[]) => void;
+  isSearching?: boolean;
 }) {
   const searchParams = useSearchParams();
   const { data: userData } = useUser();
@@ -90,14 +94,33 @@ export default function ActivityList({
   const allActivities = data?.pages.flatMap((page) => page.activities) || [];
   const isInitialLoading = isLoading || (isFetching && !data?.pages.length);
 
+  // allActivities가 변경될 때마다 부모 컴포넌트에게 알림
+  const prevAllActivitiesRef = useRef<Activity[]>([]);
+
+  useEffect(() => {
+    // 이전 데이터와 비교해서 실제로 변경된 경우에만 업데이트
+    if (onActivitiesUpdate && allActivities.length > 0) {
+      const prevLength = prevAllActivitiesRef.current.length;
+      const currentLength = allActivities.length;
+
+      // 길이가 다른 경우에만 업데이트 (무한스크롤로 데이터 추가된 경우)
+      if (prevLength !== currentLength) {
+        onActivitiesUpdate(allActivities);
+        prevAllActivitiesRef.current = [...allActivities]; // 새로운 배열로 복사
+      }
+    }
+  }, [allActivities]); // onActivitiesUpdate를 dependency에서 제외해서 무한루프 방지
+
   return (
-    <>
+    <div>
       {isInitialLoading ? (
         <div className='w-full flex justify-center pt-[128px] pb-[24px]'>
           <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
         </div>
       ) : (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-[24px] lg:gap-x-[12px] lg:gap-y-[80px] mt-6 p-[24px] lg:px-[86px]'>
+        <div
+          className={`${!isSearching ? 'xl:grid-cols-5 2xl:grid-cols-7' : ''} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-[12px] lg:gap-y-[80px] mt-6 p-[24px] lg:px-[86px] gap-[24px]`}
+        >
           {allActivities.map((item: Activity) => (
             <ActivityCard key={item.id} activity={item} showLikeButton={showLikeButton} />
           ))}
@@ -113,6 +136,6 @@ export default function ActivityList({
         </div>
       )}
       <div ref={sentinelRef} className='h-[1px]' />
-    </>
+    </div>
   );
 }

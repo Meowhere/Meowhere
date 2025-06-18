@@ -3,7 +3,7 @@
 import Navbar from '../components/layout/navbar';
 import Footer from '../components/layout/Footer';
 import BNB from '../components/layout/navbar/mobile/BNB';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import ReactQueryProvider from '../lib/react-query/ReactQueryProvider';
 import { useUIStore } from '../store/uiStore';
@@ -20,9 +20,17 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const showBNB = !isDesktop && !pathname.startsWith('/activities');
   const showNavbar = pathname !== '/profile';
 
+  const searchParams = useSearchParams();
+
+  const paramsObj = Object.fromEntries(searchParams.entries());
+  const { category, ...otherParams } = paramsObj;
+  const hasParams = Object.values(otherParams).some(
+    (value) => value !== null && value.trim() !== ''
+  );
+
   const getGNBHeight = () => {
     if (pathname === '/') {
-      return 'pt-[140px]'; // MainPageGNB (76px) + CategorySection (64px)
+      return `pt-[${hasParams ? '96px' : '140px'}]`; // MainPageGNB (96px) + CategorySection (44px)
     }
     return 'pt-[48px]'; // SubPageGNB 높이
   };
