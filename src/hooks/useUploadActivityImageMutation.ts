@@ -2,11 +2,9 @@
 // hooks/useUploadActivityImageMutation.ts
 import { useMutation } from '@tanstack/react-query';
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
-import { useToastStore } from '@/src/store/toastStore';
 
 // 실제로 이미지를 업로드하는 함수
 async function uploadActivityImage({ file }: { file: File }) {
-  const { showToast } = useToastStore();
   const formData = new FormData();
   formData.append('image', file);
 
@@ -16,7 +14,7 @@ async function uploadActivityImage({ file }: { file: File }) {
   });
 
   if (!res.ok) {
-    showToast('error', '이미지 업로드에 실패했습니다.');
+    throw new Error('이미지 업로드에 실패했습니다.');
   }
 
   const data = await res.json();
@@ -29,7 +27,7 @@ async function uploadActivityImage({ file }: { file: File }) {
   // API 응답의 activityImageUrl 키를 사용
   const imageUrl = data.activityImageUrl;
   if (!imageUrl) {
-    showToast('error', '이미지 URL을 받아올 수 없습니다.');
+    throw new Error('이미지 URL을 받아올 수 없습니다.');
   }
 
   return imageUrl;

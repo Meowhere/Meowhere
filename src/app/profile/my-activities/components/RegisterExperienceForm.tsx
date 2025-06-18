@@ -5,7 +5,11 @@ import RegisterForm from '../components/register-form/RegisterForm';
 import RegisterCalendar from '../components/register-calendar/RegisterCalendar';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
-import { MyActivitiesFormData, CreateScheduleBody } from '@/src/types/my-activities.types';
+import {
+  MyActivitiesFormData,
+  CreateScheduleBody,
+  UpdateMyActivityPayload,
+} from '@/src/types/my-activities.types';
 import { useForm, FormProvider } from 'react-hook-form';
 import { mapToApiPayload } from '@/src/utils/my-activities';
 import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
@@ -13,12 +17,15 @@ import { useCreateActivityMutation } from '@/src/hooks/useCreateActivityMutation
 import { useState, useEffect } from 'react';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Category } from '@/src/types/activity.types';
 import { useToastStore } from '@/src/store/toastStore';
+import { CATEGORY_LIST } from './register-form/RegisterCategory';
+import { Category } from '@/src/types/activity.types';
 
 const formSchema = z.object({
   title: z.string().min(3, '3자 이상 입력하세요.'),
-  category: z.string().nonempty('카테고리를 선택해주세요'),
+  category: z.custom<Category>((val) => CATEGORY_LIST.includes(val as Category), {
+    message: '올바른 카테고리를 선택해주세요',
+  }),
   price: z.string().regex(/^\d+$/, '숫자만 입력 가능합니다.').nonempty('가격을 입력해주세요'),
   description: z.string().min(10, '10자 이상 입력하세요.').max(700, '700자 이하로 입력하세요.'),
   address: z.string().nonempty('주소를 입력하세요'),
@@ -101,10 +108,12 @@ export default function RegisterExperienceForm({
       console.log('Submitting form data:', formData);
 
       const baseForm: MyActivitiesFormData = {
-        ...formData,
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
         price: Number(formData.price),
-        category: formData.category as Category,
-        bannerImageUrl: formData.bannerImageUrl ?? '',
+        address: formData.address,
+        bannerImageUrl: formData.bannerImageUrl,
         subImageUrls: formData.subImageUrls ?? [],
         schedules: formData.schedules ?? [],
       };
@@ -115,9 +124,10 @@ export default function RegisterExperienceForm({
           scheduleIdsToRemove,
           schedulesToAdd,
         });
-        await updateMyActivityMutation.mutateAsync(apiPayload);
+        await updateMyActivityMutation.mutateAsync(apiPayload as UpdateMyActivityPayload);
       } else {
-        await createActivityMutation.mutateAsync(baseForm);
+        const apiPayload = mapToApiPayload(baseForm, 'create');
+        await createActivityMutation.mutateAsync(apiPayload as MyActivitiesFormData);
       }
       onSubmit?.(baseForm);
     } catch (error) {

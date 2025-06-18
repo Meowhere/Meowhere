@@ -12,7 +12,7 @@ export default function EditActivityPage() {
   const handleSubmit = (formData: MyActivitiesFormData) => {
     mutate(formData, {
       onSuccess: () => {
-        router.push('my-activities');
+        router.push('/profile/my-activities');
       },
     });
   };

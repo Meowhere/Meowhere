@@ -12,7 +12,11 @@ export function mapToApiPayload(
     scheduleIdsToRemove?: number[];
     schedulesToAdd?: CreateScheduleBody[];
   }
-): UpdateMyActivityPayload {
+): MyActivitiesFormData | UpdateMyActivityPayload {
+  if (mode === 'create') {
+    return formData;
+  }
+
   return {
     title: formData.title,
     description: formData.description,

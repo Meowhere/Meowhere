@@ -6,19 +6,33 @@ import { useState } from 'react';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 import { Category } from '@/src/types/activity.types';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { useFormContext } from 'react-hook-form';
 
-const CATEGORY_LIST: Category[] = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
+export const CATEGORY_LIST: Category[] = [
+  '문화 · 예술',
+  '식음료',
+  '스포츠',
+  '투어',
+  '관광',
+  '웰빙',
+];
 
 export default function RegisterCategory() {
   const { isDesktop } = useBreakpoint();
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext();
 
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<Category>('문화 · 예술');
+  const selectedCategory = watch('category', CATEGORY_LIST[0]);
+
   // 카테고리 버튼 배열 생성
   const items: DropdownItemButton[] = CATEGORY_LIST.map((category) => ({
     label: category,
     onClick: () => {
-      setSelected(category);
+      setValue('category', category, { shouldValidate: true });
       setOpen(false);
     },
   }));
@@ -27,7 +41,7 @@ export default function RegisterCategory() {
     <div className='relative'>
       <DropdownTrigger
         label='카테고리'
-        text={selected}
+        text={selectedCategory}
         isOpen={open}
         onClick={() => setOpen((prev) => !prev)}
       />

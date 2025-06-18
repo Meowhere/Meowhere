@@ -9,7 +9,7 @@ export interface CalendarItem {
 
 export const generateId = () => `${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
 
-export function covertSchedulesToCalendarItems(
+export function convertSchedulesToCalendarItems(
   schedules: Omit<Schedule, 'id'>[] = []
 ): CalendarItem[] {
   return schedules.map((schedule) => ({

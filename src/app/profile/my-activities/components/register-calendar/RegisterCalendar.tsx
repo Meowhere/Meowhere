@@ -6,7 +6,7 @@ import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Sort from '../register-form/Sort';
 import {
   CalendarItem,
-  covertSchedulesToCalendarItems,
+  convertSchedulesToCalendarItems,
   generateId,
   sortCalendarItems,
   hasOverlappingSchedules,
@@ -28,7 +28,7 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
 
   const [items, setItems] = useState<CalendarItem[]>(
     defaultSchedules?.length
-      ? covertSchedulesToCalendarItems(defaultSchedules)
+      ? convertSchedulesToCalendarItems(defaultSchedules)
       : [{ id: generateId(), date: '', startTime: '', endTime: '' }]
   );
 

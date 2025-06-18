@@ -15,7 +15,7 @@ export interface MyActivitiesProps extends RatingLabelProps {
   price: number;
   address?: string;
   bannerImageUrl: string;
-  subImageUrl: string[];
+  subImageUrls?: string[];
   reviewCount?: number;
   createdAt?: string;
   updatedAt?: string;

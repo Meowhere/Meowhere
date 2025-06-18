@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import UploadImg from './UploadImg';
 import { useUploadActivityImageMutation } from '@/src/hooks/useUploadActivityImageMutation';
+import { useToastStore } from '@/src/store/toastStore';
 
 // 고유 id 생성 함수(uuid 써도 됨 의견 궁금합니다.)
 const genId = () => Math.random().toString(36).slice(2) + Date.now();
@@ -32,10 +33,23 @@ export default function UploadImgList({ defaultImages, onUrlsChange }: UploadImg
   });
 
   const uploadActivityImage = useUploadActivityImageMutation();
+  const { showToast } = useToastStore();
 
   // 각 UploadImg에서 파일이 업로드될 때 호출
-  const handleFileChange = (file: File | null, id: string) => {
+  const handleFileChange = async (file: File | null, id: string) => {
     if (file) {
+      // 파일 크기 체크 (예: 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('error', '파일 크기는 5MB를 초과할 수 없습니다.');
+        return;
+      }
+
+      // 파일 타입 체크
+      if (!file.type.startsWith('image/')) {
+        showToast('error', '이미지 파일만 업로드할 수 있습니다.');
+        return;
+      }
+
       // 먼저 파일 상태 업데이트
       const newFiles: FileObj[] = files.map((f) => (f.id === id ? { ...f, file } : f));
 
@@ -46,39 +60,37 @@ export default function UploadImgList({ defaultImages, onUrlsChange }: UploadImg
 
       setFiles(newFiles);
 
-      // 그 다음 서버 업로드
-      uploadActivityImage.mutate(
-        { file },
-        {
-          onSuccess: (url) => {
-            // 새로운 URL로 파일 상태 업데이트
-            setFiles((prev) => {
-              const updated = prev.map((f: FileObj) =>
-                f.id === id ? { ...f, file, previewUrl: url } : f
-              );
+      try {
+        // 서버 업로드
+        const url = await uploadActivityImage.mutateAsync({ file });
 
-              // 현재 모든 유효한 URL 수집
-              const currentUrls = updated
-                .filter((f: FileObj) => f.previewUrl)
-                .map((f: FileObj) => f.previewUrl as string);
+        // 새로운 URL로 파일 상태 업데이트
+        setFiles((prev) => {
+          const updated = prev.map((f: FileObj) =>
+            f.id === id ? { ...f, file, previewUrl: url } : f
+          );
 
-              // form 값 업데이트
-              onUrlsChange?.(currentUrls);
+          // 현재 모든 유효한 URL 수집
+          const currentUrls = updated
+            .filter((f: FileObj) => f.previewUrl)
+            .map((f: FileObj) => f.previewUrl as string);
 
-              return updated;
-            });
-          },
-          onError: (error) => {
-            console.error('이미지 업로드 실패:', error);
-            // 실패 시 파일 상태 초기화
-            setFiles((prev) =>
-              prev.map((f: FileObj) =>
-                f.id === id ? { ...f, file: null, previewUrl: undefined } : f
-              )
-            );
-          },
-        }
-      );
+          // form 값 업데이트
+          onUrlsChange?.(currentUrls);
+
+          return updated;
+        });
+
+        showToast('success', '이미지가 업로드되었습니다.');
+      } catch (error) {
+        console.error('이미지 업로드 실패:', error);
+        showToast('error', '이미지 업로드에 실패했습니다.');
+
+        // 실패 시 파일 상태 초기화
+        setFiles((prev) =>
+          prev.map((f: FileObj) => (f.id === id ? { ...f, file: null, previewUrl: undefined } : f))
+        );
+      }
     } else {
       // 파일 삭제
       let newFiles = files.filter((f: FileObj) => f.id !== id);

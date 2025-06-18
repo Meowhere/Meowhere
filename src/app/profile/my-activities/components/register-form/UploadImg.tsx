@@ -2,6 +2,7 @@ import { useUploadActivityImageMutation } from '@/src/hooks/useUploadActivityIma
 import Image from 'next/image';
 import { useRef, useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useToastStore } from '@/src/store/toastStore';
 
 interface UploadImgProps {
   file?: File | null;
@@ -21,6 +22,7 @@ export default function UploadImg({
   const [preview, setPreview] = useState<string | null>(defaultImage ?? null);
   const uploadActivityImage = useUploadActivityImageMutation();
   const { setValue } = useFormContext();
+  const { showToast } = useToastStore();
 
   useEffect(() => {
     if (fileProp !== undefined) setFile(fileProp);
@@ -40,21 +42,39 @@ export default function UploadImg({
     inputRef.current?.click();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFile = e.target.files?.[0] ?? null;
+    if (!newFile) {
+      return;
+    }
+
+    // 파일 크기 체크 (예: 5MB)
+    if (newFile.size > 5 * 1024 * 1024) {
+      showToast('error', '파일 크기는 5MB를 초과할 수 없습니다.');
+      return;
+    }
+
+    // 파일 타입 체크
+    if (!newFile.type.startsWith('image/')) {
+      showToast('error', '이미지 파일만 업로드할 수 있습니다.');
+      return;
+    }
+
     setFile(newFile);
     onFileChange?.(newFile);
 
     if (newFile && isBanner) {
-      uploadActivityImage.mutate(
-        { file: newFile },
-        {
-          onSuccess: (url) => {
-            setValue('bannerImageUrl', url);
-            setPreview(url);
-          },
-        }
-      );
+      try {
+        const url = await uploadActivityImage.mutateAsync({ file: newFile });
+        setValue('bannerImageUrl', url);
+        setPreview(url);
+        showToast('success', '이미지가 업로드되었습니다.');
+      } catch (error) {
+        showToast('error', '이미지 업로드에 실패했습니다.');
+        console.error('이미지 업로드 에러:', error);
+        setFile(null);
+        setPreview(defaultImage ?? null);
+      }
     }
   };
 
