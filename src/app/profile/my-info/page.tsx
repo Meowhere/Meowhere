@@ -47,13 +47,11 @@ type MyInfoForm = z.infer<typeof myInfoSchema>;
 
 export default function MyInfoPage() {
   const { isDesktop } = useBreakpoint();
-  const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 쿼리 훅
   const { data: user, isLoading, isError } = useMyInfoQuery();
   // 뮤테이션 훅
-  const { mutate: updateMyInfo, isPending } = useUpdateMyInfoMutation();
+  const updateMyInfoMutation = useUpdateMyInfoMutation();
 
   const {
     register,
@@ -79,22 +77,14 @@ export default function MyInfoPage() {
   // user 데이터 받아오면 폼에 set
   useEffect(() => {
     if (user) {
-      const currentFormValues = getValues();
-      reset(
-        {
-          nickname: user.nickname,
-          newPassword:
-            isDirty && currentFormValues.newPassword ? currentFormValues.newPassword : '',
-          confirmPassword:
-            isDirty && currentFormValues.confirmPassword ? currentFormValues.confirmPassword : '',
-        },
-        {
-          keepDirtyValues: isDirty,
-        }
-      );
+      reset({
+        nickname: user.nickname,
+        newPassword: '',
+        confirmPassword: '',
+      });
     }
-    console.log(user);
-  }, [user, reset, getValues, isDirty]);
+  }, [user, reset]);
+
 
   const onSubmit = (data: MyInfoForm) => {
     // user가 없으면 아무 것도 보내지 않음
@@ -106,29 +96,7 @@ export default function MyInfoPage() {
     if (data.nickname !== user.nickname) payload.nickname = data.nickname;
     if (data.newPassword) payload.newPassword = data.newPassword;
 
-    updateMyInfo(payload, {
-      onSuccess: () => {
-        alert('내 정보가 성공적으로 수정되었습니다!');
-        reset({
-          ...user,
-          nickname: data.nickname,
-          newPassword: '',
-          confirmPassword: '',
-        });
-      },
-      onError: (e: unknown) => {
-        let msg = '정보 수정 실패';
-        if (
-          e &&
-          typeof e === 'object' &&
-          'message' in e &&
-          typeof (e as { message: unknown }).message === 'string'
-        ) {
-          msg = (e as { message: string }).message;
-        }
-        alert(msg);
-      },
-    });
+    updateMyInfoMutation.mutate(payload);
   };
 
   if (isLoading)
@@ -188,7 +156,7 @@ export default function MyInfoPage() {
           <div className='w-[128px]'>
             <BaseButton
               variant='primary'
-              disabled={isPending || !isDirty || !isValid}
+              disabled={updateMyInfoMutation.isPending || !isDirty || !isValid}
               className='py-[12px]'
             >
               변경하기
