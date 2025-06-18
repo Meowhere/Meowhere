@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import RegisterCalendarItem from './RegisterCalendarItem';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
@@ -23,10 +23,9 @@ interface RegisterCalendarProps {
 export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarProps) {
   const { isDesktop } = useBreakpoint();
   const { showToast } = useToastStore();
-  const [hasShownToast, setHasShownToast] = useState(false);
   const { setValue } = useFormContext();
 
-  const [items, setItems] = useState<CalendarItem[]>(
+  const [items, setItems] = useState<CalendarItem[]>(() =>
     defaultSchedules?.length
       ? convertSchedulesToCalendarItems(defaultSchedules)
       : [{ id: generateId(), date: '', startTime: '', endTime: '' }]
@@ -34,11 +33,11 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
 
   const [sortKey, setSortKey] = useState<'registered' | 'latest' | 'oldest'>('registered');
 
-  const handleAddItem = () => {
+  const handleAddItem = useCallback(() => {
     setItems((prev) => [...prev, { id: generateId(), date: '', startTime: '', endTime: '' }]);
-  };
+  }, []);
 
-  const handleDeleteItem = (id: string) => {
+  const handleDeleteItem = useCallback((id: string) => {
     setItems((prev) => {
       const newItems = prev.filter((item) => item.id !== id);
       // 최소 1개의 아이템은 유지
@@ -47,15 +46,18 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
       }
       return newItems;
     });
-  };
+  }, []);
 
   // 하위 아이템의 값이 바뀔 때 업데이트
-  const handleItemChange = (id: string, field: 'date' | 'startTime' | 'endTime', value: string) => {
-    setItems((prev) => {
-      const newItems = prev.map((item) => (item.id === id ? { ...item, [field]: value } : item));
-      return newItems;
-    });
-  };
+  const handleItemChange = useCallback(
+    (id: string, field: 'date' | 'startTime' | 'endTime', value: string) => {
+      setItems((prev) => {
+        const newItems = prev.map((item) => (item.id === id ? { ...item, [field]: value } : item));
+        return newItems;
+      });
+    },
+    []
+  );
 
   // items가 변경될 때마다 form 값 업데이트
   useEffect(() => {
@@ -70,21 +72,15 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
     setValue('schedules', validSchedules);
   }, [items, setValue]);
 
+  // 중복 스케줄 체크 및 토스트 표시
   useEffect(() => {
-    console.log('스케줄 아이템 변경:', items);
-    if (hasOverlappingSchedules(items)) {
-      if (!hasShownToast) {
-        showToast('error', '동일한 날짜에 시간대가 겹치는 일정이 있습니다.');
-        setHasShownToast(true);
-      }
-    } else {
-      console.log('중복 없음');
-      // 중복 없으면 토스트 다시 띄울 수 있도록 초기화
-      setHasShownToast(false);
+    const hasOverlap = hasOverlappingSchedules(items);
+    if (hasOverlap) {
+      showToast('error', '동일한 날짜에 시간대가 겹치는 일정이 있습니다.');
     }
-  }, [items, hasShownToast, showToast]);
+  }, [items, showToast]);
 
-  const sortedItems = sortCalendarItems(items, sortKey);
+  const sortedItems = useMemo(() => sortCalendarItems(items, sortKey), [items, sortKey]);
 
   return (
     <div className='flex flex-col gap-[20px]'>

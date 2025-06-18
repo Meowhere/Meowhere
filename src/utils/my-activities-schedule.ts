@@ -1,4 +1,5 @@
 import { Schedule } from '@/src/types/activity.types';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface CalendarItem {
   id: string;
@@ -7,7 +8,7 @@ export interface CalendarItem {
   endTime: string;
 }
 
-export const generateId = () => `${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+export const generateId = () => uuidv4();
 
 export function convertSchedulesToCalendarItems(
   schedules: Omit<Schedule, 'id'>[] = []
@@ -54,7 +55,7 @@ export function isValidSchedule(item: CalendarItem): boolean {
       return false;
     }
 
-    return start < end;
+    return start <= end;
   } catch (error) {
     return false;
   }

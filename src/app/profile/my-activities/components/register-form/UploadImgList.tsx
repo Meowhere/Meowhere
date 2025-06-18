@@ -1,10 +1,8 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import UploadImg from './UploadImg';
 import { useUploadActivityImageMutation } from '@/src/hooks/useUploadActivityImageMutation';
 import { useToastStore } from '@/src/store/toastStore';
-
-// 고유 id 생성 함수(uuid 써도 됨 의견 궁금합니다.)
-const genId = () => Math.random().toString(36).slice(2) + Date.now();
 
 type FileObj = {
   id: string;
@@ -19,17 +17,34 @@ interface UploadImgListProps {
 
 const MAX_FILES = 4;
 
+const updateFilesState = (currentFiles: FileObj[], fileToRemoveId?: string): FileObj[] => {
+  let newFiles = fileToRemoveId
+    ? currentFiles.filter((f: FileObj) => f.id !== fileToRemoveId)
+    : [...currentFiles];
+
+  // 1. 완전히 비었으면 무조건 하나 남기기(최소 1개)
+  if (newFiles.length === 0) {
+    newFiles = [{ id: uuidv4(), file: null }];
+  }
+  // 2. 빈 슬롯(null)이 없다면 빈 슬롯 추가 (최대 4개 제한)
+  else if (newFiles.length < MAX_FILES && !newFiles.find((f: FileObj) => f.file === null)) {
+    newFiles.push({ id: uuidv4(), file: null });
+  }
+
+  return newFiles;
+};
+
 export default function UploadImgList({ defaultImages, onUrlsChange }: UploadImgListProps) {
   const [files, setFiles] = useState<FileObj[]>(() => {
     if (defaultImages?.length) {
       const withPreviews = defaultImages.map((url) => ({
-        id: genId(),
+        id: uuidv4(),
         file: null,
         previewUrl: url,
       }));
-      return [...withPreviews, { id: genId(), file: null }];
+      return updateFilesState(withPreviews);
     }
-    return [{ id: genId(), file: null }];
+    return [{ id: uuidv4(), file: null }];
   });
 
   const uploadActivityImage = useUploadActivityImageMutation();
@@ -50,36 +65,23 @@ export default function UploadImgList({ defaultImages, onUrlsChange }: UploadImg
         return;
       }
 
-      // 먼저 파일 상태 업데이트
-      const newFiles: FileObj[] = files.map((f) => (f.id === id ? { ...f, file } : f));
-
-      // 마지막 빈 칸에 업로드 & 4개 미만일 때만 새 빈 추가
-      if (id === files[files.length - 1].id && files.length < MAX_FILES) {
-        newFiles.push({ id: genId(), file: null });
-      }
-
-      setFiles(newFiles);
-
       try {
         // 서버 업로드
         const url = await uploadActivityImage.mutateAsync({ file });
 
         // 새로운 URL로 파일 상태 업데이트
-        setFiles((prev) => {
-          const updated = prev.map((f: FileObj) =>
-            f.id === id ? { ...f, file, previewUrl: url } : f
-          );
+        const newFiles = files.map((f) => (f.id === id ? { ...f, file, previewUrl: url } : f));
 
-          // 현재 모든 유효한 URL 수집
-          const currentUrls = updated
-            .filter((f: FileObj) => f.previewUrl)
-            .map((f: FileObj) => f.previewUrl as string);
+        const updatedFiles = updateFilesState(newFiles);
+        setFiles(updatedFiles);
 
-          // form 값 업데이트
-          onUrlsChange?.(currentUrls);
+        // 현재 모든 유효한 URL 수집
+        const currentUrls = updatedFiles
+          .filter((f: FileObj) => f.previewUrl)
+          .map((f: FileObj) => f.previewUrl as string);
 
-          return updated;
-        });
+        // form 값 업데이트
+        onUrlsChange?.(currentUrls);
 
         showToast('success', '이미지가 업로드되었습니다.');
       } catch (error) {
@@ -87,28 +89,24 @@ export default function UploadImgList({ defaultImages, onUrlsChange }: UploadImg
         showToast('error', '이미지 업로드에 실패했습니다.');
 
         // 실패 시 파일 상태 초기화
-        setFiles((prev) =>
-          prev.map((f: FileObj) => (f.id === id ? { ...f, file: null, previewUrl: undefined } : f))
+        const updatedFiles = files.map((f: FileObj) =>
+          f.id === id ? { ...f, file: null, previewUrl: undefined } : f
         );
+        setFiles(updatedFiles);
+
+        // form 값도 업데이트
+        const currentUrls = updatedFiles
+          .filter((f: FileObj) => f.previewUrl)
+          .map((f: FileObj) => f.previewUrl as string);
+        onUrlsChange?.(currentUrls);
       }
     } else {
       // 파일 삭제
-      let newFiles = files.filter((f: FileObj) => f.id !== id);
-
-      // ⚠️ 조건 분기 설명 ⚠️
-      // 1. 완전히 비었으면 무조건 하나 남기기(최소 1개)
-      if (newFiles.length === 0) {
-        newFiles = [{ id: genId(), file: null }];
-      }
-      // 2. 빈 슬롯(null)이 없다면 빈 슬롯 추가 (최대 4개 제한)
-      else if (newFiles.length < MAX_FILES && !newFiles.find((f: FileObj) => f.file === null)) {
-        newFiles.push({ id: genId(), file: null });
-      }
-
-      setFiles(newFiles);
+      const updatedFiles = updateFilesState(files, id);
+      setFiles(updatedFiles);
 
       // URL 업데이트 (삭제된 후 남은 URL들)
-      const remainingUrls = newFiles
+      const remainingUrls = updatedFiles
         .filter((f: FileObj) => f.previewUrl)
         .map((f: FileObj) => f.previewUrl as string);
       onUrlsChange?.(remainingUrls);

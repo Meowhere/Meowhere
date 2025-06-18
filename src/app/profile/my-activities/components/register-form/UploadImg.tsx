@@ -85,6 +85,9 @@ export default function UploadImg({
     if (isBanner) {
       setValue('bannerImageUrl', '');
     }
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
   };
 
   return (
