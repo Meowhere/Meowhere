@@ -10,6 +10,7 @@ import ScheduleModal from '../app/activities/[id]/components/reservation/Schedul
 import { ScheduleModalProps } from '../app/activities/[id]/components/reservation/ScheduleModal';
 import NotificationModal from '../app/_components/NotificationModal';
 import PrivacyPolicyModal from '../components/layout/navbar/components/PrivacyPolicyModal';
+import BadgeEarnedModalContent from '../components/common/badge/BadgeEarnedModalContent';
 
 export const useModal = () => {
   const { openModal, closeModal } = useModalStore();
@@ -81,6 +82,13 @@ export const useModal = () => {
     });
   };
 
+  const openBadgeEarnedModal = () => {
+    openModal({
+      header: '🎉 새로운 뱃지를 획득했다냥',
+      children: <BadgeEarnedModalContent />,
+    });
+  };
+
   const openBottomSheetModal = (props: Omit<ModalProps, 'type'>) => {
     openModal({
       ...props,
@@ -99,5 +107,6 @@ export const useModal = () => {
     openReservationModal,
     openNotificationModal,
     openPrivacyPolicyModal,
+    openBadgeEarnedModal,
   };
 };
