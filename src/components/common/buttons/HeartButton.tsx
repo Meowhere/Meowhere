@@ -1,3 +1,4 @@
+// components/common/buttons/HeartButton.tsx
 'use client';
 
 import HeartIcon from '../icons/HeartIcon';
@@ -5,26 +6,18 @@ import HeartIcon from '../icons/HeartIcon';
 interface HeartButtonProps {
   isLiked: boolean;
   onToggle: () => void;
-  variant?: 'white' | 'black';
   className?: string;
 }
 
-export default function HeartButton({
-  isLiked,
-  onToggle,
-  variant = 'white',
-  className = '',
-  ...rest
-}: HeartButtonProps) {
+export default function HeartButton({ isLiked, onToggle, className = '' }: HeartButtonProps) {
   return (
     <button
       type='button'
-      onClick={onToggle}
       aria-label={isLiked ? '찜 취소' : '찜하기'}
-      className={`bg-transparent p-0 ${className}`}
-      {...rest}
+      onClick={onToggle}
+      className={`p-0 bg-transparent border-none appearance-none ${className}`}
     >
-      <HeartIcon isLiked={isLiked} variant={variant} className='w-6 h-6' />
+      <HeartIcon isFilled={isLiked} className='w-full h-full' />
     </button>
   );
 }
