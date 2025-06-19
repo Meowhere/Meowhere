@@ -70,6 +70,7 @@ export default function SignUpForm({ signUpForm }: SignUpFormProps) {
       <Input
         label='닉네임'
         type='text'
+        autoFocus
         watchValue={signUpNicknameValue}
         error={signUpForm.formState.errors.nickname}
         {...signUpForm.register('nickname')}
