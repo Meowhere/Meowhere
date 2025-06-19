@@ -19,51 +19,32 @@ export default function SearchResultsWithMap({
   const prevActivitiesRef = useRef<Activity[]>([]);
   const { isDesktop } = useBreakpoint();
 
-  console.log(
-    'SearchResultsWithMap: 렌더링, initialActivities 길이:',
-    initialActivities.length,
-    'allActivities 길이:',
-    allActivities.length
-  );
-
-  // 초기 데이터가 변경될 때 (새로운 검색/필터) 상태 리셋
+  // 초기 데이터가 변경 시 리셋
   useEffect(() => {
-    console.log('SearchResultsWithMap: initialActivities 변경, 길이:', initialActivities.length);
     setAllActivities(initialActivities);
     prevActivitiesRef.current = initialActivities;
   }, [initialActivities]);
 
-  // useCallback으로 함수 메모이제이션 + 중복 업데이트 방지
+  // 중복 업데이트 방지
   const handleActivitiesUpdate = useCallback((newActivities: Activity[]) => {
     const prevLength = prevActivitiesRef.current.length;
     const newLength = newActivities.length;
 
-    console.log(
-      'SearchResultsWithMap: handleActivitiesUpdate 호출, prevLength:',
-      prevLength,
-      'newLength:',
-      newLength
-    );
-
-    // 길이가 다르면 확실히 다른 데이터 (무한스크롤)
+    // 무한스크롤 업데이트
     if (prevLength !== newLength) {
-      console.log('SearchResultsWithMap: 길이 변경으로 allActivities 업데이트');
       setAllActivities(newActivities);
       prevActivitiesRef.current = newActivities;
       return;
     }
 
-    // 길이가 같으면 마지막 몇 개 요소의 ID만 비교 (성능 최적화)
+    // 무한스크롤 업데이트 중복 방지
     if (newLength > 0) {
       const prevLastIds = prevActivitiesRef.current.slice(-5).map((a) => a.id);
       const newLastIds = newActivities.slice(-5).map((a) => a.id);
 
       if (JSON.stringify(prevLastIds) !== JSON.stringify(newLastIds)) {
-        console.log('SearchResultsWithMap: ID 변경으로 allActivities 업데이트');
         setAllActivities(newActivities);
         prevActivitiesRef.current = newActivities;
-      } else {
-        console.log('SearchResultsWithMap: 동일한 데이터로 업데이트 스킵');
       }
     }
   }, []);

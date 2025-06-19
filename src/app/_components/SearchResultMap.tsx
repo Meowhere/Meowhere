@@ -23,7 +23,7 @@ export default function SearchResultMap({ activities, className }: SearchResultM
   const overlaysRef = useRef<any[]>([]);
   const geocoderRef = useRef<any>(null);
 
-  // 기존 마커들과 오버레이들 모두 제거
+  // 기존 마커들과 오버레이 제거
   const clearMarkers = useCallback(() => {
     markersRef.current.forEach((marker) => {
       marker.setMap(null);
@@ -35,7 +35,7 @@ export default function SearchResultMap({ activities, className }: SearchResultM
     overlaysRef.current = [];
   }, []);
 
-  // 마커 생성 함수
+  // 마커 생성
   const createMarkers = useCallback((activities: Activity[], shouldFitBounds = true) => {
     if (!mapInstanceRef.current || !geocoderRef.current) return;
 
@@ -49,7 +49,7 @@ export default function SearchResultMap({ activities, className }: SearchResultM
         if (status === window.kakao.maps.services.Status.OK) {
           const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
 
-          // 커스텀 마커 SVG 생성
+          // 커스텀 마커 SVG
           const markerSvgElement = categories.find(
             (category) => category.value === activity.category
           )?.icon;
@@ -57,7 +57,7 @@ export default function SearchResultMap({ activities, className }: SearchResultM
           if (markerSvgElement) {
             const originalSvg = renderToString(markerSvgElement);
 
-            // 동그라미 배경과 함께 마커 SVG 생성
+            // 마커 SVG
             const markerSvg = `
               <svg width="56" height="56" viewBox="-8 -8 56 56" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -72,11 +72,11 @@ export default function SearchResultMap({ activities, className }: SearchResultM
               </svg>
             `;
 
-            // SVG를 data URL로 변환
+            // SVG -> data URL
             const svgBlob = new Blob([markerSvg], { type: 'image/svg+xml' });
             const svgUrl = URL.createObjectURL(svgBlob);
 
-            // 마커 이미지 설정
+            // 마커 이미지
             const markerImage = new window.kakao.maps.MarkerImage(
               svgUrl,
               new window.kakao.maps.Size(56, 56),
@@ -91,7 +91,7 @@ export default function SearchResultMap({ activities, className }: SearchResultM
               title: activity.title,
             });
 
-            // 커스텀 오버레이 내용
+            // 커스텀 오버레이
             const overlayContent = `
               <div class="bg-white rounded-xl p-3 shadow-lg min-w-[200px]">
                 <div class="font-semibold text-sm text-gray-800 mb-1 text-center">
@@ -114,7 +114,7 @@ export default function SearchResultMap({ activities, className }: SearchResultM
               xAnchor: 0.5,
             });
 
-            // 마커 호버 이벤트 - 마우스 올릴 때 표시, 빠질 때 숨김
+            // 호버
             window.kakao.maps.event.addListener(marker, 'mouseover', () => {
               overlay.setMap(map);
             });
@@ -128,20 +128,20 @@ export default function SearchResultMap({ activities, className }: SearchResultM
             bounds.extend(coords);
 
             completedCount++;
-            // 모든 마커가 생성되면 지도 범위 조정
+            // 모든 마커 생성 시 지도 범위 조정
             if (completedCount === activities.length && activities.length > 0) {
               if (shouldFitBounds) {
-                // 첫 로드나 필터 변경 시: 모든 마커가 보이도록 범위 조정
+                // 첫 로드나 필터 변경 시 모든 마커 보이도록 범위 조정
                 map.setBounds(bounds);
               } else {
-                // 무한스크롤 시: 기존 범위를 유지하면서 새 마커들까지 포함하도록 확장
+                // 무한스크롤 시 기존 범위 유지하면서 새 마커들까지 포함하도록 확장
                 const currentBounds = map.getBounds();
                 const extendedBounds = new window.kakao.maps.LatLngBounds(
                   currentBounds.getSouthWest(),
                   currentBounds.getNorthEast()
                 );
 
-                // 새로 추가된 마커들의 범위를 기존 범위에 추가
+                // 새로 추가된 마커들 범위 기존 범위에 추가
                 extendedBounds.extend(bounds.getSouthWest());
                 extendedBounds.extend(bounds.getNorthEast());
 
@@ -155,17 +155,17 @@ export default function SearchResultMap({ activities, className }: SearchResultM
     });
   }, []);
 
-  // 카카오맵 초기화 (최초 1회만)
+  // 초기화
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // 이미 스크립트가 로드되어 있는지 확인
+    // 스크립트 로드 확인
     if (window.kakao && window.kakao.maps) {
       initializeMap();
       return;
     }
 
-    // 카카오맵 스크립트 로드
+    // 스크립트 로드
     const script = document.createElement('script');
     script.async = true;
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&libraries=services&autoload=false`;
@@ -189,11 +189,8 @@ export default function SearchResultMap({ activities, className }: SearchResultM
       mapInstanceRef.current = new window.kakao.maps.Map(mapRef.current, mapOption);
       geocoderRef.current = new window.kakao.maps.services.Geocoder();
 
-      console.log('SearchResultMap: 지도 초기화 완료, activities 길이:', activities.length);
-
-      // 지도 초기화 완료 후 기존 activities가 있다면 즉시 처리
+      // 기존 activities 있으면 즉시 처리
       if (activities.length > 0 && prevActivitiesRef.current.length === 0) {
-        console.log('SearchResultMap: 지도 초기화 후 즉시 마커 생성');
         setTimeout(() => {
           if (mapInstanceRef.current && geocoderRef.current) {
             createMarkers(activities, true);
@@ -204,27 +201,27 @@ export default function SearchResultMap({ activities, className }: SearchResultM
     }
 
     return () => {
-      // 컴포넌트 언마운트 시에만 스크립트 제거
+      // 컴포넌트 언마운트 시 스크립트 제거
       if (script.parentNode) {
         script.remove();
       }
     };
-  }, []); // 빈 dependency array - 최초 1회만 실행
+  }, []); // 빈 dependency array - 최초 1회 실행
 
-  // 화면 크기 변경 시 지도 relayout (반응형 대응)
+  // 화면 크기 변경 시 지도 relayout
   useEffect(() => {
     if (!mapInstanceRef.current) return;
 
     const handleResize = () => {
-      // 지도 컨테이너 크기가 변경되었을 때 relayout 호출
+      // 지도 컨테이너 크기 변경 시 relayout 호출
       setTimeout(() => {
         if (mapInstanceRef.current) {
           mapInstanceRef.current.relayout();
         }
-      }, 100); // 약간의 지연으로 DOM 변경 완료 후 실행
+      }, 100); // DOM 변경 완료 후 실행
     };
 
-    // window resize 이벤트 리스너 등록
+    // window resize 이벤트 리스너
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -232,10 +229,10 @@ export default function SearchResultMap({ activities, className }: SearchResultM
     };
   }, []);
 
-  // 이전 activities 기억하기 위한 ref
+  // 이전 activities ref
   const prevActivitiesRef = useRef<Activity[]>([]);
 
-  // 새로 추가된 activities만 필터링하는 함수
+  // 새로 추가된 activities만 필터링
   const getNewActivities = useCallback(
     (currentActivities: Activity[], prevActivities: Activity[]) => {
       const prevIds = new Set(prevActivities.map((activity) => activity.id));
@@ -244,24 +241,15 @@ export default function SearchResultMap({ activities, className }: SearchResultM
     []
   );
 
-  // activities가 변경될 때마다 마커 업데이트
+  // activities 변경 시 마커 업데이트
   useEffect(() => {
-    // 지도와 geocoder가 준비될 때까지 대기
+    // 지도와 geocoder 준비 대기
     if (!mapInstanceRef.current || !geocoderRef.current) {
-      console.log('SearchResultMap: 지도 아직 준비 안됨, activities 길이:', activities.length);
       return;
     }
-
-    console.log(
-      'SearchResultMap: activities 변경 감지, 길이:',
-      activities.length,
-      'ids:',
-      activities.map((a) => a.id)
-    );
-
     const prevActivities = prevActivitiesRef.current;
 
-    // 첫 번째 로드이거나 완전히 다른 검색 결과인 경우 (길이가 줄어들었거나 아예 다른 데이터)
+    // 첫 번째 로드이거나 완전히 다른 검색 결과인 경우
     const isCompleteRefresh =
       prevActivities.length === 0 || // 첫 로드
       activities.length < prevActivities.length || // 필터링으로 줄어듦
@@ -269,35 +257,21 @@ export default function SearchResultMap({ activities, className }: SearchResultM
         prevActivities.length > 0 &&
         !activities.some((activity) => prevActivities.some((prev) => prev.id === activity.id))); // 완전 다른 데이터
 
-    console.log(
-      'SearchResultMap: isCompleteRefresh:',
-      isCompleteRefresh,
-      'prevLength:',
-      prevActivities.length,
-      'currentLength:',
-      activities.length
-    );
-
     if (isCompleteRefresh) {
-      // 기존 마커들 모두 제거하고 새로 생성 (지도 범위 자동 조정)
+      // 기존 마커들 모두 제거하고 새로 생성
       clearMarkers();
       if (activities.length > 0) {
-        console.log('SearchResultMap: 완전 새로고침으로 마커 생성');
         createMarkers(activities, true);
       }
     } else {
-      // 무한스크롤: 새로 추가된 마커들만 생성 (지도 범위 유지)
+      // 무한스크롤 - 새로 추가된 마커들만 생성
       const newActivities = getNewActivities(activities, prevActivities);
       if (newActivities.length > 0) {
-        console.log(
-          'SearchResultMap: 무한스크롤로 새 마커 추가, 새로운 개수:',
-          newActivities.length
-        );
         createMarkers(newActivities, false);
       }
     }
 
-    // 현재 activities를 이전 값으로 저장
+    // 현재 activities 이전 값으로 저장
     prevActivitiesRef.current = [...activities];
   }, [activities, clearMarkers, createMarkers, getNewActivities]);
 
