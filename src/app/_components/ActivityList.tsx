@@ -96,22 +96,22 @@ export default function ActivityList({
   const allActivities = data?.pages.flatMap((page) => page.activities) || [];
   const isInitialLoading = isLoading || (isFetching && !data?.pages.length);
 
-  // allActivities가 변경될 때마다 부모 컴포넌트에게 알림
+  // allActivities 변경 시 알림
   const prevAllActivitiesRef = useRef<Activity[]>([]);
 
   useEffect(() => {
-    // 이전 데이터와 비교해서 실제로 변경된 경우에만 업데이트
+    // 이전 데이터와 비교해서 실제 변경된 경우만 업데이트
     if (onActivitiesUpdate && allActivities.length > 0) {
       const prevLength = prevAllActivitiesRef.current.length;
       const currentLength = allActivities.length;
 
-      // 길이가 다른 경우에만 업데이트 (무한스크롤로 데이터 추가된 경우)
+      // 길이 다른 경우만 업데이트 (무한스크롤)
       if (prevLength !== currentLength) {
         onActivitiesUpdate(allActivities);
-        prevAllActivitiesRef.current = [...allActivities]; // 새로운 배열로 복사
+        prevAllActivitiesRef.current = [...allActivities];
       }
     }
-  }, [allActivities]); // onActivitiesUpdate를 dependency에서 제외해서 무한루프 방지
+  }, [allActivities]);
 
   return (
     <div className={className}>
@@ -128,7 +128,6 @@ export default function ActivityList({
           ))}
         </div>
       )}
-      {/* {isFetching && <ActivityListSkeleton count={7} />} */}
       {!hasNextPage && !isFetching && (
         <div className='w-full flex justify-center pt-[128px] pb-[24px]'>
           <span className='text-gray-500 dark:text-gray-400 text-xs flex items-center gap-[8px]'>

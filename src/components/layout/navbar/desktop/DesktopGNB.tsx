@@ -37,7 +37,6 @@ export default function DesktopGNB() {
     openNotificationModal({
       data: notificationData,
       onConfirm: () => {
-        console.log('취소됨');
         closeModal();
       },
     });
@@ -110,7 +109,6 @@ export default function DesktopGNB() {
     const handleScroll = () => {
       const scrollThreshold = 600; //페이지 내 SearchFilter 컴포넌트 y축 위치
       setShowScrollElements(hasParams || window.scrollY > scrollThreshold);
-      console.log('hasParams', hasParams);
     };
     handleScroll();
 
