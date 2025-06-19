@@ -8,7 +8,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   return (
     <div className='flex relative gap-[128px] min-h-screen mt-[50px] max-w-[1200px] mx-auto'>
       {isDesktop && (
-        <aside className='sticky w-[328px] h-fit top-[50px] self-start'>
+        <aside className='sticky w-[328px] h-fit top-[calc(50px+96px)] self-start'>
           <Sidebar />
         </aside>
       )}
