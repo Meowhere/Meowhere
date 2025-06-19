@@ -17,6 +17,18 @@ export default function formatRelativeTime(date: string) {
   const diffHours = Math.floor(diff / MILLISECONDS.HOUR);
   const diffDays = Math.floor(diff / MILLISECONDS.DAY);
 
+  if (Math.abs(diffMinutes) < 1) {
+    return isFuture ? '곧' : '방금 전';
+  }
+
+  if (Math.abs(diffHours) < 1) {
+    return isFuture ? `${Math.abs(diffMinutes)}분 후` : `${Math.abs(diffMinutes)}분 전`;
+  }
+
+  if (Math.abs(diffDays) < 1) {
+    return isFuture ? `${Math.abs(diffHours)}시간 후` : `${Math.abs(diffHours)}시간 전`;
+  }
+
   const DAY_TO_KR = {
     [-2]: '모레',
     [-1]: '내일',
@@ -29,22 +41,7 @@ export default function formatRelativeTime(date: string) {
     return day in DAY_TO_KR;
   }
 
-  // 1. 명확한 키값에 해당하는 경우
   if (isValidDayKey(diffDays)) return DAY_TO_KR[diffDays];
 
-  // 2. 3일 이상 차이나는 경우 상대시간 표현
-  if (Math.abs(diffDays) >= 1) {
-    return isFuture ? `${Math.abs(diffDays)}일 후` : `${Math.abs(diffDays)}일 전`;
-  }
-
-  // 3. 하루 이내: 시간 또는 분
-  if (Math.abs(diffHours) >= 1) {
-    return isFuture ? `${Math.abs(diffHours)}시간 후` : `${Math.abs(diffHours)}시간 전`;
-  }
-
-  if (Math.abs(diffMinutes) >= 1) {
-    return isFuture ? `${Math.abs(diffMinutes)}분 후` : `${Math.abs(diffMinutes)}분 전`;
-  }
-
-  return isFuture ? '곧' : '방금 전';
+  return isFuture ? `${Math.abs(diffDays)}일 후` : `${Math.abs(diffDays)}일 전`;
 }

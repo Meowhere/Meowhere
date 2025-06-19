@@ -10,7 +10,7 @@ import { useModal } from '@/src/hooks/useModal';
 import { useLogout, useUser } from '@/src/hooks/auth/useAuth';
 import { useRouter } from 'next/navigation';
 import { useThemeStore } from '@/src/store/themeStore';
-// import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient'; forREAL
+import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 
 export default function DesktopGNB() {
   const { isSearching } = useGnbStore();
@@ -19,32 +19,7 @@ export default function DesktopGNB() {
   const pathname = usePathname();
   const { openAuthModal, openNotificationModal, closeModal } = useModal();
   const { theme, toggleTheme } = useThemeStore();
-
-  // const notificationData = fetchFromClient('/my-notifications'); forREAL
-  const notificationData = {
-    cursorId: 0,
-    notifications: [
-      {
-        id: 1,
-        teamId: 'string',
-        userId: 0,
-        content: '무슨무슨 알림이 승인되었습니다',
-        createdAt: '2025-06-14T06:04:32.504Z',
-        updatedAt: '2025-06-14T06:04:32.504Z',
-        deletedAt: '2025-06-14T06:04:32.504Z',
-      },
-      {
-        id: 2,
-        teamId: 'string',
-        userId: 0,
-        content: '무슨무슨 알림이 거절되었습니다',
-        createdAt: '2025-06-14T06:14:32.504Z',
-        updatedAt: '2025-06-14T06:14:32.504Z',
-        deletedAt: '2025-06-14T06:14:32.504Z',
-      },
-    ],
-    totalCount: 2,
-  }; //forTEST
+  const [notificationData, setNotificationData] = useState(null);
 
   const logoutMutation = useLogout();
   const router = useRouter();
@@ -180,10 +155,9 @@ export default function DesktopGNB() {
           {showDropdown && (
             <div className='absolute top-[calc(100%+8px)] right-0'>
               <DropdownMenu
-                isOpen={showDropdown}
+                onClose={() => console.log('close')}
                 items={data ? dropdownItemsForLoggedIn : dropdownItemsForLoggedOut}
-                triggerLabel='내 계정'
-                selectedValue={''}
+                bottomSheetTitle='내 계정'
               />
             </div>
           )}

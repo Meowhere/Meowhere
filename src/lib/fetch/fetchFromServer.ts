@@ -21,6 +21,7 @@ export async function fetchFromServer(
       const res = await fetch(`${BASE_API_URL}${path}`, {
         ...options,
         credentials: 'include',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
           ...(options.headers || {}),

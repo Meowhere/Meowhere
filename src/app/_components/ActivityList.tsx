@@ -7,7 +7,6 @@ import ActivityCard from './ActivityCard';
 import { useEffect, useRef } from 'react';
 import { Activity } from '@/src/types/activity.types';
 import { useUser } from '@/src/hooks/auth/useAuth';
-import ActivityListSkeleton from './ActivityListSkeleton';
 import CheckedInCircle from '@/src/components/common/icons/CheckedInCircle';
 
 export default function ActivityList({
@@ -94,16 +93,18 @@ export default function ActivityList({
   return (
     <>
       {isInitialLoading ? (
-        <ActivityListSkeleton count={14} />
+        <div className='w-full flex justify-center pt-[128px] pb-[24px]'>
+          <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+        </div>
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-7 gap-[24px] lg:gap-x-[12px] lg:gap-y-[80px] mt-6 p-[24px] lg:px-[86px]'>
           {allActivities.map((item: Activity) => (
-          <ActivityCard key={item.id} activity={item} showLikeButton={showLikeButton} />
+            <ActivityCard key={item.id} activity={item} showLikeButton={showLikeButton} />
           ))}
         </div>
       )}
-      {isFetching && <ActivityListSkeleton count={7} />}
-      {!hasNextPage && (
+      {/* {isFetching && <ActivityListSkeleton count={7} />} */}
+      {!hasNextPage && !isFetching && (
         <div className='w-full flex justify-center pt-[128px] pb-[24px]'>
           <span className='text-gray-500 dark:text-gray-400 text-xs flex items-center gap-[8px]'>
             <CheckedInCircle className='w-[16px] h-[16px]' />
