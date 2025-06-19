@@ -14,11 +14,13 @@ export default function ActivityList({
   initialCursor,
   onActivitiesUpdate,
   isSearching = false,
+  className,
 }: {
   initialActivities: Activity[];
   initialCursor: string | null;
   onActivitiesUpdate?: (activities: Activity[]) => void;
   isSearching?: boolean;
+  className?: string;
 }) {
   const searchParams = useSearchParams();
   const { data: userData } = useUser();
@@ -112,14 +114,14 @@ export default function ActivityList({
   }, [allActivities]); // onActivitiesUpdate를 dependency에서 제외해서 무한루프 방지
 
   return (
-    <div>
+    <div className={className}>
       {isInitialLoading ? (
         <div className='w-full flex justify-center pt-[128px] pb-[24px]'>
           <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
         </div>
       ) : (
         <div
-          className={`${!isSearching ? 'xl:grid-cols-5 2xl:grid-cols-7' : ''} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-[12px] lg:gap-y-[80px] mt-6 p-[24px] lg:px-[86px] gap-[24px]`}
+          className={`${!isSearching ? 'xl:grid-cols-5 2xl:grid-cols-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-[12px] lg:gap-y-[80px]' : 'lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 lg:gap-x-[12px] lg:gap-y-[80px]'} grid mt-6 p-[24px] lg:px-[86px] gap-[24px]`}
         >
           {allActivities.map((item: Activity) => (
             <ActivityCard key={item.id} activity={item} showLikeButton={showLikeButton} />

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Activity } from '../../types/activity.types';
 import SearchResultMap from './SearchResultMap';
 import ActivityList from './ActivityList';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface SearchResultsWithMapProps {
   initialActivities: Activity[];
@@ -16,9 +17,18 @@ export default function SearchResultsWithMap({
 }: SearchResultsWithMapProps) {
   const [allActivities, setAllActivities] = useState<Activity[]>(initialActivities);
   const prevActivitiesRef = useRef<Activity[]>([]);
+  const { isDesktop } = useBreakpoint();
+
+  console.log(
+    'SearchResultsWithMap: 렌더링, initialActivities 길이:',
+    initialActivities.length,
+    'allActivities 길이:',
+    allActivities.length
+  );
 
   // 초기 데이터가 변경될 때 (새로운 검색/필터) 상태 리셋
   useEffect(() => {
+    console.log('SearchResultsWithMap: initialActivities 변경, 길이:', initialActivities.length);
     setAllActivities(initialActivities);
     prevActivitiesRef.current = initialActivities;
   }, [initialActivities]);
@@ -28,8 +38,16 @@ export default function SearchResultsWithMap({
     const prevLength = prevActivitiesRef.current.length;
     const newLength = newActivities.length;
 
-    // 길이가 다르면 확실히 다른 데이터
+    console.log(
+      'SearchResultsWithMap: handleActivitiesUpdate 호출, prevLength:',
+      prevLength,
+      'newLength:',
+      newLength
+    );
+
+    // 길이가 다르면 확실히 다른 데이터 (무한스크롤)
     if (prevLength !== newLength) {
+      console.log('SearchResultsWithMap: 길이 변경으로 allActivities 업데이트');
       setAllActivities(newActivities);
       prevActivitiesRef.current = newActivities;
       return;
@@ -41,21 +59,33 @@ export default function SearchResultsWithMap({
       const newLastIds = newActivities.slice(-5).map((a) => a.id);
 
       if (JSON.stringify(prevLastIds) !== JSON.stringify(newLastIds)) {
+        console.log('SearchResultsWithMap: ID 변경으로 allActivities 업데이트');
         setAllActivities(newActivities);
         prevActivitiesRef.current = newActivities;
+      } else {
+        console.log('SearchResultsWithMap: 동일한 데이터로 업데이트 스킵');
       }
     }
   }, []);
 
   return (
-    <div className='grid grid-cols-2 gap-4'>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+      {isDesktop ? (
+        <SearchResultMap activities={allActivities} className='lg:order-2' />
+      ) : (
+        <div className='relative overflow-hidden'>
+          <div className='w-[48px] h-[6px] bg-gray-200 absolute bottom-[24px] left-1/2 -translate-x-1/2 z-30 rounded-full' />
+          <div className='w-full h-[48px] bg-white absolute bottom-0 left-0 z-20 rounded-t-full gnb-shadow' />
+          <SearchResultMap activities={allActivities} className='lg:order-2' />
+        </div>
+      )}
       <ActivityList
         initialActivities={initialActivities}
         initialCursor={initialCursor}
         onActivitiesUpdate={handleActivitiesUpdate}
         isSearching={true}
+        className='lg:order-1'
       />
-      <SearchResultMap activities={allActivities} />
     </div>
   );
 }

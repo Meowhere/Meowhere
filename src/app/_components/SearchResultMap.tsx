@@ -7,6 +7,7 @@ import { categories } from '@/src/components/layout/navbar/components/Category';
 
 interface SearchResultMapProps {
   activities: Activity[];
+  className?: string;
 }
 
 declare global {
@@ -15,7 +16,7 @@ declare global {
   }
 }
 
-export default function SearchResultMap({ activities }: SearchResultMapProps) {
+export default function SearchResultMap({ activities, className }: SearchResultMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
@@ -48,28 +49,7 @@ export default function SearchResultMap({ activities }: SearchResultMapProps) {
         if (status === window.kakao.maps.services.Status.OK) {
           const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
 
-          // 카테고리별 마커 색상 결정
-          const getMarkerColor = (category: string) => {
-            switch (category) {
-              case '문화 · 예술':
-                return '#8B5CF6'; // purple
-              case '스포츠':
-                return '#EF4444'; // red
-              case '식음료':
-                return '#F59E0B'; // amber
-              case '투어':
-                return '#10B981'; // emerald
-              case '관광':
-                return '#3B82F6'; // blue
-              case '웰빙':
-                return '#EC4899'; // pink
-              default:
-                return '#6B7280'; // gray
-            }
-          };
-
           // 커스텀 마커 SVG 생성
-          const color = getMarkerColor(activity.category);
           const markerSvgElement = categories.find(
             (category) => category.value === activity.category
           )?.icon;
@@ -208,6 +188,19 @@ export default function SearchResultMap({ activities }: SearchResultMapProps) {
 
       mapInstanceRef.current = new window.kakao.maps.Map(mapRef.current, mapOption);
       geocoderRef.current = new window.kakao.maps.services.Geocoder();
+
+      console.log('SearchResultMap: 지도 초기화 완료, activities 길이:', activities.length);
+
+      // 지도 초기화 완료 후 기존 activities가 있다면 즉시 처리
+      if (activities.length > 0 && prevActivitiesRef.current.length === 0) {
+        console.log('SearchResultMap: 지도 초기화 후 즉시 마커 생성');
+        setTimeout(() => {
+          if (mapInstanceRef.current && geocoderRef.current) {
+            createMarkers(activities, true);
+            prevActivitiesRef.current = [...activities];
+          }
+        }, 100);
+      }
     }
 
     return () => {
@@ -253,7 +246,18 @@ export default function SearchResultMap({ activities }: SearchResultMapProps) {
 
   // activities가 변경될 때마다 마커 업데이트
   useEffect(() => {
-    if (!mapInstanceRef.current || !geocoderRef.current) return;
+    // 지도와 geocoder가 준비될 때까지 대기
+    if (!mapInstanceRef.current || !geocoderRef.current) {
+      console.log('SearchResultMap: 지도 아직 준비 안됨, activities 길이:', activities.length);
+      return;
+    }
+
+    console.log(
+      'SearchResultMap: activities 변경 감지, 길이:',
+      activities.length,
+      'ids:',
+      activities.map((a) => a.id)
+    );
 
     const prevActivities = prevActivitiesRef.current;
 
@@ -265,16 +269,30 @@ export default function SearchResultMap({ activities }: SearchResultMapProps) {
         prevActivities.length > 0 &&
         !activities.some((activity) => prevActivities.some((prev) => prev.id === activity.id))); // 완전 다른 데이터
 
+    console.log(
+      'SearchResultMap: isCompleteRefresh:',
+      isCompleteRefresh,
+      'prevLength:',
+      prevActivities.length,
+      'currentLength:',
+      activities.length
+    );
+
     if (isCompleteRefresh) {
       // 기존 마커들 모두 제거하고 새로 생성 (지도 범위 자동 조정)
       clearMarkers();
       if (activities.length > 0) {
+        console.log('SearchResultMap: 완전 새로고침으로 마커 생성');
         createMarkers(activities, true);
       }
     } else {
       // 무한스크롤: 새로 추가된 마커들만 생성 (지도 범위 유지)
       const newActivities = getNewActivities(activities, prevActivities);
       if (newActivities.length > 0) {
+        console.log(
+          'SearchResultMap: 무한스크롤로 새 마커 추가, 새로운 개수:',
+          newActivities.length
+        );
         createMarkers(newActivities, false);
       }
     }
@@ -284,7 +302,10 @@ export default function SearchResultMap({ activities }: SearchResultMapProps) {
   }, [activities, clearMarkers, createMarkers, getNewActivities]);
 
   return (
-    <div className='w-full h-[calc(100vh-149px)] sticky top-[149px] right-0 mb-6 overflow-hidden'>
+    <div
+      className={`w-full h-[50vh] lg:h-[calc(100vh-149px)] lg:sticky top-[149px] right-0 mb-6 overflow-hidden ${className}`}
+    >
+      <div className='w-full h-[50vh] lg:h-full bg-white mix-blend-soft-light absolute top-0 left-0 z-10 pointer-events-none' />
       <div ref={mapRef} className='w-full h-full' />
     </div>
   );
