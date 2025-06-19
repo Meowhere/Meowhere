@@ -25,12 +25,12 @@ export default function ActivityCard({ activity, showLikeButton }: ActivityCardP
       : '/assets/icons/logo/ico-image-loading-dark.svg';
 
   const currentImgSrc = isUsingFallback ? baseImageUrl : activity.bannerImageUrl;
-  
+
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     toggleFavorite(activity);
   };
-  
+
   return (
     <article>
       <figure className='relative'>

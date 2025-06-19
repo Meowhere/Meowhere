@@ -1,5 +1,6 @@
 import { Category } from './activity.types';
 import { Activity } from './activity.types';
+import { Schedule } from './activity.types';
 
 export interface RatingLabelProps {
   rating: number;
@@ -14,17 +15,11 @@ export interface MyActivitiesProps extends RatingLabelProps {
   price: number;
   address?: string;
   bannerImageUrl: string;
+  subImageUrls?: string[];
   reviewCount?: number;
   createdAt?: string;
   updatedAt?: string;
 }
-
-// export interface ManagementDropdownProps {
-//   isOpen: boolean;
-//   onToggle: () => void;
-//   onEdit: () => void;
-//   onDelete: () => void;
-// }
 
 export interface ActivitiesPage {
   activities: Activity[];
@@ -49,4 +44,50 @@ declare global {
   interface Window {
     daum?: DaumPostcode;
   }
+}
+
+// 수정하기 에서 받아올 데이터들
+export interface MyActivitiesFormData {
+  title: string;
+  description: string;
+  category: Category;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  // rating?: number;
+  // reviewCount?: number;
+  subImageUrls: string[];
+  schedules?: Omit<Schedule, 'id'>[];
+}
+
+// PATCH API payload
+export interface UpdateMyActivityPayload {
+  title: string;
+  description: string;
+  category: Category;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  subImageUrlsToAdd: string[];
+  subImageIdsToRemove: number[];
+  schedulesToAdd: CreateScheduleBody[];
+  scheduleIdsToRemove: number[];
+}
+
+// 스케줄 추가용 타입
+export interface CreateScheduleBody {
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+export interface ActivityFormValues {
+  title: string;
+  description: string;
+  category: string; // 사용자는 문자열로 선택함!
+  price: string; // 사용자는 문자열로 입력!
+  address: string;
+  bannerImageUrl: string;
+  subImageUrls: string[];
+  schedules?: Omit<Schedule, 'id'>[];
 }

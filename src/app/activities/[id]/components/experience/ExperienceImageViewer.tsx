@@ -1,13 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import { SubImage } from '@/src/types/activity.types';
 import { useGnbStore } from '@/src/store/gnbStore';
 import SubPageGNB from '@/src/components/layout/navbar/components/SubPageGNB';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import ArrowButton from '@/src/components/common/buttons/ArrowButton';
 
 interface ExperienceImageViewerProps {
   bannerImageUrl: string;
@@ -22,6 +24,7 @@ export default function ExperienceImageViewer({
 }: ExperienceImageViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { isDesktop } = useBreakpoint();
 
   // 전체 이미지 목록 (대표 + 서브)
   const imageUrls = [bannerImageUrl, ...(subImages?.map((img) => img.imageUrl) ?? [])].filter(
@@ -31,7 +34,6 @@ export default function ExperienceImageViewer({
   // 미리보기는 최대 4장까지만
   const previewUrls = imageUrls.slice(0, 4);
 
-  const router = useRouter();
   const { setTitle, setBackAction, resetGnb } = useGnbStore();
 
   const openImageViewer = (index: number) => {
@@ -85,25 +87,44 @@ export default function ExperienceImageViewer({
       {isOpen && (
         <div className='fixed inset-0 z-[9999] bg-white scrollbar-hide'>
           <SubPageGNB />
-          <div className='pt-[56px] h-full'>
+          <div className='pt-[56px] h-full relative'>
+            {isDesktop && (
+              <>
+                <ArrowButton
+                  direction='left'
+                  className='swiper-button-prev absolute left-4 top-1/2 -translate-y-1/2 z-10'
+                  size={24}
+                />
+                <ArrowButton
+                  direction='right'
+                  className='swiper-button-next absolute right-4 top-1/2 -translate-y-1/2 z-10'
+                  size={24}
+                />
+              </>
+            )}
             <Swiper
+              modules={[Navigation]}
               initialSlide={currentIndex}
               spaceBetween={10}
               slidesPerView={1}
-              className='w-full h-full'
               onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
+              navigation={
+                isDesktop && {
+                  prevEl: '.swiper-button-prev',
+                  nextEl: '.swiper-button-next',
+                }
+              }
+              className='w-full h-full'
             >
               {imageUrls.map((url, index) => (
                 <SwiperSlide key={index}>
-                  <div className='w-full h-full flex items-center justify-center'>
-                    <div className='relative w-full h-full max-h-[calc(100vh-56px)] flex items-center justify-center'>
+                  <div className='flex justify-center items-center w-full h-full'>
+                    <div className='relative w-full max-w-[1200px] h-full flex items-center justify-center'>
                       <Image
                         src={url}
                         alt={`확대 이미지 ${index + 1}`}
                         fill
                         className='object-contain'
-                        priority={index === 0}
-                        quality={100}
                         sizes='100vw'
                       />
                     </div>

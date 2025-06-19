@@ -3,8 +3,9 @@ import { logger } from '@/src/utils/logger';
 
 export async function fetchFromClient(path: string, options: RequestInit = {}): Promise<Response> {
   try {
-    const res = await fetch(`${BASE_URL}/api/${path}`, {
+    const res = await fetch(`${BASE_URL}/api${path}`, {
       ...options,
+      mode: 'cors',
       credentials: 'include',
     });
     if (res.status === 401 || res.status === 403) {
