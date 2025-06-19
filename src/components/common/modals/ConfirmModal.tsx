@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { ConfirmModalProps } from '@/src/types/confirm.types';
 import ReactDOM from 'react-dom';
 import { useEffect } from 'react';
+import { useUIStore } from '@/src/store/uiStore';
 
 export default function ConfirmModal({
   isOpen,
@@ -13,6 +14,8 @@ export default function ConfirmModal({
   confirmText = '확인',
   cancelText = '취소',
 }: ConfirmModalProps) {
+  const { setPreventBodyScroll } = useUIStore();
+
   if (!isOpen) return null;
 
   // 백그라운드 클릭시 모달 닫기
@@ -29,6 +32,8 @@ export default function ConfirmModal({
         onClose();
       }
     };
+
+    setPreventBodyScroll(isOpen);
 
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
@@ -47,7 +52,7 @@ export default function ConfirmModal({
   const modalContent = (
     <div
       className={clsx(
-        'fixed inset-0 z-[102] flex items-center justify-center bg-black/50 backdrop-blur-sm',
+        'fixed inset-0 z-[102] flex items-center justify-center bg-[rgba(0,0,0,0.4)] backdrop-blur-sm',
         'dark:bg-black/70',
         isClosing ? 'animate-out fade-out-0 duration-300' : 'animate-in fade-in-0 duration-300'
       )}
