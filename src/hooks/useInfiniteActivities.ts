@@ -11,7 +11,7 @@ const fetchActivities = async ({ pageParam = 0 }) => {
   if (pageParam) {
     query += `&cursorId=${pageParam}`;
   }
-  const res = await fetchFromClient(`my-activities?${query}`);
+  const res = await fetchFromClient(`/my-activities?${query}`);
   if (!res.ok) throw new Error('체험 리스트 불러오기 실패');
   const data = await res.json();
   return data;

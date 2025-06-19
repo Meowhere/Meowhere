@@ -54,7 +54,7 @@ export default function MyActivitiesPage() {
 
   // 실제 데이터는 API 호출 등을 통해 가져올 수 있습니다.
   return (
-    <div className='relative flex flex-col mx-[24px] my-[112px]'>
+    <div className='relative flex flex-col'>
       {isLoading ? (
         <SkeletonActivitiesList />
       ) : activities.length === 0 ? (
