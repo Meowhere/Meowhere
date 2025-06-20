@@ -1,7 +1,6 @@
 'use client';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import ManagementCards from './components/activity-management/ManagementCards';
-import NotFoundActivities from './components/NotFoundActivities';
 import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
@@ -9,6 +8,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useInfiniteActivities } from '@/src/hooks/useInfiniteActivities';
 import SkeletonActivitiesList from './components/skeleton-ui/SkeletonActivitiesList';
+import NoActivities from '../components/NoActivities';
 
 export default function MyActivitiesPage() {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function MyActivitiesPage() {
       {isLoading ? (
         <SkeletonActivitiesList />
       ) : activities.length === 0 ? (
-        <NotFoundActivities />
+        <NoActivities title='등록된' urlPath='/profile/register' />
       ) : (
         <div>
           {isDesktop && (

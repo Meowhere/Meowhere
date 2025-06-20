@@ -2,7 +2,7 @@
 import LinkButton from '@/src/components/common/buttons/LinkButton';
 import Image from 'next/image';
 
-export default function NotFoundFavorites() {
+export default function NoActivities({ title, urlPath }: { title: string; urlPath: string }) {
   return (
     <div className='flex flex-col items-center justify-center gap-[24px] lg:flex-row lg:gap-[128px] my-[112px]'>
       <div className='relative w-[82px] h-[123px] lg:w-[282px] lg:h-[423px]'>
@@ -15,16 +15,14 @@ export default function NotFoundFavorites() {
       </div>
 
       <div className='flex flex-col items-center lg:items-start'>
-        <h1 className='text-2lg font-semibold text-gray-400 lg:text-left text-ellipsis'>
-          좋아요한 체험이 없다냥
-        </h1>
+        <h1 className='text-2lg font-semibold text-gray-400 lg:text-left'>{title} 체험이 없다냥</h1>
         <div className='flex flex-col items-center lg:items-start gap-[46px] py-[22px]'>
-          <p className='text-md font-regular text-gray-400 text-ellipsis max-lg:hidden'>
-            문화, 액티비티, 힐링 서비스를 둘러봐. <br /> 좋아요한 체험이 있으면 여기에 표시돼!
+          <p className='text-md font-regular text-gray-400 break-keep max-lg:hidden'>
+            문화, 액티비티, 힐링 서비스를 둘러봐. <br /> 체험이 있으면 여기에 표시돼!
           </p>
 
           <LinkButton
-            href='/'
+            href={urlPath}
             variant='soft'
             color='red'
             className='w-[180px] h-[40px] lg:h-[48px] bg-primary-100 text-primary-300 text-md font-semibold'
