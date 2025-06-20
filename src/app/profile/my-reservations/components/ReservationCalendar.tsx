@@ -15,6 +15,7 @@ import { MyActivity } from '@/src/types/my-activity-reservation.types';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
+import ArrowButton from '@/src/components/common/buttons/ArrowButton';
 
 import '@/src/styles/reservation-calendar.css';
 
@@ -48,7 +49,6 @@ export default function ReservationCalendar() {
 
   const handleReservation = (activityId: number, date: Date) => {
     openReservationModal({
-      // 필요한 프롭들...
       activityId,
       date,
     });
@@ -56,7 +56,6 @@ export default function ReservationCalendar() {
 
   const handleActiveStartDateChange = ({ action, activeStartDate, value, view }: OnArgs) => {
     if (!activeStartDate) return;
-
     setCurrentDate(activeStartDate);
   };
 
@@ -126,12 +125,18 @@ export default function ReservationCalendar() {
   return (
     <div className='mx-auto min-w-[327px] w-full react-calendar-wrapper'>
       <div className='mb-[64px]'>
-        <Dropdown
-          dropdownItems={dropdownItems}
-          selectedValue={selectedMyActivity ? selectedMyActivity.title : '체험을 선택해주세요'}
-          bottomSheetTitle='체험명'
-          triggerLabel='체험명'
-        />
+        {dropdownItems.length > 0 ? (
+          <Dropdown
+            dropdownItems={dropdownItems}
+            selectedValue={selectedMyActivity ? selectedMyActivity.title : '체험을 선택해주세요'}
+            bottomSheetTitle='체험명'
+            triggerLabel='체험명'
+          />
+        ) : (
+          <div className='text-center text-gray-600 text-md'>
+            등록된 체험이 없습니다. 체험 등록 후 이용해주세요.
+          </div>
+        )}
       </div>
       <Calendar
         className='reservation-calendar-wrapper'
@@ -139,7 +144,7 @@ export default function ReservationCalendar() {
         calendarType='gregory'
         formatDay={(_, date) => String(date.getDate())}
         next2Label={null}
-        prev2Label={null}
+        prev2Label={null} // 이전 연도로 이동 버튼 숨기기
         value={currentDate}
         onChange={(nextValue) => {
           if (nextValue instanceof Date) setCurrentDate(nextValue);
