@@ -8,6 +8,7 @@ import { useActivityDetail } from '@/src/hooks/activities/useActivityDetail';
 import { useState } from 'react';
 import { UpdateMyActivityPayload, MyActivitiesFormData } from '@/src/types/my-activities.types';
 import { buildUpdateActivityPayload } from '@/src/utils/my-activities';
+import SkeletonRegisterForm from '../../components/skeleton-ui/SkeletonRegisterForm';
 
 export default function EditActivityPage() {
   const router = useRouter();
@@ -70,7 +71,11 @@ export default function EditActivityPage() {
   }
 
   if (isLoading || !activityDetail) {
-    return <div className='flex justify-center items-center min-h-screen'>로딩 중...</div>;
+    return (
+      <div className='w-full flex-1'>
+        <SkeletonRegisterForm />
+      </div>
+    );
   }
 
   return (
