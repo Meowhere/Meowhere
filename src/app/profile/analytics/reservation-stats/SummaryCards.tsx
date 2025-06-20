@@ -43,7 +43,10 @@ export default function SummaryCards({ data }: SummaryCardsProps) {
   return (
     <div className='grid grid-cols-2 gap-[12px] md:grid-cols-4 mt-[20px]'>
       {summaryItems.map((item) => (
-        <Card key={item.label} className='rounded-2xl shadow-sm'>
+        <Card
+          key={item.label}
+          className='rounded-2xl border border-gray-100 bg-white p-[20px] shadow-sm space-y-[12px]'
+        >
           <CardHeader className={`text-sm font-medium ${item.labelColor}`}>{item.label}</CardHeader>
           <CardContent>
             <div

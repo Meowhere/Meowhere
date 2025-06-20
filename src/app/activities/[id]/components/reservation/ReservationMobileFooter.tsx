@@ -23,7 +23,7 @@ export default function ReservationMobileFooter({
       <div
         className={`
           pointer-events-auto
-          w-[327px] md:w-[640px]
+          w-full max-w-[500px] mx-auto
           h-[64px] py-[16px] px-[8px]
           bg-white rounded-full border border-gray-200
           shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]

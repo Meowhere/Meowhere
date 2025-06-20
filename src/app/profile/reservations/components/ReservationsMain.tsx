@@ -17,6 +17,7 @@ import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 import ReservationsCard from './ReservationsCard';
 import { useInfiniteReservations } from '@/src/hooks/useInfiniteReservations';
 import SkeletonReservationsCard from './ReservationsSkeleton';
+import NoActivities from '../../components/NoActivities';
 
 const BOTTOM_SKELETON_COUNT = 3; // 하단 스켈레톤 개수
 
@@ -145,15 +146,7 @@ export default function ReservationsPage() {
           </div>
         ) : (
           <div className='flex flex-col items-center justify-center h-full'>
-            <Image
-              src='/assets/icons/logo/ico-empty-view-logo.svg'
-              alt='빈 상태 이미지'
-              width={82}
-              height={123}
-            />
-            <p className='text-md text-gray-500 mt-[24px]'>
-              {MY_RESERVATION_STATUS_MAP[selectedStatus].label}한 체험이 없다냥
-            </p>
+            <NoActivities title='예약한' urlPath='/' buttonTitle='체험 예약하러 가기' />
           </div>
         )}
       </div>

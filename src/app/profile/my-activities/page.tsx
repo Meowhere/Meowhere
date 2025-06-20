@@ -1,7 +1,6 @@
 'use client';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import ManagementCards from './components/activity-management/ManagementCards';
-import NotFoundActivities from './components/NotFoundActivities';
 import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
@@ -9,6 +8,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useInfiniteActivities } from '@/src/hooks/useInfiniteActivities';
 import SkeletonActivitiesList from './components/skeleton-ui/SkeletonActivitiesList';
+import NoActivities from '../components/NoActivities';
 
 export default function MyActivitiesPage() {
   const router = useRouter();
@@ -54,11 +54,11 @@ export default function MyActivitiesPage() {
 
   // 실제 데이터는 API 호출 등을 통해 가져올 수 있습니다.
   return (
-    <div className='relative flex flex-col mx-[24px] my-[112px]'>
+    <div className='relative flex flex-col'>
       {isLoading ? (
         <SkeletonActivitiesList />
       ) : activities.length === 0 ? (
-        <NotFoundActivities />
+        <NoActivities title='등록된' urlPath='/profile/register' buttonTitle='체험 등록하러 가기' />
       ) : (
         <div>
           {isDesktop && (

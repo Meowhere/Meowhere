@@ -124,3 +124,15 @@
 .reservation-calendar-picker .react-calendar__tile:focus {
   outline: none;
 }
+
+/* 날짜 셀 hover 효과 */
+.reservation-calendar-picker .react-calendar__tile:not(.react-calendar__tile--active):hover {
+  background: transparent !important;
+}
+.reservation-calendar-picker .react-calendar__tile:not(.react-calendar__tile--active):hover abbr {
+  background: #f3f4f6; /* gray-100 */
+  border-radius: 12px;
+  transition:
+    background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
