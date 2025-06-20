@@ -141,7 +141,7 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
             </p>
           </div>
           <BaseButton
-            className='max-w-[128px] w-[128px] h-[42px] rounded-[10px]'
+            className='max-w-[128px] w-[128px] h-[42px] rounded-[10px] font-regular'
             onClick={handleReserve}
             disabled={!selectedSchedule}
           >
