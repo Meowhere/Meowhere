@@ -146,7 +146,7 @@ export default function ReservationsPage() {
           </div>
         ) : (
           <div className='flex flex-col items-center justify-center h-full'>
-            <NoActivities title='예약한' urlPath='/' />
+            <NoActivities title='예약한' urlPath='/' buttonTitle='체험 예약하러 가기' />
           </div>
         )}
       </div>

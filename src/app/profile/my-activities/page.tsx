@@ -58,7 +58,7 @@ export default function MyActivitiesPage() {
       {isLoading ? (
         <SkeletonActivitiesList />
       ) : activities.length === 0 ? (
-        <NoActivities title='등록된' urlPath='/profile/register' />
+        <NoActivities title='등록된' urlPath='/profile/register' buttonTitle='체험 등록하러 가기' />
       ) : (
         <div>
           {isDesktop && (

@@ -9,7 +9,8 @@ export default function FavoritesList() {
   const { favorites } = useFavoritesStore();
   const [myFavorites] = useState<Activity[]>(favorites);
 
-  if (myFavorites.length === 0) return <NoActivities title='좋아요한' urlPath='/' />;
+  if (myFavorites.length === 0)
+    return <NoActivities title='좋아요한' urlPath='/' buttonTitle='체험 보러가기' />;
 
   return (
     <div className='flex flex-col w-full lg:mt-[50px] gap-[24px]'>

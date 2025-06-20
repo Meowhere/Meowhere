@@ -2,7 +2,13 @@
 import LinkButton from '@/src/components/common/buttons/LinkButton';
 import Image from 'next/image';
 
-export default function NoActivities({ title, urlPath }: { title: string; urlPath: string }) {
+interface NoActivitiesProps {
+  title: string;
+  urlPath: string;
+  buttonTitle: string;
+}
+
+export default function NoActivities({ title, urlPath, buttonTitle }: NoActivitiesProps) {
   return (
     <div className='flex flex-col items-center justify-center gap-[24px] lg:flex-row lg:gap-[128px] my-[112px]'>
       <div className='relative w-[82px] h-[123px] lg:w-[282px] lg:h-[423px]'>
@@ -27,7 +33,7 @@ export default function NoActivities({ title, urlPath }: { title: string; urlPat
             color='red'
             className='w-[180px] h-[40px] lg:h-[48px] bg-primary-100 text-primary-300 text-md font-semibold'
           >
-            체험 보러가기
+            {buttonTitle}
           </LinkButton>
         </div>
       </div>
