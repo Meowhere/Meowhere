@@ -27,15 +27,20 @@ export default function SkeletonRegisterForm() {
       </div>
       {/* 체험 일정 */}
       <div className='flex flex-col gap-[20px]'>
-        <div className='flex flex-row items-center justify-between'>
-          <div className='flex flex-row items-center lg:gap-[18px]'>
+        {isDesktop ? (
+          <div className='flex flex-row items-center lg:justify-between'>
+            <div className='flex flex-row items-center justify-between justify-start gap-[18px]'>
+              <div className='w-[100px] h-[32px] rounded animate-pulse bg-gray-200 dark:bg-gray-600' />
+              <div className='w-[24px] aspect-square rounded animate-pulse bg-gray-200 dark:bg-gray-600' />
+            </div>
+            <div className='w-[176px] h-[44px] rounded animate-pulse bg-gray-200 dark:bg-gray-600' />
+          </div>
+        ) : (
+          <div className='flex flex-row items-center justify-between'>
             <div className='w-[100px] h-[32px] rounded animate-pulse bg-gray-200 dark:bg-gray-600' />
             <div className='w-[24px] aspect-square rounded animate-pulse bg-gray-200 dark:bg-gray-600' />
           </div>
-          {isDesktop && (
-            <div className='w-[176px] h-[44px] rounded animate-pulse bg-gray-200 dark:bg-gray-600' />
-          )}
-        </div>
+        )}
         <div className='w-full h-[56px] rounded animate-pulse bg-gray-200 dark:bg-gray-600' />
         <div className='w-full h-[56px] rounded animate-pulse bg-gray-200 dark:bg-gray-600' />
       </div>
