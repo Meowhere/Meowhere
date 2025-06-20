@@ -26,12 +26,10 @@ export default function ExperienceImageViewer({
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isDesktop } = useBreakpoint();
 
-  // 전체 이미지 목록 (대표 + 서브)
   const imageUrls = [bannerImageUrl, ...(subImages?.map((img) => img.imageUrl) ?? [])].filter(
     (url) => !!url
   );
 
-  // 미리보기는 최대 4장까지만
   const previewUrls = imageUrls.slice(0, 4);
 
   const { setTitle, setBackAction, resetGnb } = useGnbStore();
@@ -68,7 +66,7 @@ export default function ExperienceImageViewer({
           {previewUrls.map((url, index) => (
             <div
               key={index}
-              className='w-full aspect-square relative overflow-hidden rounded-[8px] cursor-pointer'
+              className='w-full aspect-square relative overflow-hidden rounded-[8px] cursor-pointer group'
               onClick={() => openImageViewer(index)}
             >
               <Image
@@ -77,7 +75,7 @@ export default function ExperienceImageViewer({
                 width={161}
                 height={161}
                 priority
-                className='object-cover w-full h-full'
+                className='object-cover w-full h-full transition-transform duration-300 ease-in-out group-hover:scale-105'
               />
             </div>
           ))}

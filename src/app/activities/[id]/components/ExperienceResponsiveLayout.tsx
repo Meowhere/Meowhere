@@ -106,7 +106,7 @@ export default function ExperienceResponsiveLayout({
   });
 
   const renderReviewSection = (
-    <motion.div variants={fadeInUp} initial='initial' animate='animate' className='mt-[8px]'>
+    <div className='mt-[8px]'>
       {reviews.length === 0 ? (
         <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
           <Image
@@ -116,7 +116,7 @@ export default function ExperienceResponsiveLayout({
             height={72}
             className='mb-6'
           />
-          <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+          <p className='text-lg font-regular text-gray-400'>후기가 없다냥</p>
         </div>
       ) : (
         <ReviewSection
@@ -126,30 +126,20 @@ export default function ExperienceResponsiveLayout({
           reviews={reviews}
         />
       )}
-    </motion.div>
+    </div>
   );
 
   if (isDesktop) {
     return (
       <>
         <div className='max-w-[1200px] mx-auto flex gap-[48px] px-4 mt-[64px] justify-center items-center'>
-          <motion.div
-            className='flex-[1.2]'
-            variants={slideLeft}
-            initial='initial'
-            animate='animate'
-          >
+          <div className='flex-[1.2]'>
             <ExperienceImageViewer
               bannerImageUrl={activity.bannerImageUrl}
               subImages={activity.subImages}
             />
-          </motion.div>
-          <motion.div
-            className='flex-1 relative'
-            variants={slideRight}
-            initial='initial'
-            animate='animate'
-          >
+          </div>
+          <div className='flex-1 relative'>
             <div className='flex flex-row gap-[8px] absolute items-center justify-center top-[2px] right-[2px] z-10 cursor-pointer'>
               {showLikeButton && (
                 <HeartButton
@@ -189,15 +179,10 @@ export default function ExperienceResponsiveLayout({
                 />
               </>
             )}
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          className='max-w-[1200px] mx-auto px-4 flex flex-col gap-[48px] mt-[80px]'
-          variants={fadeInUp}
-          initial='initial'
-          animate='animate'
-        >
+        <div className='max-w-[1200px] mx-auto px-4 flex flex-col gap-[48px] mt-[80px]'>
           <Divider />
           <div>
             <SectionTitle title='만나는 곳' subtitle={activity.address} />
@@ -211,19 +196,14 @@ export default function ExperienceResponsiveLayout({
             <SectionTitle title='후기' />
             {renderReviewSection}
           </div>
-        </motion.div>
+        </div>
       </>
     );
   }
 
   // 모바일 & 태블릿
   return (
-    <motion.div
-      className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px] flex flex-col gap-[48px]'
-      variants={fadeInUp}
-      initial='initial'
-      animate='animate'
-    >
+    <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px] flex flex-col gap-[48px]'>
       <ExperienceImageViewer
         bannerImageUrl={activity.bannerImageUrl}
         subImages={activity.subImages}
@@ -278,6 +258,6 @@ export default function ExperienceResponsiveLayout({
           }
         />
       )}
-    </motion.div>
+    </div>
   );
 }

@@ -205,3 +205,15 @@ textarea {
     @apply bg-background text-foreground;
   }
 } */
+
+/* Swiper arrow button color override */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #a1a1a1 !important; /* or use inherit if you want to control via parent */
+}
+
+/* Optionally, on hover, you can set a darker gray */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: #4b4b4b !important;
+}
