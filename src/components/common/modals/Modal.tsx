@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import CloseButton from '../buttons/CloseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
+import { useUIStore } from '@/src/store/uiStore';
 
 const Modal = () => {
   const { isOpen, modalProps, resetModal, setCloseHandler, isClosing, setIsClosing } =
@@ -16,15 +17,16 @@ const Modal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const bottomSheetRef = useRef<HTMLDivElement>(null);
   const { isDesktop } = useBreakpoint();
+  const { setPreventBodyScroll } = useUIStore();
 
   // 접근성을 위한 고유 ID 생성
   const modalId = `modal-${Math.random().toString(36).substr(2, 9)}`;
   const modalTitleId = `modal-title-${Math.random().toString(36).substr(2, 9)}`;
 
   useEffect(() => {
+    setPreventBodyScroll(isOpen);
     if (isOpen) {
       setIsClosing(false);
-      // document.body.style.overflow = 'hidden';
       // 포커스 트랩을 위해 모달에 포커스 설정
       const modalElement = modalRef.current || bottomSheetRef.current;
       if (modalElement) {
@@ -181,22 +183,6 @@ const Modal = () => {
     }
   }, [isDragging, dragStart, handleClose, modalProps?.type]);
 
-  // useEffect(() => {
-  //   const preventScroll = (e: Event) => {
-  //     e.preventDefault();
-  //   };
-
-  //   if (isOpen) {
-  //     document.addEventListener('wheel', preventScroll, { passive: false });
-  //     document.addEventListener('touchmove', preventScroll, { passive: false });
-  //   }
-
-  //   return () => {
-  //     document.removeEventListener('wheel', preventScroll);
-  //     document.removeEventListener('touchmove', preventScroll);
-  //   };
-  // }, [isOpen]);
-
   if ((!isOpen && !isClosing) || !modalProps) return null;
 
   const isBottomSheet = modalProps.type === 'bottomSheet';
@@ -206,8 +192,8 @@ const Modal = () => {
     return createPortal(
       <div
         className={clsx(
-          'fixed inset-0 z-[101] flex items-center justify-center bg-black/50 backdrop-blur-sm pt-[96px] lg:pt-0',
-          'dark:bg-black/70',
+          'fixed inset-0 z-[101] flex items-center justify-center bg-[rgba(0,0,0,0.4)] pt-[96px] lg:pt-0',
+          'dark:bg-[rgba(0,0,0,0.4)]',
           isClosing ? 'animate-out fade-out-0 duration-300' : 'animate-in fade-in-0 duration-300'
         )}
         onClick={handleBackdropClick}
