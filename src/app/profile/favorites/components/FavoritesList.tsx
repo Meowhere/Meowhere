@@ -17,7 +17,9 @@ export default function FavoritesList() {
       {myFavorites.map((fav, index) => (
         <div
           key={fav.id}
-          className={index < myFavorites.length - 1 ? 'border-b border-gray-200' : ''}
+          className={
+            index < myFavorites.length - 1 ? 'border-b border-gray-200 dark:border-gray-600' : ''
+          }
         >
           <FavoriteCard activity={fav} />
         </div>

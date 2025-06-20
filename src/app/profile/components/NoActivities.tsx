@@ -31,7 +31,7 @@ export default function NoActivities({ title, urlPath, buttonTitle }: NoActiviti
             href={urlPath}
             variant='soft'
             color='red'
-            className='w-[180px] h-[40px] lg:h-[48px] bg-primary-100 text-primary-300 text-md font-semibold'
+            className='w-[180px] h-[40px] lg:h-[48px] bg-primary-100 text-primary-300 dark:bg-primary-300 dark:text-gray-100 text-md font-semibold'
           >
             {buttonTitle}
           </LinkButton>

@@ -43,7 +43,7 @@ export default function FavoriteCard({ activity }: { activity: Activity }) {
             showOverlay
             isFilled={isFavorite(activity.id)}
             onClick={handleLikeClick}
-            className='absolute top-0 right-[16px] w-[32px] h-[32px] text-white cursor-pointer'
+            className='absolute top-0 right-[16px] w-[32px] h-[32px] text-white dark:text-gray-400 cursor-pointer'
           />
         </div>
       </div>
