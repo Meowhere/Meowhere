@@ -27,13 +27,13 @@ export default function ConfirmModal({
 
   // ESC 키로 모달 닫기
   useEffect(() => {
+    setPreventBodyScroll(isOpen);
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         onClose();
       }
     };
-
-    setPreventBodyScroll(isOpen);
 
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
@@ -41,6 +41,7 @@ export default function ConfirmModal({
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
+      setPreventBodyScroll(false);
     };
   }, [isOpen]);
 
