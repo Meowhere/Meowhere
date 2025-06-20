@@ -4,6 +4,7 @@ import { MyActivitiesProps } from '@/src/types/my-activities.types';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import Image from 'next/image';
 import ManagementDropdown from './ManagementDropdown';
+import { useRouter } from 'next/navigation';
 
 export default function ManagementCard({
   id,
@@ -14,10 +15,18 @@ export default function ManagementCard({
   ...rest
 }: MyActivitiesProps) {
   const { isDesktop } = useBreakpoint();
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`profile/activities/${id}`);
+  };
 
   return (
     <div className='flex justify-between border-b border-gray-200 dark:border-gray-700 last:border-b-0 py-[24px] w-full'>
-      <div className='flex flex-row items-center justify-center gap-[10px] lg:gap-[14px]'>
+      <div
+        className='flex flex-row items-center justify-center gap-[10px] lg:gap-[14px] cursor-pointer'
+        onClick={handleClick}
+      >
         <Image
           src={bannerImageUrl}
           alt={title}
