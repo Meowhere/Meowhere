@@ -8,6 +8,8 @@ import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import { useMyInfoQuery, useUpdateMyInfoMutation } from '@/src/hooks/user';
 import { UpdateMyInfoPayload } from '@/src/types/user.types';
+import { useGnb } from '@/src/hooks/useGnb';
+import { useRouter } from 'next/navigation';
 
 const myInfoSchema = z
   .object({
@@ -46,7 +48,9 @@ const myInfoSchema = z
 type MyInfoForm = z.infer<typeof myInfoSchema>;
 
 export default function MyInfoPage() {
+  const router = useRouter();
   const { isDesktop } = useBreakpoint();
+  useGnb({ title: '내정보', backAction: () => router.push('/profile') });
 
   // 쿼리 훅
   const { data: user, isLoading, isError } = useMyInfoQuery();
@@ -84,7 +88,6 @@ export default function MyInfoPage() {
       });
     }
   }, [user, reset]);
-
 
   const onSubmit = (data: MyInfoForm) => {
     // user가 없으면 아무 것도 보내지 않음
@@ -153,11 +156,11 @@ export default function MyInfoPage() {
 
       {isDesktop && (
         <div className='flex justify-end w-full'>
-          <div className='w-[128px]'>
+          <div className='w-[128px] '>
             <BaseButton
               variant='primary'
               disabled={updateMyInfoMutation.isPending || !isDirty || !isValid}
-              className='py-[12px]'
+              className='py-[12px] text-[1.4rem]'
             >
               변경하기
             </BaseButton>

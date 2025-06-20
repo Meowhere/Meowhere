@@ -16,7 +16,7 @@ export default function MyActivitiesPage() {
   useGnb({
     title: '내 체험 관리',
     subtitle: '',
-    backAction: () => router.back(),
+    backAction: () => router.push('/profile'),
     rightButtons: [
       <Link
         key='register'
