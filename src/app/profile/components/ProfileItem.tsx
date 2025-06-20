@@ -140,7 +140,7 @@ export default function ProfileItem() {
         typeof document !== 'undefined' &&
         createPortal(
           <div
-            className='fixed inset-0 bg-black bg-opacity-60 dark:bg-black dark:bg-opacity-80 flex items-center justify-center z-[9999]'
+            className='fixed inset-0 bg-black bg-opacity-60 dark:bg-black dark:bg-opacity-80 flex items-center justify-center z-[999]'
             onClick={handlePreviewClose}
           >
             <div className='relative' onClick={(e) => e.stopPropagation()}>
