@@ -116,7 +116,7 @@ export default function ExperienceResponsiveLayout({
             height={72}
             className='mb-6'
           />
-          <p className='text-lg font-semibold text-gray-500'>후기가 없다냥</p>
+          <p className='text-lg font-regular text-gray-400'>후기가 없다냥</p>
         </div>
       ) : (
         <ReviewSection
