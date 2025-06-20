@@ -52,7 +52,7 @@ export default function ConfirmModal({
   const modalContent = (
     <div
       className={clsx(
-        'fixed inset-0 z-[102] flex items-center justify-center bg-[rgba(0,0,0,0.4)] backdrop-blur-sm',
+        'fixed inset-0 z-[102] flex items-center justify-center bg-[rgba(0,0,0,0.4)]',
         'dark:bg-black/70',
         isClosing ? 'animate-out fade-out-0 duration-300' : 'animate-in fade-in-0 duration-300'
       )}
