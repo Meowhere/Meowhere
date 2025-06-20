@@ -24,6 +24,7 @@ export function useUpdateMyActivityMutation(activityId?: number) {
     transformActivityToFormData,
     ...useMutation({
       mutationFn: async (payload: UpdateMyActivityPayload) => {
+        console.log('📤 PATCH 전송 payload:', JSON.stringify(payload, null, 2));
         const res = await fetchFromClient(`my-activities/${activityId}`, {
           method: 'PATCH',
           headers: {

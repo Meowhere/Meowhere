@@ -39,11 +39,14 @@ export function getSubImagesDiff(
   initialImages: SubImage[],
   currentImageUrls: string[]
 ): { subImageUrlsToAdd: string[]; subImageIdsToRemove: number[] } {
-  const subImageUrlsToAdd = currentImageUrls.filter(
-    (url) => !initialImages.some((img) => img.imageUrl === url)
-  );
+  // 중복 제거
+  const dedupedCurrentUrls = Array.from(new Set(currentImageUrls));
+  const dedupedInitialUrls = Array.from(new Set(initialImages.map((img) => img.imageUrl)));
+
+  const subImageUrlsToAdd = dedupedCurrentUrls.filter((url) => !dedupedInitialUrls.includes(url));
+
   const subImageIdsToRemove = initialImages
-    .filter((img) => !currentImageUrls.includes(img.imageUrl))
+    .filter((img) => !dedupedCurrentUrls.includes(img.imageUrl))
     .map((img) => img.id);
 
   return { subImageUrlsToAdd, subImageIdsToRemove };
@@ -85,14 +88,6 @@ export function buildUpdateActivityPayload({
     initialImages,
     formData.subImageUrls ?? []
   );
-  console.log('🟦 getSubImagesDiff:');
-  console.log(
-    '  - initial:',
-    initialImages.map((i) => i.imageUrl)
-  );
-  console.log('  - current:', formData.subImageUrls);
-  console.log('  - 추가될 url:', subImageUrlsToAdd);
-  console.log('  - 삭제될 id:', subImageIdsToRemove);
   const { schedulesToAdd, scheduleIdsToRemove } = getScheduleDiff(
     initialSchedules,
     formData.schedules ?? []

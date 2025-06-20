@@ -54,6 +54,10 @@ export default function EditActivityPage() {
       console.log('현재:', formData.subImageUrls);
       await updateMyActivityMutation.mutateAsync(payload);
       router.push('/profile/my-activities');
+      console.log(
+        '반영이 됐나 : ',
+        activityDetail.subImages.map((i) => i.imageUrl)
+      );
     } finally {
       setIsSubmitting(false);
     }
