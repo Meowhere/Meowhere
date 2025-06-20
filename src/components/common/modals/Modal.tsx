@@ -40,6 +40,7 @@ const Modal = () => {
 
     return () => {
       document.body.style.overflow = 'unset';
+      setPreventBodyScroll(false);
     };
   }, [isOpen]);
 
