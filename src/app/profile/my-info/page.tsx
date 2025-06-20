@@ -105,7 +105,9 @@ export default function MyInfoPage() {
   if (isLoading)
     return (
       <div className='flex justify-center items-center h-[400px]'>
-        <p className='text-gray-600 dark:text-gray-400'>사용자 정보를 불러오는 중...</p>
+        <div className='w-full h-[72px] flex justify-center items-center'>
+          <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+        </div>
       </div>
     );
   if (isError || !user)
