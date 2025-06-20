@@ -101,7 +101,7 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
           </div>
         </div>
 
-        <div>
+        <div className='flex flex-col gap-[24px]'>
           <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>
           <ReservationCalendarPicker
             selectedDate={selectedDate}
