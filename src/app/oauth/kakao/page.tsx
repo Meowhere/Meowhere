@@ -17,9 +17,9 @@ function KakaoCallbackPage() {
         const randomNickname = `체험냥${Math.floor(Math.random() * 10000)
           .toString()
           .padStart(4, '0')}`;
-        
+
         const signUpResult = await kakaoCallbackSignUp(randomNickname, authCode);
-        
+
         if (signUpResult?.user) {
           setStatus('회원가입 완료!');
           navigate.replace('/');
@@ -32,7 +32,7 @@ function KakaoCallbackPage() {
       // 기본적으로는 로그인 시도
       setStatus('로그인 시도 중...');
       const loginResult = await kakaoCallbackLogin(authCode);
-      
+
       if (loginResult?.user) {
         setStatus('로그인 완료!');
         navigate.replace('/');
@@ -40,18 +40,18 @@ function KakaoCallbackPage() {
       }
     } catch (loginError) {
       console.log('로그인 실패:', loginError);
-      
+
       // 사용자가 존재하지 않는 경우에만 회원가입으로 리다이렉트
       if (state !== 'signup') {
         setStatus('회원가입 페이지로 이동 중...');
-        
+
         // 회원가입을 위한 새로운 인가 코드 요청
         kakaoSignUpRequest();
         return;
       }
-      
+
       // 다른 에러이거나 이미 회원가입 시도한 경우
-      setStatus('인증에 실패했습니다');
+      setStatus('인증 대기중...');
       navigate.replace('/account?error=auth_failed');
     }
   };
@@ -60,7 +60,7 @@ function KakaoCallbackPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const authCode = urlParams.get('code');
     const state = urlParams.get('state');
-    
+
     if (authCode) {
       handleKakaoAuth(authCode, state || undefined);
     } else {
@@ -70,7 +70,7 @@ function KakaoCallbackPage() {
   }, []);
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-50'>
+    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-black'>
       <div className='w-16 h-16 border-t-4 border-yellow-400 border-solid rounded-full animate-spin'></div>
       <p className='mt-4 text-lg font-medium text-gray-700'>{status}</p>
       <p className='mt-2 text-sm text-gray-500'>잠시만 기다려 주세요</p>
