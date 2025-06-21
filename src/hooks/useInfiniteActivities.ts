@@ -21,6 +21,8 @@ export function useInfiniteActivities() {
   return useInfiniteQuery({
     queryKey: ['my-activities'],
     queryFn: fetchActivities,
+    refetchOnWindowFocus: true,
+    staleTime: 5 * 60 * 1000,
     initialPageParam: 0,
     getNextPageParam: (lastPage: ActivitiesPage) => {
       // 마지막 페이지라면 undefined
