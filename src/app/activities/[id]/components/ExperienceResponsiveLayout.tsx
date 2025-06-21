@@ -87,13 +87,15 @@ export default function ExperienceResponsiveLayout({
     title: activity.title,
     backAction: () => router.push('/profile'),
     rightButtons: [
-      <div key='kebab-mobile' className='relative lg:hidden'>
-        <ActivityDropdown
-          dropdownItems={dropdownItems}
-          bottomSheetTitle='게시물 관리'
-          trigger={<KebabIcon size={24} className='text-[#79747E]' />}
-        />
-      </div>,
+      !isDesktop && isOwner && (
+        <div key='kebab-mobile' className='relative'>
+          <ActivityDropdown
+            dropdownItems={dropdownItems}
+            bottomSheetTitle='게시물 관리'
+            trigger={<KebabIcon size={24} className='text-[#79747E]' />}
+          />
+        </div>
+      ),
     ].filter(Boolean),
   });
 
@@ -124,7 +126,6 @@ export default function ExperienceResponsiveLayout({
   return (
     <>
       {isDesktop ? (
-        // 데스크탑
         <div>
           <div className='max-w-[1200px] mx-auto flex gap-[48px] px-4 mt-[64px] justify-center items-center'>
             <div className='flex-[1.2]'>
@@ -193,7 +194,6 @@ export default function ExperienceResponsiveLayout({
           </div>
         </div>
       ) : (
-        // 모바일 & 태블릿
         <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px] flex flex-col gap-[48px]'>
           <ExperienceImageViewer
             bannerImageUrl={activity.bannerImageUrl}
