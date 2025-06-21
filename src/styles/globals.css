@@ -217,3 +217,9 @@ textarea {
 .swiper-button-prev:hover {
   color: #4b4b4b !important;
 }
+
+/* 엣지 브라우저 비밀번호 표시 버튼 숨김*/
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
+}

@@ -4,13 +4,12 @@ import { useGnbStore } from '@/src/store/gnbStore';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useModal } from '@/src/hooks/useModal';
 import { useLogout, useUser } from '@/src/hooks/auth/useAuth';
 import { useRouter } from 'next/navigation';
 import { useThemeStore } from '@/src/store/themeStore';
-import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 
 export default function DesktopGNB() {
   const { isSearching } = useGnbStore();
@@ -38,7 +37,6 @@ export default function DesktopGNB() {
     openNotificationModal({
       data: notificationData,
       onConfirm: () => {
-        console.log('취소됨');
         closeModal();
       },
     });
@@ -99,15 +97,24 @@ export default function DesktopGNB() {
     },
   ];
 
+  const searchParams = useSearchParams();
+
+  const paramsObj = Object.fromEntries(searchParams.entries());
+  const { category, ...otherParams } = paramsObj;
+  const hasParams = Object.values(otherParams).some(
+    (value) => value !== null && value.trim() !== ''
+  );
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollThreshold = 600; //페이지 내 SearchFilter 컴포넌트 y축 위치
-      setShowScrollElements(window.scrollY > scrollThreshold);
+      setShowScrollElements(hasParams || window.scrollY > scrollThreshold);
     };
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [hasParams]);
 
   return (
     <motion.nav

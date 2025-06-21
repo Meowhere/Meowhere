@@ -60,6 +60,7 @@ export default function LoginForm({ loginForm }: LoginFormProps) {
         label='비밀번호'
         type='password'
         isPassword
+        autoFocus
         watchValue={loginPasswordValue}
         error={loginForm.formState.errors.password}
         {...loginForm.register('password')}
