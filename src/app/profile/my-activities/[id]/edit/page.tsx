@@ -40,7 +40,7 @@ export default function EditActivityPage() {
         수정
       </button>,
     ]);
-  }, [formState, updateMyActivityMutation.isPending]);
+  }, [formState, updateMyActivityMutation.isPending, setRightButtons]);
   useGnb({
     title: '내 체험 수정',
     subtitle: '',

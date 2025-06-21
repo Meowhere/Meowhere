@@ -50,7 +50,7 @@ export default function RegisterPage() {
         등록
       </button>,
     ]);
-  }, [formState, isPending]);
+  }, [formState, isPending, setRightButtons]);
   useGnb({
     title: '내 체험 등록',
     subtitle: '',

@@ -38,7 +38,7 @@ export default function MyInfoPage() {
         변경
       </button>,
     ]);
-  }, [formState, updateMyInfoMutation.isPending]);
+  }, [formState, updateMyInfoMutation.isPending, setRightButtons]);
 
   useGnb({
     title: '내정보',
