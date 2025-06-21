@@ -29,8 +29,19 @@ export async function createErrorResponse(response: Response): Promise<NextRespo
       { status: response.status }
     );
   } catch (error) {
-    logger.error('에러 응답 JSON 파싱 실패', error);
-    return NextResponse.json({ error: 'External API Error' }, { status: response.status });
+    // JSON 파싱 실패 시 텍스트로 한 번 더 시도
+    try {
+      const text = await response.text();
+      return NextResponse.json(
+        {
+          error: text || 'External API Error',
+        },
+        { status: response.status }
+      );
+    } catch (e) {
+      logger.error('에러 응답 파싱 실패', e);
+      return NextResponse.json({ error: 'External API Error' }, { status: response.status });
+    }
   }
 }
 

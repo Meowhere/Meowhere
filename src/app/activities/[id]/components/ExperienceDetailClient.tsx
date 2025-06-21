@@ -1,45 +1,31 @@
 'use client';
 
-import { useActivityDetail } from '@/src/hooks/activities/useActivityDetail';
-import { useSchedule } from '@/src/hooks/activities/useSchedule';
-import { useReviews } from '@/src/hooks/activities/useReviews';
 import ExperienceResponsiveLayout from './ExperienceResponsiveLayout';
-import ExperienceDetailSkeleton from './common/ExperienceDetailSkeleton';
+import { Activity } from '@/src/types/activity.types';
+import { ScheduleWithTimes } from '@/src/types/schedule.types';
+import { Review } from '@/src/types/review.type';
+export interface ExperienceDetailClientProps {
+  activity: Activity; // 체험 상세 정보
+  schedules: ScheduleWithTimes[]; // 예약 가능 스케줄
+  reviews: Review[]; // 체험 리뷰 목록
+  reviewStats: { totalCount: number; averageRating: number }; // 리뷰 통계
+}
 
-export default function ExperienceDetailClient({ activityId }: { activityId: number }) {
-  const {
-    data: activity,
-    isLoading: loadingActivity,
-    error: errorActivity,
-  } = useActivityDetail(activityId);
-  const {
-    data: schedules,
-    isLoading: loadingSchedules,
-    error: errorSchedules,
-  } = useSchedule(activityId);
-  const {
-    data: reviewData,
-    isLoading: loadingReviews,
-    error: errorReviews,
-  } = useReviews(activityId);
-
-  const isLoading = loadingActivity || loadingSchedules || loadingReviews;
-  const isError = errorActivity || errorSchedules || errorReviews;
-
-  if (isLoading) {
-    return <ExperienceDetailSkeleton />;
-  }
-
-  if (isError || !activity || !schedules || !reviewData) {
-    return <div className='text-center py-10 text-red-500'>데이터를 불러오지 못했습니다.</div>;
-  }
-
+export default function ExperienceDetailClient({
+  activity,
+  schedules,
+  reviews,
+  reviewStats,
+}: ExperienceDetailClientProps) {
   return (
     <ExperienceResponsiveLayout
       activity={activity}
       schedules={schedules}
-      reviews={reviewData.reviews}
-      reviewStats={reviewData.reviewStats}
+      reviews={reviews}
+      reviewStats={{
+        rating: reviewStats.averageRating || 0,
+        count: reviewStats.totalCount || 0,
+      }}
     />
   );
 }
