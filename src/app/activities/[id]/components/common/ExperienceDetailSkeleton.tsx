@@ -7,27 +7,22 @@ export default function ExperienceDetailSkeleton() {
       <div className='hidden lg:block'>
         <div className='max-w-[1200px] mx-auto flex gap-[48px] px-4 mt-[64px] justify-center items-center'>
           {/* 이미지 */}
-          <div className='flex-[1.2] w-full aspect-square bg-gray-200 rounded-2xl' />
+          <div className='flex-[1.2] w-full aspect-square bg-gray-200 rounded-[20px]' />
           {/* 정보 */}
           <div className='flex-1 relative flex flex-col gap-6'>
-            <div className='flex flex-row gap-2 absolute items-center justify-center top-[2px] right-[2px] z-10'>
-              <div className='w-8 h-8 bg-gray-200 rounded-full' />
-              <div className='w-8 h-8 bg-gray-200 rounded-full' />
-              <div className='w-8 h-8 bg-gray-200 rounded-full' />
-            </div>
             {/* 요약 세션 */}
             <div className='mt-10 space-y-3'>
               <div className='h-6 w-2/3 bg-gray-200 rounded-md' />
               <div className='h-4 w-1/3 bg-gray-200 rounded-md' />
               <div className='h-4 w-1/2 bg-gray-200 rounded-md' />
             </div>
-            {/* 예약 */}
+            {/* 예약
             <div className='mt-8 w-full max-w-[500px] mx-auto px-[8px] pt-[8px]'>
               <div className='flex justify-between items-center'>
                 <div className='h-6 w-1/3 bg-gray-200 rounded-md' />
                 <div className='h-10 w-[120px] bg-gray-300 rounded-full' />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className='max-w-[1200px] mx-auto px-4 flex flex-col gap-[48px] mt-[80px]'>
