@@ -15,8 +15,18 @@ import { CATEGORY_LIST } from './register-form/RegisterCategory';
 
 const formSchema = z.object({
   title: z.string().min(3, '3자 이상 입력하세요.'),
-  category: z.custom<Category>((val) => CATEGORY_LIST.includes(val as Category), {
-    message: '올바른 카테고리를 선택해주세요',
+  category: z.string().superRefine((val, ctx) => {
+    if (val.trim() === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: '카테고리를 선택해주세요.',
+      });
+    } else if (!CATEGORY_LIST.includes(val as Category)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: '올바른 카테고리를 선택해주세요.',
+      });
+    }
   }),
   price: z.string().regex(/^\d+$/, '숫자만 입력 가능합니다.').nonempty('가격을 입력해주세요'),
   description: z.string().min(10, '10자 이상 입력하세요.').max(700, '700자 이하로 입력하세요.'),
@@ -57,7 +67,7 @@ export default function RegisterExperienceForm({
     defaultValues: {
       title: defaultValues?.title ?? '',
       price: defaultValues?.price ? String(defaultValues.price) : '',
-      category: defaultValues?.category ?? CATEGORY_LIST[0],
+      category: defaultValues?.category ?? '',
       description: defaultValues?.description ?? '',
       address: defaultValues?.address ?? '',
       bannerImageUrl: defaultValues?.bannerImageUrl ?? '',
@@ -84,15 +94,15 @@ export default function RegisterExperienceForm({
   }, [watch, isValid, isDirty, errors]);
 
   // 초기 마운트 시 카테고리 값 설정
-  useEffect(() => {
-    setValue('category', defaultValues?.category ?? CATEGORY_LIST[0], { shouldValidate: true });
-  }, [setValue, defaultValues?.category]);
+  // useEffect(() => {
+  //   setValue('category', defaultValues?.category ?? CATEGORY_LIST[0], { shouldValidate: true });
+  // }, [setValue, defaultValues?.category]);
 
   const submitForm = async (formData: ActivityFormValues) => {
     const baseForm: MyActivitiesFormData = {
       title: formData.title,
       description: formData.description,
-      category: formData.category,
+      category: formData.category as Category,
       price: Number(formData.price),
       address: formData.address,
       bannerImageUrl: formData.bannerImageUrl,
@@ -139,7 +149,7 @@ export default function RegisterExperienceForm({
               className='text-md font-semibold'
               disabled={!isDirty || !isValid || isSubmitting}
             >
-              {isSubmitting ? '처리 중...' : mode === 'edit' ? '수정 하기' : '등록 하기'}
+              {isSubmitting ? '처리 중...' : mode === 'edit' ? '수정하기' : '등록 하기'}
             </BaseButton>
           </div>
         )}
