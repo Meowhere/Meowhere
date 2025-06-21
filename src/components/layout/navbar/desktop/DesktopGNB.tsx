@@ -124,6 +124,7 @@ export default function DesktopGNB() {
 
   useEffect(() => {
     const handleScroll = () => {
+      if (pathname !== '/') return;
       const scrollThreshold = 600; //페이지 내 SearchFilter 컴포넌트 y축 위치
       setShowScrollElements(hasParams || window.scrollY > scrollThreshold);
     };
