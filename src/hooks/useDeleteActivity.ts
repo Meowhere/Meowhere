@@ -8,7 +8,7 @@ export function useDeleteActivity() {
 
   return useMutation({
     mutationFn: async (activityId: string | number) => {
-      return await fetchFromClient(`my-activities/${activityId}`, { method: 'DELETE' });
+      return await fetchFromClient(`/my-activities/${activityId}`, { method: 'DELETE' });
     },
 
     onSuccess: () => {
