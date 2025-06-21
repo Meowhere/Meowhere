@@ -78,7 +78,7 @@ export default function ActivityCard({ activity, showLikeButton }: ActivityCardP
         </header>
 
         <section>
-          <address className='text-xs leading-none text-gray-500 dark:text-gray-400 not-italic'>
+          <address className='text-xs leading-[1.4] text-gray-500 dark:text-gray-400 not-italic'>
             {activity.address || '대한민국'}
           </address>
         </section>

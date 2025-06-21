@@ -23,8 +23,10 @@ export default function Sidebar() {
       <ProfileItem />
       <div className='flex flex-col gap-[8px]'>
         <ProfileMenuItem href='/profile/my-info' icon='my-info' title='내 정보' />
+        <ProfileMenuItem href='/profile/achievements' icon='achievements' title='내 업적' />
         <ProfileMenuItem href='/profile/favorites' icon='favorites' title='찜 목록' />
         <ProfileMenuItem href='/profile/reservations' icon='reservations' title='예약 내역' />
+        <hr className='border-gray-200 dark:border-gray-800' />
         <ProfileMenuItem href='/profile/my-activities' icon='my-activities' title='내 체험 관리' />
         <ProfileMenuItem
           href='/profile/my-reservations'
