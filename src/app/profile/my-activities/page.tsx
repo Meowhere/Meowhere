@@ -16,7 +16,7 @@ export default function MyActivitiesPage() {
   useGnb({
     title: '내 체험 관리',
     subtitle: '',
-    backAction: () => router.back(),
+    backAction: () => router.push('/profile'),
     rightButtons: [
       <Link
         key='register'
@@ -58,7 +58,11 @@ export default function MyActivitiesPage() {
       {isLoading ? (
         <SkeletonActivitiesList />
       ) : activities.length === 0 ? (
-        <NoActivities title='등록된' urlPath='/profile/register' buttonTitle='체험 등록하러 가기' />
+        <NoActivities
+          title='등록된'
+          urlPath='/profile/my-activities/register'
+          buttonTitle='체험 등록하러 가기'
+        />
       ) : (
         <div>
           {isDesktop && (

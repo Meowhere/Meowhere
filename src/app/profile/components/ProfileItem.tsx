@@ -1,13 +1,16 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import UploadImg from '@/public/assets/icons/account/upload-btn.svg';
 import defaultImg from '@/public/assets/icons/account/default-img.png';
 import Image from 'next/image';
 import { useMyInfoQuery } from '@/src/hooks/user/useMyInfoQuery';
 import { useUploadProfileImageMutation } from '@/src/hooks/user';
 import { useUpdateMyInfoMutation } from '@/src/hooks/user';
+import { createPortal } from 'react-dom';
+import { useUIStore } from '@/src/store/uiStore';
 
 export default function ProfileItem() {
+  const { setPreventBodyScroll } = useUIStore();
   const { data: user, isLoading } = useMyInfoQuery();
   const { mutateAsync: uploadProfileImg, isPending: isUploading } = useUploadProfileImageMutation();
   const { mutateAsync: updateMyInfo, isPending: isPatching } = useUpdateMyInfoMutation();
@@ -60,6 +63,12 @@ export default function ProfileItem() {
 
   // 프리뷰 닫기
   const handlePreviewClose = () => setPreviewOpen(false);
+
+  // 프리뷰 스크롤 방지
+  useEffect(() => {
+    setPreventBodyScroll(previewOpen);
+    return () => setPreventBodyScroll(false);
+  }, [previewOpen]);
 
   // 로딩/에러 처리
   if (isLoading) {
@@ -126,22 +135,26 @@ export default function ProfileItem() {
       </div>
 
       {/* 미리보기 모달 */}
-      {previewOpen && imgSrc && (
-        <div
-          className='fixed inset-0 bg-black bg-opacity-60 dark:bg-black dark:bg-opacity-80 flex items-center justify-center z-50'
-          onClick={handlePreviewClose}
-        >
-          <div className='relative' onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={imgSrc}
-              alt='프로필 미리보기'
-              width={320}
-              height={320}
-              className='rounded-[20px]'
-            />
-          </div>
-        </div>
-      )}
+      {previewOpen &&
+        imgSrc &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            className='fixed inset-0 bg-black bg-opacity-60 dark:bg-black dark:bg-opacity-80 flex items-center justify-center z-[999]'
+            onClick={handlePreviewClose}
+          >
+            <div className='relative' onClick={(e) => e.stopPropagation()}>
+              <Image
+                src={imgSrc}
+                alt='프로필 미리보기'
+                width={320}
+                height={320}
+                className='rounded-[20px]'
+              />
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

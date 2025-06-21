@@ -44,7 +44,7 @@ export default function ReservationCalendar() {
   useGnb({
     title: '내 체험 예약 관리',
     subtitle: '',
-    backAction: () => router.back(),
+    backAction: () => router.push('/profile'),
   });
 
   const handleReservation = (activityId: number, date: Date) => {

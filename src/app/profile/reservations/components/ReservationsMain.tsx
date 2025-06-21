@@ -49,7 +49,7 @@ export default function ReservationsPage() {
 
   useGnb({
     title: '예약 내역',
-    backAction: () => router.back(),
+    backAction: () => router.push('/profile'),
     rightButtons: [
       <div key='icon-filter'>
         <Dropdown

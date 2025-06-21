@@ -91,7 +91,7 @@ export default function ExperienceResponsiveLayout({
 
   useGnb({
     title: activity.title,
-    backAction: () => router.back(),
+    backAction: () => router.push('/profile'),
     rightButtons: [
       !isDesktop && isOwner && (
         <div key='kebab-mobile' className='relative'>

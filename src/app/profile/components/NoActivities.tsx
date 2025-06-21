@@ -1,5 +1,6 @@
 'use client';
 import LinkButton from '@/src/components/common/buttons/LinkButton';
+import { useThemeStore } from '@/src/store/themeStore';
 import Image from 'next/image';
 
 interface NoActivitiesProps {
@@ -9,15 +10,17 @@ interface NoActivitiesProps {
 }
 
 export default function NoActivities({ title, urlPath, buttonTitle }: NoActivitiesProps) {
+  const theme = useThemeStore((state) => state.theme); // zustand에서 현재 테마 가져오기
+
+  const imageSrc =
+    theme === 'dark'
+      ? '/assets/icons/logo/ico-empty-view-logo-dark.svg'
+      : '/assets/icons/logo/ico-empty-view-logo.svg';
+
   return (
     <div className='flex flex-col items-center justify-center gap-[24px] lg:flex-row lg:gap-[128px] my-[112px]'>
       <div className='relative w-[82px] h-[123px] lg:w-[282px] lg:h-[423px]'>
-        <Image
-          src='/assets/icons/logo/ico-empty-view-logo.svg'
-          alt='빈 상태 이미지'
-          fill
-          sizes='(min-width: 1024px) 282px, 82px'
-        />
+        <Image src={imageSrc} alt='빈 상태 이미지' fill sizes='(min-width: 1024px) 282px, 82px' />
       </div>
 
       <div className='flex flex-col items-center lg:items-start'>
@@ -31,7 +34,7 @@ export default function NoActivities({ title, urlPath, buttonTitle }: NoActiviti
             href={urlPath}
             variant='soft'
             color='red'
-            className='w-[180px] h-[40px] lg:h-[48px] bg-primary-100 text-primary-300 text-md font-semibold'
+            className='w-[180px] h-[40px] lg:h-[48px] bg-primary-100 text-primary-300 dark:bg-primary-300 dark:text-gray-100 text-md font-semibold'
           >
             {buttonTitle}
           </LinkButton>

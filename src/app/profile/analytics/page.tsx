@@ -27,7 +27,7 @@ export default function AnalyticsPage() {
 
   useGnb({
     title: '내 체험 통계',
-    backAction: () => router.back(),
+    backAction: () => router.push('/profile'),
   });
 
   if (isError) {
