@@ -58,7 +58,7 @@ export default function ExperienceResponsiveLayout({
 
   if (!user) return <ExperienceDetailSkeleton />;
 
-  const isOwner = user.id === activity.userId;
+  const isOwner = user?.id === activity.userId;
 
   const handleDeleteActivity = useCallback(async () => {
     try {
@@ -87,7 +87,6 @@ export default function ExperienceResponsiveLayout({
     [activity.id, router, handleDeleteActivity]
   );
 
-  // ✅ 데스크탑 환경에서는 우측 GNB 버튼 추가
   const rightButtons = useMemo(() => {
     if (!isDesktop || !isOwner) return [];
     return [
@@ -106,6 +105,8 @@ export default function ExperienceResponsiveLayout({
     backAction: () => router.push('/profile'),
     rightButtons,
   });
+
+  if (!user) return null;
 
   const renderReviewSection = (
     <div className='mt-[8px]'>
@@ -224,6 +225,15 @@ export default function ExperienceResponsiveLayout({
                   onToggle={() => toggleFavorite(activity)}
                   className='w-[22px] h-[22px] cursor-pointer text-gray-600'
                 />
+              )}
+              {isOwner && (
+                <div className='flex items-center justify-center w-[22px] h-[22px]'>
+                  <ActivityDropdown
+                    dropdownItems={dropdownItems}
+                    bottomSheetTitle='게시물 관리'
+                    trigger={<KebabIcon size={22} className='text-[#79747E] align-middle' />}
+                  />
+                </div>
               )}
             </div>
           </div>
