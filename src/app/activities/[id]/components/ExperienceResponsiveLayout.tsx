@@ -54,7 +54,9 @@ export default function ExperienceResponsiveLayout({
   const { isFavorite, toggleFavorite } = useFavoritesStore();
   const { isDesktop } = useBreakpoint();
 
-  const isOwner = user?.id === activity.userId;
+  if (!user) return null;
+
+  const isOwner = user.id === activity.userId;
 
   const handleDeleteActivity = useCallback(async () => {
     try {
@@ -83,20 +85,25 @@ export default function ExperienceResponsiveLayout({
     [activity.id, router, handleDeleteActivity]
   );
 
-  useGnb({
-    title: activity.title,
-    backAction: () => router.push('/profile'),
-    rightButtons: [
-      !isDesktop && isOwner && (
+  const rightButtons = useMemo(() => {
+    if (!isDesktop && isOwner) {
+      return [
         <div key='kebab-mobile' className='relative'>
           <ActivityDropdown
             dropdownItems={dropdownItems}
             bottomSheetTitle='게시물 관리'
             trigger={<KebabIcon size={24} className='text-[#79747E]' />}
           />
-        </div>
-      ),
-    ].filter(Boolean),
+        </div>,
+      ];
+    }
+    return [];
+  }, [isDesktop, isOwner, dropdownItems]);
+
+  useGnb({
+    title: activity.title,
+    backAction: () => router.push('/profile'),
+    rightButtons,
   });
 
   const renderReviewSection = (
