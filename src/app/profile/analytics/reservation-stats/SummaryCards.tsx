@@ -50,7 +50,7 @@ export default function SummaryCards({ data }: SummaryCardsProps) {
           <CardHeader className={`text-sm font-medium ${item.labelColor}`}>{item.label}</CardHeader>
           <CardContent>
             <div
-              className={`inline-block px-[12px] py-[6px] rounded-lg text-8xl font-bold text-gray-700 ${item.text}`}
+              className={`inline-block px-[12px] py-[6px] rounded-lg text-8xl font-bold ${item.text}`}
             >
               {item.value}
             </div>
