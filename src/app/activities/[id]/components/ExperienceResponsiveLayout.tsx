@@ -22,6 +22,7 @@ import ExperienceDescription from './experience/ExperienceDescription';
 import ReviewSection from './review/ReviewSection';
 import ReservationBox from './reservation/ReservationBox';
 import KakaoShareButton from '@/src/components/common/buttons/KakaoShareButton';
+import ExperienceDetailSkeleton from './common/ExperienceDetailSkeleton';
 
 import { DROPDOWN_ITEM_TYPES, POST_ACTION_LABELS } from '@/src/constants/dropdown';
 import { deleteActivity } from '@/src/services/myActivityService';
@@ -45,6 +46,7 @@ export default function ExperienceResponsiveLayout({
   activity,
   schedules,
   reviews,
+  reviewStats,
   showLikeButton = true,
 }: Props) {
   const { data: user } = useUser();
@@ -54,7 +56,7 @@ export default function ExperienceResponsiveLayout({
   const { isFavorite, toggleFavorite } = useFavoritesStore();
   const { isDesktop } = useBreakpoint();
 
-  if (!user) return null;
+  if (!user) return <ExperienceDetailSkeleton />;
 
   const isOwner = user.id === activity.userId;
 
@@ -85,19 +87,18 @@ export default function ExperienceResponsiveLayout({
     [activity.id, router, handleDeleteActivity]
   );
 
+  // ✅ 데스크탑 환경에서는 우측 GNB 버튼 추가
   const rightButtons = useMemo(() => {
-    if (!isDesktop && isOwner) {
-      return [
-        <div key='kebab-mobile' className='relative'>
-          <ActivityDropdown
-            dropdownItems={dropdownItems}
-            bottomSheetTitle='게시물 관리'
-            trigger={<KebabIcon size={24} className='text-[#79747E]' />}
-          />
-        </div>,
-      ];
-    }
-    return [];
+    if (!isDesktop || !isOwner) return [];
+    return [
+      <div key='kebab-desktop' className='flex items-center justify-center w-[22px] h-[22px]'>
+        <ActivityDropdown
+          dropdownItems={dropdownItems}
+          bottomSheetTitle='게시물 관리'
+          trigger={<KebabIcon size={22} className='text-[#79747E] align-middle' />}
+        />
+      </div>,
+    ];
   }, [isDesktop, isOwner, dropdownItems]);
 
   useGnb({
