@@ -103,14 +103,13 @@ export default function MyInfoPage() {
       <div className='flex justify-center items-center h-[400px]'>
         <div className='flex flex-col gap-[20px] w-full h-[72px] flex justify-center items-center'>
           <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
-          <p className='text-gray-600 dark:text-gray-400'>사용자 정보를 불러오는 중...</p>
         </div>
       </div>
     );
   if (isError || !user)
     return (
       <div className='flex justify-center items-center h-[400px]'>
-        <p className='text-red-600 dark:text-red-400'>사용자 정보를 불러올 수 없습니다.</p>
+        <p className='text-gray-400 dark:text-gray-600'>사용자 정보를 불러올 수 없습니다.</p>
       </div>
     );
 
