@@ -7,16 +7,19 @@ import RegisterExperienceForm, {
 } from '../../components/RegisterExperienceForm';
 import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
 import { useActivityDetail } from '@/src/hooks/activities/useActivityDetail';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 import { buildUpdateActivityPayload } from '@/src/utils/my-activities';
 import SkeletonRegisterForm from '../../components/skeleton-ui/SkeletonRegisterForm';
+import { useGnbStore } from '@/src/store/gnbStore';
 
 export default function EditActivityPage() {
   const router = useRouter();
   const params = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formRef = useRef<RegisterExperienceFormRef>(null);
+  const [formState, setFormState] = useState({ isDirty: false, isValid: false });
+  const { setRightButtons } = useGnbStore();
 
   // URL에서 activityId 추출
   const activityId = typeof params.id === 'string' ? parseInt(params.id, 10) : undefined;
@@ -25,20 +28,24 @@ export default function EditActivityPage() {
   const { data: activityDetail, isLoading, error } = useActivityDetail(activityId!);
   const updateMyActivityMutation = useUpdateMyActivityMutation(activityId);
 
-  useGnb({
-    title: '내 체험 수정',
-    subtitle: '',
-    backAction: () => router.back(),
-    rightButtons: [
+  useEffect(() => {
+    setRightButtons([
       <button
         key='submit'
         form='register-form'
         onClick={() => formRef.current?.submit()}
-        className='text-md font-semibold text-primary-300'
+        className='text-md font-semibold text-primary-300 disabled:text-gray-300'
+        disabled={updateMyActivityMutation.isPending || !formState.isDirty || !formState.isValid}
       >
         수정
       </button>,
-    ],
+    ]);
+  }, [formState, updateMyActivityMutation.isPending]);
+  useGnb({
+    title: '내 체험 수정',
+    subtitle: '',
+    backAction: () => router.back(),
+    rightButtons: [],
   });
 
   const handleSubmit = async (formData: MyActivitiesFormData) => {
@@ -51,17 +58,9 @@ export default function EditActivityPage() {
         initialSchedules: activityDetail.schedules ?? [],
         formData,
       });
-      console.log(
-        '초기:',
-        activityDetail.subImages.map((i) => i.imageUrl)
-      );
       console.log('현재:', formData.subImageUrls);
       await updateMyActivityMutation.mutateAsync(payload);
       router.push('/profile/my-activities');
-      console.log(
-        '반영이 됐나 : ',
-        activityDetail.subImages.map((i) => i.imageUrl)
-      );
     } finally {
       setIsSubmitting(false);
     }
@@ -88,6 +87,7 @@ export default function EditActivityPage() {
       onSubmit={handleSubmit}
       defaultValues={updateMyActivityMutation.transformActivityToFormData(activityDetail)}
       isSubmitting={isSubmitting}
+      onFormStateChange={setFormState}
     />
   );
 }

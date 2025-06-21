@@ -40,13 +40,14 @@ interface RegisterExperienceFormProps {
   defaultValues?: MyActivitiesFormData;
   onSubmit: (formData: MyActivitiesFormData) => void;
   isSubmitting?: boolean;
+  onFormStateChange?: (state: { isDirty: boolean; isValid: boolean }) => void;
 }
 export interface RegisterExperienceFormRef {
   submit: () => void;
 }
 
 const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExperienceFormProps>(
-  ({ mode, defaultValues, onSubmit, isSubmitting = false }, ref) => {
+  ({ mode, defaultValues, onSubmit, isSubmitting = false, onFormStateChange }, ref) => {
     const { isDesktop } = useBreakpoint();
 
     const methods = useForm<ActivityFormValues>({
@@ -77,15 +78,9 @@ const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExp
         handleSubmit(submitForm)();
       },
     }));
-    // 개발 환경에서만 form 상태 로깅
     useEffect(() => {
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Form Data:', watch());
-        // console.log('Is Valid:', isValid);
-        // console.log('Is Dirty:', isDirty);
-        // console.log('Errors:', errors);
-      }
-    }, [watch, isValid, isDirty, errors]);
+      onFormStateChange?.({ isDirty, isValid });
+    }, [isDirty, isValid, onFormStateChange]);
 
     // 초기 마운트 시 카테고리 값 설정
     useEffect(() => {

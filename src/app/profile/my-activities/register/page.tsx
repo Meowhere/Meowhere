@@ -8,11 +8,14 @@ import { useCreateActivityMutation } from '@/src/hooks/useCreateActivityMutation
 import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 import SkeletonRegisterForm from '../components/skeleton-ui/SkeletonRegisterForm';
 import { useEffect, useState, useRef } from 'react';
+import { useGnbStore } from '@/src/store/gnbStore';
 
 export default function RegisterPage() {
   const router = useRouter();
   const { mutate, isPending } = useCreateActivityMutation();
   const [isInitializing, setIsInitializing] = useState(true);
+  const [formState, setFormState] = useState({ isDirty: false, isValid: false });
+  const { setRightButtons } = useGnbStore();
 
   const formRef = useRef<RegisterExperienceFormRef>(null);
 
@@ -32,12 +35,8 @@ export default function RegisterPage() {
       },
     });
   };
-
-  useGnb({
-    title: '내 체험 등록',
-    subtitle: '',
-    backAction: () => router.back(),
-    rightButtons: [
+  useEffect(() => {
+    setRightButtons([
       <button
         key='submit'
         type='button'
@@ -46,15 +45,28 @@ export default function RegisterPage() {
           formRef.current?.submit();
         }}
         className='text-md font-semibold text-primary-300 disabled:text-gray-300'
-        disabled={isPending}
+        disabled={!formState.isDirty || !formState.isValid || isPending}
       >
-        {isPending ? '등록 중...' : '등록'}
+        등록
       </button>,
-    ],
+    ]);
+  }, [formState, isPending]);
+  useGnb({
+    title: '내 체험 등록',
+    subtitle: '',
+    backAction: () => router.back(),
+    rightButtons: [],
   });
 
   if (isInitializing) {
     return <SkeletonRegisterForm />;
   }
-  return <RegisterExperienceForm ref={formRef} mode='create' onSubmit={handleSubmit} />;
+  return (
+    <RegisterExperienceForm
+      ref={formRef}
+      mode='create'
+      onSubmit={handleSubmit}
+      onFormStateChange={setFormState}
+    />
+  );
 }
