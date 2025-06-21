@@ -13,17 +13,6 @@ interface ScheduleTimeSlotProps {
   price: number;
 }
 
-const styles = {
-  label: clsx(
-    'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200',
-    'hover:border-primary-200 hover:bg-primary-25'
-  ),
-  selected: 'border-primary-500 bg-primary-50',
-  unselected: 'border-gray-200 dark:border-gray-600',
-  timeText: 'text-md font-medium text-gray-800 dark:text-gray-200',
-  priceText: 'text-sm font-regular text-gray-500 dark:text-gray-400',
-};
-
 export default function ScheduleTimeSlot({
   schedule,
   date,
@@ -47,7 +36,10 @@ export default function ScheduleTimeSlot({
   return (
     <label
       htmlFor={inputId}
-      className={clsx(styles.label, isSelected ? styles.selected : styles.unselected)}
+      className={clsx(
+        'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200 hover:border-primary-200 hover:bg-primary-25',
+        isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200 dark:border-gray-600'
+      )}
     >
       <input
         type='radio'
@@ -58,10 +50,12 @@ export default function ScheduleTimeSlot({
         onChange={() => onSelect(id, date)}
         className='hidden'
       />
-      <p className={styles.timeText}>
+      <p className='text-md font-medium text-gray-800 dark:text-gray-200'>
         {formattedStartTime} ~ {formattedEndTime}
       </p>
-      <p className={styles.priceText}>{price.toLocaleString()}원 / 인</p>
+      <p className='text-sm font-regular text-gray-500 dark:text-gray-400'>
+        {price.toLocaleString()}원 / 인
+      </p>
     </label>
   );
 }

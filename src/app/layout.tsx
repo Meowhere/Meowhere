@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import '@/src/styles/globals.css';
 import localFont from 'next/font/local';
 import ClientLayout from './client-layout';
@@ -11,12 +11,13 @@ export const metadata: Metadata = {
   icons: {
     icon: '/assets/icons/ico-fav.svg',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 const pretendard = localFont({

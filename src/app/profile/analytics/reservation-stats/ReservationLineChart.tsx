@@ -37,12 +37,12 @@ export default function ReservationLineChart({ data }: Props) {
   };
 
   return (
-    <Card className='rounded-2xl shadow-sm mt-[24px]'>
-      <CardHeader className='text-sm text-gray-500'>전체 예약 추이</CardHeader>
-      <CardContent className='h-[280px]'>
+    <Card className='rounded-2xl border border-gray-100 dark:border-gray-300 bg-white dark:bg-gray-800 p-[20px] shadow-sm mt-[24px] space-y-[12px]'>
+      <CardHeader className='text-sm text-gray-500 dark:text-gray-400'>전체 예약 추이</CardHeader>
+      <CardContent className='p-0 h-[280px]'>
         <ResponsiveContainer width='100%' height='100%'>
           <LineChart data={chartData}>
-            <XAxis dataKey='date' stroke='#B3A8A1' fontSize={12} />
+            <XAxis dataKey='date' stroke='#B3A8A1' fontSize={12} tickMargin={12} />
             <YAxis stroke='#B3A8A1' fontSize={12} />
             <Tooltip
               formatter={(value, name) => [value, labelMap[name as string] || name]}

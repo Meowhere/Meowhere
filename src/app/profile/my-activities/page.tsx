@@ -1,7 +1,6 @@
 'use client';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import ManagementCards from './components/activity-management/ManagementCards';
-import NotFoundActivities from './components/NotFoundActivities';
 import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
@@ -9,6 +8,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useInfiniteActivities } from '@/src/hooks/useInfiniteActivities';
 import SkeletonActivitiesList from './components/skeleton-ui/SkeletonActivitiesList';
+import NoActivities from '../components/NoActivities';
 
 export default function MyActivitiesPage() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function MyActivitiesPage() {
   useGnb({
     title: '내 체험 관리',
     subtitle: '',
-    backAction: () => router.back(),
+    backAction: () => router.push('/profile'),
     rightButtons: [
       <Link
         key='register'
@@ -58,7 +58,11 @@ export default function MyActivitiesPage() {
       {isLoading ? (
         <SkeletonActivitiesList />
       ) : activities.length === 0 ? (
-        <NotFoundActivities />
+        <NoActivities
+          title='등록된'
+          urlPath='/profile/my-activities/register'
+          buttonTitle='체험 등록하러 가기'
+        />
       ) : (
         <div>
           {isDesktop && (

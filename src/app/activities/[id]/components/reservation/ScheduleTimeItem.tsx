@@ -48,9 +48,8 @@ export default function ScheduleTimeItem({
         name='schedule-selection'
         onClick={() => onSelect(schedule)}
         className={clsx(
-          'w-full text-left rounded-[10px] border p-[14px] transition-all duration-200',
-          isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200',
-          'hover:border-primary-200 hover:bg-primary-25'
+          'w-full text-left rounded-[10px] p-[14px] transition-all duration-200',
+          isSelected ? 'bg-gray-100' : 'border border-gray-200'
         )}
       >
         <p className='text-sm text-gray-400 mb-1'>

@@ -11,6 +11,7 @@ export interface InputProps {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
+  autoFocus?: boolean;
 }
 
 export interface TextareaProps {
