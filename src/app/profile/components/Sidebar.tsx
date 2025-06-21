@@ -3,14 +3,17 @@ import ProfileItem from './ProfileItem';
 import ProfileMenuItem from './ProfileMenuItem';
 import { useThemeStore } from '@/src/store/themeStore';
 import { useLogout } from '@/src/hooks/auth/useAuth';
+import { useRouter } from 'next/navigation';
 
 export default function Sidebar() {
+  const router = useRouter();
   const { isDesktop } = useBreakpoint();
   const { theme, setTheme } = useThemeStore();
   const logoutMutation = useLogout();
 
   const handleLogout = () => {
     logoutMutation.mutate();
+    router.push('/');
   };
 
   return (
