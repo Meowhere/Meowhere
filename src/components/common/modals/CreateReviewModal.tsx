@@ -6,7 +6,6 @@ import { usePostReview } from '@/src/hooks/usePostReview';
 import { formatDateDot } from '@/src/utils/date-format';
 import { CreateReviewModalProps } from '@/src/types/modal.types';
 
-import Toast from '../toast/Toast';
 import StarFillIcon from '@/src/components/common/icons/StarFillIcon';
 import StarIcon from '@/src/components/common/icons/StarIcon';
 import Textarea from '../inputs/Textarea';
@@ -66,6 +65,7 @@ export default function CreateReviewModal({
   });
 
   const handleFormSubmit = (data: FormValues) => {
+    console.log('handleFormSubmit 실행', data);
     if (data.rating === 0 || data.content.trim() === '') {
       alert('별점과 후기를 모두 입력해주세요!');
       return;
@@ -75,7 +75,6 @@ export default function CreateReviewModal({
       {
         onSuccess: () => {
           showToast('success', '리뷰 등록이 완료되었습니다');
-          closeModal();
         },
         onError: () => {
           showToast('error', '리뷰 등록에 실패했습니다');
@@ -86,7 +85,6 @@ export default function CreateReviewModal({
 
   return (
     <div className='flex flex-col flex-grow mt-[38px]'>
-      <Toast />
       <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100 text-center mb-[6px]'>
         {title}
       </h3>
