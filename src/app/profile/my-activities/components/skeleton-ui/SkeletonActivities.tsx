@@ -9,7 +9,7 @@ export default function SkeletonActivities() {
         <div className='w-[60px] h-[20px] bg-gray-200 dark:bg-gray-600 rounded animate-pulse mb-2' />
         {/* 타이틀/가격 부분 */}
         <div className='flex flex-col justify-between gap-[12px]'>
-          <div className='w-[120px] h-[20px] bg-gray-200 dark:bg-gray-600 rounded animate-pulse mb-1' />
+          <div className='w-[240px] h-[20px] bg-gray-200 dark:bg-gray-600 rounded animate-pulse mb-1' />
           <div className='w-[80px] h-[16px] bg-gray-200 dark:bg-gray-600 rounded animate-pulse' />
         </div>
       </div>

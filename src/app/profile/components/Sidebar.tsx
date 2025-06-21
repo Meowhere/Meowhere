@@ -3,8 +3,10 @@ import ProfileItem from './ProfileItem';
 import ProfileMenuItem from './ProfileMenuItem';
 import { useThemeStore } from '@/src/store/themeStore';
 import { useLogout } from '@/src/hooks/auth/useAuth';
+import { useRouter } from 'next/navigation';
 
 export default function Sidebar() {
+  const router = useRouter();
   const { isDesktop } = useBreakpoint();
   const { theme, setTheme } = useThemeStore();
   const logoutMutation = useLogout();
@@ -14,7 +16,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className='flex flex-col gap-[48px] mx-[24px] mb-[128px]'>
+    <div className='flex flex-col gap-[48px] mx-[24px] mb-[128px] max-lg:mt-[-50px]'>
       {!isDesktop && (
         <header className='flex'>
           <h1 className='text-3xl font-semibold text-gray-800 dark:text-gray-200'>프로필</h1>
@@ -50,6 +52,7 @@ export default function Sidebar() {
               />
             )}
             <ProfileMenuItem
+              href='/'
               icon='logout'
               title='로그아웃'
               hasArrow={false}
