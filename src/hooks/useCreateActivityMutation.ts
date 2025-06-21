@@ -8,7 +8,7 @@ export function useCreateActivityMutation() {
 
   return useMutation({
     mutationFn: async (formData: MyActivitiesFormData) => {
-      const res = await fetchFromClient('activities', {
+      const res = await fetchFromClient('/activities', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
