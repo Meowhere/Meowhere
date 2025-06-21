@@ -1,4 +1,4 @@
-import { useForm, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 // import * as z from 'zod';
 // import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '@/src/components/common/inputs/Input';
@@ -6,6 +6,7 @@ import Textarea from '@/src/components/common/inputs/Textarea';
 import PostAddress from './PostAddress';
 import RegisterCategory from './RegisterCategory';
 import { DaumPostcodeData } from '@/src/types/my-activities.types';
+import { useEffect } from 'react';
 
 export default function RegisterForm() {
   const {
@@ -19,7 +20,13 @@ export default function RegisterForm() {
   const priceValue = watch('price', '');
   const descriptionValue = watch('description', '');
   const addressValue = watch('address');
-
+  useEffect(() => {
+    const raw = watch('price');
+    if (raw && !isNaN(Number(raw))) {
+      const formatted = Number(raw).toLocaleString('ko-KR');
+      setValue('price', formatted, { shouldDirty: false });
+    }
+  }, []);
   return (
     <div className='flex flex-col gap-[20px]'>
       <Input
@@ -44,10 +51,10 @@ export default function RegisterForm() {
             }
             // 3. return은 신경 안 써도 됨 (폼 값에는 영향 X)
           },
-          setValueAs: (v) => v.replace(/,/g, ''), // 폼 데이터는 콤마 제거
+          setValueAs: (v) => v.replace(/,/g, ''),
         })}
         error={errors.price as any}
-        watchValue={priceValue ? priceValue?.toLocaleString() : ''}
+        watchValue={priceValue}
         required
       />
       <PostAddress
