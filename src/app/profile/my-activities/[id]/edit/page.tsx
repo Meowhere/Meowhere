@@ -2,11 +2,13 @@
 
 import { useGnb } from '@/src/hooks/useGnb';
 import { useRouter, useParams } from 'next/navigation';
-import RegisterExperienceForm from '../../components/RegisterExperienceForm';
+import RegisterExperienceForm, {
+  RegisterExperienceFormRef,
+} from '../../components/RegisterExperienceForm';
 import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
 import { useActivityDetail } from '@/src/hooks/activities/useActivityDetail';
-import { useState } from 'react';
-import { UpdateMyActivityPayload, MyActivitiesFormData } from '@/src/types/my-activities.types';
+import { useState, useRef } from 'react';
+import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 import { buildUpdateActivityPayload } from '@/src/utils/my-activities';
 import SkeletonRegisterForm from '../../components/skeleton-ui/SkeletonRegisterForm';
 
@@ -14,6 +16,7 @@ export default function EditActivityPage() {
   const router = useRouter();
   const params = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef<RegisterExperienceFormRef>(null);
 
   // URL에서 activityId 추출
   const activityId = typeof params.id === 'string' ? parseInt(params.id, 10) : undefined;
@@ -30,7 +33,7 @@ export default function EditActivityPage() {
       <button
         key='submit'
         form='register-form'
-        type='submit'
+        onClick={() => formRef.current?.submit()}
         className='text-md font-semibold text-primary-300'
       >
         수정
@@ -80,6 +83,7 @@ export default function EditActivityPage() {
 
   return (
     <RegisterExperienceForm
+      ref={formRef}
       mode='edit'
       onSubmit={handleSubmit}
       defaultValues={updateMyActivityMutation.transformActivityToFormData(activityDetail)}
