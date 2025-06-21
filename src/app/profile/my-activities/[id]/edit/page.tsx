@@ -1,25 +1,26 @@
 'use client';
+
 import { useGnb } from '@/src/hooks/useGnb';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import RegisterExperienceForm from '../../components/RegisterExperienceForm';
 import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
-import { MyActivitiesFormData, UpdateMyActivityPayload } from '@/src/types/my-activities.types';
-import { mapToApiPayload } from '@/src/utils/my-activities';
+import { useActivityDetail } from '@/src/hooks/activities/useActivityDetail';
+import { useState } from 'react';
+import { UpdateMyActivityPayload, MyActivitiesFormData } from '@/src/types/my-activities.types';
+import { buildUpdateActivityPayload } from '@/src/utils/my-activities';
+import SkeletonRegisterForm from '../../components/skeleton-ui/SkeletonRegisterForm';
 
 export default function EditActivityPage() {
   const router = useRouter();
-  const { mutate } = useUpdateMyActivityMutation();
+  const params = useParams();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (formData: MyActivitiesFormData) => {
-    // formData를 UpdateMyActivityPayload 형식으로 변환
-    const payload = mapToApiPayload(formData, 'edit') as UpdateMyActivityPayload;
+  // URL에서 activityId 추출
+  const activityId = typeof params.id === 'string' ? parseInt(params.id, 10) : undefined;
 
-    mutate(payload, {
-      onSuccess: () => {
-        router.push('/profile/my-activities');
-      },
-    });
-  };
+  // 상세조회 & 수정 훅 호출
+  const { data: activityDetail, isLoading, error } = useActivityDetail(activityId!);
+  const updateMyActivityMutation = useUpdateMyActivityMutation(activityId);
 
   useGnb({
     title: '내 체험 수정',
@@ -37,5 +38,52 @@ export default function EditActivityPage() {
     ],
   });
 
-  return <RegisterExperienceForm mode='edit' onSubmit={handleSubmit} />;
+  const handleSubmit = async (formData: MyActivitiesFormData) => {
+    if (isSubmitting) return;
+    if (!activityDetail) return;
+    setIsSubmitting(true);
+    try {
+      const payload = buildUpdateActivityPayload({
+        initialImages: activityDetail.subImages ?? [],
+        initialSchedules: activityDetail.schedules ?? [],
+        formData,
+      });
+      console.log(
+        '초기:',
+        activityDetail.subImages.map((i) => i.imageUrl)
+      );
+      console.log('현재:', formData.subImageUrls);
+      await updateMyActivityMutation.mutateAsync(payload);
+      router.push('/profile/my-activities');
+      console.log(
+        '반영이 됐나 : ',
+        activityDetail.subImages.map((i) => i.imageUrl)
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // 에러, 로딩 상태에 따른 렌더링
+  if (error) {
+    router.push('/profile/my-activities');
+    return null;
+  }
+
+  if (isLoading || !activityDetail) {
+    return (
+      <div className='w-full flex-1'>
+        <SkeletonRegisterForm />
+      </div>
+    );
+  }
+
+  return (
+    <RegisterExperienceForm
+      mode='edit'
+      onSubmit={handleSubmit}
+      defaultValues={updateMyActivityMutation.transformActivityToFormData(activityDetail)}
+      isSubmitting={isSubmitting}
+    />
+  );
 }

@@ -3,7 +3,6 @@
 import { parseISO, format } from 'date-fns';
 import { ko } from 'date-fns/locale/ko';
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import CounterButton from '../common/CounterButton';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useModal } from '@/src/hooks/useModal';
@@ -86,10 +85,7 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
   return (
     <>
       <div className='flex flex-col max-h-[80vh] gap-[24px] overflow-y-auto p-[12px] scrollbar-hide pb-[120px]'>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
-        >
+        <div>
           <div className='flex flex-col gap-[24px] mb-[24px]'>
             <p className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>인원</p>
             <div className='flex items-center justify-between'>
@@ -103,36 +99,26 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
               />
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
-        >
+        <div className='flex flex-col gap-[24px]'>
           <p className='text-[2.2rem] font-semibold text-gray-800'>체험 날짜</p>
           <ReservationCalendarPicker
             selectedDate={selectedDate}
             onChange={setSelectedDate}
             availableDates={availableDates}
           />
-        </motion.div>
+        </div>
 
-        <AnimatePresence mode='wait'>
-          <motion.div
-            key={selectedDate?.toString() || 'empty'}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
-            exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
-          >
-            <ScheduleTimeList
-              schedules={schedules}
-              selectedDate={selectedDate}
-              selectedScheduleId={selectedSchedule?.id ?? null}
-              onSelect={setSelectedSchedule}
-              price={price}
-            />
-          </motion.div>
-        </AnimatePresence>
+        <div>
+          <ScheduleTimeList
+            schedules={schedules}
+            selectedDate={selectedDate}
+            selectedScheduleId={selectedSchedule?.id ?? null}
+            onSelect={setSelectedSchedule}
+            price={price}
+          />
+        </div>
       </div>
 
       <div
@@ -155,7 +141,7 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
             </p>
           </div>
           <BaseButton
-            className='max-w-[128px] w-[128px] h-[42px] rounded-[10px]'
+            className='max-w-[128px] w-[128px] h-[42px] rounded-[10px] font-regular'
             onClick={handleReserve}
             disabled={!selectedSchedule}
           >

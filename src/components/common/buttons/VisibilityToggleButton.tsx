@@ -25,9 +25,9 @@ export default function VisibilityToggleButton({
     >
       <div className='w-full h-full cursor-pointer'>
         {isVisible ? (
-          <VisibilityOnIcon className='w-full h-full text-[#9FA6B2]' />
+          <VisibilityOnIcon className='w-full h-full text-gray-400' />
         ) : (
-          <VisibilityOffIcon className='w-full h-full text-[#9FA6B2]' />
+          <VisibilityOffIcon className='w-full h-full text-gray-400' />
         )}
       </div>
     </button>

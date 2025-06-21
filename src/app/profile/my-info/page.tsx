@@ -8,6 +8,8 @@ import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 import { useMyInfoQuery, useUpdateMyInfoMutation } from '@/src/hooks/user';
 import { UpdateMyInfoPayload } from '@/src/types/user.types';
+import { useGnb } from '@/src/hooks/useGnb';
+import { useRouter } from 'next/navigation';
 
 const myInfoSchema = z
   .object({
@@ -46,7 +48,9 @@ const myInfoSchema = z
 type MyInfoForm = z.infer<typeof myInfoSchema>;
 
 export default function MyInfoPage() {
+  const router = useRouter();
   const { isDesktop } = useBreakpoint();
+  useGnb({ title: '내정보', backAction: () => router.push('/profile') });
 
   // 쿼리 훅
   const { data: user, isLoading, isError } = useMyInfoQuery();
@@ -85,7 +89,6 @@ export default function MyInfoPage() {
     }
   }, [user, reset]);
 
-
   const onSubmit = (data: MyInfoForm) => {
     // user가 없으면 아무 것도 보내지 않음
     if (!user) return;
@@ -102,13 +105,15 @@ export default function MyInfoPage() {
   if (isLoading)
     return (
       <div className='flex justify-center items-center h-[400px]'>
-        <p className='text-gray-600 dark:text-gray-400'>사용자 정보를 불러오는 중...</p>
+        <div className='flex flex-col gap-[20px] w-full h-[72px] flex justify-center items-center'>
+          <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+        </div>
       </div>
     );
   if (isError || !user)
     return (
       <div className='flex justify-center items-center h-[400px]'>
-        <p className='text-red-600 dark:text-red-400'>사용자 정보를 불러올 수 없습니다.</p>
+        <p className='text-gray-400 dark:text-gray-600'>사용자 정보를 불러올 수 없습니다.</p>
       </div>
     );
 
@@ -153,11 +158,11 @@ export default function MyInfoPage() {
 
       {isDesktop && (
         <div className='flex justify-end w-full'>
-          <div className='w-[128px]'>
+          <div className='w-[128px] '>
             <BaseButton
               variant='primary'
               disabled={updateMyInfoMutation.isPending || !isDirty || !isValid}
-              className='py-[12px]'
+              className='py-[12px] text-[1.4rem]'
             >
               변경하기
             </BaseButton>

@@ -21,10 +21,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const showNavbar = pathname !== '/profile';
 
   const getGNBHeight = () => {
-    if (pathname === '/') {
-      return 'pt-[140px]'; // MainPageGNB (76px) + CategorySection (64px)
-    }
-    return 'pt-[48px]'; // SubPageGNB 높이
+    if (isDesktop) return 'pt-[96px]';
+    if (pathname === '/') return 'pt-[140px]';
+    return 'pt-[48px]';
   };
 
   return (

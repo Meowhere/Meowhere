@@ -2,6 +2,7 @@ import { Category } from './activity.types';
 import { Activity } from './activity.types';
 import { Schedule } from './activity.types';
 
+//my activities 목록
 export interface RatingLabelProps {
   rating: number;
 }
@@ -27,7 +28,7 @@ export interface ActivitiesPage {
   cursorId: number | null;
 }
 
-// types/daum.d.ts
+// 카카오 api 주소 추가
 
 export interface DaumPostcodeData {
   roadAddress: string;
@@ -81,13 +82,14 @@ export interface CreateScheduleBody {
   endTime: string;
 }
 
+// ActivityFormValues: 폼에서 사용하는 값 타입
 export interface ActivityFormValues {
   title: string;
   description: string;
-  category: string; // 사용자는 문자열로 선택함!
-  price: string; // 사용자는 문자열로 입력!
+  category: string; // Category 타입 대신 string! (register에선 string)
+  price: string; // number 대신 string! (입력값 그대로)
   address: string;
   bannerImageUrl: string;
   subImageUrls: string[];
-  schedules?: Omit<Schedule, 'id'>[];
+  schedules?: { date: string; startTime: string; endTime: string }[];
 }
