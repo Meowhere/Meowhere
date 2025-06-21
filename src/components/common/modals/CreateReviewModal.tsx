@@ -65,7 +65,6 @@ export default function CreateReviewModal({
   });
 
   const handleFormSubmit = (data: FormValues) => {
-    console.log('handleFormSubmit 실행', data);
     if (data.rating === 0 || data.content.trim() === '') {
       alert('별점과 후기를 모두 입력해주세요!');
       return;
