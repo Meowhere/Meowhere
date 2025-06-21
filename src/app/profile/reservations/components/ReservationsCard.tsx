@@ -63,7 +63,7 @@ export default function ReservationsCard({
 
   return (
     <div
-      className={`flex flex-col gap-[18px] bg-white px-[20px] py-[24px] ${isLast ? '' : 'border-b border-gray-200'} lg:flex-row lg:justify-between lg:items-end`}
+      className={`flex flex-col gap-[18px] py-[24px] ${isLast ? '' : 'border-b border-gray-200 dark:border-gray-700'} lg:flex-row lg:justify-between lg:items-end`}
     >
       {/* 내용 */}
       <Toast />
@@ -77,11 +77,11 @@ export default function ReservationsCard({
         <div className='flex flex-col justify-between gap-[6px] lg:gap-[18px]'>
           <ReservationsLabel status={reservation.status} />
           <div className='flex flex-col gap-[4px] pl-[4px] lg:gap-[8px]'>
-            <p className='text-[1.4rem] leading-[1.4rem] font-semibold text-gray-800 lg:text-[1.6rem]'>
+            <p className='text-[1.4rem] leading-[1.4rem] font-semibold text-gray-800 lg:text-[1.6rem] dark:text-gray-200'>
               {reservation.activity.title}
             </p>
-            <p className='text-[1.3rem] leading-[1.3rem] font-regular text-gray-600'>{`${reservation.date} · ${reservation.startTime} - ${reservation.endTime}`}</p>
-            <p className='text-[1.3rem] leading-[1.3rem] font-regular text-gray-600'>{`${reservation.headCount}명, ₩${reservation.totalPrice.toLocaleString()}`}</p>
+            <p className='text-[1.3rem] leading-[1.3rem] font-regular text-gray-600 dark:text-gray-400 '>{`${reservation.date} · ${reservation.startTime} - ${reservation.endTime}`}</p>
+            <p className='text-[1.3rem] leading-[1.3rem] font-regular text-gray-600 dark:text-gray-400 '>{`${reservation.headCount}명, ₩${reservation.totalPrice.toLocaleString()}`}</p>
           </div>
         </div>
       </div>

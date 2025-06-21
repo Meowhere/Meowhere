@@ -3,13 +3,13 @@ export default function DropdownTrigger({ label, text, isOpen, onClick }: Dropdo
     <button
       onClick={onClick}
       type='button'
-      className='w-full h-[64px] rounded-[10px] border border-gray-200 bg-white'
+      className='w-full h-[64px] rounded-[10px] border border-gray-200 dark:border-gray-700'
     >
       <div className='w-full flex items-center justify-between px-[20px] py-[8px]'>
         <div className='flex flex-col items-start'>
-          <span className='text-xs font-regular text-gray-500'>{label}</span>
+          <span className='text-xs font-regular text-gray-500 dark:text-gray-400 '>{label}</span>
           <div>
-            <div className='text-md font-regular text-gray-800'>{text}</div>
+            <div className='text-md font-regular text-gray-800 dark:text-gray-200'>{text}</div>
           </div>
         </div>
         <span>
