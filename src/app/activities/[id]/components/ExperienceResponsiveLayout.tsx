@@ -7,6 +7,8 @@ import { useGnb } from '@/src/hooks/useGnb';
 import { useUser } from '@/src/hooks/auth/useAuth';
 import { useModal } from '@/src/hooks/useModal';
 import { useFavoritesStore } from '@/src/store/favoritesStore';
+import { useToastStore } from '@/src/store/toastStore';
+import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 import HeartButton from '@/src/components/common/buttons/HeartButton';
 import ActivityDropdown from './common/ActivityDropdown';
@@ -27,7 +29,6 @@ import { deleteActivity } from '@/src/services/myActivityService';
 import { Activity } from '@/src/types/activity.types';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import { Review } from '@/src/types/review.type';
-import { useToastStore } from '@/src/store/toastStore';
 
 interface Props {
   activity: Activity;
@@ -50,14 +51,10 @@ export default function ExperienceResponsiveLayout({
   const router = useRouter();
   const { showToast } = useToastStore();
   const { openScheduleModal } = useModal();
-
-  const { toggleFavorite, isFavorite } = useFavoritesStore();
+  const { isFavorite, toggleFavorite } = useFavoritesStore();
+  const { isDesktop } = useBreakpoint();
 
   const isOwner = user?.id === activity.userId;
-
-  const handleLikeClick = () => {
-    toggleFavorite(activity);
-  };
 
   const handleDeleteActivity = useCallback(async () => {
     try {
@@ -126,77 +123,77 @@ export default function ExperienceResponsiveLayout({
 
   return (
     <>
-      {/* 데스크탑 레이아웃 */}
-      <div className='hidden lg:block'>
-        <div className='max-w-[1200px] mx-auto flex gap-[48px] px-4 mt-[64px] justify-center items-center'>
-          <div className='flex-[1.2]'>
-            <ExperienceImageViewer
-              bannerImageUrl={activity.bannerImageUrl}
-              subImages={activity.subImages}
-            />
-          </div>
-          <div className='flex-1 relative'>
-            <div className='flex flex-row gap-[8px] absolute items-center justify-center top-[2px] right-[2px] z-10 cursor-pointer'>
-              {showLikeButton && (
-                <HeartButton
-                  isLiked={isFavorite(activity.id)}
-                  onToggle={() => toggleFavorite(activity)}
-                  className='w-[32px] h-[32px] cursor-pointer text-gray-600'
-                />
-              )}
-              <KakaoShareButton size={24} activity={activity} />
-              {isOwner && (
-                <ActivityDropdown
-                  dropdownItems={dropdownItems}
-                  bottomSheetTitle='게시물 관리'
-                  trigger={<KebabIcon size={24} className='text-[#79747E]' />}
-                />
+      {isDesktop ? (
+        // 데스크탑
+        <div>
+          <div className='max-w-[1200px] mx-auto flex gap-[48px] px-4 mt-[64px] justify-center items-center'>
+            <div className='flex-[1.2]'>
+              <ExperienceImageViewer
+                bannerImageUrl={activity.bannerImageUrl}
+                subImages={activity.subImages}
+              />
+            </div>
+            <div className='flex-1 relative'>
+              <div className='flex flex-row gap-[8px] absolute items-center justify-center top-[2px] right-[2px] z-10 cursor-pointer'>
+                {showLikeButton && (
+                  <HeartButton
+                    isLiked={isFavorite(activity.id)}
+                    onToggle={() => toggleFavorite(activity)}
+                    className='w-[32px] h-[32px] cursor-pointer text-gray-600'
+                  />
+                )}
+                <KakaoShareButton size={24} activity={activity} />
+                {isOwner && (
+                  <ActivityDropdown
+                    dropdownItems={dropdownItems}
+                    bottomSheetTitle='게시물 관리'
+                    trigger={<KebabIcon size={24} className='text-[#79747E]' />}
+                  />
+                )}
+              </div>
+              <ExperienceSummarySection
+                category={activity.category}
+                title={activity.title}
+                rating={activity.rating?.toFixed(1) ?? '0.0'}
+                reviewCount={activity.reviewCount}
+                address={activity.address}
+              />
+              {user && user.id !== activity.userId && (
+                <>
+                  <Divider />
+                  <ReservationBox
+                    pricePerPerson={activity.price}
+                    onClick={() =>
+                      openScheduleModal({
+                        price: activity.price,
+                        schedules,
+                        activityId: activity.id,
+                      })
+                    }
+                  />
+                </>
               )}
             </div>
-            <ExperienceSummarySection
-              category={activity.category}
-              title={activity.title}
-              rating={activity.rating?.toFixed(1) ?? '0.0'}
-              reviewCount={activity.reviewCount}
-              address={activity.address}
-            />
-            {user && user.id !== activity.userId && (
-              <>
-                <Divider />
-                <ReservationBox
-                  pricePerPerson={activity.price}
-                  onClick={() =>
-                    openScheduleModal({
-                      price: activity.price,
-                      schedules,
-                      activityId: activity.id,
-                    })
-                  }
-                />
-              </>
-            )}
+          </div>
+
+          <div className='max-w-[1200px] mx-auto px-4 flex flex-col gap-[48px] mt-[80px]'>
+            <Divider />
+            <div>
+              <SectionTitle title='만나는 곳' subtitle={activity.address} />
+              <ExperienceLocationMap address={activity.address} />
+            </div>
+            <div>
+              <SectionTitle title='체험 설명' />
+              <ExperienceDescription description={activity.description} />
+            </div>
+            <div>
+              <SectionTitle title='후기' />
+              {renderReviewSection}
+            </div>
           </div>
         </div>
-
-        <div className='max-w-[1200px] mx-auto px-4 flex flex-col gap-[48px] mt-[80px]'>
-          <Divider />
-          <div>
-            <SectionTitle title='만나는 곳' subtitle={activity.address} />
-            <ExperienceLocationMap address={activity.address} />
-          </div>
-          <div>
-            <SectionTitle title='체험 설명' />
-            <ExperienceDescription description={activity.description} />
-          </div>
-          <div>
-            <SectionTitle title='후기' />
-            {renderReviewSection}
-          </div>
-        </div>
-      </div>
-
-      {/* 모바일 & 태블릿 레이아웃 */}
-      <div className='block lg:hidden'>
+      ) : (
+        // 모바일 & 태블릿
         <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px] flex flex-col gap-[48px]'>
           <ExperienceImageViewer
             bannerImageUrl={activity.bannerImageUrl}
@@ -253,7 +250,7 @@ export default function ExperienceResponsiveLayout({
             />
           )}
         </div>
-      </div>
+      )}
     </>
   );
 }
