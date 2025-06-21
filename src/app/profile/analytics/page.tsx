@@ -40,14 +40,14 @@ export default function AnalyticsPage() {
 
   return (
     <main className='w-full max-w-[960px] mx-auto px-[20px] pb-[88px]'>
-      <h1 className='text-2xl font-bold text-black dark:text-gray-200 mb-[24px]'>
+      <h1 className='text-2xl font-bold text-gray-700 dark:text-gray-200 mb-[24px]'>
         전체 체험 예약 통계
       </h1>
 
       {isLoading ? (
-        <p className='text-gray-500 dark:text-gray-300'>
-          잠시만 기다려 주세요, 예약 현황을 준비 중입니다
-        </p>
+        <div className='w-full h-[72px] flex justify-center items-center'>
+          <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+        </div>
       ) : (
         <>
           <SummaryCards data={analyticsData ?? []} />
@@ -57,21 +57,21 @@ export default function AnalyticsPage() {
 
       {/* 이번 달 체험별 예약 신청 현황 차트 */}
       <section className='mt-[48px]'>
-        <h1 className='text-2xl font-bold text-black dark:text-gray-200 mb-[24px]'>
+        <h1 className='text-2xl font-bold text-gray-700 dark:text-gray-200 mb-[24px]'>
           이번 달 체험별 예약 신청 현황
         </h1>
         {isPendingChartLoading ? (
-          <p className='text-gray-500 dark:text-gray-300'>
-            잠시만 기다려 주세요, 체험별 신청 데이터를 불러오고 있어요.
-          </p>
+          <div className='w-full h-[72px] flex justify-center items-center'>
+            <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+          </div>
         ) : (
           <MonthlyPendingChart data={chartData} />
         )}
       </section>
 
       {/* 체험별 리뷰 요약 */}
-      <section className='mt-[48px]'>
-        <h1 className='text-2xl font-bold text-black dark:text-gray-200 mb-[24px]'>
+      <section className='mt-[72px]'>
+        <h1 className='text-2xl font-bold text-gray-700 dark:text-gray-200 mb-[24px]'>
           체험별 리뷰 요약
         </h1>
         <MyActivitiesReviewList today={today} />

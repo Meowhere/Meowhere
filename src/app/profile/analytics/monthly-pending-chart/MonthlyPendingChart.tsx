@@ -46,10 +46,12 @@ export default function MonthlyPendingChart({ data }: MonthlyPendingChartProps) 
             />
             <YAxis allowDecimals={false} />
             <Tooltip />
-            <Legend />
-            <Bar dataKey='pending' stackId='a' fill='#27A00E' name='예약 대기' />
-            <Bar dataKey='confirmed' stackId='a' fill='#0051FF' name='예약 승인' />
-            <Bar dataKey='completed' stackId='a' fill='#8407C7' name='체험 완료' />
+            <Legend
+              wrapperStyle={{ bottom: '-24px' }} // x축과 간격 조정
+            />
+            <Bar dataKey='pending' stackId='a' fill='#74E11C' name='예약 완료' />
+            <Bar dataKey='confirmed' stackId='a' fill='#45A4FE' name='예약 승인' />
+            <Bar dataKey='completed' stackId='a' fill='#851FFF' name='체험 완료' />
           </BarChart>
         </ResponsiveContainer>
       )}

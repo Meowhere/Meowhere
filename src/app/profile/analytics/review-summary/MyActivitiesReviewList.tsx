@@ -15,9 +15,9 @@ export default function MyActivitiesReviewList({ today }: MyActivitiesReviewList
 
   if (isLoading)
     return (
-      <p className='text-gray-500 dark:text-gray-400'>
-        잠시만 기다려 주세요, 리뷰 데이터를 불러오고 있어요.
-      </p>
+      <div className='w-full h-[72px] flex justify-center items-center'>
+        <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+      </div>
     );
   if (isError || !myActivities) return <p className='text-red-300'>불러오기 실패</p>;
 
