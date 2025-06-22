@@ -8,7 +8,6 @@ export const useToastStore = create<ToastState>((set, get) => ({
   timeoutId: null,
   showToast: (type, message) => {
     const { timeoutId } = get();
-
     // 기존 타이머가 있으면 취소
     if (timeoutId) {
       clearTimeout(timeoutId);

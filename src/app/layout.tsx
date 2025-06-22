@@ -31,9 +31,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ko' className={`${pretendard.className} bg-white dark:bg-black`}>
+    <html
+      lang='ko'
+      suppressHydrationWarning
+      className={`${pretendard.className} bg-white dark:bg-black`}
+    >
       <head>
-        {/* ✅ 초기 테마 설정 스크립트 삽입 */}
+        {/* 초기 테마 설정 스크립트 삽입 */}
         <script
           dangerouslySetInnerHTML={{
             __html: `

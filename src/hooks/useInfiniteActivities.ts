@@ -22,6 +22,7 @@ export function useInfiniteActivities() {
     queryKey: ['my-activities'],
     queryFn: fetchActivities,
     refetchOnWindowFocus: true,
+    refetchOnMount: true,
     staleTime: 5 * 60 * 1000,
     initialPageParam: 0,
     getNextPageParam: (lastPage: ActivitiesPage) => {
