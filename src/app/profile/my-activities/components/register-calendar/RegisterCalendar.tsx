@@ -88,12 +88,10 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
   // 디바운스된 items 값
   const debouncedItems = useDebouncedValue(items, 300);
 
-  // ✅ 중복 없이 유효한 스케줄을 setValue (최적화)
   useEffect(() => {
     const validSchedules = debouncedItems
       .filter((item) => isValidSchedule(item))
       .map(({ date, startTime, endTime }) => ({ date, startTime, endTime }));
-    console.log('[캘린더 디버그] 업데이트할 schedules:', validSchedules);
     setValue('schedules', validSchedules, { shouldDirty: true });
   }, [debouncedItems, setValue]);
 

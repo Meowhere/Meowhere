@@ -24,7 +24,13 @@ export default function ActivityDropdown({ dropdownItems, bottomSheetTitle, trig
 
   return (
     <div className='relative z-50' onClick={(e) => e.stopPropagation()}>
-      <button onClick={() => setIsOpen((v) => !v)}>{trigger}</button>
+      <button
+        onClick={() => setIsOpen((v) => !v)}
+        className='flex items-center justify-center p-0 leading-none'
+      >
+        {trigger}
+      </button>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div

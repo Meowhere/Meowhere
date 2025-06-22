@@ -1,7 +1,4 @@
-'use client';
-
 import StarFillIcon from '@/src/components/common/icons/StarFillIcon';
-import { useBreakpoint } from '@/src/hooks/useBreakpoint';
 
 interface ExperienceSummarySectionProps {
   title: string;
@@ -18,20 +15,14 @@ export default function ExperienceSummarySection({
   address,
   category,
 }: ExperienceSummarySectionProps) {
-  const { isDesktop } = useBreakpoint();
-
   return (
-    <section className={`p-4 flex flex-col ${isDesktop ? 'text-left' : 'text-center'}`}>
+    <section className='p-4 flex flex-col text-center lg:text-left'>
       <div className='flex flex-col'>
         <span className='text-md font-medium text-gray-600 mb-[12px]'>{category}</span>
 
         <h2 className='text-2xl font-bold mb-[16px]'>{title}</h2>
 
-        <div
-          className={`flex items-center gap-[6px] text-md text-gray-600 ${
-            isDesktop ? 'justify-start' : 'justify-center'
-          } mb-[12px]`}
-        >
+        <div className='flex items-center gap-[6px] text-md text-gray-600 justify-center lg:justify-start mb-[12px]'>
           <StarFillIcon className='w-[16px] h-[16px] text-yellow-200' />
           <div className='flex items-baseline gap-[6px]'>
             <span className='text-[1.4rem] font-medium text-gray-600'>{rating}</span>
