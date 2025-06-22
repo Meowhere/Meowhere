@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '@/src/components/common/inputs/Input';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
@@ -50,6 +50,7 @@ type MyInfoForm = z.infer<typeof myInfoSchema>;
 export default function MyInfoPage() {
   const router = useRouter();
   const { isDesktop } = useBreakpoint();
+  useGnb({ title: '내정보', backAction: () => router.push('/profile') });
 
   // 쿼리 훅
   const { data: user, isLoading, isError } = useMyInfoQuery();
@@ -76,21 +77,6 @@ export default function MyInfoPage() {
   const nicknameValue = watch('nickname');
   const pwValue = watch('newPassword', '');
   const pwConfirmValue = watch('confirmPassword', '');
-
-  useGnb({
-    title: '내 정보',
-    backAction: () => router.push('/profile'),
-    rightButtons: [
-      <button
-        key='submit'
-        form='my-info-form'
-        type='submit'
-        className='text-md font-semibold text-primary-300 disabled:text-gray-400'
-      >
-        변경
-      </button>,
-    ],
-  });
 
   // user 데이터 받아오면 폼에 set
   useEffect(() => {
@@ -133,8 +119,7 @@ export default function MyInfoPage() {
 
   return (
     <form
-      id='my-info-form'
-      className='flex flex-col gap-[64px] mt-[48px] mx-[24px]'
+      className='flex flex-col gap-[64px] mt-[48px] mx-[24px] mb-[200px]'
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className='flex flex-col gap-[16px]'>
