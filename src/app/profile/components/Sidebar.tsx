@@ -29,7 +29,7 @@ export default function Sidebar() {
         <ProfileMenuItem href='/profile/favorites' icon='favorites' title='찜 목록' />
         <ProfileMenuItem href='/profile/reservations' icon='reservations' title='예약 내역' />
         <hr className='border-gray-200 dark:border-gray-800' />
-        <ProfileMenuItem href='/profile/my-activities' icon='my-activities' title='내 체험 관리' />
+        <ProfileMenuItem href='/profile/my-activities' icon='my-activities' title='내 체험 목록' />
         <ProfileMenuItem
           href='/profile/my-reservations'
           icon='my-reservation'
