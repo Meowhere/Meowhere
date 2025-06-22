@@ -25,7 +25,7 @@ export const getMinEndTimeStr = (startTime?: string): string | undefined => {
 };
 
 export const normalizeEndTime = (startTime: string, endTime: string): string => {
-  if (!/\d{2}:\d{2}/.test(startTime) || !/\d{2}:\d{2}/.test(endTime)) return endTime;
+  if (!/^\d{2}:\d{2}$/.test(startTime) || !/^\d{2}:\d{2}$/.test(endTime)) return endTime;
 
   const [startH, startM] = startTime.split(':').map(Number);
   const [endH, endM] = endTime.split(':').map(Number);
@@ -34,7 +34,7 @@ export const normalizeEndTime = (startTime: string, endTime: string): string => 
   const endMin = endH * 60 + endM;
 
   if (endMin <= startMin) {
-    const adjusted = endMin + 720;
+    const adjusted = endMin + 12 * 60; // 12 hours in minutes
     const normH = String(Math.floor(adjusted / 60) % 24).padStart(2, '0');
     const normM = String(adjusted % 60).padStart(2, '0');
     return `${normH}:${normM}`;
