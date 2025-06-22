@@ -59,15 +59,15 @@ export default function ScheduleTimeItem({
         name='schedule-selection'
         onClick={() => onSelect(schedule)}
         className={clsx(
-          'w-full text-left rounded-[10px] p-[14px] transition-all duration-200',
-          isSelected ? 'bg-gray-100' : 'border border-gray-200'
+          'w-full text-left rounded-[10px] p-[14px] hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-100 border border-gray-200 dark:border-gray-700',
+          isSelected ? 'bg-gray-100 dark:bg-gray-700' : ''
         )}
       >
-        <p className='text-sm text-gray-400 mb-1'>
+        <p className='text-sm text-gray-400 dark:text-gray-400 mb-1'>
           {format(new Date(date), 'yyyy년 M월 d일', { locale: ko })}
         </p>
 
-        <p className='text-md font-medium text-gray-800'>
+        <p className='text-md font-medium text-gray-800 dark:text-gray-200'>
           {formattedStartTime} ~ {formattedEndTime}
         </p>
       </button>

@@ -53,7 +53,7 @@ export default function ReviewSection({
 
             <div className='w-full flex justify-center mt-[32px]'>
               <button
-                className='px-6 py-[12px] w-full max-w-[500px] text-sm text-gray-800 bg-gray-100 rounded-full hover:bg-gray-200 transition'
+                className='px-6 py-[12px] w-full max-w-[500px] text-sm text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition'
                 onClick={() =>
                   openReviewListModal({
                     activityId,
@@ -97,7 +97,7 @@ export default function ReviewSection({
 
           <div className='w-full flex justify-center mt-[32px]'>
             <button
-              className='w-full max-w-[500px] px-6 py-[12px] text-sm text-gray-800 bg-gray-100 rounded-full hover:bg-gray-200 transition'
+              className='w-full max-w-[500px] px-6 py-[12px] text-sm text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition'
               onClick={() =>
                 openReviewListModal({
                   activityId,
@@ -139,7 +139,7 @@ export default function ReviewSection({
           </div>
 
           <button
-            className='mt-[24px] w-full px-0 py-[12px] text-sm text-gray-800 bg-gray-100 rounded-[14px] text-center'
+            className='mt-[24px] w-full px-0 py-[12px] text-sm text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 rounded-[14px] text-center'
             onClick={() =>
               openReviewListModal({
                 activityId,

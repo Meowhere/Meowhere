@@ -22,7 +22,7 @@ export default function ReservationBox({ pricePerPerson, onClick }: ReservationB
       {isDesktop && (
         <div className='w-full px-[8px] pt-[8px]'>
           <div className='flex justify-between items-center'>
-            <p className='text-[18px] font-bold text-gray-900'>
+            <p className='text-[18px] font-bold text-gray-800 dark:text-gray-200'>
               {typeof pricePerPerson === 'number'
                 ? `₩${pricePerPerson.toLocaleString()}`
                 : '가격 정보 없음'}

@@ -52,7 +52,7 @@ export default function ReservationCalendar({
         <div className='absolute left-0'>
           <ArrowButton onClick={handlePrevMonth} direction='left' size={24} />
         </div>
-        <div className='text-xl font-semibold text-gray-900'>
+        <div className='text-xl font-semibold text-gray-900 dark:text-gray-100'>
           {format(activeStartDate, 'yyyy년 M월')}
         </div>
         <div className='absolute right-0'>

@@ -83,7 +83,7 @@ export default function ExperienceImageViewer({
       </div>
 
       {isOpen && (
-        <div className='fixed inset-0 z-[9999] bg-white scrollbar-hide'>
+        <div className='fixed inset-0 z-[9999] bg-white dark:bg-black scrollbar-hide'>
           <SubPageGNB />
           <div className='pt-[56px] h-full relative'>
             {isDesktop && (
