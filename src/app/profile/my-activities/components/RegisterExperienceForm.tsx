@@ -35,6 +35,7 @@ const formSchema = z.object({
 });
 
 type ActivityFormValues = z.infer<typeof formSchema>;
+
 interface RegisterExperienceFormProps {
   mode: 'edit' | 'create';
   defaultValues?: MyActivitiesFormData;
@@ -42,6 +43,7 @@ interface RegisterExperienceFormProps {
   isSubmitting?: boolean;
   onFormStateChange?: (state: { isDirty: boolean; isValid: boolean }) => void;
 }
+
 export interface RegisterExperienceFormRef {
   submit: () => void;
 }
@@ -72,12 +74,14 @@ const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExp
       setValue,
       watch,
     } = methods;
+
     // 👇 외부에서 호출 가능하게 등록
     useImperativeHandle(ref, () => ({
       submit: () => {
         handleSubmit(submitForm)();
       },
     }));
+
     useEffect(() => {
       onFormStateChange?.({ isDirty, isValid });
     }, [isDirty, isValid, onFormStateChange]);
@@ -112,7 +116,11 @@ const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExp
           <div className='flex flex-col gap-[20px]'>
             <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
             <div className='w-[160px]'>
-              <UploadImg defaultImage={defaultValues?.bannerImageUrl} isBanner={true} />
+              <UploadImg
+                defaultImage={defaultValues?.bannerImageUrl}
+                isBanner={true}
+                key={`banner-${defaultValues?.bannerImageUrl || 'empty'}`} // 리렌더링 강제
+              />{' '}
             </div>
             {errors.bannerImageUrl && (
               <p className='text-sm text-red-500'>{errors.bannerImageUrl.message}</p>

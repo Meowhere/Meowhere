@@ -9,6 +9,8 @@ export function useActivityDetail(activityId: number) {
       const res = await fetchFromClient(`/activities/${activityId}`);
       return res.json();
     },
+    refetchOnMount: true,
+    staleTime: 0,
     enabled: !!activityId,
   });
 }
