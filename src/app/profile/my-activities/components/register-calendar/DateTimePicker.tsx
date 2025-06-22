@@ -62,7 +62,7 @@ export function CustomTimePicker({
 
   return (
     <div className='relative select-none' onClick={() => inputRef.current?.showPicker()}>
-      <span className='text-md font-regular text-gray-800 pointer-events-none'>
+      <span className='text-md font-regular text-gray-800 pointer-events-none whitespace-nowrap'>
         {formatTime(value)}
       </span>
       <input

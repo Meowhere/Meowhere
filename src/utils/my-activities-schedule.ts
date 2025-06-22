@@ -21,11 +21,6 @@ export function convertSchedulesToCalendarItems(
   }));
 }
 
-export function getTodayDateStr() {
-  const today = new Date();
-  return today.toISOString().split('T')[0]; // 'YYYY-MM-DD'
-}
-
 // 날짜/시간 비교 유틸
 export function compareDateTime(a: CalendarItem, b: CalendarItem) {
   // "2024-06-14" + "T" + "14:00" 식으로 합쳐서 Date 비교
