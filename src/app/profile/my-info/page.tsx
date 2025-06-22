@@ -105,7 +105,7 @@ export default function MyInfoPage() {
   if (isLoading)
     return (
       <div className='flex justify-center items-center h-[400px]'>
-        <div className='flex flex-col gap-[20px] w-full h-[72px] flex justify-center items-center'>
+        <div className='flex flex-col gap-[20px] w-full h-[72px] justify-center items-center'>
           <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
         </div>
       </div>
@@ -119,7 +119,7 @@ export default function MyInfoPage() {
 
   return (
     <form
-      className='flex flex-col gap-[64px] mt-[48px] mx-[24px] mb-[600px]'
+      className='flex flex-col gap-[64px] mt-[48px] mx-[24px] mb-[200px]'
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className='flex flex-col gap-[16px]'>
