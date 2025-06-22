@@ -7,7 +7,7 @@ export default function FavoritesPage() {
   const router = useRouter();
   useGnb({ title: '찜목록', backAction: () => router.push('/profile') });
   return (
-    <div className='relative flex flex-col mx-[24px]'>
+    <div className='relative flex flex-col'>
       <FavoritesList />
     </div>
   );

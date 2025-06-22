@@ -31,7 +31,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ko' className={`${pretendard.className} bg-white dark:bg-black`}>
+    <html
+      lang='ko'
+      suppressHydrationWarning
+      className={`${pretendard.className} bg-white dark:bg-black`}
+    >
+      <head>
+        {/* 초기 테마 설정 스크립트 삽입 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                try {
+                  const theme = localStorage.getItem('theme-storage');
+                  if (theme) {
+                    const value = JSON.parse(theme).state.theme;
+                    if (value === 'dark') {
+                      document.documentElement.classList.add('dark');
+                    } else {
+                      document.documentElement.classList.add('light');
+                    }
+                  }
+                } catch (_) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className='bg-white dark:bg-black'>
         <ClientLayout>
           {children}

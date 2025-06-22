@@ -21,7 +21,7 @@ export default function ProfileMenuItem({
     <Link
       href={href || '#;'}
       className={clsx(
-        'flex flex-row items-center justify-between px-[24px] py-[12px] rounded-[10px] hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200  text-gray-700 dark:text-gray-300',
+        'flex flex-row items-center justify-between px-[24px] py-[12px] rounded-[10px] hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 text-gray-700 dark:text-gray-300',
         isActive && 'bg-gray-100 dark:bg-gray-700',
         className
       )}

@@ -12,7 +12,7 @@ export default function ReservationsLabel({ status }: ReservationsLabelProps) {
 
   return (
     <span
-      className={`inline-block w-[65px] h-[24px] px-[10px] py-[6px] rounded-[20px] text-[1.2rem] leading-[1.2rem] font-semibold ${bg} ${text}`}
+      className={`inline-block w-[65px] h-[24px] px-[10px] py-[6px] rounded-[20px] text-[1.2rem] leading-[1.2rem] font-semibold ${bg} ${text} `}
     >
       {label}
     </span>
