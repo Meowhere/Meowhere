@@ -5,7 +5,10 @@ const LABEL_STYLE_MAP = {
     bg: 'bg-green-100 dark:bg-dark-green-200',
     text: 'text-green-200 dark:text-dark-green-100',
   },
-  '예약 취소': { bg: 'bg-gray-100 dark:bg-gray-700', text: 'text-gray-600 dark:text-gray-400' },
+  '예약 취소': {
+    bg: 'bg-gray-100 dark:bg-gray-700',
+    text: 'text-gray-600 dark:text-gray-400',
+  },
   '예약 거절': {
     bg: 'bg-red-100 dark:bg-dark-red-200',
     text: 'text-red-300 dark:text-dark-red-100',
