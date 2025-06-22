@@ -102,6 +102,12 @@ textarea {
   margin: 0 2px !important;
 }
 
+@media (min-width: 1024px) {
+  .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+    margin-bottom: 38px !important;
+  }
+}
+
 .transition-soft {
   transition: all 0.2s cubic-bezier(0, 0.2, 0.8, 1);
 }

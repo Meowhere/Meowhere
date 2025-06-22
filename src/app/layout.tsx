@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang='ko' className={`${pretendard.className} bg-white dark:bg-black`}>
       <head>
         {/* ✅ 초기 테마 설정 스크립트 삽입 */}
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
               (function () {
@@ -52,7 +52,7 @@ export default function RootLayout({
               })();
             `,
           }}
-        />
+        /> */}
       </head>
       <body className='bg-white dark:bg-black'>
         <ClientLayout>
