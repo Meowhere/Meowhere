@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 
@@ -13,6 +13,7 @@ export default function DropdownMenu({
   onClose,
   bottomButton,
 }: DropdownMenuProps) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const mobileShadow = 'shadow-[0_4px_40px_rgba(0,0,0,0.1)] backdrop-blur-[40px]';
   const desktopShadow = 'shadow-[0_0_20px_rgba(0,0,0,0.05)]';
 
@@ -29,6 +30,20 @@ export default function DropdownMenu({
       };
     }
   }, [isMobile]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   if (isMobile) {
     return (
@@ -72,6 +87,7 @@ export default function DropdownMenu({
   // PC 버전
   return (
     <div
+      ref={dropdownRef}
       className={`
             rounded-[12px] border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden min-w-[160px] animate-fade-down animate-duration-200 animate-ease-out
             ${desktopShadow}
