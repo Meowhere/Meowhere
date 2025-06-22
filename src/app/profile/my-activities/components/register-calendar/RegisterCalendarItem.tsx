@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { CustomDatePicker, CustomTimePicker } from './DateTimePicker';
+import { getTodayDateStr } from '@/src/utils/my-activities-schedule';
 
 interface RegisterCalendarItemProps {
   id: string;
@@ -26,6 +27,7 @@ export default function RegisterCalendarItem({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onChange(id, 'date', e.target.value)
           }
+          min={getTodayDateStr()}
         />
       </div>
       <div className='flex justify-center'>

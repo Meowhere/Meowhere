@@ -141,7 +141,7 @@ export default function RegisterExperienceForm({
               className='text-md font-semibold'
               disabled={!isDirty || !isValid || isSubmitting}
             >
-              {isSubmitting ? '처리 중...' : mode === 'edit' ? '수정하기' : '등록 하기'}
+              {isSubmitting ? '처리 중...' : mode === 'edit' ? '수정하기' : '등록하기'}
             </BaseButton>
           </div>
         )}
