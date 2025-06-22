@@ -26,12 +26,12 @@ export default function ReviewCard({
   return (
     <div
       className={`flex flex-col items-start gap-[12px] ${
-        isList ? 'w-full p-0' : 'w-[256px] p-[12px] bg-white dark:bg-gray-800'
+        isList ? 'w-full p-0' : 'w-[256px] p-[12px] bg-white dark:bg-black'
       }`}
     >
       <div className='flex items-center gap-[8px]'>
         <StarRating value={rating} readOnly />
-        <p className='text-[#A4A1AA] dark:text-gray-500 text-xs font-regular'>{formattedDate}</p>
+        <p className='text-gray-500 dark:text-gray-400 text-xs font-regular'>{formattedDate}</p>
       </div>
 
       <p
