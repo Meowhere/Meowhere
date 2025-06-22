@@ -4,6 +4,7 @@ import { Schedule } from '@/src/types/schedule.types';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import clsx from 'clsx';
+import { isToday, parseISO } from 'date-fns';
 
 interface ScheduleTimeItemProps {
   schedule: {
@@ -23,13 +24,23 @@ export default function ScheduleTimeItem({
   onSelect,
 }: ScheduleTimeItemProps) {
   const { id, date, startTime = '', endTime = '' } = schedule;
-
   if (!date) return null;
+
+  const scheduleDate = parseISO(date);
+  const [startHour, startMinute] = startTime.split(':').map(Number);
+  const now = new Date();
+
+  if (
+    isToday(scheduleDate) &&
+    (startHour < now.getHours() ||
+      (startHour === now.getHours() && startMinute <= now.getMinutes()))
+  ) {
+    return null;
+  }
 
   const safeDate = date.replaceAll('-', '');
   const inputId = `schedule-${safeDate}-${id}`;
 
-  const [startHour, startMinute] = startTime.split(':').map(Number);
   const [endHour, endMinute] = endTime.split(':').map(Number);
 
   const formattedStartTime =

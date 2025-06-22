@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { Schedule } from '@/src/types/schedule.types';
-import { format, parse } from 'date-fns';
+import { format, parseISO, isToday } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 interface ScheduleTimeSlotProps {
@@ -33,12 +33,21 @@ export default function ScheduleTimeSlot({
     locale: ko,
   });
 
+  const scheduleDate = parseISO(date);
+  const now = new Date();
+
+  const isExpired =
+    isToday(scheduleDate) &&
+    (startHour < now.getHours() ||
+      (startHour === now.getHours() && startMinute <= now.getMinutes()));
+
   return (
     <label
       htmlFor={inputId}
       className={clsx(
-        'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200 hover:border-primary-200 hover:bg-primary-25',
-        isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200 dark:border-gray-600'
+        'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200',
+        isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200 dark:border-gray-600',
+        isExpired && 'opacity-40 cursor-not-allowed'
       )}
     >
       <input
@@ -47,7 +56,8 @@ export default function ScheduleTimeSlot({
         name='schedule-selection'
         value={id}
         checked={isSelected}
-        onChange={() => onSelect(id, date)}
+        onChange={() => !isExpired && onSelect(id, date)}
+        disabled={isExpired}
         className='hidden'
       />
       <p className='text-md font-medium text-gray-800 dark:text-gray-200'>
