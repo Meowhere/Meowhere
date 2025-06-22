@@ -78,7 +78,7 @@ export default function MyInfoPage() {
   const pwConfirmValue = watch('confirmPassword', '');
 
   useGnb({
-    title: '내정보',
+    title: '내 정보',
     backAction: () => router.push('/profile'),
     rightButtons: [
       <button
