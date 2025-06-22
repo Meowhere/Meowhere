@@ -45,6 +45,7 @@ export default function PopularActivitiesBanner() {
         disableOnInteraction: false,
       }}
       loop
+      className='lg:mt-[32px]'
     >
       {data.activities.map((item: Activity) => (
         <SwiperSlide key={item.id}>

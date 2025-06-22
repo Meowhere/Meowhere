@@ -43,16 +43,17 @@ export async function fetchFromServer(
       return refreshResult;
     }
 
-    // 성공 응답 처리
-    if (isSuccess) {
-      return await createSuccessResponse(response);
-    }
+    // 응답 데이터를 미리 읽어서 NextResponse로 반환
+    const responseData = await response.text();
 
-    // 에러 응답 처리
-    return await createErrorResponse(response);
+    return new NextResponse(responseData, {
+      status: response.status,
+      headers: {
+        'Content-Type': response.headers.get('Content-Type') || 'application/json',
+      },
+    });
   } catch (error) {
     logger.error('fetchFromServer error:', error);
-    // 네트워크 에러나 기타 예외를 내부 에러로 처리
-    return createInternalErrorResponse(error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -4,13 +4,13 @@ import { useGnbStore } from '@/src/store/gnbStore';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import DropdownMenu from '@/src/components/common/dropdowns/DropdownMenu';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useModal } from '@/src/hooks/useModal';
 import { useLogout, useUser } from '@/src/hooks/auth/useAuth';
 import { useRouter } from 'next/navigation';
 import { useThemeStore } from '@/src/store/themeStore';
-import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
+// import { useMyInfoQuery } from '@/src/hooks/user/useMyInfoQuery';
 
 export default function DesktopGNB() {
   const { isSearching } = useGnbStore();
@@ -24,6 +24,21 @@ export default function DesktopGNB() {
   const logoutMutation = useLogout();
   const router = useRouter();
   const { data } = useUser();
+  const [userProfileImage, setUserProfileImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (data?.profileImageUrl) {
+      setUserProfileImage(data.profileImageUrl);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    function handleDropdownClose() {
+      setShowDropdown(false);
+    }
+    window.addEventListener('click', handleDropdownClose);
+    return () => window.removeEventListener('click', handleDropdownClose);
+  }, []);
 
   const handleAuthModal = () => {
     openAuthModal();
@@ -31,6 +46,7 @@ export default function DesktopGNB() {
 
   const handleLogout = () => {
     logoutMutation.mutate();
+    setUserProfileImage(null);
     router.push('/');
   };
 
@@ -38,7 +54,6 @@ export default function DesktopGNB() {
     openNotificationModal({
       data: notificationData,
       onConfirm: () => {
-        console.log('취소됨');
         closeModal();
       },
     });
@@ -99,15 +114,25 @@ export default function DesktopGNB() {
     },
   ];
 
+  const searchParams = useSearchParams();
+
+  const paramsObj = Object.fromEntries(searchParams.entries());
+  const { category, ...otherParams } = paramsObj;
+  const hasParams = Object.values(otherParams).some(
+    (value) => value !== null && value.trim() !== ''
+  );
+
   useEffect(() => {
     const handleScroll = () => {
+      if (pathname !== '/') return;
       const scrollThreshold = 600; //페이지 내 SearchFilter 컴포넌트 y축 위치
-      setShowScrollElements(window.scrollY > scrollThreshold);
+      setShowScrollElements(hasParams || window.scrollY > scrollThreshold);
     };
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [hasParams]);
 
   return (
     <motion.nav
@@ -144,14 +169,25 @@ export default function DesktopGNB() {
         )}
         <div
           className='flex items-center gap-2 h-full cursor-pointer relative'
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             setShowDropdown((prev) => !prev);
           }}
         >
           <span className='text-md text-gray-600 dark:text-gray-300'>
             {data?.nickname || '로그인'}
           </span>
-          <Image src={'/assets/icons/login-profile.svg'} alt='logo' width={40} height={40} />
+          {userProfileImage ? (
+            <Image
+              src={userProfileImage}
+              alt='logo'
+              width={40}
+              height={40}
+              className='rounded-full'
+            />
+          ) : (
+            <Image src={'/assets/icons/login-profile.svg'} alt='logo' width={40} height={40} />
+          )}
           {showDropdown && (
             <div className='absolute top-[calc(100%+8px)] right-0'>
               <DropdownMenu

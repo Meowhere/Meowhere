@@ -43,7 +43,7 @@ export default function PlaceFilter({
       className={`h-full ${className}`}
       {...rest}
     >
-      <div className='flex w-full h-[72px] relative items-center px-[20px] py-[6px] rounded-2xl border bg-white dark:bg-gray-800'>
+      <div className='lg:hidden flex w-full h-[72px] relative items-center px-[20px] py-[6px] rounded-2xl border bg-white dark:bg-gray-800'>
         <label
           htmlFor='place-keyword'
           className='top-[6px] absolute w-full text-xs font-regular text-gray-500 dark:text-gray-400'
@@ -53,6 +53,7 @@ export default function PlaceFilter({
             className='lg:hidden w-full h-[28px] text-md font-regular rounded-[10px] focus:outline-none text-gray-800 dark:text-gray-200'
             type='text'
             value={placeKeyword}
+            name='place-keyword'
             onChange={(e) => setPlaceKeyword(e.target.value)}
           />
         </label>

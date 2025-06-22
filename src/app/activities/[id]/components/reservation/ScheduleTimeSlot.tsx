@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { Schedule } from '@/src/types/schedule.types';
-import { format, parse } from 'date-fns';
+import { format, parseISO, isToday } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 interface ScheduleTimeSlotProps {
@@ -12,17 +12,6 @@ interface ScheduleTimeSlotProps {
   onSelect: (id: number, date: string) => void;
   price: number;
 }
-
-const styles = {
-  label: clsx(
-    'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200',
-    'hover:border-primary-200 hover:bg-primary-25'
-  ),
-  selected: 'border-primary-500 bg-primary-50',
-  unselected: 'border-gray-200 dark:border-gray-600',
-  timeText: 'text-md font-medium text-gray-800 dark:text-gray-200',
-  priceText: 'text-sm font-regular text-gray-500 dark:text-gray-400',
-};
 
 export default function ScheduleTimeSlot({
   schedule,
@@ -44,10 +33,22 @@ export default function ScheduleTimeSlot({
     locale: ko,
   });
 
+  const scheduleDate = parseISO(date);
+  const now = new Date();
+
+  const isExpired =
+    isToday(scheduleDate) &&
+    (startHour < now.getHours() ||
+      (startHour === now.getHours() && startMinute <= now.getMinutes()));
+
   return (
     <label
       htmlFor={inputId}
-      className={clsx(styles.label, isSelected ? styles.selected : styles.unselected)}
+      className={clsx(
+        'cursor-pointer w-full rounded-[10px] border text-left p-[14px] transition-all duration-200',
+        isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200 dark:border-gray-600',
+        isExpired && 'opacity-40 cursor-not-allowed'
+      )}
     >
       <input
         type='radio'
@@ -55,13 +56,16 @@ export default function ScheduleTimeSlot({
         name='schedule-selection'
         value={id}
         checked={isSelected}
-        onChange={() => onSelect(id, date)}
+        onChange={() => !isExpired && onSelect(id, date)}
+        disabled={isExpired}
         className='hidden'
       />
-      <p className={styles.timeText}>
+      <p className='text-md font-medium text-gray-800 dark:text-gray-200'>
         {formattedStartTime} ~ {formattedEndTime}
       </p>
-      <p className={styles.priceText}>{price.toLocaleString()}원 / 인</p>
+      <p className='text-sm font-regular text-gray-500 dark:text-gray-400'>
+        {price.toLocaleString()}원 / 인
+      </p>
     </label>
   );
 }

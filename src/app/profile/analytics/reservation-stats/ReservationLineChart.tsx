@@ -37,12 +37,12 @@ export default function ReservationLineChart({ data }: Props) {
   };
 
   return (
-    <Card className='rounded-2xl shadow-sm mt-[24px]'>
-      <CardHeader className='text-sm text-gray-500'>전체 예약 추이</CardHeader>
-      <CardContent className='h-[280px]'>
+    <Card className='rounded-2xl border border-gray-100 dark:border-gray-300 bg-white dark:bg-gray-800 p-[20px] mt-[24px] space-y-[12px]'>
+      <CardHeader className='text-sm text-gray-500 dark:text-gray-400'>전체 예약 추이</CardHeader>
+      <CardContent className='p-0 h-[280px]'>
         <ResponsiveContainer width='100%' height='100%'>
           <LineChart data={chartData}>
-            <XAxis dataKey='date' stroke='#B3A8A1' fontSize={12} />
+            <XAxis dataKey='date' stroke='#B3A8A1' fontSize={12} tickMargin={12} />
             <YAxis stroke='#B3A8A1' fontSize={12} />
             <Tooltip
               formatter={(value, name) => [value, labelMap[name as string] || name]}
@@ -51,23 +51,23 @@ export default function ReservationLineChart({ data }: Props) {
             <Line
               type='monotone'
               dataKey='pending'
-              stroke='#27A00E'
+              stroke='#74E11C'
               strokeWidth={2}
-              dot={{ stroke: '#27A00E', fill: '#FFFFFF', r: 4 }}
+              dot={{ stroke: '#74E11C', fill: '#FFFFFF', r: 4 }}
             />
             <Line
               type='monotone'
               dataKey='confirmed'
-              stroke='#0051FF'
+              stroke='#45A4FE'
               strokeWidth={2}
-              dot={{ stroke: '#0051FF', fill: '#FFFFFF', r: 4 }}
+              dot={{ stroke: '#45A4FE', fill: '#FFFFFF', r: 4 }}
             />
             <Line
               type='monotone'
               dataKey='completed'
-              stroke='#8407C7'
+              stroke='#851FFF'
               strokeWidth={2}
-              dot={{ stroke: '#8407C7', fill: '#FFFFFF', r: 4 }}
+              dot={{ stroke: '#851FFF', fill: '#FFFFFF', r: 4 }}
             />
           </LineChart>
         </ResponsiveContainer>

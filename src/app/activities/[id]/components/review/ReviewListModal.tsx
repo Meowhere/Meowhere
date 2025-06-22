@@ -14,7 +14,9 @@ export interface ReviewListModalProps {
 }
 
 export default function ReviewListModal({ activityId, reviewCount, rating }: ReviewListModalProps) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteReviews(activityId);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteReviews(activityId);
+
   const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,6 +40,18 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
 
   const reviews = data?.pages?.flatMap((page) => page?.reviews || []) ?? [];
 
+  // 초기 로딩 중이면 로딩 스피너 반환
+  if (isLoading) {
+    return (
+      <div className='flex flex-col items-center justify-center h-[70vh]'>
+        <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+        <p className='mt-4 text-sm text-gray-500 dark:text-gray-400 animate-pulse'>
+          후기를 불러오는 중입니다...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className='flex flex-col h-[70vh] max-h-[70vh] overflow-hidden'>
       <div className='flex justify-between items-center px-[16px] pt-[24px] pb-[12px] shrink-0'>
@@ -46,7 +60,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
         </span>
         <div className='flex items-center gap-[4px]'>
           <StarFillIcon size={18} className='text-yellow-200' />
-          <span className='text-[2.2rem] font-semibold text-gray-800'>
+          <span className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>
             {Number(rating).toFixed(1)}
           </span>
         </div>
@@ -76,9 +90,9 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
           </div>
         )}
 
-        {!hasNextPage && (
+        {!hasNextPage && reviews.length > 0 && (
           <p className='text-center text-sm text-gray-400 dark:text-gray-500 py-4'>
-            모든 후기를 확인하셨습니다.
+            모든 후기를 확인했어요
           </p>
         )}
 

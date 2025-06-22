@@ -7,49 +7,22 @@ import { useModal } from '@/src/hooks/useModal';
 import Link from 'next/link';
 import { useUser } from '@/src/hooks/auth/useAuth';
 import { useThemeStore } from '@/src/store/themeStore';
-// import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient'; forREAL
+import { useNotifications } from '@/src/hooks/useNotifications';
 
 export default function BNB() {
   const pathname = usePathname();
   const { openNotificationModal, openAuthModal, closeModal } = useModal();
   const { data } = useUser();
   const { theme } = useThemeStore();
+  const { data: notificationData } = useNotifications();
 
   const handleAuthModal = () => {
     openAuthModal();
   };
 
-  // const notificationData = fetchFromClient('/my-notifications'); forREAL
-  const notificationData = {
-    cursorId: 0,
-    notifications: [
-      {
-        id: 1,
-        teamId: 'string',
-        userId: 0,
-        content: '무슨무슨 알림이 승인되었습니다',
-        createdAt: '2025-06-14T06:04:32.504Z',
-        updatedAt: '2025-06-14T06:04:32.504Z',
-        deletedAt: '2025-06-14T06:04:32.504Z',
-      },
-      {
-        id: 2,
-        teamId: 'string',
-        userId: 0,
-        content: '무슨무슨 알림이 거절되었습니다',
-        createdAt: '2025-06-14T06:14:32.504Z',
-        updatedAt: '2025-06-14T06:14:32.504Z',
-        deletedAt: '2025-06-14T06:14:32.504Z',
-      },
-    ],
-    totalCount: 2,
-  }; //forTEST
-
   const handleNotification = () => {
     openNotificationModal({
-      data: notificationData,
       onConfirm: () => {
-        console.log('취소됨');
         closeModal();
       },
     });
@@ -86,10 +59,9 @@ export default function BNB() {
             onClick={handleNotification}
           >
             <NotificationIcon
-              hasBadge={true}
+              hasBadge={notificationData && notificationData?.totalCount > 0}
               backgroundColor={theme === 'light' ? '#FFFFFF' : '#1D1A17'}
-            />{' '}
-            {/* TODO: 알림 표시 여부 추가 */}
+            />
             <span>알림</span>
           </button>
           <Link

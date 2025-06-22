@@ -15,29 +15,28 @@
 }
 
 .react-calendar-wrapper .react-calendar__navigation button {
-  width: 24px;
-  height: 24px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  background: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: none;
+  border-radius: 4px;
+  background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2.2rem; /* 화살표 높이 기준 */
+  font-size: 2.2rem;
   font-weight: 600;
-  color: #4b4b4b; /* 화살표 컬러 */
+  color: #4b4b4b;
+  transition: background-color 0.2s ease;
   line-height: 1;
+}
+
+.react-calendar-wrapper .react-calendar__navigation__label:hover {
+  background: transparent !important; /* hover → 완전 제거 */
 }
 
 .react-calendar-wrapper .dark .react-calendar__navigation button {
   color: #d1d5db; /* gray-300 */
-}
-
-.react-calendar-wrapper .react-calendar__navigation button:focus {
-  outline: none;
-  box-shadow: 0 0 0 1.5px #ff5500; /* primary-300 */
-  border-radius: 3px;
 }
 
 .react-calendar-wrapper .react-calendar__viewContainer {
@@ -63,8 +62,6 @@
   align-items: center;
   font-size: 1.1rem;
   font-weight: 600; /* semibold */
-  line-height: normal; /* auto (기본) */
-  letter-spacing: -2.5%; /* -0.0275em */
   color: #6e625a; /* gray-600 */
 }
 
@@ -80,33 +77,48 @@
   color: #0051ff; /* blue-200 */
 }
 
-.react-calendar-wrapper .react-calendar__tile:hover {
-  background-color: #e6e6e6;
-}
-
-/* 토요일은 파란색 */
-.react-calendar-wrapper .react-calendar__tile.saturday {
-  color: blue;
-}
-
-/* 일요일은 빨간색 */
-.react-calendar-wrapper .react-calendar__tile.sunday {
-  color: red;
-}
-
-.react-calendar-wrapper .react-calendar__tile--active {
-  background-color: transparent;
-  color: #6e625a;
-}
-
 .react-calendar-wrapper .react-calendar__tile {
   min-width: 47px;
 }
 
-.react-calendar-wrapper .react-calendar__tile:focus {
-  outline: none;
-  box-shadow: 0 0 0 1.5px #ff5500; /* primary-300 */
-  border-radius: 6px;
+.react-calendar-wrapper .react-calendar__tile abbr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+}
+
+.react-calendar-wrapper .react-calendar__tile:hover {
+  background-color: #f4f3f2; /* gray-100 */
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+  user-select: none; /* 드래그 방지 */
+}
+
+.react-calendar-wrapper .react-calendar__tile--active {
+  background-color: transparent !important;
+  color: #6e625a;
+}
+
+.react-calendar-wrapper .react-calendar__tile--now {
+  background: transparent;
+  display: flex;
+  align-items: center;
+}
+
+.react-calendar-wrapper .react-calendar__tile--now abbr {
+  background-color: #ff5500; /* primary-300 */
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+}
+
+.react-calendar-wrapper .react-calendar__tile.saturday {
+  color: #0051ff;
+}
+
+.react-calendar-wrapper .react-calendar__tile.sunday {
+  color: #ff472e;
 }
 
 .react-calendar-wrapper .react-calendar__month-view__days__day--neighboringMonth {

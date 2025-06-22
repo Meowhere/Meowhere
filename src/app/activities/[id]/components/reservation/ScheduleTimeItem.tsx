@@ -4,6 +4,7 @@ import { Schedule } from '@/src/types/schedule.types';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import clsx from 'clsx';
+import { isToday, parseISO } from 'date-fns';
 
 interface ScheduleTimeItemProps {
   schedule: {
@@ -23,13 +24,23 @@ export default function ScheduleTimeItem({
   onSelect,
 }: ScheduleTimeItemProps) {
   const { id, date, startTime = '', endTime = '' } = schedule;
-
   if (!date) return null;
+
+  const scheduleDate = parseISO(date);
+  const [startHour, startMinute] = startTime.split(':').map(Number);
+  const now = new Date();
+
+  if (
+    isToday(scheduleDate) &&
+    (startHour < now.getHours() ||
+      (startHour === now.getHours() && startMinute <= now.getMinutes()))
+  ) {
+    return null;
+  }
 
   const safeDate = date.replaceAll('-', '');
   const inputId = `schedule-${safeDate}-${id}`;
 
-  const [startHour, startMinute] = startTime.split(':').map(Number);
   const [endHour, endMinute] = endTime.split(':').map(Number);
 
   const formattedStartTime =
@@ -48,16 +59,15 @@ export default function ScheduleTimeItem({
         name='schedule-selection'
         onClick={() => onSelect(schedule)}
         className={clsx(
-          'w-full text-left rounded-[10px] border p-[14px] transition-all duration-200',
-          isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200',
-          'hover:border-primary-200 hover:bg-primary-25'
+          'w-full text-left rounded-[10px] p-[14px] hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-100 border border-gray-200 dark:border-gray-700',
+          isSelected ? 'bg-gray-100 dark:bg-gray-700' : ''
         )}
       >
-        <p className='text-sm text-gray-400 mb-1'>
+        <p className='text-sm text-gray-400 dark:text-gray-400 mb-1'>
           {format(new Date(date), 'yyyy년 M월 d일', { locale: ko })}
         </p>
 
-        <p className='text-md font-medium text-gray-800'>
+        <p className='text-md font-medium text-gray-800 dark:text-gray-200'>
           {formattedStartTime} ~ {formattedEndTime}
         </p>
       </button>

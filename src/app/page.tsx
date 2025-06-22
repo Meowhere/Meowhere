@@ -4,6 +4,7 @@ import ActivityList from './_components/ActivityList';
 import DesktopSearchFilters from '../components/layout/navbar/desktop/DesktopSearchFilters';
 import DesktopCategorySection from '../components/layout/navbar/desktop/DesktopCategorySection';
 import { Suspense } from 'react';
+import SearchResultsWithMap from './_components/SearchResultsWithMap';
 
 export async function generateStaticParams() {
   const categories: Category[] = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
@@ -71,18 +72,26 @@ export default async function Home({
       item.price >= minPrice && item.price <= maxPrice && item.address.includes(address)
   );
 
+  const hasParams = Object.entries(searchParams).some(
+    ([key, value]) => key !== 'category' && value !== null && value.trim() !== ''
+  );
+
   return (
-    <div className='min-h-screen bg-white dark:bg-black'>
-      <PopularActivitiesBanner />
-      <Suspense
-        fallback={
-          <div className='w-full h-[72px] flex justify-center items-center'>
-            <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
-          </div>
-        }
-      >
-        <DesktopSearchFilters isForPage />
-      </Suspense>
+    <div className='min-h-screen bg-white dark:bg-black pb-[128px]'>
+      {!hasParams && (
+        <>
+          <PopularActivitiesBanner />
+          <Suspense
+            fallback={
+              <div className='w-full h-[72px] flex justify-center items-center'>
+                <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+              </div>
+            }
+          >
+            <DesktopSearchFilters isForPage />
+          </Suspense>
+        </>
+      )}
 
       <Suspense
         fallback={
@@ -101,7 +110,14 @@ export default async function Home({
           </div>
         }
       >
-        <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
+        {hasParams ? (
+          <SearchResultsWithMap
+            initialActivities={activities}
+            initialCursor={activitiesData.cursorId}
+          />
+        ) : (
+          <ActivityList initialActivities={activities} initialCursor={activitiesData.cursorId} />
+        )}
       </Suspense>
     </div>
   );

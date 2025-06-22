@@ -5,24 +5,22 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { useToastStore } from '@/src/store/toastStore';
-import { useGnbStore } from '@/src/store/gnbStore';
 
 import { useGnb } from '@/src/hooks/useGnb';
+import { useInfiniteReservations } from '@/src/hooks/useInfiniteReservations';
 import { MY_RESERVATION_STATUS_MAP } from '@/src/constants/my-reservation-status';
 import { MyReservationStatus } from '@/src/types/profile-reservation.types';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 
-import Toast from '@/src/components/common/toast/Toast';
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 import ReservationsCard from './ReservationsCard';
-import { useInfiniteReservations } from '@/src/hooks/useInfiniteReservations';
-import SkeletonReservationsCard from './ReservationsSkeleton';
+import NoActivities from '../../components/NoActivities';
+import SkeletonActivities from '../../my-activities/components/skeleton-ui/SkeletonActivities';
 
 const BOTTOM_SKELETON_COUNT = 3; // 하단 스켈레톤 개수
 
 export default function ReservationsPage() {
   const router = useRouter();
-  const { setRightButtons } = useGnbStore();
   const { showToast } = useToastStore();
   const [selectedStatus, setSelectedStatus] = useState<MyReservationStatus>('all');
   const {
@@ -48,7 +46,7 @@ export default function ReservationsPage() {
 
   useGnb({
     title: '예약 내역',
-    backAction: () => router.back(),
+    backAction: () => router.push('/profile'),
     rightButtons: [
       <div key='icon-filter'>
         <Dropdown
@@ -97,21 +95,22 @@ export default function ReservationsPage() {
   }, [isError, showToast]);
 
   // 초기 로딩 시 스켈레톤 UI
-  if (isLoading) {
-    return (
-      <main className='flex flex-col items-center pb-[88px]'>
-        <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto mt-6'>
-          {Array.from({ length: 5 }).map((_, idx) => (
-            <SkeletonReservationsCard key={idx} />
-          ))}
-        </div>
-      </main>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <main className='flex flex-col items-center pb-[88px]'>
+  //       <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>
+  //         {Array.from({ length: 5 }).map((_, idx) => (
+  //           <div key={idx} className='mb-[48px]'>
+  //             <SkeletonActivities />
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </main>
+  //   );
+  // }
 
   return (
     <main className='flex flex-col items-center pb-[88px] lg:pb-0'>
-      <Toast />
       <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>
         <div className='hidden lg:flex lg:justify-end'>
           <div className='w-[180px]'>
@@ -123,7 +122,15 @@ export default function ReservationsPage() {
             />
           </div>
         </div>
-
+        {isLoading && (
+          <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>
+            {Array.from({ length: 5 }).map((_, idx) => (
+              <div key={idx} className='mt-[24px]'>
+                <SkeletonActivities />
+              </div>
+            ))}
+          </div>
+        )}
         {myReservations && myReservations.length > 0 ? (
           <div className='flex flex-col'>
             {myReservations.map((reservation, index) => (
@@ -138,22 +145,16 @@ export default function ReservationsPage() {
             {/* 추가 페이지 로딩 시 하단 스켈레톤 */}
             {isFetchingNextPage &&
               Array.from({ length: BOTTOM_SKELETON_COUNT }).map((_, idx) => (
-                <SkeletonReservationsCard key={`skeleton-bottom-${idx}`} />
+                <div key={`skeleton-bottom-${idx}`} className='mb-[48px]'>
+                  <SkeletonActivities />
+                </div>
               ))}
             {/* 마지막 요소 감지용 */}
             <div ref={sentinelRef} className='h-[1px]' />
           </div>
         ) : (
           <div className='flex flex-col items-center justify-center h-full'>
-            <Image
-              src='/assets/icons/logo/ico-empty-view-logo.svg'
-              alt='빈 상태 이미지'
-              width={82}
-              height={123}
-            />
-            <p className='text-md text-gray-500 mt-[24px]'>
-              {MY_RESERVATION_STATUS_MAP[selectedStatus].label}한 체험이 없다냥
-            </p>
+            <NoActivities title='예약한' urlPath='/' buttonTitle='체험 예약하러 가기' />
           </div>
         )}
       </div>

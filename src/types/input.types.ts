@@ -1,3 +1,4 @@
+import { InputHTMLAttributes } from 'react';
 import { FieldError } from 'react-hook-form';
 
 export interface InputProps {
@@ -11,6 +12,9 @@ export interface InputProps {
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
+  autoFocus?: boolean;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 export interface TextareaProps {

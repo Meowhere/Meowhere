@@ -17,37 +17,40 @@ export default function SummaryCards({ data }: SummaryCardsProps) {
     {
       label: '총 예약 수',
       value: totalAll,
-      labelColor: 'text-black',
-      text: 'text-black',
+      labelColor: 'text-gray-700',
+      text: 'text-gray-700',
     },
     {
       label: '예약 완료',
       value: totalPending,
-      labelColor: 'text-green-200',
-      text: 'text-green-200',
+      labelColor: 'text-[#359807]',
+      text: 'text-[#359807]',
     },
     {
       label: '예약 승인',
       value: totalConfirmed,
-      labelColor: 'text-blue-200',
-      text: 'text-blue-200',
+      labelColor: 'text-[#286CC0]',
+      text: 'text-[#286CC0]',
     },
     {
       label: '체험 완료',
       value: totalCompleted,
-      labelColor: 'text-purple-200',
-      text: 'text-purple-200',
+      labelColor: 'text-[#6D3CA8]',
+      text: 'text-[#6D3CA8]',
     },
   ];
 
   return (
     <div className='grid grid-cols-2 gap-[12px] md:grid-cols-4 mt-[20px]'>
       {summaryItems.map((item) => (
-        <Card key={item.label} className='rounded-2xl shadow-sm'>
+        <Card
+          key={item.label}
+          className='rounded-2xl border border-gray-100 bg-white p-[20px] space-y-[12px]'
+        >
           <CardHeader className={`text-sm font-medium ${item.labelColor}`}>{item.label}</CardHeader>
           <CardContent>
             <div
-              className={`inline-block px-[12px] py-[6px] rounded-lg text-2xl font-bold text-black ${item.text}`}
+              className={`inline-block px-[12px] py-[6px] rounded-lg text-8xl font-bold ${item.text}`}
             >
               {item.value}
             </div>

@@ -10,7 +10,7 @@ export const useUploadProfileImageMutation = () => {
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append('image', file);
-      const res = await fetchFromClient('users/me/image', {
+      const res = await fetchFromClient('/users/me/image', {
         method: 'POST',
         body: formData,
       });

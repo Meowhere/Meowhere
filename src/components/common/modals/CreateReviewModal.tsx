@@ -6,7 +6,6 @@ import { usePostReview } from '@/src/hooks/usePostReview';
 import { formatDateDot } from '@/src/utils/date-format';
 import { CreateReviewModalProps } from '@/src/types/modal.types';
 
-import Toast from '../toast/Toast';
 import StarFillIcon from '@/src/components/common/icons/StarFillIcon';
 import StarIcon from '@/src/components/common/icons/StarIcon';
 import Textarea from '../inputs/Textarea';
@@ -86,7 +85,6 @@ export default function CreateReviewModal({
 
   return (
     <div className='flex flex-col flex-grow mt-[38px]'>
-      <Toast />
       <h3 className='text-lg font-bold text-gray-900 dark:text-gray-100 text-center mb-[6px]'>
         {title}
       </h3>
@@ -114,7 +112,7 @@ export default function CreateReviewModal({
               <StarIcon
                 key={i}
                 onClick={() => setValue('rating', i, { shouldValidate: true })}
-                className='w-[42px] h-[42px] cursor-pointer text-gray-400'
+                className='w-[42px] h-[42px] cursor-pointer text-gray-400 dark:text-gray-600'
               />
             )
           )}
@@ -131,7 +129,9 @@ export default function CreateReviewModal({
         {isPending ? (
           <div className='flex flex-col items-center py-[24px] space-y-[8px]'>
             <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
-            <p className='text-sm text-gray-500 animate-pulse'>후기 등록 중입니다...</p>
+            <p className='text-sm text-gray-500 dark:text-gray-400 animate-pulse'>
+              후기 등록 중입니다...
+            </p>
           </div>
         ) : (
           <div className='flex flex-col gap-[8px] pt-[32px]'>

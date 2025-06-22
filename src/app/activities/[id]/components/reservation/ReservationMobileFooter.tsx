@@ -23,14 +23,14 @@ export default function ReservationMobileFooter({
       <div
         className={`
           pointer-events-auto
-          w-[327px] md:w-[640px]
+          w-full max-w-[500px] mx-auto
           h-[64px] py-[16px] px-[8px]
-          bg-white rounded-full border border-gray-200
+          bg-white dark:bg-black rounded-full border border-gray-200 dark:border-gray-700
           shadow-[0px_4px_40px_0px_rgba(0,0,0,0.10)]
           backdrop-blur-md flex items-center
         `}
       >
-        <p className='text-lg font-semibold px-[24px] text-gray-800'>
+        <p className='text-lg font-semibold px-[24px] text-gray-800 dark:text-gray-200'>
           {typeof pricePerPerson === 'number'
             ? `₩ ${pricePerPerson.toLocaleString()} / 인`
             : '가격 정보 없음'}

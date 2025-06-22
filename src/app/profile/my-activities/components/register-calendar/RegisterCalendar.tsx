@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import RegisterCalendarItem from './RegisterCalendarItem';
 import BaseButton from '@/src/components/common/buttons/BaseButton';
 import { useBreakpoint } from '@/src/hooks/useBreakpoint';
@@ -15,6 +15,7 @@ import {
 import { Schedule } from '@/src/types/activity.types';
 import { useToastStore } from '@/src/store/toastStore';
 import { useFormContext } from 'react-hook-form';
+import { useDebouncedValue } from '@/src/hooks/useDebouncedValue';
 
 interface RegisterCalendarProps {
   defaultSchedules?: Omit<Schedule, 'id'>[];
@@ -23,11 +24,22 @@ interface RegisterCalendarProps {
 export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarProps) {
   const { isDesktop } = useBreakpoint();
   const { showToast } = useToastStore();
-  const { setValue } = useFormContext();
+  const { setValue, watch } = useFormContext();
 
-  const [items, setItems] = useState<CalendarItem[]>(() =>
-    defaultSchedules?.length
-      ? convertSchedulesToCalendarItems(defaultSchedules)
+  // 🔐 defaultSchedules는 최초 한 번만 반영되도록 useRef 사용
+  const initialItemsRef = useRef<CalendarItem[] | null>(null);
+  if (!initialItemsRef.current) {
+    initialItemsRef.current = (defaultSchedules ?? []).map((s) => ({
+      id: generateId(),
+      date: s.date,
+      startTime: s.startTime,
+      endTime: s.endTime,
+    }));
+  }
+
+  const [items, setItems] = useState<CalendarItem[]>(
+    initialItemsRef.current.length > 0
+      ? initialItemsRef.current
       : [{ id: generateId(), date: '', startTime: '', endTime: '' }]
   );
 
@@ -41,44 +53,54 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
     setItems((prev) => {
       const newItems = prev.filter((item) => item.id !== id);
       // 최소 1개의 아이템은 유지
-      if (newItems.length === 0) {
-        return [{ id: generateId(), date: '', startTime: '', endTime: '' }];
-      }
-      return newItems;
+      return newItems.length > 0
+        ? newItems
+        : [{ id: generateId(), date: '', startTime: '', endTime: '' }];
     });
   }, []);
 
   // 하위 아이템의 값이 바뀔 때 업데이트
   const handleItemChange = useCallback(
     (id: string, field: 'date' | 'startTime' | 'endTime', value: string) => {
-      setItems((prev) => {
-        const newItems = prev.map((item) => (item.id === id ? { ...item, [field]: value } : item));
-        return newItems;
-      });
+      setItems((prev) =>
+        prev.map((item) => {
+          if (item.id !== id) return item;
+
+          const updatedItem = { ...item, [field]: value };
+
+          if (
+            updatedItem.date &&
+            updatedItem.startTime &&
+            updatedItem.endTime &&
+            !isValidSchedule(updatedItem)
+          ) {
+            showToast('error', '올바른 시간을 입력해주세요.');
+            return item;
+          }
+
+          return updatedItem;
+        })
+      );
     },
-    []
+    [showToast]
   );
 
-  // items가 변경될 때마다 form 값 업데이트
+  // 디바운스된 items 값
+  const debouncedItems = useDebouncedValue(items, 300);
+
   useEffect(() => {
-    const validSchedules = items
+    const validSchedules = debouncedItems
       .filter((item) => isValidSchedule(item))
-      .map(({ date, startTime, endTime }) => ({
-        date,
-        startTime,
-        endTime,
-      }));
+      .map(({ date, startTime, endTime }) => ({ date, startTime, endTime }));
+    setValue('schedules', validSchedules, { shouldDirty: true });
+  }, [debouncedItems, setValue]);
 
-    setValue('schedules', validSchedules);
-  }, [items, setValue]);
-
-  // 중복 스케줄 체크 및 토스트 표시
+  // 중복 스케줄 알림
   useEffect(() => {
-    const hasOverlap = hasOverlappingSchedules(items);
-    if (hasOverlap) {
+    if (hasOverlappingSchedules(debouncedItems)) {
       showToast('error', '동일한 날짜에 시간대가 겹치는 일정이 있습니다.');
     }
-  }, [items, showToast]);
+  }, [debouncedItems, showToast]);
 
   const sortedItems = useMemo(() => sortCalendarItems(items, sortKey), [items, sortKey]);
 
@@ -93,6 +115,7 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
           </div>
           <div className='w-[176px]'>
             <BaseButton
+              type='button'
               variant='soft'
               color='blue'
               className='py-[10px] text-md font-semibold'
@@ -124,6 +147,7 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
       {!isDesktop && (
         <div className='flex justify-center'>
           <BaseButton
+            type='button'
             variant='soft'
             color='blue'
             className='md:w-[500px] sm:w-full md:px-[175px] py-[10px] text-md font-semibold'

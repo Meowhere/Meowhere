@@ -12,7 +12,7 @@ export default function SubPageGNB() {
           <div className='flex justify-start w-[60px]'>
             <ArrowIcon
               direction='left'
-              className='w-[24px] h-[24px] text-gray-800 dark:text-gray-200'
+              className='w-[24px] h-[24px] text-gray-800 dark:text-gray-200 cursor-pointer'
               onClick={backAction || undefined}
               aria-label='뒤로가기'
             />
