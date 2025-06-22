@@ -56,8 +56,7 @@ export default function ExperienceResponsiveLayout({
   const { isFavorite, toggleFavorite } = useFavoritesStore();
   const { isDesktop } = useBreakpoint();
 
-  if (!user) return <ExperienceDetailSkeleton />;
-
+  // Move all hook calls before any conditional logic
   const isOwner = user?.id === activity.userId;
 
   const handleDeleteActivity = useCallback(async () => {
@@ -75,7 +74,7 @@ export default function ExperienceResponsiveLayout({
       {
         type: DROPDOWN_ITEM_TYPES.BUTTON,
         label: POST_ACTION_LABELS.EDIT,
-        onClick: () => router.push(`/activities/edit/${activity.id}`),
+        onClick: () => router.push(`/profile/my-activities/${activity.id}/edit`),
       },
       {
         type: DROPDOWN_ITEM_TYPES.BUTTON,
@@ -106,7 +105,7 @@ export default function ExperienceResponsiveLayout({
     rightButtons,
   });
 
-  if (!user) return null;
+  if (!user) return <ExperienceDetailSkeleton />;
 
   const renderReviewSection = (
     <div className='mt-[8px]'>
@@ -168,7 +167,7 @@ export default function ExperienceResponsiveLayout({
                 reviewCount={activity.reviewCount}
                 address={activity.address}
               />
-              {user && user.id !== activity.userId && (
+              {user.id !== activity.userId && (
                 <>
                   <Divider />
                   <ReservationBox
@@ -259,7 +258,7 @@ export default function ExperienceResponsiveLayout({
             {renderReviewSection}
           </div>
 
-          {user && user.id !== activity.userId && (
+          {user.id !== activity.userId && (
             <ReservationBox
               pricePerPerson={activity.price}
               onClick={() =>

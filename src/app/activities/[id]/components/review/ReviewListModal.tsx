@@ -90,7 +90,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
 
         {!hasNextPage && reviews.length > 0 && (
           <p className='text-center text-sm text-gray-400 dark:text-gray-500 py-4'>
-            모든 후기를 확인하셨습니다.
+            모든 후기를 확인했어요
           </p>
         )}
 
