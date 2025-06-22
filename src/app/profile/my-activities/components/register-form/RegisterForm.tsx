@@ -20,13 +20,15 @@ export default function RegisterForm() {
   const priceValue = watch('price', '');
   const descriptionValue = watch('description', '');
   const addressValue = watch('address');
+
   useEffect(() => {
     const raw = watch('price');
     if (raw && !isNaN(Number(raw))) {
       const formatted = Number(raw).toLocaleString('ko-KR');
       setValue('price', formatted, { shouldDirty: false });
     }
-  }, []);
+  }, [watch, setValue, priceValue]);
+
   return (
     <div className='flex flex-col gap-[20px]'>
       <Input

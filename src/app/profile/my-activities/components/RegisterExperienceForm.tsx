@@ -1,5 +1,5 @@
 'use client';
-import { forwardRef, useImperativeHandle, useEffect } from 'react';
+import { useEffect } from 'react';
 import UploadImg from '../components/register-form/UploadImg';
 import UploadImgList from '../components/register-form/UploadImgList';
 import RegisterForm from '../components/register-form/RegisterForm';
@@ -50,47 +50,45 @@ interface RegisterExperienceFormProps {
   defaultValues?: MyActivitiesFormData;
   onSubmit: (formData: MyActivitiesFormData) => void;
   isSubmitting?: boolean;
-  onFormStateChange?: (state: { isDirty: boolean; isValid: boolean }) => void;
-}
-export interface RegisterExperienceFormRef {
-  submit: () => void;
 }
 
-const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExperienceFormProps>(
-  ({ mode, defaultValues, onSubmit, isSubmitting = false, onFormStateChange }, ref) => {
-    const { isDesktop } = useBreakpoint();
+export default function RegisterExperienceForm({
+  mode,
+  defaultValues,
+  onSubmit,
+  isSubmitting = false,
+}: RegisterExperienceFormProps) {
+  const { isDesktop } = useBreakpoint();
 
-    const methods = useForm<ActivityFormValues>({
-      mode: 'all',
-      reValidateMode: 'onChange',
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        title: defaultValues?.title ?? '',
-        price: defaultValues?.price ? String(defaultValues.price) : '',
-        category: defaultValues?.category ?? '',
-        description: defaultValues?.description ?? '',
-        address: defaultValues?.address ?? '',
-        bannerImageUrl: defaultValues?.bannerImageUrl ?? '',
-        subImageUrls: defaultValues?.subImageUrls ?? [],
-        schedules: defaultValues?.schedules ?? [],
-      },
-    });
+  const methods = useForm<ActivityFormValues>({
+    mode: 'all',
+    reValidateMode: 'onChange',
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: defaultValues?.title ?? '',
+      price: defaultValues?.price ? String(defaultValues.price) : '',
+      category: defaultValues?.category ?? '',
+      description: defaultValues?.description ?? '',
+      address: defaultValues?.address ?? '',
+      bannerImageUrl: defaultValues?.bannerImageUrl ?? '',
+      subImageUrls: defaultValues?.subImageUrls ?? [],
+      schedules: defaultValues?.schedules ?? [],
+    },
+  });
 
-    const {
-      handleSubmit,
-      formState: { isValid, errors, isDirty },
-      setValue,
-      watch,
-    } = methods;
-    // 👇 외부에서 호출 가능하게 등록
-    useImperativeHandle(ref, () => ({
-      submit: () => {
-        handleSubmit(submitForm)();
-      },
-    }));
-    useEffect(() => {
-      onFormStateChange?.({ isDirty, isValid });
-    }, [isDirty, isValid, onFormStateChange]);
+  const {
+    handleSubmit,
+    formState: { isValid, errors, isDirty },
+    setValue,
+    watch,
+  } = methods;
+
+  // 개발 환경에서만 form 상태 로깅
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Form Data:', watch());
+    }
+  }, [watch, isValid, isDirty, errors]);
 
   const submitForm = async (formData: ActivityFormValues) => {
     const baseForm: MyActivitiesFormData = {
@@ -102,54 +100,52 @@ const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExp
       bannerImageUrl: formData.bannerImageUrl,
       subImageUrls: formData.subImageUrls ?? [],
       schedules: formData.schedules ?? [],
-
-      onSubmit(baseForm);
     };
 
-    return (
-      <FormProvider {...methods}>
-        <form
-          id='register-form'
-          onSubmit={handleSubmit(submitForm)}
-          className='relative flex flex-col gap-[48px] lg:gap-[64px] px-[24px] pb-[96px] mb-[300px]'
-        >
-          <div className='flex flex-col gap-[20px]'>
-            <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
-            <div className='w-[160px]'>
-              <UploadImg defaultImage={defaultValues?.bannerImageUrl} isBanner={true} />
-            </div>
-            {errors.bannerImageUrl && (
-              <p className='text-sm text-red-500'>{errors.bannerImageUrl.message}</p>
-            )}
-          </div>
-          <div className='flex flex-col gap-[20px]'>
-            <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
-            <UploadImgList />
-            {errors.subImageUrls && (
-              <p className='text-sm text-red-500'>{errors.subImageUrls.message}</p>
-            )}
-          </div>
-          <div className='flex flex-col gap-[20px]'>
-            <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
-            <RegisterForm />
-          </div>
-          <RegisterCalendar defaultSchedules={defaultValues?.schedules} />
-          {isDesktop && (
-            <div className='w-[128px] absolute right-[24px] top-full'>
-              <BaseButton
-                type='submit'
-                variant='primary'
-                className='text-md font-semibold'
-                disabled={!isDirty || !isValid || isSubmitting}
-              >
-                {isSubmitting ? '처리 중...' : mode === 'edit' ? '수정하기' : '등록하기'}
-              </BaseButton>
-            </div>
-          )}
-        </form>
-      </FormProvider>
-    );
-  }
-);
+    onSubmit(baseForm);
+  };
 
-export default RegisterExperienceForm;
+  return (
+    <FormProvider {...methods}>
+      <form
+        id='register-form'
+        onSubmit={handleSubmit(submitForm)}
+        className='relative flex flex-col gap-[48px] lg:gap-[64px] px-[24px] pb-[96px] mb-[300px]'
+      >
+        <div className='flex flex-col gap-[20px]'>
+          <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
+          <div className='w-[160px]'>
+            <UploadImg defaultImage={defaultValues?.bannerImageUrl} isBanner={true} />
+          </div>
+          {errors.bannerImageUrl && (
+            <p className='text-sm text-red-500'>{errors.bannerImageUrl.message}</p>
+          )}
+        </div>
+        <div className='flex flex-col gap-[20px]'>
+          <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
+          <UploadImgList />
+          {errors.subImageUrls && (
+            <p className='text-sm text-red-500'>{errors.subImageUrls.message}</p>
+          )}
+        </div>
+        <div className='flex flex-col gap-[20px]'>
+          <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
+          <RegisterForm />
+        </div>
+        <RegisterCalendar defaultSchedules={defaultValues?.schedules} />
+        {isDesktop && (
+          <div className='w-[128px] absolute right-[24px] top-full'>
+            <BaseButton
+              type='submit'
+              variant='primary'
+              className='text-md font-semibold'
+              disabled={!isDirty || !isValid || isSubmitting}
+            >
+              {isSubmitting ? '처리 중...' : mode === 'edit' ? '수정하기' : '등록 하기'}
+            </BaseButton>
+          </div>
+        )}
+      </form>
+    </FormProvider>
+  );
+}
