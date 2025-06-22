@@ -10,6 +10,7 @@ interface CustomTimePickerProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  min?: string;
 }
 
 function formatDate(dateStr: string) {
@@ -52,6 +53,7 @@ export function CustomTimePicker({
   value,
   onChange,
   placeholder = '-- --:--',
+  min,
 }: CustomTimePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -65,6 +67,7 @@ export function CustomTimePicker({
         type='time'
         value={value}
         onChange={onChange}
+        min={min}
         className='absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer'
       />
     </div>

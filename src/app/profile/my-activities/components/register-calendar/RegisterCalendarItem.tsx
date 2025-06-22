@@ -44,6 +44,7 @@ export default function RegisterCalendarItem({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onChange(id, 'endTime', e.target.value)
           }
+          min={startTime || undefined}
         />
       </div>
       <div className='flex justify-end'>

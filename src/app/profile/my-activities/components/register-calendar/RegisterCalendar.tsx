@@ -93,7 +93,6 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
     const validSchedules = debouncedItems
       .filter((item) => isValidSchedule(item))
       .map(({ date, startTime, endTime }) => ({ date, startTime, endTime }));
-    console.log('[캘린더 디버그] 업데이트할 schedules:', validSchedules);
     setValue('schedules', validSchedules, { shouldDirty: true });
   }, [debouncedItems, setValue]);
 

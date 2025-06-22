@@ -68,7 +68,6 @@ export default function UploadImg({
         const url = await uploadActivityImage.mutateAsync({ file: newFile });
         setValue('bannerImageUrl', url);
         setPreview(url);
-        showToast('success', '이미지가 업로드되었습니다.');
       } catch (error) {
         showToast('error', '이미지 업로드에 실패했습니다.');
         console.error('이미지 업로드 에러:', error);
