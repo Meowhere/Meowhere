@@ -7,7 +7,7 @@ interface ManagementCardsProps {
 
 export default function ManagementCards({ activities }: ManagementCardsProps) {
   return (
-    <div className='flex flex-col w-full h-[] lg:mt-[64px]'>
+    <div className='flex flex-col w-full max-lg:mb-[60px] lg:mt-[64px]'>
       {activities.map((activity) => (
         <ManagementCard key={activity.id} {...activity} />
       ))}

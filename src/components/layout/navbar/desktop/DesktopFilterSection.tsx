@@ -20,6 +20,7 @@ export default function DesktopFilterSection({
   return (
     <motion.div
       className='absolute w-[512px] origin-center overflow-hidden rounded-[40px] top-[72px] gnb-shadow bg-white dark:bg-gray-800'
+      data-filter-section
       initial={{ x: '-50%', width: '0px', height: '0px' }}
       animate={{
         x:

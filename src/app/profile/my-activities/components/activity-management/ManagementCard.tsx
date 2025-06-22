@@ -22,9 +22,9 @@ export default function ManagementCard({
   };
 
   return (
-    <Link href={`/activities/${id}`}>
-      <div className='flex justify-between border-b border-gray-200 dark:border-gray-700 last:border-b-0 py-[24px] w-full'>
-        <div className='flex flex-row items-center justify-center gap-[10px] lg:gap-[14px] cursor-pointer'>
+    <div className='flex justify-between border-b border-gray-200 dark:border-gray-700 last:border-b-0 py-[24px] w-full'>
+      <Link href={`/activities/${id}`} className='flex-1'>
+        <div className='flex flex-row items-center justify-start gap-[10px] lg:gap-[14px] cursor-pointer'>
           <Image
             src={bannerImageUrl}
             alt={title}
@@ -44,10 +44,10 @@ export default function ManagementCard({
             </div>
           </div>
         </div>
-        <div onClick={handleDropdownClick}>
-          <ManagementDropdown title={title} activityId={id} />
-        </div>
+      </Link>
+      <div onClick={handleDropdownClick}>
+        <ManagementDropdown title={title} activityId={id} />
       </div>
-    </Link>
+    </div>
   );
 }

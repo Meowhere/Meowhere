@@ -117,16 +117,14 @@ export default function ReservationsPage() {
     <main className='flex flex-col items-center pb-[88px] lg:pb-0'>
       <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>
         <div className='hidden lg:flex lg:justify-end'>
-          {myReservations && myReservations.length > 0 && (
-            <div className='w-[180px]'>
-              <Dropdown
-                dropdownItems={reservationStatusItems}
-                triggerLabel='체험 상태'
-                selectedValue={MY_RESERVATION_STATUS_MAP[selectedStatus].label}
-                bottomSheetTitle='체험 상태'
-              />
-            </div>
-          )}
+          <div className='w-[180px]'>
+            <Dropdown
+              dropdownItems={reservationStatusItems}
+              triggerLabel='체험 상태'
+              selectedValue={MY_RESERVATION_STATUS_MAP[selectedStatus].label}
+              bottomSheetTitle='체험 상태'
+            />
+          </div>
         </div>
         {isLoading && (
           <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>

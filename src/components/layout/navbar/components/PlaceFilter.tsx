@@ -53,6 +53,7 @@ export default function PlaceFilter({
             className='lg:hidden w-full h-[28px] text-md font-regular rounded-[10px] focus:outline-none text-gray-800 dark:text-gray-200'
             type='text'
             value={placeKeyword}
+            name='place-keyword'
             onChange={(e) => setPlaceKeyword(e.target.value)}
           />
         </label>
