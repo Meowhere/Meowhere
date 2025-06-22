@@ -134,7 +134,7 @@ export default function MyInfoPage() {
   return (
     <form
       id='my-info-form'
-      className='flex flex-col gap-[64px] mt-[48px] mx-[24px] mb-[600px]'
+      className='flex flex-col gap-[64px] mt-[48px] mx-[24px]'
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className='flex flex-col gap-[16px]'>
