@@ -15,7 +15,6 @@ import { MyActivity } from '@/src/types/my-activity-reservation.types';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
-import ArrowButton from '@/src/components/common/buttons/ArrowButton';
 
 import '@/src/styles/reservation-calendar.css';
 
@@ -124,20 +123,24 @@ export default function ReservationCalendar() {
 
   return (
     <div className='mx-auto min-w-[327px] w-full react-calendar-wrapper'>
-      <div className='mb-[64px]'>
-        {dropdownItems.length > 0 ? (
+      {isLoading ? (
+        <div className='w-full h-[72px] flex justify-center items-center mb-[64px]'>
+          <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
+        </div>
+      ) : dropdownItems.length > 0 ? (
+        <div className='mb-[64px]'>
           <Dropdown
             dropdownItems={dropdownItems}
             selectedValue={selectedMyActivity ? selectedMyActivity.title : '체험을 선택해주세요'}
             bottomSheetTitle='체험명'
             triggerLabel='체험명'
           />
-        ) : (
-          <div className='text-center text-gray-600 text-md'>
-            등록된 체험이 없습니다. 체험 등록 후 이용해주세요.
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className='mb-[64px] text-center text-gray-600 text-md'>
+          등록된 체험이 없습니다. 체험 등록 후 이용해주세요.
+        </div>
+      )}
       <Calendar
         className='reservation-calendar-wrapper'
         locale='ko-KR'

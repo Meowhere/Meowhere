@@ -97,8 +97,6 @@
 
 .react-calendar-wrapper .react-calendar__tile--active {
   background-color: transparent !important;
-  display: flex;
-  align-items: center;
   color: #6e625a;
 }
 
