@@ -1,5 +1,6 @@
 export interface IconTypes {
   'my-info': string;
+  achievements: string;
   favorites: string;
   reservations: string;
   'my-activities': string;
@@ -12,6 +13,7 @@ export interface IconTypes {
 export type IconType = keyof IconTypes;
 export const ICONS: IconTypes = {
   'my-info': '/assets/icons/account/account-people.svg',
+  achievements: '/assets/icons/account/account-achievement.svg',
   favorites: '/assets/icons/account/account-favorite.svg',
   reservations: '/assets/icons/account/account-history.svg',
   'my-activities': '/assets/icons/account/account-calendar.svg',

@@ -40,16 +40,24 @@ export class ActivityStatisticsService {
       }
     });
 
-    // 가격별 통계
-    const maxPrice = activities[activities.length - 1].price;
-    const minPrice = activities[0].price;
+    // outlier 제거
+    const sortedPrices = activities.map((a) => a.price).sort((a, b) => a - b);
+    const p1Index = Math.floor(sortedPrices.length * 0.02);
+    const p99Index = Math.floor(sortedPrices.length * 0.98);
+
+    const minPrice = sortedPrices[p1Index];
+    const maxPrice = sortedPrices[p99Index];
     const GAP_COUNT = 30;
 
     const priceGap = (maxPrice - minPrice) / GAP_COUNT;
 
     const priceStats = new Map<number, number>();
     activities.forEach((activity) => {
-      if (typeof activity.price === 'number') {
+      if (
+        typeof activity.price === 'number' &&
+        activity.price >= minPrice &&
+        activity.price <= maxPrice
+      ) {
         const section = Math.floor((activity.price - minPrice) / priceGap);
         priceStats.set(section, (priceStats.get(section) || 0) + 1);
       }

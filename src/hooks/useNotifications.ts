@@ -19,7 +19,7 @@ export function useDeleteNotification() {
 
   return useMutation({
     mutationFn: async (notificationId: number) => {
-      return await fetchFromClient(`my-notifications/${notificationId}`, {
+      return await fetchFromClient(`/my-notifications/${notificationId}`, {
         method: 'DELETE',
       });
     },

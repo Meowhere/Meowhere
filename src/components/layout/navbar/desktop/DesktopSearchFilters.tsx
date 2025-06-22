@@ -259,6 +259,7 @@ function SearchInput({
         createPortal(
           <div
             className={`${!isForPage ? 'opacity-20' : 'opacity-0'} fixed top-0 left-0 w-screen h-screen z-[10] bg-black`}
+            onScroll={(e) => e.stopPropagation()}
             onClick={() => {
               setIsSearching(false);
               setOpenedSearchSection('');

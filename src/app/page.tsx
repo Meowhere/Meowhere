@@ -77,7 +77,7 @@ export default async function Home({
   );
 
   return (
-    <div className='min-h-screen bg-white dark:bg-black'>
+    <div className='min-h-screen bg-white dark:bg-black pb-[128px]'>
       {!hasParams && (
         <>
           <PopularActivitiesBanner />

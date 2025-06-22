@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import UploadImg from '@/public/assets/icons/account/upload-btn.svg';
+// import UploadImg from '@/public/assets/icons/account/upload-btn.svg';
 import defaultImg from '@/public/assets/icons/account/default-img.png';
 import Image from 'next/image';
 import { useMyInfoQuery } from '@/src/hooks/user/useMyInfoQuery';
@@ -8,6 +8,42 @@ import { useUploadProfileImageMutation } from '@/src/hooks/user';
 import { useUpdateMyInfoMutation } from '@/src/hooks/user';
 import { createPortal } from 'react-dom';
 import { useUIStore } from '@/src/store/uiStore';
+
+const UploadImg = ({
+  className,
+  onClick,
+  ...rest
+}: {
+  className?: string;
+  onClick?: () => void;
+  rest?: React.SVGProps<SVGSVGElement>;
+}) => {
+  return (
+    <svg
+      width='44'
+      height='44'
+      viewBox='0 0 44 44'
+      xmlns='http://www.w3.org/2000/svg'
+      className={`${className} fill-gray-800 dark:fill-white`}
+      onClick={onClick}
+      {...rest}
+    >
+      <rect
+        className='stroke-white dark:stroke-gray-800'
+        x='2.0249'
+        y='2'
+        width='39.2'
+        height='39.2'
+        rx='19.6'
+        strokeWidth='4'
+      />
+      <path
+        d='M20.6252 17.4245L15.7252 22.3245C15.5252 22.5245 15.2919 22.6205 15.0252 22.6125C14.7585 22.6045 14.5252 22.5001 14.3252 22.2995C14.1419 22.0995 14.0459 21.8661 14.0372 21.5995C14.0285 21.3328 14.1245 21.0995 14.3252 20.8995L20.9252 14.2995C21.0252 14.1995 21.1335 14.1285 21.2502 14.0865C21.3669 14.0445 21.4919 14.0241 21.6252 14.0255C21.7585 14.0268 21.8835 14.0478 22.0002 14.0885C22.1169 14.1291 22.2252 14.1998 22.3252 14.3005L28.9252 20.9005C29.1085 21.0838 29.2002 21.3131 29.2002 21.5885C29.2002 21.8638 29.1085 22.1011 28.9252 22.3005C28.7252 22.5005 28.4875 22.6005 28.2122 22.6005C27.9369 22.6005 27.6995 22.5005 27.5002 22.3005L22.6252 17.4245L22.6252 28.5995C22.6252 28.8828 22.5292 29.1205 22.3372 29.3125C22.1452 29.5045 21.9079 29.6001 21.6252 29.5995C21.3425 29.5988 21.1049 29.5028 20.9122 29.3115C20.7195 29.1201 20.6239 28.8828 20.6252 28.5995L20.6252 17.4245Z'
+        className='fill-white dark:fill-gray-900'
+      />
+    </svg>
+  );
+};
 
 export default function ProfileItem() {
   const { setPreventBodyScroll } = useUIStore();

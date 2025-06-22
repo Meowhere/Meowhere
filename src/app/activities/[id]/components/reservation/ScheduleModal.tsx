@@ -49,7 +49,7 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
         headCount: count,
       };
 
-      await fetchFromClient(`activities/${activityId}/reservations`, {
+      await fetchFromClient(`/activities/${activityId}/reservations`, {
         method: 'POST',
         body: JSON.stringify(reservationData),
         headers: {
