@@ -5,18 +5,15 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { useToastStore } from '@/src/store/toastStore';
-import { useGnbStore } from '@/src/store/gnbStore';
 
 import { useGnb } from '@/src/hooks/useGnb';
+import { useInfiniteReservations } from '@/src/hooks/useInfiniteReservations';
 import { MY_RESERVATION_STATUS_MAP } from '@/src/constants/my-reservation-status';
 import { MyReservationStatus } from '@/src/types/profile-reservation.types';
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 
-import Toast from '@/src/components/common/toast/Toast';
 import Dropdown from '@/src/components/common/dropdowns/Dropdown';
 import ReservationsCard from './ReservationsCard';
-import { useInfiniteReservations } from '@/src/hooks/useInfiniteReservations';
-import SkeletonReservationsCard from './ReservationsSkeleton';
 import NoActivities from '../../components/NoActivities';
 import SkeletonActivities from '../../my-activities/components/skeleton-ui/SkeletonActivities';
 
@@ -24,7 +21,6 @@ const BOTTOM_SKELETON_COUNT = 3; // 하단 스켈레톤 개수
 
 export default function ReservationsPage() {
   const router = useRouter();
-  const { setRightButtons } = useGnbStore();
   const { showToast } = useToastStore();
   const [selectedStatus, setSelectedStatus] = useState<MyReservationStatus>('all');
   const {
