@@ -19,8 +19,18 @@ export function useUpdateReservation(activityId: number, scheduleId?: number) {
       });
     },
     onSuccess: () => {
+      // 시간 리스트 쿼리 무효화(invalidate) -> 최신 데이터 fetch
       queryClient.invalidateQueries({
         queryKey: ['reservationsByTime', scheduleId],
+      });
+
+      // 캘린더 쿼리 무효화(invalidate) -> 최신 데이터 fetch
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = `0${now.getMonth() + 1}`.slice(-2);
+
+      queryClient.invalidateQueries({
+        queryKey: ['myActivityReservationByMonth', activityId, year, month],
       });
     },
   });
