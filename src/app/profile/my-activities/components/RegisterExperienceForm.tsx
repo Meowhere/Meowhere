@@ -133,12 +133,12 @@ const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExp
               <p className='text-sm text-red-500'>{errors.bannerImageUrl.message}</p>
             )}
           </div>
-          <div className='flex flex-col gap-[20px]'>
-            <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
-            <UploadImgList />
-            {errors.subImageUrls && (
-              <p className='text-sm text-red-500'>{errors.subImageUrls.message}</p>
-            )}
+        <div className='flex flex-col gap-[20px]'>
+          <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
+          <UploadImgList />
+          {errors.subImageUrls && (
+            <p className='text-sm text-red-500'>{errors.subImageUrls.message}</p>
+          )}
           </div>
           <div className='flex flex-col gap-[20px]'>
             <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
