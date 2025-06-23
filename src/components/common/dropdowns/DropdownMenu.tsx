@@ -37,7 +37,7 @@ export default function DropdownMenu({
         <div className='fixed inset-x-0 bottom-0 z-50 px-[16px] pb-[20px] animate-in slide-in-from-bottom duration-300'>
           <div className='w-full flex flex-col gap-[8px]' onClick={(e) => e.stopPropagation()}>
             <div className={wrapperClass}>
-              <div className='w-full text-center text-xs text-gray-600 dark:text-gray-300 leading-[1.2rem] h-[36px] flex items-center justify-center border-b border-gray-100 dark:border-gray-700'>
+              <div className='w-full px-[20px] py-[10px] text-center text-xs text-gray-600 dark:text-gray-300 leading-[1.2rem] h-[36px] border-b border-gray-100 dark:border-gray-700 truncate'>
                 {bottomSheetTitle}
               </div>
               <div className='w-full divide-y divide-gray-100 dark:divide-gray-700 max-h-[400px] overflow-y-auto '>
