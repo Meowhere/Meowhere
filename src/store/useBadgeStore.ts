@@ -1,9 +1,10 @@
+// src/store/useBadgeStore.ts
 import { create } from 'zustand';
 
-type BadgeLevel = 'kitten' | 'curious' | 'expert' | 'professor' | 'god' | null;
+export type BadgeLevel = 'art' | 'food' | 'sport' | 'tour' | 'travel' | 'wellbeing' | null;
 
 interface BadgeStore {
-  earnedBadge: BadgeLevel | null;
+  earnedBadge: BadgeLevel;
   setEarnedBadge: (badge: BadgeLevel) => void;
   clearEarnedBadge: () => void;
 }
