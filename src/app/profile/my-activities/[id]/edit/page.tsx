@@ -36,7 +36,7 @@ export default function EditActivityPage() {
         key='submit'
         form='register-form'
         onClick={() => formRef.current?.submit()}
-        className='text-md font-semibold text-primary-300 disabled:text-gray-300'
+        className='text-md font-semibold text-primary-300 disabled:text-gray-300 dark:disabled:text-gray-600'
         disabled={updateMyActivityMutation.isPending || !formState.isDirty || !formState.isValid}
       >
         수정

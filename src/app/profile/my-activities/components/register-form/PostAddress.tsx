@@ -77,9 +77,9 @@ export default function PostAddress({
           className={clsx(
             'absolute pointer-events-none select-none transition-all duration-200',
             shouldFloat
-              ? 'top-[14px] text-xs font-regular text-gray-500'
-              : 'top-1/2 -translate-y-1/2 text-md font-regular text-gray-500',
-            disabled && 'text-gray-400'
+              ? 'top-[14px] text-xs font-regular text-gray-500 dark:text-gray-400'
+              : 'top-1/2 -translate-y-1/2 text-md font-regular text-gray-500 dark:text-gray-400',
+            disabled && 'text-gray-400 dark:text-gray-500'
           )}
         >
           {label}
@@ -98,7 +98,7 @@ export default function PostAddress({
               'w-full bg-transparent border-none focus:outline-none text-md font-regular pt-2 dark:text-gray-200',
               shouldFloat ? 'pt-[20px]' : '',
               'transition-[padding-top] duration-200',
-              disabled && 'cursor-not-allowed text-gray-400'
+              disabled && 'cursor-not-allowed text-gray-400 dark:text-gray-500'
             )}
             placeholder={placeholder}
             disabled={disabled}

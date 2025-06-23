@@ -47,7 +47,7 @@ export default function RegisterPage() {
           console.log('ref: ', formRef.current);
           formRef.current?.submit();
         }}
-        className='text-md font-semibold text-primary-300 disabled:text-gray-300'
+        className='text-md font-semibold text-primary-300 disabled:text-gray-300 dark:disabled:text-gray-600'
         disabled={!formState.isDirty || !formState.isValid || isPending}
       >
         등록
