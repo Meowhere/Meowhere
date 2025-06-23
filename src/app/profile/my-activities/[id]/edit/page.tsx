@@ -59,8 +59,6 @@ export default function EditActivityPage() {
     try {
       const payload = createUpdatePayload(formData, activityDetail);
 
-      console.log('📤 PATCH payload:', payload);
-
       await updateMyActivityMutation.mutateAsync(payload);
       queryClient.invalidateQueries({ queryKey: ['activity', activityId] });
       router.push('/profile/my-activities');
