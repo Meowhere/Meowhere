@@ -52,9 +52,7 @@ const MyInfoForm = forwardRef<MyInfoFormRef, MyInfoFormProps>(
     });
 
     useImperativeHandle(ref, () => ({
-      submit: () => {
-        handleSubmit(onSubmit)();
-      },
+      submit: () => handleSubmit(onSubmit)(),
     }));
     useEffect(() => {
       onFormStateChange?.({ isDirty, isValid }); // ✅ 상태 외부로 전달
