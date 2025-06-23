@@ -94,7 +94,7 @@ export default function ReservationCalendar() {
     if (contents.length === 0) return null;
 
     return (
-      <div className='flex flex-col bottom-[10px] left-0 right-0 px-1 text-center text-xs font-medium gap-[2px]'>
+      <div className='w-full flex flex-col bottom-[10px] left-0 right-0 px-1 text-center text-xs font-medium gap-[2px]'>
         {contents}
       </div>
     );
