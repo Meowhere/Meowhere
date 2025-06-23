@@ -10,6 +10,7 @@ interface ScheduleTimeListProps {
   selectedScheduleId: number | null;
   onSelect: (schedule: Schedule) => void;
   price: number;
+  reservedScheduleIds?: number[];
 }
 
 export default function ScheduleTimeList({
@@ -17,6 +18,7 @@ export default function ScheduleTimeList({
   selectedDate,
   selectedScheduleId,
   onSelect,
+  reservedScheduleIds = [],
 }: ScheduleTimeListProps) {
   if (!selectedDate) return null;
 
@@ -32,7 +34,7 @@ export default function ScheduleTimeList({
             schedule={{ ...time, date: schedule.date }}
             isSelected={selectedScheduleId === time.id}
             onSelect={(schedule) => onSelect(schedule)}
-            date={schedule.date}
+            isDisabled={reservedScheduleIds.includes(time.id)}
           />
         ))
       )}

@@ -15,12 +15,14 @@ interface ScheduleTimeItemProps {
   };
   date?: string;
   isSelected: boolean;
+  isDisabled?: boolean;
   onSelect: (schedule: Schedule) => void;
 }
 
 export default function ScheduleTimeItem({
   schedule,
   isSelected,
+  isDisabled = false,
   onSelect,
 }: ScheduleTimeItemProps) {
   const { id, date, startTime = '', endTime = '' } = schedule;
@@ -57,10 +59,14 @@ export default function ScheduleTimeItem({
       <button
         type='button'
         name='schedule-selection'
+        disabled={isDisabled}
         onClick={() => onSelect(schedule)}
         className={clsx(
-          'w-full text-left rounded-[10px] p-[14px] hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-100 border border-gray-200 dark:border-gray-700',
-          isSelected ? 'bg-gray-100 dark:bg-gray-700' : ''
+          'w-full text-left rounded-[10px] p-[14px] transition-all duration-100 border',
+          isSelected ? 'bg-gray-100 dark:bg-gray-700' : '',
+          isDisabled
+            ? 'cursor-not-allowed bg-gray-100 text-gray-400 border-gray-200 dark:bg-gray-800 dark:text-gray-500'
+            : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-700'
         )}
       >
         <p className='text-sm text-gray-400 dark:text-gray-400 mb-1'>
@@ -70,6 +76,8 @@ export default function ScheduleTimeItem({
         <p className='text-md font-medium text-gray-800 dark:text-gray-200'>
           {formattedStartTime} ~ {formattedEndTime}
         </p>
+
+        {isDisabled && <p className='text-xs text-red-400 mt-1'>이미 예약한 시간입니다</p>}
       </button>
     </div>
   );
