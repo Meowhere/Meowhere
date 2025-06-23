@@ -28,13 +28,6 @@ export default function RegisterCategory() {
   const [open, setOpen] = useState(false);
   const selectedCategory = watch('category');
 
-  // 컴포넌트 마운트 시 초기 카테고리 값 설정
-  // useEffect(() => {
-  //   if (!selectedCategory) {
-  //     setValue('category', CATEGORY_LIST[0], { shouldValidate: true });
-  //   }
-  // }, [selectedCategory, setValue]);
-
   // 카테고리 버튼 배열 생성
   const items: DropdownItemButton[] = CATEGORY_LIST.map((category) => ({
     label: category,
@@ -56,7 +49,7 @@ export default function RegisterCategory() {
         <p className='text-sm text-red-500 mt-1'>{errors.category.message as string}</p>
       )}
       {open && (
-        <div className='absolute w-full top-[70px] z-10'>
+        <div className='absolute w-full top-[70px] z-50'>
           <DropdownMenu
             items={items}
             bottomSheetTitle='카테고리 선택'

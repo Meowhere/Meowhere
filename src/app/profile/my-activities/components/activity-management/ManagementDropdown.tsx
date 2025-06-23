@@ -47,7 +47,7 @@ export default function ManagementDropdown({ title, activityId }: ManagementDrop
     <div className='relative'>
       <KebabButton size={24} onToggle={() => setOpen((prev) => !prev)} />
       {open && (
-        <div className='absolute right-0 top-[24px] z-10'>
+        <div className='absolute right-0 top-[24px] z-50'>
           <DropdownMenu
             items={items}
             bottomSheetTitle={title}
