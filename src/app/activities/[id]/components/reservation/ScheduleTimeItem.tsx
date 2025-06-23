@@ -77,7 +77,9 @@ export default function ScheduleTimeItem({
           {formattedStartTime} ~ {formattedEndTime}
         </p>
 
-        {isDisabled && <p className='text-xs text-red-400 mt-1'>이미 예약한 시간입니다</p>}
+        {isDisabled && (
+          <p className='text-xs text-red-300 mt-1 dark:dark-red-200'>이미 예약한 시간입니다</p>
+        )}
       </button>
     </div>
   );
