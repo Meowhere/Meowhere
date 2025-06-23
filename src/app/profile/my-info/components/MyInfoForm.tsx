@@ -63,7 +63,10 @@ const MyInfoForm = forwardRef<MyInfoFormRef, MyInfoFormProps>(
     const pwConfirmValue = watch('confirmPassword', '');
 
     return (
-      <form className='flex flex-col gap-[64px] mt-[48px] mx-[24px] '>
+      <form
+        className='flex flex-col gap-[64px] mt-[48px] mx-[24px]'
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className='flex flex-col gap-[16px]'>
           <p className='text-xl font-semibold text-gray-800 dark:text-gray-200'>닉네임 변경</p>
           <Input
@@ -99,6 +102,7 @@ const MyInfoForm = forwardRef<MyInfoFormRef, MyInfoFormProps>(
           <div className='flex justify-end w-full'>
             <div className='w-[128px]'>
               <BaseButton
+                type='submit'
                 variant='primary'
                 disabled={isSubmitting || !isDirty || !isValid}
                 className='py-[12px] text-[1.4rem]'
