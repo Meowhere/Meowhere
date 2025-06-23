@@ -125,7 +125,7 @@ const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExp
           className='relative flex flex-col gap-[48px] lg:gap-[64px] px-[24px] pb-[96px] mb-[300px]'
         >
           <div className='flex flex-col gap-[20px]'>
-            <p className='text-xl font-semibold text-gray-800'>메인 이미지</p>
+            <p className='text-xl font-semibold text-gray-800 dark:text-gray-200'>메인 이미지</p>
             <div className='w-[160px]'>
               <UploadImg defaultImage={defaultValues?.bannerImageUrl} isBanner={true} />
             </div>
@@ -133,15 +133,15 @@ const RegisterExperienceForm = forwardRef<RegisterExperienceFormRef, RegisterExp
               <p className='text-sm text-red-500'>{errors.bannerImageUrl.message}</p>
             )}
           </div>
-        <div className='flex flex-col gap-[20px]'>
-          <p className='text-xl font-semibold text-gray-800'>소개 이미지</p>
-          <UploadImgList />
-          {errors.subImageUrls && (
-            <p className='text-sm text-red-500'>{errors.subImageUrls.message}</p>
-          )}
+          <div className='flex flex-col gap-[20px]'>
+            <p className='text-xl font-semibold text-gray-800 dark:text-gray-200'>소개 이미지</p>
+            <UploadImgList />
+            {errors.subImageUrls && (
+              <p className='text-sm text-red-500'>{errors.subImageUrls.message}</p>
+            )}
           </div>
           <div className='flex flex-col gap-[20px]'>
-            <p className='text-xl font-semibold text-gray-800'>체험 정보</p>
+            <p className='text-xl font-semibold text-gray-800 dark:text-gray-200'>체험 정보</p>
             <RegisterForm />
           </div>
           <RegisterCalendar defaultSchedules={defaultValues?.schedules} />

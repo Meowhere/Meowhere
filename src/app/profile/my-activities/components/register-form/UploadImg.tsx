@@ -111,10 +111,10 @@ export default function UploadImg({
       ) : (
         <div
           onClick={handleDivClick}
-          className='flex flex-col items-center justify-center w-full h-full aspect-square max-x-full lg:w-[160px] lg:h-[160px] gap-[8px] border-[2px] border-dashed border-gray-300 rounded-[12px] cursor-pointer'
+          className='flex flex-col items-center justify-center w-full h-full aspect-square max-x-full lg:w-[160px] lg:h-[160px] gap-[8px] border-[2px] border-dashed border-gray-300 dark:border-gray-600 rounded-[12px] cursor-pointer'
         >
           <Image src='/assets/icons/ico-plus.svg' alt='upload' width={48} height={48} />
-          <p className='text-md font-medium text-gray-500'>이미지 업로드</p>
+          <p className='text-md font-medium text-gray-500 dark:text-gray-400'>이미지 업로드</p>
         </div>
       )}
       <input
