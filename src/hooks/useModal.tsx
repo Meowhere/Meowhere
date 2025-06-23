@@ -10,7 +10,9 @@ import ScheduleModal from '../app/activities/[id]/components/reservation/Schedul
 import { ScheduleModalProps } from '../app/activities/[id]/components/reservation/ScheduleModal';
 import NotificationModal from '../app/_components/NotificationModal';
 import PrivacyPolicyModal from '../components/layout/navbar/components/PrivacyPolicyModal';
-import BadgeEarnedModalContent from '../components/common/badge/BadgeEarnedModalContent';
+import BadgeDetailModalContent from '../components/common/badge/BadgeDetailModalContent';
+import { BadgeLevel } from '../constants/badge.constans';
+import { BADGE_LIST } from '../constants/badge.constans';
 
 export const useModal = () => {
   const { openModal, closeModal } = useModalStore();
@@ -82,10 +84,13 @@ export const useModal = () => {
     });
   };
 
-  const openBadgeEarnedModal = () => {
+  const openBadgeDetailModal = (category: BadgeLevel, earnedAt?: string) => {
+    const badge = BADGE_LIST.find((b) => b.category === category);
+    if (!badge) return;
+
     openModal({
-      header: '🎉 새로운 뱃지를 획득했다냥',
-      children: <BadgeEarnedModalContent />,
+      header: badge.title,
+      children: <BadgeDetailModalContent category={category} earnedAt={earnedAt} />,
     });
   };
 
@@ -107,6 +112,6 @@ export const useModal = () => {
     openReservationModal,
     openNotificationModal,
     openPrivacyPolicyModal,
-    openBadgeEarnedModal,
+    openBadgeDetailModal,
   };
 };
