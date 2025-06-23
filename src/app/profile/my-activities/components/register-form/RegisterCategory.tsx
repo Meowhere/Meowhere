@@ -29,11 +29,11 @@ export default function RegisterCategory() {
   const selectedCategory = watch('category');
 
   // 컴포넌트 마운트 시 초기 카테고리 값 설정
-  useEffect(() => {
-    if (!selectedCategory) {
-      setValue('category', CATEGORY_LIST[0], { shouldValidate: true });
-    }
-  }, [selectedCategory, setValue]);
+  // useEffect(() => {
+  //   if (!selectedCategory) {
+  //     setValue('category', CATEGORY_LIST[0], { shouldValidate: true });
+  //   }
+  // }, [selectedCategory, setValue]);
 
   // 카테고리 버튼 배열 생성
   const items: DropdownItemButton[] = CATEGORY_LIST.map((category) => ({
@@ -48,7 +48,7 @@ export default function RegisterCategory() {
     <div className='relative'>
       <DropdownTrigger
         label='카테고리'
-        text={selectedCategory || CATEGORY_LIST[0]}
+        text={selectedCategory ? selectedCategory : '카테고리를 선택해주세요.'}
         isOpen={open}
         onClick={() => setOpen((prev) => !prev)}
       />

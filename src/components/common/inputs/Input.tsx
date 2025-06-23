@@ -16,6 +16,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     placeholder,
     disabled = false,
     required = false,
+    onFocus,
+    onBlur,
     ...rest
   },
   ref
@@ -69,8 +71,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             type={inputType}
             placeholder={placeholder}
             disabled={disabled}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={(e) => {
+              onFocus?.(e);
+              setIsFocused(true);
+            }}
+            onBlur={(e) => {
+              onBlur?.(e);
+              setIsFocused(false);
+            }}
             className={clsx(
               'w-full bg-transparent border-none focus:outline-none text-md font-regular pt-2',
               errorMessage ? 'text-red-600' : 'text-gray-800 dark:text-gray-200',

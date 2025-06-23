@@ -45,7 +45,9 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
     return (
       <div className='flex flex-col items-center justify-center h-[70vh]'>
         <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
-        <p className='mt-4 text-sm text-gray-500 animate-pulse'>후기를 불러오는 중입니다...</p>
+        <p className='mt-4 text-sm text-gray-500 dark:text-gray-400 animate-pulse'>
+          후기를 불러오는 중입니다...
+        </p>
       </div>
     );
   }
@@ -58,7 +60,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
         </span>
         <div className='flex items-center gap-[4px]'>
           <StarFillIcon size={18} className='text-yellow-200' />
-          <span className='text-[2.2rem] font-semibold text-gray-800'>
+          <span className='text-[2.2rem] font-semibold text-gray-800 dark:text-gray-200'>
             {Number(rating).toFixed(1)}
           </span>
         </div>

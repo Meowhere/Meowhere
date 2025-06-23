@@ -30,6 +30,7 @@ import { deleteActivity } from '@/src/services/myActivityService';
 import { Activity } from '@/src/types/activity.types';
 import { ScheduleWithTimes } from '@/src/types/schedule.types';
 import { Review } from '@/src/types/review.type';
+import { useThemeStore } from '@/src/store/themeStore';
 
 interface Props {
   activity: Activity;
@@ -55,6 +56,7 @@ export default function ExperienceResponsiveLayout({
   const { openScheduleModal } = useModal();
   const { isFavorite, toggleFavorite } = useFavoritesStore();
   const { isDesktop } = useBreakpoint();
+  const { theme } = useThemeStore();
 
   // Move all hook calls before any conditional logic
   const isOwner = user?.id === activity.userId;
@@ -93,7 +95,9 @@ export default function ExperienceResponsiveLayout({
         <ActivityDropdown
           dropdownItems={dropdownItems}
           bottomSheetTitle='게시물 관리'
-          trigger={<KebabIcon size={22} className='text-[#79747E] align-middle' />}
+          trigger={
+            <KebabIcon size={22} className='text-gray-600 dark:text-gray-400 align-middle' />
+          }
         />
       </div>,
     ];
@@ -110,15 +114,19 @@ export default function ExperienceResponsiveLayout({
   const renderReviewSection = (
     <div className='mt-[8px]'>
       {reviews.length === 0 ? (
-        <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400'>
+        <div className='flex flex-col items-center justify-center py-16 text-center text-gray-400 dark:text-gray-600'>
           <Image
-            src='/assets/icons/logo/ico-empty-view-logo.svg'
+            src={
+              theme === 'dark'
+                ? '/assets/icons/logo/ico-empty-view-logo-dark.svg'
+                : '/assets/icons/logo/ico-empty-view-logo.svg'
+            }
             alt='empty icon'
             width={72}
             height={72}
             className='mb-6'
           />
-          <p className='text-lg font-regular text-gray-400'>후기가 없다냥</p>
+          <p className='text-lg font-regular text-gray-400 dark:text-gray-600'>후기가 없다냥</p>
         </div>
       ) : (
         <ReviewSection
@@ -134,7 +142,7 @@ export default function ExperienceResponsiveLayout({
   return (
     <>
       {isDesktop ? (
-        <div>
+        <div className='bg-white dark:bg-black'>
           <div className='max-w-[1200px] mx-auto flex gap-[48px] px-4 mt-[64px] justify-center items-center'>
             <div className='flex-[1.2]'>
               <ExperienceImageViewer
@@ -148,15 +156,19 @@ export default function ExperienceResponsiveLayout({
                   <HeartButton
                     isLiked={isFavorite(activity.id)}
                     onToggle={() => toggleFavorite(activity)}
-                    className='w-[32px] h-[32px] cursor-pointer text-gray-600'
+                    className='w-[32px] h-[32px] cursor-pointer text-gray-600 dark:text-gray-400'
                   />
                 )}
-                <KakaoShareButton size={24} activity={activity} />
+                <KakaoShareButton
+                  size={24}
+                  activity={activity}
+                  className='text-gray-600 dark:text-gray-400'
+                />
                 {isOwner && (
                   <ActivityDropdown
                     dropdownItems={dropdownItems}
                     bottomSheetTitle='게시물 관리'
-                    trigger={<KebabIcon size={24} className='text-[#79747E]' />}
+                    trigger={<KebabIcon size={24} className='text-gray-600 dark:text-gray-400' />}
                   />
                 )}
               </div>
@@ -202,7 +214,7 @@ export default function ExperienceResponsiveLayout({
           </div>
         </div>
       ) : (
-        <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px] flex flex-col gap-[48px]'>
+        <div className='w-full lg:max-w-4xl lg:mx-auto px-[16px] md:px-[24px] flex flex-col gap-[48px] bg-white dark:bg-black'>
           <ExperienceImageViewer
             bannerImageUrl={activity.bannerImageUrl}
             subImages={activity.subImages}
@@ -217,12 +229,16 @@ export default function ExperienceResponsiveLayout({
               address={activity.address}
             />
             <div className='flex flex-row gap-[24px] items-center justify-center top-[2px] right-[2px] cursor-pointer'>
-              <KakaoShareButton size={22} activity={activity} />
+              <KakaoShareButton
+                size={22}
+                activity={activity}
+                className='text-gray-600 dark:text-gray-400'
+              />
               {showLikeButton && (
                 <HeartButton
                   isLiked={isFavorite(activity.id)}
                   onToggle={() => toggleFavorite(activity)}
-                  className='w-[22px] h-[22px] cursor-pointer text-gray-600'
+                  className='w-[22px] h-[22px] cursor-pointer text-gray-600 dark:text-gray-400'
                 />
               )}
               {isOwner && (
@@ -230,7 +246,12 @@ export default function ExperienceResponsiveLayout({
                   <ActivityDropdown
                     dropdownItems={dropdownItems}
                     bottomSheetTitle='게시물 관리'
-                    trigger={<KebabIcon size={22} className='text-[#79747E] align-middle' />}
+                    trigger={
+                      <KebabIcon
+                        size={22}
+                        className='text-gray-600 dark:text-gray-400 align-middle'
+                      />
+                    }
                   />
                 </div>
               )}

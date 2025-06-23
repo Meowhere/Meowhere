@@ -15,6 +15,14 @@ export const MY_RESERVATION_STATUS_MAP = {
     bg: 'bg-red-100 dark:bg-dark-red-200',
     text: 'text-red-300 dark:text-dark-red-100',
   },
-  canceled: { label: '예약 취소', bg: 'bg-gray-100', text: 'text-gray-600' },
-  completed: { label: '체험 완료', bg: 'bg-purple-100', text: 'text-purple-200' },
+  canceled: {
+    label: '예약 취소',
+    bg: 'bg-gray-100 dark:bg-gray-800',
+    text: 'text-gray-600 dark:text-gray-400',
+  },
+  completed: {
+    label: '체험 완료',
+    bg: 'bg-purple-100 dark:bg-dark-purple-200',
+    text: 'text-purple-200 dark:text-dark-purple-100',
+  },
 };
