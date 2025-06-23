@@ -23,7 +23,7 @@ export default function SubPageGNB() {
             {title}
           </span>
           {subtitle && (
-            <span className='text-xs leading-none text-gray-500 dark:text-gray-400'>
+            <span className='text-xs leading-none text-gray-500 dark:text-gray-400 text-ellipsis overflow-hidden whitespace-nowrap max-w-[200px]'>
               {subtitle}
             </span>
           )}

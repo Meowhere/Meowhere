@@ -55,8 +55,8 @@ export default function SearchResultsWithMap({
         <SearchResultMap activities={allActivities} className='lg:order-2' />
       ) : (
         <div className='relative overflow-hidden'>
-          <div className='w-[48px] h-[6px] bg-gray-200 absolute bottom-[24px] left-1/2 -translate-x-1/2 z-30 rounded-full' />
-          <div className='w-full h-[48px] bg-white absolute bottom-0 left-0 z-20 rounded-t-full gnb-shadow' />
+          <div className='w-[48px] h-[6px] bg-gray-200 dark:bg-gray-700 absolute bottom-[24px] left-1/2 -translate-x-1/2 z-20 rounded-full' />
+          <div className='w-full h-[48px] bg-white dark:bg-black absolute bottom-0 left-0 z-[11] rounded-t-full gnb-shadow' />
           <SearchResultMap activities={allActivities} className='lg:order-2' />
         </div>
       )}

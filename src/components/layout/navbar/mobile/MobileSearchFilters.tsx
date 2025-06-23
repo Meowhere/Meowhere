@@ -24,7 +24,7 @@ export default function MobileSearchFilters({ keyword }: { keyword: string }) {
 
   return (
     <motion.div
-      className=' z-20 w-full h-screen bg-gray-100 dark:bg-gray-900 p-[24px] pb-[calc(76px+24px)] fixed top-[76px] left-0 overflow-y-scroll'
+      className=' z-20 w-full h-[calc(100vh-76px)] bg-gray-100 dark:bg-gray-900 p-[24px] pb-[calc(76px+24px)] fixed top-[76px] left-0 overflow-y-scroll'
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       exit={{ y: '-100vh' }}
