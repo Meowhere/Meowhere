@@ -12,7 +12,7 @@ import { useNotifications } from '@/src/hooks/useNotifications';
 export default function BNB() {
   const pathname = usePathname();
   const { openNotificationModal, openAuthModal, closeModal } = useModal();
-  const { data } = useUser();
+  const { data, isLoading } = useUser();
   const { theme } = useThemeStore();
   const { data: notificationData } = useNotifications();
 
@@ -27,10 +27,24 @@ export default function BNB() {
       },
     });
   };
+
+  if (isLoading) {
+    return (
+      <nav
+        aria-label='페이지 네비게이션'
+        className='fixed bottom-0 left-0 h-[88px] w-full bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700 flex items-start justify-center text-xs py-6 px-[48px] z-20'
+      >
+        <div className='flex justify-center items-center w-full max-w-[240px] min-w-[128px] h-full'>
+          <div className='w-6 h-6 border-4 border-t-transparent border-primary-300 rounded-full animate-spin' />
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <nav
       aria-label='페이지 네비게이션'
-      className='fixed bottom-0 left-0 h-[88px] w-full bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700 flex items-start justify-center text-xs py-6 px-[64px] z-20'
+      className='fixed bottom-0 left-0 h-[88px] w-full bg-white dark:bg-black border-t border-gray-200 dark:border-gray-700 flex items-start justify-center text-xs py-6 px-[48px] z-20'
     >
       {data ? (
         <div className='flex justify-between w-full max-w-[500px] min-w-[128px]'>
