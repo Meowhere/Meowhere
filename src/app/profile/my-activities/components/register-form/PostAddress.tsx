@@ -61,10 +61,10 @@ export default function PostAddress({
     <div className={clsx('w-full mb-6 relative', className)}>
       <div
         className={clsx(
-          'flex items-center px-[20px] py-[12px] rounded-2xl border bg-white relative transition-colors duration-200',
+          'flex items-center px-[20px] py-[12px] rounded-2xl border bg-white dark:bg-gray-800 relative transition-colors duration-200',
           error
             ? 'border-red-300 focus-within:border-red-400'
-            : 'border-gray-200 focus-within:border-gray-200',
+            : 'border-gray-200 dark:border-gray-600 focus-within:border-gray-200',
           disabled && 'bg-gray-50 cursor-not-allowed'
         )}
         onClick={handleSearch}
@@ -95,7 +95,7 @@ export default function PostAddress({
             // type='text'
             value={value}
             className={clsx(
-              'w-full bg-transparent border-none focus:outline-none text-md font-regular pt-2',
+              'w-full bg-transparent border-none focus:outline-none text-md font-regular pt-2 dark:text-gray-200',
               shouldFloat ? 'pt-[20px]' : '',
               'transition-[padding-top] duration-200',
               disabled && 'cursor-not-allowed text-gray-400'

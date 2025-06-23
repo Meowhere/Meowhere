@@ -94,21 +94,6 @@ export default function ReservationsPage() {
     }
   }, [isError, showToast]);
 
-  // 초기 로딩 시 스켈레톤 UI
-  // if (isLoading) {
-  //   return (
-  //     <main className='flex flex-col items-center pb-[88px]'>
-  //       <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>
-  //         {Array.from({ length: 5 }).map((_, idx) => (
-  //           <div key={idx} className='mb-[48px]'>
-  //             <SkeletonActivities />
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </main>
-  //   );
-  // }
-
   return (
     <main className='flex flex-col items-center pb-[88px] lg:pb-0'>
       <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>
@@ -122,7 +107,7 @@ export default function ReservationsPage() {
             />
           </div>
         </div>
-        {isLoading && (
+        {isLoading ? (
           <div className='w-full flex flex-col lg:max-w-[720px] lg:mx-auto'>
             {Array.from({ length: 5 }).map((_, idx) => (
               <div key={idx} className='mt-[24px]'>
@@ -130,32 +115,35 @@ export default function ReservationsPage() {
               </div>
             ))}
           </div>
-        )}
-        {myReservations && myReservations.length > 0 ? (
-          <div className='flex flex-col'>
-            {myReservations.map((reservation, index) => (
-              <ReservationsCard
-                key={reservation.id}
-                reservation={reservation}
-                showCancel={reservation.status === 'pending'}
-                showReview={reservation.status === 'completed' && !reservation.reviewSubmitted}
-                isLast={index === myReservations.length - 1}
-              />
-            ))}
-            {/* 추가 페이지 로딩 시 하단 스켈레톤 */}
-            {isFetchingNextPage &&
-              Array.from({ length: BOTTOM_SKELETON_COUNT }).map((_, idx) => (
-                <div key={`skeleton-bottom-${idx}`} className='mb-[48px]'>
-                  <SkeletonActivities />
-                </div>
-              ))}
-            {/* 마지막 요소 감지용 */}
-            <div ref={sentinelRef} className='h-[1px]' />
-          </div>
         ) : (
-          <div className='flex flex-col items-center justify-center h-full'>
-            <NoActivities title='예약한' urlPath='/' buttonTitle='체험 예약하러 가기' />
-          </div>
+          <>
+            {myReservations && myReservations.length > 0 ? (
+              <div className='flex flex-col'>
+                {myReservations.map((reservation, index) => (
+                  <ReservationsCard
+                    key={reservation.id}
+                    reservation={reservation}
+                    showCancel={reservation.status === 'pending'}
+                    showReview={reservation.status === 'completed' && !reservation.reviewSubmitted}
+                    isLast={index === myReservations.length - 1}
+                  />
+                ))}
+                {/* 추가 페이지 로딩 시 하단 스켈레톤 */}
+                {isFetchingNextPage &&
+                  Array.from({ length: BOTTOM_SKELETON_COUNT }).map((_, idx) => (
+                    <div key={`skeleton-bottom-${idx}`} className='mb-[48px]'>
+                      <SkeletonActivities />
+                    </div>
+                  ))}
+                {/* 마지막 요소 감지용 */}
+                <div ref={sentinelRef} className='h-[1px]' />
+              </div>
+            ) : (
+              <div className='flex flex-col items-center justify-center h-full'>
+                <NoActivities title='예약한' urlPath='/' buttonTitle='체험 예약하러 가기' />
+              </div>
+            )}
+          </>
         )}
       </div>
     </main>

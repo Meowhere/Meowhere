@@ -9,6 +9,7 @@ import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 import SkeletonRegisterForm from '../components/skeleton-ui/SkeletonRegisterForm';
 import { useEffect, useState, useRef } from 'react';
 import { useGnbStore } from '@/src/store/gnbStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function RegisterPage() {
   const [isInitializing, setIsInitializing] = useState(true);
   const [formState, setFormState] = useState({ isDirty: false, isValid: false });
   const { setRightButtons } = useGnbStore();
+  const queryClient = useQueryClient();
 
   const formRef = useRef<RegisterExperienceFormRef>(null);
 
@@ -29,6 +31,7 @@ export default function RegisterPage() {
   }, []);
 
   const handleSubmit = (formData: MyActivitiesFormData) => {
+    queryClient.invalidateQueries({ queryKey: ['my-activities'] });
     mutate(formData, {
       onSuccess: () => {
         router.push('/profile/my-activities');

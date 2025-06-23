@@ -9,9 +9,10 @@ import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMuta
 import { useActivityDetail } from '@/src/hooks/activities/useActivityDetail';
 import { useState, useRef, useEffect } from 'react';
 import { MyActivitiesFormData } from '@/src/types/my-activities.types';
-import { buildUpdateActivityPayload } from '@/src/utils/my-activities';
 import SkeletonRegisterForm from '../../components/skeleton-ui/SkeletonRegisterForm';
 import { useGnbStore } from '@/src/store/gnbStore';
+import { useQueryClient } from '@tanstack/react-query';
+import { createUpdatePayload } from '@/src/utils/my-activities';
 
 export default function EditActivityPage() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function EditActivityPage() {
   const formRef = useRef<RegisterExperienceFormRef>(null);
   const [formState, setFormState] = useState({ isDirty: false, isValid: false });
   const { setRightButtons } = useGnbStore();
+  const queryClient = useQueryClient();
 
   // URL에서 activityId 추출
   const activityId = typeof params.id === 'string' ? parseInt(params.id, 10) : undefined;
@@ -51,15 +53,14 @@ export default function EditActivityPage() {
   const handleSubmit = async (formData: MyActivitiesFormData) => {
     if (isSubmitting) return;
     if (!activityDetail) return;
+
     setIsSubmitting(true);
+
     try {
-      const payload = buildUpdateActivityPayload({
-        initialImages: activityDetail.subImages ?? [],
-        initialSchedules: activityDetail.schedules ?? [],
-        formData,
-      });
-      console.log('현재:', formData.subImageUrls);
+      const payload = createUpdatePayload(formData, activityDetail);
+
       await updateMyActivityMutation.mutateAsync(payload);
+      queryClient.invalidateQueries({ queryKey: ['activity', activityId] });
       router.push('/profile/my-activities');
     } finally {
       setIsSubmitting(false);

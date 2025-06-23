@@ -3,7 +3,7 @@ import UploadImg from './UploadImg';
 import { useUploadActivityImageMutation } from '@/src/hooks/useUploadActivityImageMutation';
 import { useToastStore } from '@/src/store/toastStore';
 import { useFormContext } from 'react-hook-form';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 const MAX_FILES = 4;
 
@@ -11,7 +11,6 @@ export default function UploadImgList() {
   const { watch, setValue } = useFormContext();
   const { showToast } = useToastStore();
   const uploadActivityImage = useUploadActivityImageMutation();
-
   // 컴포넌트 최상단에서 선언
   const urlToUuid = useRef<Map<string, string>>(new Map());
   // form 값
@@ -27,10 +26,17 @@ export default function UploadImgList() {
   }, [subImageUrls]);
 
   // files 생성: uuid만 key로 사용, index 동작 X
-  const files = subImageUrls.map((url) => ({
-    id: urlToUuid.current.get(url)!,
-    previewUrl: url,
-  }));
+  const files = useMemo(() => {
+    return subImageUrls.map((url) => {
+      if (!urlToUuid.current.has(url)) {
+        urlToUuid.current.set(url, uuidv4());
+      }
+      return {
+        id: urlToUuid.current.get(url)!,
+        previewUrl: url,
+      };
+    });
+  }, [subImageUrls]);
 
   // 빈 슬롯 1개만 추가 (MAX_FILES 넘지 않게)
   const showEmptySlot = subImageUrls.length < MAX_FILES;
@@ -89,7 +95,7 @@ export default function UploadImgList() {
       ))}
       {showEmptySlot && (
         <UploadImg
-          key={`empty-slot-${subImageUrls.length}`}
+          key={uuidv4()}
           file={null}
           defaultImage={''}
           onFileChange={(file) => handleFileChange(file, undefined)}
