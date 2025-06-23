@@ -15,12 +15,14 @@ interface ExperienceImageViewerProps {
   bannerImageUrl: string;
   subImages: SubImage[];
   pageTitle?: string;
+  backAction?: (() => void) | null;
 }
 
 export default function ExperienceImageViewer({
   bannerImageUrl,
   subImages,
   pageTitle = '체험 상세',
+  backAction = null,
 }: ExperienceImageViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -44,7 +46,7 @@ export default function ExperienceImageViewer({
   const closeImageViewer = () => {
     setIsOpen(false);
     setTitle(pageTitle);
-    setBackAction(null);
+    setBackAction(backAction);
   };
 
   useEffect(() => {

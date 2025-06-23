@@ -58,7 +58,6 @@ export default function ExperienceResponsiveLayout({
   const { isDesktop } = useBreakpoint();
   const { theme } = useThemeStore();
 
-  // Move all hook calls before any conditional logic
   const isOwner = user?.id === activity.userId;
 
   const handleDeleteActivity = useCallback(async () => {
@@ -105,7 +104,7 @@ export default function ExperienceResponsiveLayout({
 
   useGnb({
     title: activity.title,
-    backAction: () => router.push('/profile'),
+    backAction: () => router.push('/'),
     rightButtons,
   });
 
@@ -148,6 +147,8 @@ export default function ExperienceResponsiveLayout({
               <ExperienceImageViewer
                 bannerImageUrl={activity.bannerImageUrl}
                 subImages={activity.subImages}
+                pageTitle={activity.title}
+                backAction={() => router.push('/')}
               />
             </div>
             <div className='flex-1 relative'>
@@ -169,6 +170,7 @@ export default function ExperienceResponsiveLayout({
                     dropdownItems={dropdownItems}
                     bottomSheetTitle='게시물 관리'
                     trigger={<KebabIcon size={24} className='text-gray-600 dark:text-gray-400' />}
+                    isMobile={true}
                   />
                 )}
               </div>
@@ -218,6 +220,8 @@ export default function ExperienceResponsiveLayout({
           <ExperienceImageViewer
             bannerImageUrl={activity.bannerImageUrl}
             subImages={activity.subImages}
+            pageTitle={activity.title}
+            backAction={() => router.push('/')}
           />
 
           <div className='flex flex-col gap-[24px]'>
@@ -240,20 +244,6 @@ export default function ExperienceResponsiveLayout({
                   onToggle={() => toggleFavorite(activity)}
                   className='w-[22px] h-[22px] cursor-pointer text-gray-600 dark:text-gray-400'
                 />
-              )}
-              {isOwner && (
-                <div className='flex items-center justify-center w-[22px] h-[22px]'>
-                  <ActivityDropdown
-                    dropdownItems={dropdownItems}
-                    bottomSheetTitle='게시물 관리'
-                    trigger={
-                      <KebabIcon
-                        size={22}
-                        className='text-gray-600 dark:text-gray-400 align-middle'
-                      />
-                    }
-                  />
-                </div>
               )}
             </div>
           </div>
