@@ -66,7 +66,6 @@ export default function ReservationsCard({
       className={`flex flex-col gap-[18px] py-[24px] ${isLast ? '' : 'border-b border-gray-200 dark:border-gray-700'} lg:flex-row lg:justify-between lg:items-end`}
     >
       {/* 내용 */}
-      <Toast />
       <ConfirmModal />
       <div className='flex gap-[10px] lg:gap-[14px]'>
         <img
