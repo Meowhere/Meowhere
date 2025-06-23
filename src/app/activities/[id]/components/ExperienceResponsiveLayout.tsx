@@ -50,7 +50,7 @@ export default function ExperienceResponsiveLayout({
   reviewStats,
   showLikeButton = true,
 }: Props) {
-  const { data: user } = useUser();
+  const { data: user, isLoading } = useUser();
   const router = useRouter();
   const { showToast } = useToastStore();
   const { openScheduleModal } = useModal();
@@ -108,7 +108,7 @@ export default function ExperienceResponsiveLayout({
     rightButtons,
   });
 
-  if (!user) return <ExperienceDetailSkeleton />;
+  if (isLoading) return <ExperienceDetailSkeleton />;
 
   const renderReviewSection = (
     <div className='mt-[8px]'>
@@ -181,7 +181,7 @@ export default function ExperienceResponsiveLayout({
                 reviewCount={activity.reviewCount}
                 address={activity.address}
               />
-              {user.id !== activity.userId && (
+              {user && user.id !== activity.userId && (
                 <>
                   <Divider />
                   <ReservationBox
@@ -269,7 +269,7 @@ export default function ExperienceResponsiveLayout({
             {renderReviewSection}
           </div>
 
-          {user.id !== activity.userId && (
+          {user && user.id !== activity.userId && (
             <ReservationBox
               pricePerPerson={activity.price}
               onClick={() =>
