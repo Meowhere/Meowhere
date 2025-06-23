@@ -12,6 +12,7 @@ import ReservationCalendarPicker from '@/src/components/common/calendar/Reservat
 import { fetchFromClient } from '@/src/lib/fetch/fetchFromClient';
 import { useToastStore } from '@/src/store/toastStore';
 import { useQueryClient } from '@tanstack/react-query';
+import { useMyReservedScheduleIds } from '@/src/hooks/activities/useMyReservedScheduleIds';
 
 export interface ScheduleModalProps {
   price: number;
@@ -27,8 +28,9 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const { closeModal } = useModal();
   const { showToast } = useToastStore();
-
   const queryClient = useQueryClient();
+
+  const { data: reservedScheduleIds = [] } = useMyReservedScheduleIds(activityId);
 
   const availableDates = useMemo(() => {
     return schedules.map((schedule) => format(parseISO(schedule.date), 'yyyy-MM-dd'));
@@ -58,6 +60,7 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
       });
 
       queryClient.invalidateQueries({ queryKey: ['schedule', activityId] });
+      queryClient.invalidateQueries({ queryKey: ['my-reserved-schedules', activityId] });
 
       closeModal();
       setTimeout(() => {
@@ -117,20 +120,12 @@ export default function ScheduleModal({ price, schedules = [], activityId }: Sch
             selectedScheduleId={selectedSchedule?.id ?? null}
             onSelect={setSelectedSchedule}
             price={price}
+            reservedScheduleIds={reservedScheduleIds}
           />
         </div>
       </div>
 
-      <div
-        className='
-          fixed bottom-0 left-0 w-full 
-          px-[24px] py-[20px] 
-          bg-white dark:bg-gray-800 
-          border-t border-gray-100 dark:border-gray-700 
-          z-50 
-          md:rounded-b-[20px] md:shadow-[0_0_12px_rgba(0,0,0,0.08)]
-        '
-      >
+      <div className='fixed bottom-0 left-0 w-full px-[24px] py-[20px] bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 z-50 md:rounded-b-[20px] md:shadow-[0_0_12px_rgba(0,0,0,0.08)]'>
         <div className='flex items-center justify-between w-full gap-[12px]'>
           <div className='flex flex-col gap-[4px]'>
             <p className='text-sm font-regular text-gray-500 dark:text-gray-400 truncate'>
