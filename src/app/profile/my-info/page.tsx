@@ -41,7 +41,7 @@ export default function MyInfoPage() {
   }, [formState, updateMyInfoMutation.isPending, setRightButtons]);
 
   useGnb({
-    title: '내정보',
+    title: '내 정보',
     backAction: () => router.push('/profile'),
     rightButtons: [],
   });
