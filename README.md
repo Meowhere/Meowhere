@@ -15,6 +15,8 @@
 
 ## 🔗 배포 주소
 
+https://meowhere.vercel.app/
+
 ---
 
 ## ⏰ 프로젝트 기간
@@ -25,20 +27,30 @@
 
 ## 🐾 주요 기능
 
+- 🔍 다양한 체험 탐색, 필터, 좋아요 기능
 - 🗺️ 위치 기반 체험 지도 탐색
 - 📅 캘린더 뷰를 통한 예약일 선택
-- 💬 체험 후기, 등록, 관리 기능 포함
+- 💬 체험 후기 작성, 카카오 공유 기능
+- ✏️ 새로운 체험 등록, 관리 기능
+- 📊 나의 체험 통계 및 후기 확인 기능
+- ⭐ 체험 완료를 통한 다양한 업적 뱃지
+- 💻 간편 카카오 로그인 기능
 
 ---
 
 ## 🛠️ 기술 스택 (Tech Stack)
 
-| 🧩 구분               | 🚀 기술                                                                                                                                                                                                                     |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **언어 / 프레임워크** | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white) + ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)    |
-| **스타일링**          | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)                                                                                                       |
-| **상태 관리**         | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white) + ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=Zustand&logoColor=white) |
-| **라우팅**            | Next.js App Router (기본 내장) + [next-route](https://github.com/jeremyben/next-route)                                                                                                                                      |
+| 🧩 구분               | 🚀 기술                                                                                                                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **언어 / 프레임워크** | ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)    |
+| **스타일링**          | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)                                                                                                     |
+| **상태 관리**         | ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=Zustand&logoColor=white) |
+| **UI 라이브러리**     | ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=flat-square&logo=shadcnui&logoColor=white)                                                                                                             |
+| **폼/유효성 검증**    | ![React Hook Form](https://img.shields.io/badge/React_Hook_Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white) ![Zod](https://img.shields.io/badge/Zod-3E67B1?style=flat-square&logo=zod&logoColor=white)   |
+| **애니메이션**        | ![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)                                                                                                         |
+| **차트 시각화**       | ![Recharts](https://img.shields.io/badge/Recharts-FF6384?style=flat-square&logo=recharts&logoColor=white)                                                                                                                 |
+| **3D 렌더링**         | ![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=three.js&logoColor=white)                                                                                                                 |
+| **OAuth 인증**        | ![Kakao](https://img.shields.io/badge/Kakao-FFCD00?style=flat-square&logo=kakao&logoColor=black)                                                                                                                          |
 
 ---
 
@@ -49,35 +61,34 @@ MEOWHERE/
 ├── public/
 ├── src/
 │ ├── app/
-│     ├─ layout.tsx
-│     ├─ page.tsx                   # 메인 페이지
-│     ├─ not-found.tsx
-│     ├─ middleware.tsx
-│     ├─ account/                   # 로그인 페이지
-│     │   ├─ page.tsx
-│     │   └─ components/
-│     ├─ activities/               # 체험 상세 및 예약
-│     │   ├─ page.tsx
-│     │   └─ [id]//
-│     │       ├─ page.tsx
-│     │       └─ components/
-│     ├─ profile/                 # 사용자 정보 관리
-│     │   ├─ page.tsx
-│     │   ├─ components/
-│     │   ├─ my-info/
-│     │   └─ reservations/
-│     │   ├─ my-activities/
-│     │   ├─ favorites/
-│     │   ├─ notifications/
-│     │   └─ my-reservations/
-│     └─ api/
-│
+│ |   ├─ layout.tsx
+│ |   ├─ page.tsx                   # 메인 페이지
+│ |   ├─ not-found.tsx
+│ |   ├─ middleware.tsx
+│ |   ├─ account/                   # 로그인 페이지
+│ |   │   ├─ page.tsx
+│ |   │   └─ components/
+│ |   ├─ activities/               # 체험 상세 및 예약
+│ |   │   ├─ page.tsx
+│ |   │   └─ [id]//
+│ |   │       ├─ page.tsx
+│ |   │       └─ components/
+│ |   ├─ profile/                 # 사용자 정보 관리
+│ |   │   ├─ page.tsx
+│ |   │   ├─ components/
+│ |   │   ├─ my-info/
+│ |   │   ├─ reservations/
+│ |   │   ├─ my-activities/
+│ |   │   ├─ favorites/
+│ |   │   ├─ notifications/
+│ |   │   └─ my-reservations/
+│ |   └─ api/
+│ |
 │ ├─ components/
-│     ├─ layout/
-│     │   ├─ navbar/
-│     │   └─ Footer.tsx
-│     └─ common/               # 공통 컴포넌트
-│
+│ |   ├─ layout/
+│ |   │   ├─ navbar/
+│ |   │   └─ Footer.tsx
+│ |   └─ common/               # 공통 컴포넌트
 │ ├─ constants/
 │ ├─ providers/
 │ ├─ services/

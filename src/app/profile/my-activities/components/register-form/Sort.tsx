@@ -57,7 +57,7 @@ export default function Sort({ onSortChange }: SortProps) {
   ];
 
   return (
-    <div ref={containerRef} className='relative'>
+    <div ref={containerRef} className='relative text-gray-800 dark:text-gray-200'>
       <button
         type='button'
         aria-label='정렬 드롭다운 열기'

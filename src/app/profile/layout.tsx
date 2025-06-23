@@ -12,7 +12,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
           <Sidebar />
         </aside>
       )}
-      <main className='flex-1 mx-[16px] max-lg:mb-[100px]'>{children}</main>
+      <main className='flex-1 px-[16px] w-full max-lg:mb-[100px]'>{children}</main>
     </div>
   );
 }

@@ -110,7 +110,7 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
       {isDesktop ? (
         <div className='flex flex-row items-center justify-between'>
           <div className='flex flex-row items-center gap-[18px]'>
-            <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
+            <p className='text-xl font-semibold text-gray-800 dark:text-gray-200'>체험 일정</p>
             <Sort onSortChange={setSortKey} />
           </div>
           <div className='w-[176px]'>
@@ -127,7 +127,7 @@ export default function RegisterCalendar({ defaultSchedules }: RegisterCalendarP
         </div>
       ) : (
         <div className='flex flex-row items-center justify-between'>
-          <p className='text-xl font-semibold text-gray-800'>체험 일정</p>
+          <p className='text-xl font-semibold text-gray-800 dark:text-gray-200'>체험 일정</p>
           <Sort onSortChange={setSortKey} />
         </div>
       )}

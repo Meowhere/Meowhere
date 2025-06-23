@@ -37,7 +37,7 @@ export function CustomDatePicker({
 
   return (
     <div className='relative select-none' onClick={() => inputRef.current?.showPicker()}>
-      <span className='text-md font-regular text-gray-800 pointer-events-none'>
+      <span className='text-md font-regular text-gray-800 dark:text-gray-200 pointer-events-none'>
         {formatDate(value)}
       </span>
       <input
@@ -62,7 +62,7 @@ export function CustomTimePicker({
 
   return (
     <div className='relative select-none' onClick={() => inputRef.current?.showPicker()}>
-      <span className='text-md font-regular text-gray-800 pointer-events-none whitespace-nowrap'>
+      <span className='text-md font-regular text-gray-800 dark:text-gray-200 pointer-events-none whitespace-nowrap'>
         {formatTime(value)}
       </span>
       <input

@@ -10,11 +10,18 @@ interface Props {
   dropdownItems: DropdownItemButton[];
   bottomSheetTitle: string;
   trigger: React.ReactNode;
+  isMobile?: boolean;
 }
 
-export default function ActivityDropdown({ dropdownItems, bottomSheetTitle, trigger }: Props) {
+export default function ActivityDropdown({
+  dropdownItems,
+  bottomSheetTitle,
+  trigger,
+  isMobile: isMobileProp,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const { isMobile } = useBreakpoint();
+  const { isMobile: isMobileBreakpoint } = useBreakpoint();
+  const isMobile = isMobileProp !== undefined ? isMobileProp : isMobileBreakpoint;
 
   useEffect(() => {
     const close = () => setIsOpen(false);
