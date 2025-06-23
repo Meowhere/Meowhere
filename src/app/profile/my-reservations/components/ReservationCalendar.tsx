@@ -137,7 +137,7 @@ export default function ReservationCalendar() {
           />
         </div>
       ) : (
-        <div className='mb-[64px] text-center text-gray-600 text-md'>
+        <div className='mb-[64px] text-center text-gray-600 dark:text-gray-400 text-md'>
           등록된 체험이 없습니다. 체험 등록 후 이용해주세요.
         </div>
       )}
