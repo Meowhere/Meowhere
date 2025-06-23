@@ -46,11 +46,15 @@ const formSchema = z.object({
 
 type ActivityFormValues = z.infer<typeof formSchema>;
 
-interface RegisterExperienceFormProps {
+export interface RegisterExperienceFormProps {
   mode: 'edit' | 'create';
   defaultValues?: MyActivitiesFormData;
   onSubmit: (formData: MyActivitiesFormData) => void;
   isSubmitting?: boolean;
+}
+
+export interface RegisterExperienceFormRef {
+  submit: () => void;
 }
 
 export default function RegisterExperienceForm({

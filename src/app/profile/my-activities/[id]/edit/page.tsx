@@ -8,11 +8,7 @@ import RegisterExperienceForm, {
 import { useUpdateMyActivityMutation } from '@/src/hooks/useUpdateMyActivityMutation';
 import { useActivityDetail } from '@/src/hooks/activities/useActivityDetail';
 import { useState, useRef, useEffect } from 'react';
-import {
-  CreateScheduleBody,
-  MyActivitiesFormData,
-  UpdateMyActivityPayload,
-} from '@/src/types/my-activities.types';
+import { MyActivitiesFormData } from '@/src/types/my-activities.types';
 import SkeletonRegisterForm from '../../components/skeleton-ui/SkeletonRegisterForm';
 import { useGnbStore } from '@/src/store/gnbStore';
 import { useQueryClient } from '@tanstack/react-query';
