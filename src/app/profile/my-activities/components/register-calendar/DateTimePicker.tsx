@@ -4,6 +4,7 @@ interface CustomDatePickerProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  min?: string;
 }
 
 interface CustomTimePickerProps {
@@ -30,6 +31,7 @@ export function CustomDatePicker({
   value,
   onChange,
   placeholder = '연도. 월. 일',
+  min,
 }: CustomDatePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -43,6 +45,7 @@ export function CustomDatePicker({
         type='date'
         value={value}
         onChange={onChange}
+        min={min}
         className='absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer'
       />
     </div>
@@ -59,7 +62,7 @@ export function CustomTimePicker({
 
   return (
     <div className='relative select-none' onClick={() => inputRef.current?.showPicker()}>
-      <span className='text-md font-regular text-gray-800 pointer-events-none'>
+      <span className='text-md font-regular text-gray-800 pointer-events-none whitespace-nowrap'>
         {formatTime(value)}
       </span>
       <input

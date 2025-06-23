@@ -1,5 +1,11 @@
 import Image from 'next/image';
 import { CustomDatePicker, CustomTimePicker } from './DateTimePicker';
+import {
+  getTodayDateStr,
+  getMinEndTimeStr,
+  getMinStartTime,
+  normalizeEndTime,
+} from '@/src/utils/my-activities-time';
 
 interface RegisterCalendarItemProps {
   id: string;
@@ -26,6 +32,7 @@ export default function RegisterCalendarItem({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onChange(id, 'date', e.target.value)
           }
+          min={getTodayDateStr()}
         />
       </div>
       <div className='flex justify-center'>
@@ -37,14 +44,17 @@ export default function RegisterCalendarItem({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onChange(id, 'startTime', e.target.value)
           }
+          min={getMinStartTime(date)}
         />
         <span className='text-md font-regular text-gray-400'>~</span>
         <CustomTimePicker
           value={endTime}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onChange(id, 'endTime', e.target.value)
-          }
-          min={startTime || undefined}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const rawEndTime = e.target.value;
+            const normalized = normalizeEndTime(startTime, rawEndTime);
+            onChange(id, 'endTime', normalized);
+          }}
+          min={getMinEndTimeStr(startTime)}
         />
       </div>
       <div className='flex justify-end'>
