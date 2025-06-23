@@ -11,7 +11,10 @@ export const useCompletedCategories = () => {
 
     const fetchCategories = async () => {
       const now = new Date();
-      const completed = reservations.filter((res) => new Date(res.endTime) < now);
+      const completed = reservations.filter((res) => {
+        const endDateTime = new Date(`${res.date}T${res.endTime}`);
+        return endDateTime < now;
+      });
 
       const results = await Promise.allSettled(
         completed.map((res) =>
