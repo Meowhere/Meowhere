@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 
@@ -15,31 +15,36 @@ export default function Dropdown({
   triggerLabel,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // 드롭다운 메뉴 이외의 곳 클릭 시, trigger 닫히게 하는 로직
   useEffect(() => {
-    const handleClick = () => {
-      setIsOpen(false);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
     };
 
     if (isOpen) {
-      window.addEventListener('click', handleClick);
+      window.addEventListener('click', handleClickOutside);
     }
 
     return () => {
-      window.removeEventListener('click', handleClick);
+      window.removeEventListener('click', handleClickOutside);
     };
   }, [isOpen]);
 
   return (
-    <div className='relative w-full'>
-      <div
-        onClick={(e) => {
-          e.stopPropagation(); // 내부 클릭일 경우 전파 차단
-        }}
-      >
+    <div className='relative w-full' ref={dropdownRef}>
+      <div className='w-full'>
         {trigger ? (
-          <button onClick={() => setIsOpen((prev) => !prev)}>{trigger}</button>
+          <button
+            onClick={() => {
+              setIsOpen((prev) => !prev);
+            }}
+          >
+            {trigger}
+          </button>
         ) : (
           <DropdownTrigger
             label={triggerLabel ? triggerLabel : ''}

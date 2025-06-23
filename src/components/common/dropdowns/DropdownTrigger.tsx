@@ -3,16 +3,18 @@ export default function DropdownTrigger({ label, text, isOpen, onClick }: Dropdo
     <button
       onClick={onClick}
       type='button'
-      className='w-full h-[64px] rounded-[10px] border border-gray-200 dark:border-gray-700'
+      className='flex w-full h-[64px] rounded-[10px] border border-gray-200 dark:border-gray-700'
     >
       <div className='w-full flex items-center justify-between px-[20px] py-[8px]'>
-        <div className='flex flex-col items-start'>
+        <div className='w-[calc(100%-32px)] flex flex-col items-start'>
           <span className='text-xs font-regular text-gray-500 dark:text-gray-400 '>{label}</span>
-          <div>
-            <div className='text-md font-regular text-gray-800 dark:text-gray-200'>{text}</div>
+          <div className='w-full'>
+            <div className='w-full text-start text-md font-regular text-gray-800 truncate dark:text-gray-200'>
+              {text}
+            </div>
           </div>
         </div>
-        <span>
+        <span className='w-[24px]'>
           <svg
             className={`w-[24px] h-[24px] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
             viewBox='0 0 24 24'
