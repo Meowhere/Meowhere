@@ -52,8 +52,10 @@ export default function AllBadgeList() {
           />
         </div>
         <div className='text-center mt-1'>
-          <p className='text-md font-semibold text-gray-700'>{isEarned ? badge.title : '미획득'}</p>
-          <p className='text-xs text-gray-500 font-regular'>
+          <p className='text-md font-semibold text-gray-700 dark:text-gray-300'>
+            {isEarned ? badge.title : '미획득'}
+          </p>
+          <p className='text-xs text-gray-500 dark:text-gray-400 font-regular'>
             {isEarned
               ? new Date(owned.earnedAt).toLocaleDateString('ko-KR', {
                   year: 'numeric',
