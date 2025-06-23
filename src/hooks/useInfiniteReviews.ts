@@ -16,7 +16,7 @@ interface UseInfiniteReviewsParams {
 }
 
 export function useInfiniteReviews(activityId: number, params: UseInfiniteReviewsParams = {}) {
-  const { size = 100 } = params;
+  const { size = 10 } = params;
 
   return useInfiniteQuery({
     queryKey: ['reviews', 'infinite', activityId, size],
