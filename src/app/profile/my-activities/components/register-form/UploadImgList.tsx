@@ -87,7 +87,7 @@ export default function UploadImgList() {
     <div className='grid grid-cols-2 gap-[5px] justify-center lg:grid-cols-[repeat(4,160px)] lg:justify-start'>
       {files.map((f) => (
         <UploadImg
-          key={uuidv4()}
+          key={f.id}
           file={null}
           defaultImage={f.previewUrl}
           onFileChange={(file) => handleFileChange(file, f.previewUrl)}
