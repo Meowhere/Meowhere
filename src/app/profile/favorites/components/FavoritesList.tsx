@@ -1,8 +1,6 @@
 'use client';
 import { useFavoritesStore } from '@/src/store/favoritesStore';
 import FavoriteCard from './FavoriteCard';
-import { useState } from 'react';
-import { Activity } from '@/src/types/activity.types';
 import NoActivities from '../../components/NoActivities';
 
 export default function FavoritesList() {
