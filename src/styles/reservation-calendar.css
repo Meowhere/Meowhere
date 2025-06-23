@@ -113,6 +113,7 @@
 }
 
 .react-calendar-wrapper .react-calendar__tile--active {
+  width: 100%;
   background-color: transparent !important;
   color: #6e625a;
 }
@@ -122,7 +123,12 @@
 }
 
 .react-calendar-wrapper .react-calendar__tile--now {
+<<<<<<< HEAD
   background: transparent !important;
+=======
+  width: 100%;
+  background: transparent;
+>>>>>>> develop
   display: flex;
   align-items: center;
 }

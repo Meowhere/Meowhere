@@ -34,7 +34,7 @@ export default function NotificationModal() {
                   className='flex flex-col gap-[12px] pb-[24px] relative border-b last:border-b-0 border-gray-100 dark:border-gray-800'
                 >
                   <div
-                    className={`${content.includes('승인') ? 'bg-blue-100 dark:bg-dark-blue-200 text-blue-200 dark:text-dark-blue-100' : 'bg-red-100 dark:bg-dark-red-200 text-red-200 dark:text-dark-red-100'} flex items-center justify-center rounded-full px-[10px] py-[6px] w-fit h-fit`}
+                    className={`${content.includes('승인') ? 'bg-blue-100 dark:bg-dark-blue-200 text-blue-200 dark:text-dark-blue-100' : 'bg-red-100 dark:bg-dark-red-200 text-red-300 dark:text-dark-red-100'} flex items-center justify-center rounded-full px-[10px] py-[6px] w-fit h-fit`}
                   >
                     <span className='leading-none text-xs font-medium'>
                       {/* API에 기능 없어서 직접 구현... */}

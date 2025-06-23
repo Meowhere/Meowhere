@@ -55,9 +55,9 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
     <div className={clsx('w-full mb-6 relative', className)}>
       <div
         className={clsx(
-          'px-[20px] py-[12px] rounded-2xl border bg-white dark:bg-gray-800 relative transition-colors duration-200',
+          'px-[20px] py-[12px] rounded-2xl border bg-white dark:bg-black relative transition-colors duration-200',
           error ? 'border-red-300' : 'border-gray-200 dark:border-gray-600',
-          disabled && 'bg-gray-50 cursor-not-allowed'
+          disabled && 'bg-gray-50 dark:bg-gray-800 cursor-not-allowed'
         )}
       >
         <textarea
@@ -77,8 +77,8 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
           className={clsx(
             'w-full bg-transparent border-none focus:outline-none resize-none text-md font-regular placeholder:text-gray-500 dark:text-gray-200',
             autoResize ? 'scrollbar-hide' : '',
-            errorMessage ? 'text-red-300' : 'text-gray-800',
-            disabled && 'cursor-not-allowed text-gray-400'
+            errorMessage ? 'text-red-300' : 'text-gray-800 dark:text-gray-200',
+            disabled && 'cursor-not-allowed text-gray-400 dark:text-gray-500'
           )}
         />
         {/* 글자 수 카운터 */}
@@ -87,7 +87,9 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
             <span
               className={clsx(
                 'text-xs',
-                (watchValue?.length || 0) > maxLength * 0.9 ? 'text-red-400' : 'text-gray-400'
+                (watchValue?.length || 0) > maxLength * 0.9
+                  ? 'text-red-300 dark:text-dark-red-100'
+                  : 'text-gray-400 dark:text-gray-500'
               )}
             >
               {watchValue?.length || 0} / {maxLength}
@@ -97,7 +99,9 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textare
       </div>
 
       {/* Error Message */}
-      {errorMessage && <div className='text-red-300 text-md mt-2 ml-2'>{errorMessage}</div>}
+      {errorMessage && (
+        <div className='text-red-300 dark:text-dark-red-100 text-md mt-2 ml-2'>{errorMessage}</div>
+      )}
     </div>
   );
 });

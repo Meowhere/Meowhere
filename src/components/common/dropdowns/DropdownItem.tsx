@@ -13,12 +13,13 @@ export default function DropdownItem({
   const commonClassNames = `
     w-full
     ${isMobile ? 'h-full group-hover:h-[46px]' : 'h-[46px]'}
-    py-[10px]
+    px-[20px] py-[10px]
+    text-center
+    truncate
     hover:bg-gray-100 dark:hover:bg-gray-700
     ${radiusClass}
     ${fontSizeClass} ${textColor}
     transition-all duration-150
-    flex items-center justify-center
     select-none
     ${disabledClass}
   `;
