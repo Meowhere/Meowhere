@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { DropdownItemButton } from '@/src/types/dropdown.types';
 
@@ -13,7 +13,6 @@ export default function DropdownMenu({
   onClose,
   bottomButton,
 }: DropdownMenuProps) {
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const mobileShadow = 'shadow-[0_4px_40px_rgba(0,0,0,0.1)] backdrop-blur-[40px]';
   const desktopShadow = 'shadow-[0_0_20px_rgba(0,0,0,0.05)]';
 
@@ -31,20 +30,6 @@ export default function DropdownMenu({
     }
   }, [isMobile]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
-
   if (isMobile) {
     return (
       <>
@@ -52,10 +37,10 @@ export default function DropdownMenu({
         <div className='fixed inset-x-0 bottom-0 z-50 px-[16px] pb-[20px]'>
           <div className='w-full flex flex-col gap-[8px]' onClick={(e) => e.stopPropagation()}>
             <div className={wrapperClass}>
-              <div className='text-center text-xs text-gray-600 dark:text-gray-300 leading-[1.2rem] h-[36px] flex items-center justify-center border-b border-gray-100 dark:border-gray-700'>
+              <div className='w-full text-center text-xs text-gray-600 dark:text-gray-300 leading-[1.2rem] h-[36px] flex items-center justify-center border-b border-gray-100 dark:border-gray-700'>
                 {bottomSheetTitle}
               </div>
-              <div className='divide-y divide-gray-100 dark:divide-gray-700 max-h-[400px] overflow-y-auto '>
+              <div className='w-full divide-y divide-gray-100 dark:divide-gray-700 max-h-[400px] overflow-y-auto '>
                 {items.map((item, idx) => (
                   <DropdownItem
                     key={idx}
@@ -87,7 +72,6 @@ export default function DropdownMenu({
   // PC 버전
   return (
     <div
-      ref={dropdownRef}
       className={`
             rounded-[12px] border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden min-w-[160px] animate-fade-down animate-duration-200 animate-ease-out
             ${desktopShadow}

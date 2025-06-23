@@ -122,13 +122,13 @@ export default function ReservationCalendar() {
   };
 
   return (
-    <div className='mx-auto min-w-[327px] w-full react-calendar-wrapper'>
+    <div className='mx-auto w-full react-calendar-wrapper'>
       {isLoading ? (
         <div className='w-full h-[72px] flex justify-center items-center mb-[64px]'>
           <div className='w-6 h-6 border-4 border-t-transparent border-primary-200 rounded-full animate-spin' />
         </div>
       ) : dropdownItems.length > 0 ? (
-        <div className='mb-[64px]'>
+        <div className='w-full mb-[64px]'>
           <Dropdown
             dropdownItems={dropdownItems}
             selectedValue={selectedMyActivity ? selectedMyActivity.title : '체험을 선택해주세요'}
