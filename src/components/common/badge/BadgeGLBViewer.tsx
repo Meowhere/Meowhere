@@ -2,9 +2,10 @@
 
 import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import BadgeEnvironment from './BadgeEnvironment';
+import { useThemeStore } from '@/src/store/themeStore';
 
 const Badge3DModel = dynamic(() => import('./Badge3DModel'), { ssr: false });
 
@@ -13,27 +14,8 @@ interface Props {
 }
 
 export default function BadgeGLBViewer({ glbPath }: Props) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    // 다크모드 상태 감지
-    const checkDarkMode = () => {
-      const isDark = document.documentElement.classList.contains('dark');
-      setIsDarkMode(isDark);
-    };
-
-    // 초기 상태 체크
-    checkDarkMode();
-
-    // MutationObserver로 다크모드 변경 감지
-    const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const theme = useThemeStore((state) => state.theme);
+  const isDarkMode = theme === 'dark';
 
   const backgroundColor = isDarkMode ? '#38322D' : '#ffffff'; // 다크모드: #38322D, 라이트모드: white
   const clearColor = isDarkMode ? '#38322D' : '#ffffff';
