@@ -170,7 +170,6 @@ export default function ExperienceResponsiveLayout({
                     dropdownItems={dropdownItems}
                     bottomSheetTitle='게시물 관리'
                     trigger={<KebabIcon size={24} className='text-gray-600 dark:text-gray-400' />}
-                    isMobile={true}
                   />
                 )}
               </div>
