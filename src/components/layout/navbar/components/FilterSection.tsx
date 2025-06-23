@@ -25,7 +25,7 @@ export default function FilterSection({
 
   return (
     <motion.section
-      className={`${className} ${isOpen ? '' : 'cursor-pointer'} bg-white dark:bg-gray-800 lg:bg-none lg:dark:bg-none rounded-[8px] w-full h-fit px-[24px] overflow-hidden gnb-shadow lg:shadow-none`}
+      className={`${className} ${isOpen ? '' : 'cursor-pointer'} max-h-[52px] bg-white dark:bg-gray-800 lg:bg-none lg:dark:bg-none rounded-[8px] w-full h-fit px-[24px] overflow-hidden gnb-shadow lg:shadow-none`}
       onClick={(e) => {
         e.stopPropagation();
         onClick?.();
