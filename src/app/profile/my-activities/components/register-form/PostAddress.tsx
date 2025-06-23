@@ -34,8 +34,10 @@ export default function PostAddress({
   useEffect(() => {
     if (typeof window !== 'undefined' && !window.daum) {
       const script = document.createElement('script');
-      script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+      script.src = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
       script.async = true;
+      script.onload = () => console.log('카카오 주소 API 로드 완료!');
+      script.onerror = () => showToast('error', '카카오 주소 API 로딩 실패!');
       document.body.appendChild(script);
     }
   }, []);
