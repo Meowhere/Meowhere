@@ -5,6 +5,7 @@ import { useCompletedCategories } from '@/src/hooks/achievements/useCompletedCat
 import { categoryBadgeMap } from '@/src/constants/badge.constans';
 import { hasBadge, storeBadge, getStoredBadges } from '@/src/hooks/achievements/useMyBadge';
 import { useModal } from '@/src/hooks/useModal';
+import { BadgeLevel } from '@/src/constants/badge.constans';
 
 export default function BadgeAutoGrantWrapper() {
   const completedCategories = useCompletedCategories();
@@ -20,8 +21,6 @@ export default function BadgeAutoGrantWrapper() {
 
       if (!hasBadge(badgeLevel)) {
         storeBadge(badgeLevel);
-        const updated = getStoredBadges().find((b) => b.category === badgeLevel);
-        openBadgeDetailModal(badgeLevel, updated?.earnedAt);
       }
     });
   }, [completedCategories]);
@@ -44,9 +43,16 @@ export default function BadgeAutoGrantWrapper() {
 
   // 개발용 testBadge 함수 등록 (콘솔에서 호출 가능)
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-    (window as any).testBadge = (category: string) => {
-      storeBadge(category as any); // BadgeLevel 캐스팅
-      window.dispatchEvent(new Event('badge-earned'));
+    window.testBadge = (category: string) => {
+      // BadgeLevel 유효성 검사
+      const badgeOrder = ['art', 'food', 'sport', 'tour', 'travel', 'wellbeing'] as const;
+      if (badgeOrder.includes(category as any)) {
+        storeBadge(category as BadgeLevel);
+        window.dispatchEvent(new Event('badge-earned'));
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn('Invalid badge category:', category);
+      }
     };
   }
 

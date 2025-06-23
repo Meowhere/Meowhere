@@ -2,7 +2,9 @@
 
 import { useGLTF } from '@react-three/drei';
 import { useSpring, animated } from '@react-spring/three';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import * as THREE from 'three';
+import { useThree } from '@react-three/fiber';
 
 interface Props {
   badgeFile: string;
@@ -10,6 +12,7 @@ interface Props {
 
 export default function Badge3DModel({ badgeFile }: Props) {
   const { scene } = useGLTF(badgeFile);
+  const { gl } = useThree();
   const [hasAnimated, setHasAnimated] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -42,34 +45,38 @@ export default function Badge3DModel({ badgeFile }: Props) {
 
     const handleMouseLeave = () => setMousePosition({ x: 0, y: 0 });
 
-    const canvas = document.querySelector('canvas');
-    if (canvas) {
-      canvas.addEventListener('mousemove', handleMouseMove);
-      canvas.addEventListener('mouseleave', handleMouseLeave);
-      return () => {
-        canvas.removeEventListener('mousemove', handleMouseMove);
-        canvas.removeEventListener('mouseleave', handleMouseLeave);
-      };
-    }
-  }, [hasAnimated]);
+    const canvas = gl.domElement;
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [hasAnimated, gl]);
 
   useEffect(() => {
-    scene.traverse((child: any) => {
-      if (child.isMesh) {
+    scene.traverse((child: THREE.Object3D) => {
+      if (child instanceof THREE.Mesh) {
         child.castShadow = true;
         child.receiveShadow = true;
         if (child.material) {
           const materials = Array.isArray(child.material) ? child.material : [child.material];
-          materials.forEach((material: any) => {
-            if (material.color) {
+          materials.forEach((material: THREE.Material) => {
+            if ((material as any).color) {
+              const matWithColor = material as THREE.Material & { color: THREE.Color };
               const hsl = { h: 0, s: 0, l: 0 };
-              material.color.getHSL(hsl);
-              material.color.setHSL(hsl.h, Math.min(hsl.s * 1.3, 1.0), hsl.l);
+              matWithColor.color.getHSL(hsl);
+              matWithColor.color.setHSL(hsl.h, Math.min(hsl.s * 1.3, 1.0), hsl.l);
             }
-            if (material.map && material.color) {
+            if ((material as any).map && (material as any).color) {
+              const matWithColor = material as THREE.Material & { color: THREE.Color; map: any };
               const hsl = { h: 0, s: 0, l: 0 };
-              material.color.getHSL(hsl);
-              material.color.setHSL(hsl.h, Math.min(hsl.s * 1.8, 1.0), Math.max(hsl.l * 0.8, 0.1));
+              matWithColor.color.getHSL(hsl);
+              matWithColor.color.setHSL(
+                hsl.h,
+                Math.min(hsl.s * 1.8, 1.0),
+                Math.max(hsl.l * 0.8, 0.1)
+              );
             }
             material.needsUpdate = true;
           });

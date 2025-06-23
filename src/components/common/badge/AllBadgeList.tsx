@@ -37,11 +37,9 @@ export default function AllBadgeList() {
           className={`w-[120px] h-[120px] flex items-center justify-center overflow-hidden rounded-full ${
             isEarned ? 'cursor-pointer hover:scale-105 transition-transform duration-200' : ''
           }`}
-          onClick={() => {
-            if (isEarned) {
-              openBadgeDetailModal(badge.category, owned?.earnedAt);
-            }
-          }}
+          onClick={
+            isEarned ? () => openBadgeDetailModal(badge.category, owned?.earnedAt) : undefined
+          }
         >
           <BadgeViewer
             imageUrl={
@@ -62,7 +60,7 @@ export default function AllBadgeList() {
                   month: '2-digit',
                   day: '2-digit',
                 })
-              : `‘${badge.label}’ 체험 후 획득`}
+              : `'${badge.label}' 체험 후 획득`}
           </p>
         </div>
       </div>

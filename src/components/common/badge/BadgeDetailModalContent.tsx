@@ -30,7 +30,7 @@ export default function BadgeDetailModalContent({ category, earnedAt }: Props) {
         <BadgeGLBViewer glbPath={`/assets/badge/${badge.category}.glb`} />
       </motion.div>
 
-      <div className='gap-[12px]'>
+      <div>
         <h2 className='text-[2.2rem] font-semibold text-gray-800'>{badge.title}</h2>
         <p className='text-md font-medium text-gray-600 pt-[6px]'>{badge.description}</p>
         <p className='text-xs text-gray-500 pt-[24px] gap-[8px]'>
