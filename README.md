@@ -52,7 +52,7 @@ https://meowhere.vercel.app/
 | **3D 렌더링**         | ![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=three.js&logoColor=white)                                                                                                                 |
 | **OAuth 인증**        | ![Kakao](https://img.shields.io/badge/Kakao-FFCD00?style=flat-square&logo=kakao&logoColor=black)                                                                                                                          |
 | **지도 서비스**        | ![Kakao Map](https://img.shields.io/badge/Kakao%20Map-FFCD00?style=flat-square&logo=kakao&logoColor=black)                                                                                                               |
----
+| **주소 검색**         | ![Daum Postcode](https://img.shields.io/badge/Daum%20Postcode-1E90FF?style=flat-square&logoColor=white)                                                                                                                   |---
 
 ## 📁 폴더 구조
 
