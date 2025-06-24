@@ -67,7 +67,7 @@ export default function Sort({ onSortChange }: SortProps) {
         {filtered ? <SortedIcon /> : <SortIcon />}
       </button>
       {open && (
-        <div className='absolute right-0 top-[32px] z-10'>
+        <div className='absolute right-0 top-[32px] z-50'>
           <DropdownMenu
             items={dropdownItems}
             bottomSheetTitle='날짜 정렬'
