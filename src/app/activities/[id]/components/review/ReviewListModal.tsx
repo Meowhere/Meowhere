@@ -14,8 +14,10 @@ export interface ReviewListModalProps {
 }
 
 export default function ReviewListModal({ activityId, reviewCount, rating }: ReviewListModalProps) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteReviews(activityId);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteReviews(
+    activityId,
+    { size: 10 }
+  );
 
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +40,19 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const reviews = data?.pages?.flatMap((page) => page?.reviews || []) ?? [];
+  // 중복 제거를 위한 로직 추가
+  const allReviews = data?.pages?.flatMap((page) => page?.reviews || []) ?? [];
+  const uniqueReviews = allReviews.filter(
+    (review, index, array) => array.findIndex((r) => r.id === review.id) === index
+  );
+
+  console.log('🔍 Debug Info:', {
+    pages: data?.pages?.length,
+    allReviewsCount: allReviews.length,
+    uniqueReviewsCount: uniqueReviews.length,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   // 초기 로딩 중이면 로딩 스피너 반환
   if (isLoading) {
@@ -67,7 +81,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
       </div>
 
       <div className='flex-1 overflow-y-auto px-[16px] pt-[16px] scrollbar-hide'>
-        {reviews.map((review, idx) => (
+        {uniqueReviews.map((review, idx) => (
           <div key={review.id} className='pb-[16px]'>
             <ReviewCard
               nickname={review.user.nickname}
@@ -77,7 +91,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
               rating={review.rating}
               variant='list'
             />
-            {idx !== reviews.length - 1 && <Divider className='my-[16px]' />}
+            {idx !== uniqueReviews.length - 1 && <Divider className='my-[16px]' />}
           </div>
         ))}
 
@@ -90,7 +104,7 @@ export default function ReviewListModal({ activityId, reviewCount, rating }: Rev
           </div>
         )}
 
-        {!hasNextPage && reviews.length > 0 && (
+        {!hasNextPage && uniqueReviews.length > 0 && (
           <p className='text-center text-sm text-gray-400 dark:text-gray-500 py-4'>
             모든 후기를 확인했어요
           </p>
